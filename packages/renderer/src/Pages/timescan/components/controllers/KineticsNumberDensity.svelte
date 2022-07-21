@@ -1,21 +1,23 @@
 <script>
-    import { onMount, tick } from 'svelte'
+    import { onMount } from 'svelte'
     import Modal from '$components/modal/Modal.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import { activePage } from '$src/sveltewritables'
     import { browse } from '$components/Layout.svelte'
+
     export let nHe = ''
     export let selectedFile = ''
     export let active = false
+
     export let configDir = ''
     export let fileCollections = []
 
     let filename = 'kinetics.conditions.json'
     $: savefilename = window.path.join(configDir, filename)
-
     let contents = {}
+
     const readConfigFile = async (toast = true) => {
         if (!window.fs.isFile(savefilename)) {
             if ($activePage === 'Kinetics') {
@@ -34,6 +36,7 @@
 
     let updateCurrentConfig
     let get_datas
+
     const save_datas = async () => {
         try {
             if (!get_datas) return window.createToast('No datas computed', 'danger')
@@ -62,7 +65,7 @@
     let config_file = ''
     const browseFromConfigFile = async () => {
         config_file = ''
-        const [result] = await browse({ filetype: 'config.json', dir: false })
+        const [result] = await browse({ filetype: 'configs.json', dir: false })
         if (!result) return
         config_file = result
     }
@@ -71,10 +74,8 @@
         if (!config_file) return window.createToast('No config file loaded')
         const [config_contents] = window.fs.readJsonSync(config_file)
         window.createToast(`File read: ${window.path.basename(config_file)}`)
-        console.log(config_contents)
 
         const keys = Object.keys(config_contents)
-
         const contents = {}
         for (const key of keys) {
             const config = config_contents[key]
@@ -84,6 +85,7 @@
         }
 
         window.fs.outputJsonSync(savefilename, contents)
+        window.createToast(`File saved to ${window.path.basename(savefilename)}`, 'success')
         await readConfigFile()
     }
 
@@ -120,7 +122,6 @@
                         lookIn={configDir}
                     />
                     <button class="button is-link" on:click={readConfigFile}>Read file</button>
-
                     <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
                     <span class="tag is-success" class:is-danger={!contents?.[selectedFile]}>
                         config {contents?.[selectedFile] ? 'found' : 'not found'}

@@ -96,6 +96,7 @@
 
         numberDensity = {nHe: datafromPython.nHe, nHe_transpiration: datafromPython.nHe_transpiration}
         ;({X, F} = datafromPython)
+        dispatch_current_numberdensity()
         if(get_data) return Promise.resolve(cloneDeep({...args, ...datafromPython }))
         return Promise.resolve(dispatch_current_numberdensity(cloneDeep({...args, ...datafromPython })))
     }
