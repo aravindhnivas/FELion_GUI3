@@ -15,7 +15,7 @@
         temp: '',
     }
 
-    const config_filename = persistentWritable('kinetics_config_filename', 'kinetics.config.json')
+    const config_filename = persistentWritable('kinetics_config_filename', 'kinetics.configs.json')
     let config_datas = []
     const addNewRow = () => ({ ...defaultRow, id: window.getID() })
 </script>
@@ -26,7 +26,7 @@
             rowKeys={configKeys}
             bind:rows={config_datas}
             {configDir}
-            options_filter={'.config.json'}
+            options_filter={'.configs.json'}
             bind:filename={$config_filename}
             editable={true}
             sortable={true}
