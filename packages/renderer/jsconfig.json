@@ -27,15 +27,30 @@
     "checkJs": true,
     // 
     "paths": {
-      "$preload/*": ["../preload/*"],
-      "$src/*": ["./src/*"],
-      "$components/*": ["./src/components/*"],
-      "$computeCode/*": ["./src/Pages/computeCode/*"],
+      "$preload/*": [
+        "../preload/*"
+      ],
+      "$src/*": [
+        "./src/*"
+      ],
+      "$components/*": [
+        "./src/components/*"
+      ],
+      "$computeCode/*": [
+        "./src/Pages/computeCode/*"
+      ],
     }
   },
   /**
    * Use global.d.ts instead of compilerOptions.types
    * to avoid limiting type declarations.
    */
-  "include": ["src/**/*.js", "src/**/*.svelte", "src/**/*.ts", "../preload/contracts.d.ts"]
+  "include": [
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "src/**/*.ts",
+    "../preload/*.d.ts",
+    "types/**/*.d.ts",
+    "../../types/**/*.d.ts"
+  ]
 }

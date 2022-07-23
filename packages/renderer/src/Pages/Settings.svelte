@@ -17,15 +17,16 @@
 
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { checkTCP, fetchServerROOT } from './settings/serverConnections'
+    import { Unsubscribe } from 'conf/dist/source/types'
 
     let pyError = ''
     // let mounted = false
     let updateError = <string>window.db.get('updateError') || ''
-    let updateIntervalCycle
+    let updateIntervalCycle: NodeJS.Timer | null = null
     let selected = window.db.get('settingsActiveTab') || 'Configuration'
-    let unsubscribers = []
+    let unsubscribers: Unsubscribe[] = []
 
-    const navigate = (e) => {
+    const navigate = (e: ButtonClickEvent) => {
         selected = e.target.innerHTML
         window.db.set('settingsActiveTab', selected)
     }
@@ -65,7 +66,7 @@
             }
             $pyServerReady = <boolean>window.db.get('pyServerReady')
         } catch (error) {
-            pyError = error
+            pyError = String(error)
         } finally {
             serverInfo += `>> pyVersion: ${$pyVersion}\n`
             if ($pyServerReady) {
@@ -119,7 +120,7 @@
 
     let serverInfo = ''
 
-    const updateServerInfo = async (e = null) => {
+    const updateServerInfo = async (e: ButtonClickEvent = null) => {
         const rootpage = await fetchServerROOT({ target: e?.target })
         if (!rootpage.includes('ERROR')) {
             $pyServerReady = true
@@ -148,20 +149,6 @@
 
     const id = 'Settings'
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
-
-    // const buildPy = async () => {
-    //     window.stopServer()
-    //     const resources = window.path.resolve(window.ROOT_DIR, 'resources')
-    //     const config = window.path.resolve(resources, 'python_files/config.json')
-    //     const cmd = `conda run -n felionpy auto-py-to-exe -c ${config} -o ${resources}`
-
-    //     const [output, error] = await window.exec(cmd)
-    //     if (error) {
-    //         console.error(error)
-    //         return
-    //     }
-    //     window.startServer()
-    // }
 </script>
 
 <Changelog />

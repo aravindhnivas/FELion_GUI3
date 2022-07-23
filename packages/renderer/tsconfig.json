@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+      "module": "esnext",
+      "target": "esnext",
+      "sourceMap": false,
+      "moduleResolution": "Node",
+      "skipLibCheck": true,
+      "strict": true,
+      "isolatedModules": true,
+      "jsx": "preserve",
+  
+      "types" : ["node"],
+      "baseUrl": ".",
+      "paths": {
+        "$preload/*": ["../preload/*"],
+        "$src/*": ["./src/*"],
+        "$components/*": ["./src/components/*"],
+        "$computeCode/*": ["./src/Pages/computeCode/*"],
+      },
+      "lib": ["ESNext", "dom", "dom.iterable"]
+    },
+  
+    "include": [
+        "src/**/*.js", 
+        "src/**/*.svelte", 
+        "src/**/*.ts", 
+        "../preload/contracts.d.ts",
+        "types/**/*.d.ts",
+        "../../types/**/*.d.ts",
+    ],
+    "exclude": [
+      "**/*.spec.ts",
+      "**/*.test.ts",
+    ]
+  }

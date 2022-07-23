@@ -1,8 +1,8 @@
 import Store from 'electron-store'
 import path from 'path'
 
-const db = new Store({ name: 'db' })
-Store.initRenderer()
+export const db = new Store({ name: 'db' })
+// Store.initRenderer()
 
 export const ROOT_DIR = path.join(__dirname, '../../../')
 export const PKG_DIR = path.join(ROOT_DIR, 'packages')

@@ -2,28 +2,32 @@ import { app, ipcMain } from 'electron'
 import path from 'path'
 import { promisify } from 'util'
 import { spawn, exec } from 'child_process'
-import { ROOT_DIR } from './definedEnv'
+import { db, ROOT_DIR } from './definedEnv'
 import getPort from 'get-port'
-import Store from 'electron-store'
+// import Store from 'electron-store'
 
 const env = import.meta.env
 const execCommand = promisify(exec)
 
 const getCurrentDevStatus = () => {
-    const db = new Store({ name: 'db' })
+    // const db = new Store({ name: 'db' })
 
     if (!db.has('developerMode') || env.PROD) {
         db.set('developerMode', false)
     }
 
-    const developerMode = db.get('developerMode')
-    const pythonscript = db.get('pythonscript') || path.join(ROOT_DIR, 'resources/python_files')
-    const pythonpath = db.get('pythonpath') || path.join(ROOT_DIR, 'resources/python_files')
+    const developerMode = <boolean>db.get('developerMode')
+    const pythonscript = <string>db.get('pythonscript') || path.join(ROOT_DIR, 'resources/python_files')
+    const pythonpath = <string>db.get('pythonpath') || path.join(ROOT_DIR, 'resources/python_files')
+    
     let pyProgram
+    const pyProgramPath = "resources/felionpy/felionpy"
+    // const pyProgramPath = "resources/python_files/nuitka/main.dist/main"
+
     if (app.isPackaged) {
-        pyProgram = path.join(ROOT_DIR, '../../resources/felionpy/felionpy')
+        pyProgram = path.join(ROOT_DIR, '../../', pyProgramPath)
     } else {
-        pyProgram = developerMode ? pythonpath : path.join(ROOT_DIR, 'resources/felionpy/felionpy')
+        pyProgram = developerMode ? pythonpath : path.join(ROOT_DIR, pyProgramPath)
     }
 
     const mainpyfile = developerMode ? path.join(pythonscript, 'main.py') : ''
@@ -50,15 +54,14 @@ export async function getPyVersion() {
     } catch (error) {
         console.error('could not get python version')
         console.error(error)
-
-        return Promise.resolve(false)
+        return Promise.resolve("")
     }
 }
 
 let py
 let serverStarting = false
 
-export async function startServer(webContents) {
+export async function startServer(webContents: Electron.WebContents) {
     if (serverStarting) {
         console.log('server already starting')
         return
@@ -66,8 +69,8 @@ export async function startServer(webContents) {
 
     const { db, developerMode, pyProgram, mainpyfile } = getCurrentDevStatus()
 
-    const serverDebug = db.get('serverDebug') ?? false
-    const dbPORT = db.get('pyServerPORT')
+    const serverDebug = <boolean>db.get('serverDebug') ?? false
+    const dbPORT = <number>db.get('pyServerPORT')
     const availablePORT = await getPort({ port: [5050, 5353, 3000, dbPORT] })
 
     console.log({ dbPORT, availablePORT })
