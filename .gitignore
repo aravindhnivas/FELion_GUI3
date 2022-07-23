@@ -3,10 +3,9 @@ node_modules
 dist
 **/*.pyo
 **/__pycache__/
-resources/felionpy
 misc/*
 py3*/
-**/*.tmp
 *.egg-info*/
-resources/build/felionpy
+resources/**/*felionpy
 python3/
+**/nuitka*
