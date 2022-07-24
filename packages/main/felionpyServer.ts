@@ -21,13 +21,14 @@ const getCurrentDevStatus = () => {
     const pythonpath = <string>db.get('pythonpath') || path.join(ROOT_DIR, 'resources/python_files')
     
     let pyProgram
-    const finalProgramRelPath = <string>db.get('finalProgramRelPath') || "resources/felionpy/felionpy"
+    const felionpy = <string>db.get('felionpy') || path.join(ROOT_DIR, '../../', "resources/felionpy/felionpy")
     // const pyProgramPath = "resources/python_files/nuitka/main.dist/main"
 
     if (app.isPackaged) {
-        pyProgram = path.join(ROOT_DIR, '../../', finalProgramRelPath)
+        // pyProgram = path.join(ROOT_DIR, '../../', felionpy)
+        pyProgram = felionpy
     } else {
-        pyProgram = developerMode ? pythonpath : path.join(ROOT_DIR, finalProgramRelPath)
+        pyProgram = developerMode ? pythonpath : felionpy
     }
 
     const mainpyfile = developerMode ? path.join(pythonscript, 'main.py') : ''

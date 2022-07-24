@@ -9,12 +9,12 @@ export const developerMode = window.persistentDB("developerMode", <boolean>windo
 export const pythonpath = window.persistentDB("pythonpath", pyPath)
 export const pythonscript = window.persistentDB("pythonscript", pyScriptPath)
 
-export const finalProgramRelPath = window.persistentDB("finalProgramRelPath", "resources/felionpy/felionpy")
+export const felionpy = window.persistentDB("felionpy", window.path.join(window.ROOT_DIR, "resources/felionpy/felionpy"))
 
 export const pyProgram = derived(
-    [developerMode, pythonpath, finalProgramRelPath], 
-    ([$developerMode, $pythonpath, $finalProgramRelPath]) => {
-        return $developerMode ? $pythonpath : window.path.join(window.ROOT_DIR, $finalProgramRelPath)
+    [developerMode, pythonpath, felionpy], 
+    ([$developerMode, $pythonpath, $felionpy]) => {
+        return $developerMode ? $pythonpath : $felionpy
     }
 )
 

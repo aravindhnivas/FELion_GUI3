@@ -6,7 +6,7 @@
         pyServerPORT,
         developerMode,
         pyServerReady,
-        finalProgramRelPath,
+        felionpy,
     } from './settings/svelteWritables'
     import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '../js/functions'
@@ -19,6 +19,8 @@
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { checkTCP, fetchServerROOT } from './settings/serverConnections'
     import { Unsubscribe } from 'conf/dist/source/types'
+    import { browse } from '$src/components/Layout.svelte'
+    import IconButton, { Icon } from '@smui/icon-button'
 
     let pyError = ''
     // let mounted = false
@@ -148,7 +150,7 @@
             clearInterval(updateIntervalCycle)
         }
     })
-
+    let edit_felionpy_program = import.meta.env.PROD
     const id = 'Settings'
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
@@ -218,11 +220,31 @@
                             {/if}
                         </div>
 
-                        {#if import.meta.env.DEV}
-                            <div class="align m-5">
-                                <Textfield style="width: 100%;" bind:value={$finalProgramRelPath} label="felionpy" />
-                            </div>
-                        {/if}
+                        <!-- {#if import.meta.env.DEV} -->
+                        <div class="browse__div">
+                            <button
+                                disabled={edit_felionpy_program}
+                                class="button is-link"
+                                on:click={async () => {
+                                    const [result] = await browse({ dir: false })
+                                    if (!result) return
+
+                                    console.log(result)
+                                    $felionpy = result
+                                }}>Browse</button
+                            >
+                            <Textfield
+                                disabled={edit_felionpy_program}
+                                style="width: 100%;"
+                                bind:value={$felionpy}
+                                label="felionpy"
+                            />
+                            <IconButton slot="icon" toggle bind:pressed={edit_felionpy_program}>
+                                <Icon class="material-icons" on>lock</Icon>
+                                <Icon class="material-icons">lock_open</Icon>
+                            </IconButton>
+                        </div>
+                        <!-- {/if} -->
 
                         {#if pyError && !pyServerReady}
                             <div class="align tag is-danger errorbox">
@@ -319,6 +341,14 @@
 </section>
 
 <style lang="scss">
+    .browse__div {
+        display: grid;
+        grid-auto-flow: column;
+        align-items: center;
+        gap: 1em;
+        grid-template-columns: auto 1fr auto;
+        width: 100%;
+    }
     section {
         margin: 0;
         padding: 0;
