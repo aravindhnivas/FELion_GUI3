@@ -20,7 +20,8 @@
     import { checkTCP, fetchServerROOT } from './settings/serverConnections'
     import { Unsubscribe } from 'conf/dist/source/types'
     import { browse } from '$src/components/Layout.svelte'
-    import IconButton, { Icon } from '@smui/icon-button'
+    // import IconButton, { Icon } from '@smui/icon-button'
+    import IconButton from '$components/IconButton.svelte'
 
     let pyError = ''
     // let mounted = false
@@ -150,7 +151,7 @@
             clearInterval(updateIntervalCycle)
         }
     })
-    let edit_felionpy_program = import.meta.env.PROD
+    let lock_felionpy_program = import.meta.env.PROD
     const id = 'Settings'
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
@@ -223,7 +224,7 @@
                         <!-- {#if import.meta.env.DEV} -->
                         <div class="browse__div">
                             <button
-                                disabled={edit_felionpy_program}
+                                disabled={lock_felionpy_program}
                                 class="button is-link"
                                 on:click={async () => {
                                     const [result] = await browse({ dir: false })
@@ -234,15 +235,13 @@
                                 }}>Browse</button
                             >
                             <Textfield
-                                disabled={edit_felionpy_program}
+                                disabled={lock_felionpy_program}
                                 style="width: 100%;"
                                 bind:value={$felionpy}
                                 label="felionpy"
                             />
-                            <IconButton toggle bind:pressed={edit_felionpy_program}>
-                                <Icon class="material-icons" on>lock</Icon>
-                                <Icon class="material-icons">lock_open</Icon>
-                            </IconButton>
+
+                            <IconButton bind:value={lock_felionpy_program} icons={{ on: 'lock', off: 'lock_open' }} />
                         </div>
                         <!-- {/if} -->
 

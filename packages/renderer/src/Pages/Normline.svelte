@@ -26,7 +26,7 @@
 
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    import IconButton from '$components/IconButton.svelte'
+    // import IconButton from '$components/IconButton.svelte'
     import Layout from '$components/Layout.svelte'
     import CustomRadio from '$components/CustomRadio.svelte'
     import { deleteTraces } from 'plotly.js/dist/plotly-basic'
@@ -147,15 +147,16 @@
         <InitFunctionRow {removeExtraFile} {felixfiles} {theoryLocation} {plotfile} />
         <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles {plotfile} />
         <TheoryRow bind:theoryLocation />
-
         <div class="align">
             <CustomRadio bind:value={$normMethod} options={normMethods} />
-            <IconButton
+            <button
+                class="button is-link"
                 style="margin-left: auto;"
-                label="More options"
-                icons={['arrow_drop_up', 'arrow_drop_down']}
-                bind:value={showMoreOptions}
-            />
+                on:click={() => (showMoreOptions = !showMoreOptions)}
+            >
+                More options
+                <i class=" material-icons">{showMoreOptions ? 'arrow_drop_up' : 'arrow_drop_down'}</i>
+            </button>
         </div>
 
         <div class="align" class:hide={!showMoreOptions}>
