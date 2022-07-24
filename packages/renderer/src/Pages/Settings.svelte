@@ -239,7 +239,7 @@
                                 bind:value={$felionpy}
                                 label="felionpy"
                             />
-                            <IconButton slot="icon" toggle bind:pressed={edit_felionpy_program}>
+                            <IconButton toggle bind:pressed={edit_felionpy_program}>
                                 <Icon class="material-icons" on>lock</Icon>
                                 <Icon class="material-icons">lock_open</Icon>
                             </IconButton>
