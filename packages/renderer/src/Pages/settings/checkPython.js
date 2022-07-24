@@ -3,15 +3,14 @@ import { pythonpath, pythonscript, pyVersion, developerMode, pyProgram, get } fr
 export async function resetPyConfig() {
     const pyPath = window.path.join(window.ROOT_DIR, 'python3/python')
     const pyScriptPath = window.path.join(window.ROOT_DIR, 'resources/python_files')
-
-    window.db.set('pythonscript', pyScriptPath)
-    pythonscript.set(window.db.get('pythonscript'))
-
+    
+    pythonscript.set(pyScriptPath)
+    
     const [data, error] = await window.exec(`${pyPath} -V`)
     if (error) return window.handleError(error)
+    console.warn(data)
+    // pyVersion.set(data.stdout.trim())
 
-    pyVersion.set(data.stdout.trim())
-    window.db.set('pythonpath', pyPath)
     pythonpath.set(pyPath)
     window.createToast('Location resetted', 'warning')
 }
@@ -22,9 +21,7 @@ export async function updatePyConfig() {
 
     pyVersion.set(data.stdout.trim())
     window.createToast('Location updated', 'success')
-
-    window.db.set('pythonpath', get(pythonpath))
-    window.db.set('pythonscript', get(pythonscript))
+    
 }
 
 export async function getPyVersion(e) {
@@ -45,10 +42,6 @@ export async function getPyVersion(e) {
     const [version] = stdout?.split('\n').filter?.((line) => line.includes('Python')) || ['']
     pyVersion.set(version?.trim() || '')
     console.log({ stdout, version })
-
-    window.db.set('pythonpath', get(pythonpath))
-    window.db.set('pythonscript', get(pythonscript))
-    window.db.set('pyVersion', get(pyVersion))
 
     window.createToast("python location updated", 'success')
     e?.target?.classList.toggle('is-loading')

@@ -6,13 +6,13 @@ import { db, ROOT_DIR } from './definedEnv'
 import getPort from 'get-port'
 // import Store from 'electron-store'
 
-const env = import.meta.env
+// const env = import.meta.env
 const execCommand = promisify(exec)
 
 const getCurrentDevStatus = () => {
     // const db = new Store({ name: 'db' })
 
-    if (!db.has('developerMode') || env.PROD) {
+    if (!db.has('developerMode') || import.meta.env.PROD) {
         db.set('developerMode', false)
     }
 
@@ -21,13 +21,13 @@ const getCurrentDevStatus = () => {
     const pythonpath = <string>db.get('pythonpath') || path.join(ROOT_DIR, 'resources/python_files')
     
     let pyProgram
-    const pyProgramPath = "resources/felionpy/felionpy"
+    const finalProgramRelPath = <string>db.get('finalProgramRelPath') || "resources/felionpy/felionpy"
     // const pyProgramPath = "resources/python_files/nuitka/main.dist/main"
 
     if (app.isPackaged) {
-        pyProgram = path.join(ROOT_DIR, '../../', pyProgramPath)
+        pyProgram = path.join(ROOT_DIR, '../../', finalProgramRelPath)
     } else {
-        pyProgram = developerMode ? pythonpath : path.join(ROOT_DIR, pyProgramPath)
+        pyProgram = developerMode ? pythonpath : path.join(ROOT_DIR, finalProgramRelPath)
     }
 
     const mainpyfile = developerMode ? path.join(pythonscript, 'main.py') : ''
@@ -99,7 +99,7 @@ export async function startServer(webContents: Electron.WebContents) {
         const pyfile = 'server'
         const sendArgs = [pyfile, JSON.stringify({ port: availablePORT, debug: serverDebug })]
         const pyArgs = developerMode ? [mainpyfile, ...sendArgs] : sendArgs
-        // console.warn({ pyProgram, pyArgs })
+        console.warn({ pyProgram, pyArgs })
 
         const opts = {}
 
@@ -107,17 +107,17 @@ export async function startServer(webContents: Electron.WebContents) {
             serverStarting = true
             const finalProgram = pyProgram.split(' ')
             const finalArgs = [...finalProgram.slice(1, ), ...pyArgs]
+
             console.warn(finalProgram[0], { finalArgs })
             py = spawn(finalProgram[0], finalArgs, opts)
 
             py.on('error', (error) => {
-                // serverStarting = false
-
                 webContents?.send('db:update', {
                     key: 'pyServerReady',
                     value: false,
                 })
-                console.error(error)
+                serverStarting = false
+                console.error('could not start felionpy server', error)
                 reject(error)
             })
 
@@ -135,6 +135,8 @@ export async function startServer(webContents: Electron.WebContents) {
 
             py.on('exit', () => {
                 db.set('pyServerReady', false)
+                serverStarting = false
+
                 webContents?.send('db:update', {
                     key: 'pyServerReady',
                     value: false,
@@ -151,10 +153,12 @@ export async function startServer(webContents: Electron.WebContents) {
                 const stdout = String.fromCharCode.apply(null, data)
                 console.info(stdout)
             })
-        } catch (error) {
-            console.error(error)
-            serverStarting = false
 
+        } catch (error) {
+
+            serverStarting = false
+            console.log('Error occured while starting server')
+            console.error(error, {serverStarting})
             webContents?.send('db:update', {
                 key: 'pyServerReady',
                 value: false,

@@ -6,6 +6,7 @@
         pyServerPORT,
         developerMode,
         pyServerReady,
+        finalProgramRelPath,
     } from './settings/svelteWritables'
     import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '../js/functions'
@@ -55,7 +56,7 @@
             }, 60 * 60 * 1000)
         }
     })
-    $: window.db.set('pyVersion', $pyVersion)
+    // $: window.db.set('pyVersion', $pyVersion)
 
     onMount(async () => {
         try {
@@ -129,7 +130,7 @@
         }
     }
 
-    let serverDebug = <boolean>window.db.get('serverDebug') || false
+    const serverDebug = window.persistentDB('serverDebug', false)
     const updateTCPInfo = async (e = null) => {
         const [{ stdout }] = await checkTCP({ target: e?.target })
         if (stdout) {
@@ -140,6 +141,7 @@
     }
 
     let showServerControls = false
+
     onDestroy(() => {
         unsubscribers.forEach((unsubscribe) => unsubscribe())
         if (updateIntervalCycle) {
@@ -183,18 +185,16 @@
                                 class="button is-link"
                                 on:click={() => {
                                     $developerMode = !$developerMode
-                                    window.db.set('developerMode', $developerMode)
                                 }}
                             >
                                 Developer mode: {$developerMode}
                             </button>
-
-                            <!-- <button class="button is-link" on:click={getPyVersion}>getPyVersion</button> -->
+                            <button class="button is-link" on:click={getPyVersion}>getPyVersion</button>
 
                             <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
                                 Show server controls
                             </button>
-                            <!-- <button class="button is-warning" on:click={buildPy}>build</button> -->
+
                             {#if $developerMode}
                                 <div class="align">
                                     <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; " />
@@ -218,7 +218,13 @@
                             {/if}
                         </div>
 
-                        {#if pyError}
+                        {#if import.meta.env.DEV}
+                            <div class="align m-5">
+                                <Textfield style="width: 100%;" bind:value={$finalProgramRelPath} label="felionpy" />
+                            </div>
+                        {/if}
+
+                        {#if pyError && !pyServerReady}
                             <div class="align tag is-danger errorbox">
                                 {pyError}
                             </div>
@@ -227,15 +233,7 @@
                         <div class="align server-control" class:hide={!showServerControls}>
                             <div class="align">
                                 <Textfield disabled type="number" bind:value={$pyServerPORT} label="serverPORT" />
-
-                                <CustomSwitch
-                                    bind:selected={serverDebug}
-                                    label="serverDebug"
-                                    on:change={() => {
-                                        window.db.set('serverDebug', serverDebug)
-                                        console.log({ serverDebug }, window.db.get('serverDebug'))
-                                    }}
-                                />
+                                <CustomSwitch bind:selected={$serverDebug} label="serverDebug" />
 
                                 <button class="button is-link" on:click={window.startServer} disabled={$pyServerReady}>
                                     STARTserver

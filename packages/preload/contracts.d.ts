@@ -3,7 +3,7 @@ interface Exposed {
     readonly fs: Readonly<typeof import('./fs-modules').fsUtils>;
     readonly path: Readonly<typeof import('./path-modules').path>;
     readonly db: Readonly<typeof import('./jsondb-modules').dbObject>;
-
+    readonly persistentDB: typeof import('./persistentDB').persistentDB;
     readonly stopServer: typeof import('./mangeServer').stopServer;
     readonly startServer: typeof import('./mangeServer').startServer;
 

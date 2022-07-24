@@ -1,8 +1,9 @@
 import { ipcRenderer } from 'electron'
 import { exposeInMainWorld } from './exposeInMainWorld'
-import Store from 'electron-store'
-
-export const db = new Store({ name: 'db' })
+import {db, persistentDB} from './persistentDB'
+// import Store from 'electron-store'
+// export const db = new Store({ name: 'db' })
+// export const db = new Store({ name: 'db' })
 
 db.set('updateError', '')
 
@@ -37,8 +38,9 @@ export const dbObject = {
     clear: () => db.clear(),
     reset: () => db.reset(),
     path: db.path,
-    onDidChange: (key: string, callback: (value) => void ) => db.onDidChange(key, callback),
-    onDidAnyChange: (callback) => db.onDidAnyChange(callback),
+    onDidChange: <T>(key: string, callback: (value: T) => unknown ) => db.onDidChange(key, callback),
+    onDidAnyChange: (callback: (value: Object) => unknown ) => db.onDidAnyChange(callback),
 }
 
 exposeInMainWorld('db', dbObject)
+exposeInMainWorld('persistentDB', <T>(key: string, value: T) => persistentDB(key, value))
