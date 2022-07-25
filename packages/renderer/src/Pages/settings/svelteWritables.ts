@@ -4,7 +4,7 @@ export { get }
 const pyPath: string = window.path.join(window.ROOT_DIR, 'python3/python')
 const pyScriptPath: string = window.path.join(window.ROOT_DIR, 'resources/python_files')
 
-export const developerMode = window.persistentDB("developerMode", <boolean>window.appInfo.isPackaged)
+export const developerMode = window.persistentDB("developerMode", <boolean>window.isPackaged)
 
 export const pythonpath = window.persistentDB("pythonpath", pyPath)
 export const pythonscript = window.persistentDB("pythonscript", pyScriptPath)

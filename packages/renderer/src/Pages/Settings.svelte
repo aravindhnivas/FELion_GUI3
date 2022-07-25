@@ -329,8 +329,14 @@
                 <div class="animate__animated animate__fadeIn" class:hide={$selected !== 'Infos'}>
                     <h1 class="title">Infos</h1>
                     <div class="infos__div">
-                        {#each Object.keys(window.appInfo) as key}
-                            <Textfield value={window.appInfo[key]} label={key} disabled />
+                        {#each Object.keys(window.appInfo) as label}
+                            {@const value = window.appInfo[label]}
+                            <div class="info__item">
+                                <Textfield {value} {label} disabled />
+                                <i class="material-icons" on:click={() => window.shell.showItemInFolder(value)}
+                                    >open_in_new</i
+                                >
+                            </div>
                         {/each}
                     </div>
                 </div>
@@ -420,5 +426,10 @@
     .infos__div {
         display: flex;
         flex-direction: column;
+        .info__item {
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-columns: 1fr auto;
+        }
     }
 </style>

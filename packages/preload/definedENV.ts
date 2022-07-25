@@ -1,9 +1,9 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, shell } from 'electron'
 import {exposeInMainWorld} from './exposeInMainWorld'
-import { versions } from 'process'
+import { versions, platform } from 'process'
 import * as path from 'path'
 import * as fs from 'fs-extra'
-
+// console.log({platform})
 const env = import.meta.env
 contextBridge.exposeInMainWorld('env', env)
 
@@ -12,13 +12,20 @@ export const appInfo = ipcRenderer.sendSync('appInfo', null)
 exposeInMainWorld('appInfo', appInfo)
 
 export const { isPackaged, ROOT_DIR } = appInfo
-// console.table({isPackaged, ROOT_DIR, PKG_DIR, RENDERER_DIR})
-// export const ROOT_DIR = appInfo.isPackaged ? path.dirname(appInfo.module) : path.join(__dirname, '../../../')
 exposeInMainWorld('ROOT_DIR', ROOT_DIR)
-// export const PKG_DIR = path.join(ROOT_DIR, 'packages')
-// export const RENDERER_DIR = path.join(PKG_DIR, 'renderer')
-// export const publicDirectory = path.join(RENDERER_DIR, isPackaged ? 'dist' : 'public')
-// exposeInMainWorld('__dirname', publicDirectory)
+
 export const appVersion: string = ipcRenderer.sendSync('appVersion', null)
 exposeInMainWorld('appVersion', appVersion)
+
+export const shellUtils = {
+    showItemInFolder: (item: string) => {
+        shell.showItemInFolder(item)
+    }
+}
+
+export {platform}
+exposeInMainWorld('shell', shellUtils)
+exposeInMainWorld('platform', platform)
+exposeInMainWorld('isPackaged', isPackaged)
+
 fs.ensureDirSync(path.join(appInfo.userData, 'config'))

@@ -84,18 +84,13 @@ ipcMain.on('appInfo', (event, _arg) => {
         'logs',
         'crashDumps',
     ]
-    const appInfo = {
-        version: app.getVersion(),
-        isPackaged: app.isPackaged,
-        platform: process.platform,
-    }
+    const appInfo = {}
     appPathKeys.forEach((key) => (appInfo[key] = app.getPath(key)))
     appInfo.appPath = app.getAppPath()
     appInfo.ROOT_DIR = ROOT_DIR
-    // appInfo.RENDERER_DIR = RENDERER_DIR
-    // appInfo.PKG_DIR = PKG_DIR
     event.returnValue = appInfo
 })
+
 
 ipcMain.on('appVersion', (event, _arg) => {
     event.returnValue = app.getVersion()
