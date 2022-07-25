@@ -11,31 +11,22 @@
     import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '../js/functions'
     import { getPyVersion, resetPyConfig } from './settings/checkPython'
-
     import Textfield from '@smui/textfield'
     import { onMount, onDestroy } from 'svelte'
     import Changelog from '$components/Changelog.svelte'
-
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { checkTCP, fetchServerROOT } from './settings/serverConnections'
     import { Unsubscribe } from 'conf/dist/source/types'
     import { browse } from '$src/components/Layout.svelte'
-    // import IconButton, { Icon } from '@smui/icon-button'
     import IconButton from '$components/IconButton.svelte'
 
     let pyError = ''
-    // let mounted = false
     let updateError = <string>window.db.get('updateError') || ''
     let updateIntervalCycle: NodeJS.Timer | null = null
-    let selected = window.db.get('settingsActiveTab') || 'Configuration'
+    const selected = window.persistentDB('settingsActiveTab', 'Configuration')
     let unsubscribers: Unsubscribe[] = []
 
-    const navigate = (e: ButtonClickEvent) => {
-        selected = e.target.innerHTML
-        window.db.set('settingsActiveTab', selected)
-    }
-
-    unsubscribers[0] = window.db.onDidChange('pyServerReady', async (value) => {
+    unsubscribers[0] = window.db.onDidChange('pyServerReady', async (value: boolean) => {
         $pyServerReady = value
         if ($pyServerReady) {
             serverInfo += `>> fetching server status\n`
@@ -59,8 +50,6 @@
             }, 60 * 60 * 1000)
         }
     })
-    // $: window.db.set('pyVersion', $pyVersion)
-
     onMount(async () => {
         try {
             if (!$pyVersion) {
@@ -118,7 +107,7 @@
             }
             window.checkupdate()
         } catch (error) {
-            if (event) window.handleError(error)
+            if (event && error instanceof Error) window.handleError(error)
         }
     }
 
@@ -142,7 +131,7 @@
             serverInfo += `>> ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`
         }
     }
-
+    const tabs = ['Configuration', 'Update', 'About', 'Infos']
     let showServerControls = false
 
     onDestroy(() => {
@@ -151,7 +140,9 @@
             clearInterval(updateIntervalCycle)
         }
     })
+
     let lock_felionpy_program = import.meta.env.PROD
+
     const id = 'Settings'
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
 </script>
@@ -162,17 +153,17 @@
     <div class="main__div">
         <div class="box interact left_container__div">
             <div class="title__div">
-                <div class="hvr-glow" class:clicked={selected === 'Configuration'} on:click={navigate}>
-                    Configuration
-                </div>
-                <div class="hvr-glow" class:clicked={selected === 'Update'} on:click={navigate}>Update</div>
-                <div class="hvr-glow" class:clicked={selected === 'About'} on:click={navigate}>About</div>
+                {#each tabs as tab (tab)}
+                    <div class="hvr-glow" class:clicked={$selected === tab} on:click={() => ($selected = tab)}>
+                        {tab}
+                    </div>
+                {/each}
             </div>
         </div>
 
         <div class="mainContainer box">
             <div class="container right" id="Settings_right_column">
-                <div class="align animate__animated animate__fadeIn" class:hide={selected !== 'Configuration'}>
+                <div class="align animate__animated animate__fadeIn" class:hide={$selected !== 'Configuration'}>
                     <h1>Configuration</h1>
 
                     <div class="align">
@@ -213,7 +204,7 @@
                                             try {
                                                 await getPyVersion()
                                             } catch (error) {
-                                                window.handleError(error)
+                                                if (error instanceof Error) window.handleError(error)
                                             }
                                         }}>Save</button
                                     >
@@ -286,7 +277,7 @@
                     </div>
                 </div>
 
-                <div class="align animate__animated animate__fadeIn" class:hide={selected !== 'Update'}>
+                <div class="align animate__animated animate__fadeIn" class:hide={$selected !== 'Update'}>
                     <h1 class="title">Update</h1>
 
                     <div class="subtitle" style="width: 100%;">
@@ -321,7 +312,7 @@
                     </div>
                 </div>
 
-                <div class="animate__animated animate__fadeIn" class:hide={selected !== 'About'}>
+                <div class="animate__animated animate__fadeIn" class:hide={$selected !== 'About'}>
                     <h1 class="title">About</h1>
                     <div class="content">
                         <ul style="user-select: text;">
@@ -332,6 +323,15 @@
                                 <li>{key}: {window.versions[key]}</li>
                             {/each}
                         </ul>
+                    </div>
+                </div>
+
+                <div class="animate__animated animate__fadeIn" class:hide={$selected !== 'Infos'}>
+                    <h1 class="title">Infos</h1>
+                    <div class="infos__div">
+                        {#each Object.keys(window.appInfo) as key}
+                            <Textfield value={window.appInfo[key]} label={key} disabled />
+                        {/each}
                     </div>
                 </div>
             </div>
@@ -400,7 +400,6 @@
         white-space: pre-line;
         height: 100%;
         width: fit-content;
-
         font-size: medium;
         margin-left: auto;
         border: solid 1px;
@@ -417,5 +416,9 @@
         align-items: baseline;
         height: calc(42vh - 5rem);
         max-height: calc(42vh - 5rem);
+    }
+    .infos__div {
+        display: flex;
+        flex-direction: column;
     }
 </style>
