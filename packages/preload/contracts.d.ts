@@ -18,6 +18,7 @@ interface Exposed {
     readonly ROOT_DIR: Readonly<typeof import('./definedEnv').ROOT_DIR>;
     readonly appVersion: Readonly<typeof import('./definedEnv').appVersion>;
     readonly platform: Readonly<typeof import('./definedEnv').platform>;
+    readonly versions: Readonly<typeof import('./definedEnv').versions>;
     readonly isPackaged: Readonly<typeof import('./definedEnv').isPackaged>;
     readonly shell: Readonly<typeof import('./definedEnv').shellUtils>;
     readonly checkupdate: typeof import('./update-log').checkupdate;

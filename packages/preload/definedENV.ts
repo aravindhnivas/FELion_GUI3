@@ -3,10 +3,10 @@ import {exposeInMainWorld} from './exposeInMainWorld'
 import { versions, platform } from 'process'
 import * as path from 'path'
 import * as fs from 'fs-extra'
-// console.log({platform})
 const env = import.meta.env
 contextBridge.exposeInMainWorld('env', env)
 
+export {platform, versions}
 contextBridge.exposeInMainWorld('versions', versions)
 export const appInfo = ipcRenderer.sendSync('appInfo', null)
 exposeInMainWorld('appInfo', appInfo)
@@ -20,10 +20,13 @@ exposeInMainWorld('appVersion', appVersion)
 export const shellUtils = {
     showItemInFolder: (item: string) => {
         shell.showItemInFolder(item)
+    },
+    openExternal: (url: string, options: Electron.OpenExternalOptions) => {
+        shell.openExternal(url, options)
     }
 }
 
-export {platform}
+
 exposeInMainWorld('shell', shellUtils)
 exposeInMainWorld('platform', platform)
 exposeInMainWorld('isPackaged', isPackaged)

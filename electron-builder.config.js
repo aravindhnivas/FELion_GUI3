@@ -1,4 +1,4 @@
-const path = require('path')
+// const path = require('path')
 // const certificate = path.join(__dirname, 'certificate') // path to the certificate
 // const certificateFile = path.resolve(certificate, 'felion.pfx') // path to the private key
 

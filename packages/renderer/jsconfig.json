@@ -46,11 +46,11 @@
    * to avoid limiting type declarations.
    */
   "include": [
-    "src/**/*.js",
-    "src/**/*.svelte",
-    "src/**/*.ts",
-    "../preload/*.d.ts",
     "types/**/*.d.ts",
-    "../../types/**/*.d.ts"
+    "../../types/**/*.d.ts",
+    "src/**/*.js", 
+    "src/**/*.svelte", 
+    "src/**/*.d.ts", 
+    "../preload/contracts.d.ts",
   ]
 }
