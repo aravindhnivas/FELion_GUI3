@@ -9,3 +9,4 @@ py3*/
 resources/**/*felionpy
 python3/
 **/nuitka*
+**/*.tmp
