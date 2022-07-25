@@ -161,4 +161,4 @@ export async function startServer(webContents: Electron.WebContents) {
     })
 }
 
-ipcMain.on('stopServer', (event, args) => py?.kill?.())
+ipcMain.on('stopServer', (_event, _args) => py?.kill?.())

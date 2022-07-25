@@ -27,7 +27,7 @@ export default async function ({
 
         if (!general) {
             outputFile = window.path.join(window.appInfo.temp, 'FELion_GUI3', pyfile.split('.').at(-1) + '_data.json')
-            if (window.fs.existsSync(outputFile)) {
+            if (window.fs.isFile(outputFile)) {
                 window.fs.removeSync(outputFile)
             }
             target?.classList.toggle('is-loading')
