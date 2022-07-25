@@ -1,11 +1,11 @@
-
 @import url("../fonts/roboto-font.css");
 @import url("./hover-min.css");
+
+/*  */
 
 * {
   margin: 0;
   padding: 0;
-
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
   color: #fafafa;
@@ -14,17 +14,16 @@
 html, body { 
     background-color: #483086;
     background-image: url(intro.svg);
-
     user-select: none;
-
-
 }
 
 body {
   width: 100vw;
   height: 100vh;
 }
+
 .background-body {background-image: url(intro.svg)!important;}
+
 body::-webkit-scrollbar {width: 0 !important;}
 hr {background-color: #dbdbdb;}
 

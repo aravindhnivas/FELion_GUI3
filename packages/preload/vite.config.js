@@ -25,7 +25,7 @@ const config = {
         assetsDir: '.',
         minify: process.env.MODE !== 'development',
         lib: {
-            entry: 'preload.js',
+            entry: 'preload.ts',
             formats: ['cjs'],
         },
         rollupOptions: {

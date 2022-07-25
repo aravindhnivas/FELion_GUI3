@@ -38,10 +38,9 @@
     }
 
     onDestroy(() => {
-        if (editor) {
-            editor.destroy()
-            console.info('editor destroyed')
-        }
+        if (!editor) return
+        editor.destroy()
+        console.info('editor destroyed')
     })
 
     $: if (!showReport && editor) {
@@ -58,7 +57,7 @@
         savefilename ? (savefilename.endsWith('.md') ? savefilename : `${savefilename}.md`) : ''
     )
 
-    $: if (window.fs.existsSync(location)) {
+    $: if (window.fs.isDirectory(location)) {
         window.db.set(`${filetype}-report-md`, location)
     }
 
@@ -125,7 +124,7 @@
     }
 
     const readFromFile = (showInfo = true) => {
-        if (!window.fs.existsSync(reportFile)) {
+        if (!window.fs.isFile(reportFile)) {
             if (!showInfo) return
             return window.createToast('No report file named ' + window.path.basename(reportFile), 'danger')
         }

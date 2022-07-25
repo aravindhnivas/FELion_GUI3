@@ -1,7 +1,8 @@
 /** -------------------------- PersistentDB.ts -------------------------- */
+import { ipcRenderer } from 'electron'
 import Store from 'electron-store'
-
-export const db = new Store({ name: 'db' })
+const dbName: string = ipcRenderer.sendSync('dbName', null)
+export const db = new Store({ name: dbName })
 
 export type PersistentDB<T> = {
     subscribe: (subscription: (value: T) => void) => () => void;

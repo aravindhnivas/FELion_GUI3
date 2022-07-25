@@ -137,7 +137,7 @@
             use:resizableDiv
             on:resizeend={changeGraphDivWidth}
             style:touch-action="none"
-            class="left_container__div box"
+            class="left_container__div box background-body"
             transition:fly={{ x: -100, duration: 500 }}
         >
             <FileBrowser
@@ -151,7 +151,7 @@
             />
         </div>
 
-        <div class="right_container__div box " id="{filetype}__mainContainer__div">
+        <div class="right_container__div box background-body " id="{filetype}__mainContainer__div">
             <div class="location__div">
                 <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
                 <Textfield bind:value={currentLocation} label="Current location" style="width:100%; " />
@@ -217,7 +217,7 @@
         height: 100%;
     }
     .box {
-        background-image: url(/assets/css/intro.svg);
+        // background-image: url(/assets/css/intro.svg);
         border-radius: 0;
         margin: 0;
     }

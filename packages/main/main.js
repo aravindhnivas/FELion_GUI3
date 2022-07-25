@@ -14,10 +14,9 @@ if (!isSingleInstance) {
 
 const env = import.meta.env
 console.table(env)
-console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR })
 
 async function createWindow() {
-    const icon = path.join(RENDERER_DIR, env.DEV ? 'public' : 'dist', 'assets/logo/icon.ico')
+    const icon = path.join(app.getAppPath(), 'packages/renderer', env.DEV ? 'public' : 'dist', 'assets/logo/icon.ico')
     const mainWindow = new BrowserWindow({
         width: 1200,
         height: 700,
@@ -25,7 +24,7 @@ async function createWindow() {
         icon,
         show: false,
         webPreferences: {
-            preload: path.join(PKG_DIR, 'preload/dist/preload.cjs'),
+            preload: path.join(app.getAppPath(), 'packages/preload/dist/preload.cjs'),
             nodeIntegration: true,
         },
     })
@@ -46,7 +45,7 @@ async function createWindow() {
 
     const pageUrl = env.DEV
         ? env.VITE_DEV_SERVER_URL
-        : new URL(path.join(RENDERER_DIR, 'dist/index.html'), 'file://' + __dirname).toString()
+        : new URL(path.join(app.getAppPath(), 'packages/renderer/dist/index.html'), 'file://' + __dirname).toString()
 
     await mainWindow.loadURL(pageUrl)
 }
@@ -55,7 +54,6 @@ app.whenReady()
     .then(() => {
         fs.emptyDirSync(app.getPath('logs'))
         createWindow()
-
         app.on('activate', () => {
             if (BrowserWindow.getAllWindows().length === 0) {
                 createWindow()
@@ -66,28 +64,23 @@ app.whenReady()
     .catch((err) => console.error(err))
 
 app.on('window-all-closed', async () => {
+
     if (process.platform !== 'darwin') {
         app.quit()
     }
+
     console.log('Application closed')
 })
 
-ipcMain.on('appInfo', (event, arg) => {
+ipcMain.on('appInfo', (event, _arg) => {
+
     const appPathKeys = [
-        'home',
         'appData',
         'userData',
         'cache',
         'temp',
         'exe',
         'module',
-        'desktop',
-        'documents',
-        'downloads',
-        'music',
-        'pictures',
-        'videos',
-        'recent',
         'logs',
         'crashDumps',
     ]
@@ -98,14 +91,17 @@ ipcMain.on('appInfo', (event, arg) => {
     }
     appPathKeys.forEach((key) => (appInfo[key] = app.getPath(key)))
     appInfo.appPath = app.getAppPath()
+    appInfo.ROOT_DIR = ROOT_DIR
+    appInfo.RENDERER_DIR = RENDERER_DIR
+    appInfo.PKG_DIR = PKG_DIR
     event.returnValue = appInfo
 })
 
-ipcMain.on('appVersion', (event, arg) => {
+ipcMain.on('appVersion', (event, _arg) => {
     event.returnValue = app.getVersion()
 })
 
-ipcMain.handle('startServer', async (event, args) => {
+ipcMain.handle('startServer', async (event, _args) => {
     try {
         console.log('starting server')
         const webContents = event.sender

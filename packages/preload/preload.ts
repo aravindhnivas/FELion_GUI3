@@ -11,7 +11,7 @@ window.addEventListener(
     false
 )
 
-import './definedENV'
+import './definedEnv'
 import './update-log'
 import './mangeServer'
 import './fs-modules'
