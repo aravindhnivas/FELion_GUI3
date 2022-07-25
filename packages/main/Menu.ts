@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain, Menu, MenuItem, app } from 'electron'
 
-let rightClickPosition
-let currentWindow
+let rightClickPosition: { x: number, y: number } = { x: 0, y: 0 }
+let currentWindow: BrowserWindow
 
 const menu = new Menu()
 Menu.setApplicationMenu(menu)
@@ -17,20 +17,20 @@ menu.append(
     })
 )
 
-menu.append(new MenuItem({ label: 'DevTools', role: 'toggledevtools' }))
+menu.append(new MenuItem({ label: 'DevTools', role: 'toggleDevTools' }))
 
 menu.append(
     new MenuItem({
         label: 'Inspect Element',
         click() {
-            currentWindow.inspectElement(rightClickPosition.x, rightClickPosition.y)
+            currentWindow.webContents.inspectElement(rightClickPosition.x, rightClickPosition.y)
         },
     })
 )
 
 ipcMain.on('contextmenu', (event, args) => {
     const webContents = event.sender
-    currentWindow = BrowserWindow.fromWebContents(webContents)
+    currentWindow = <BrowserWindow>BrowserWindow.fromWebContents(webContents)
     rightClickPosition = args
-    menu.popup(currentWindow)
+    menu.popup()
 })

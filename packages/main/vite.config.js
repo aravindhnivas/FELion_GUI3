@@ -24,7 +24,7 @@ const config = {
         assetsDir: '.',
         minify: process.env.MODE !== 'development',
         lib: {
-            entry: 'main.js',
+            entry: 'main.ts',
             formats: ['cjs'],
         },
         rollupOptions: {

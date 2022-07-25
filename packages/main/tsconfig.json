@@ -14,11 +14,12 @@
           "./*"
         ]
       },
+      "allowSyntheticDefaultImports": true,
     },
     "include": [
       "./*.ts",
       "../../types/**/*.d.ts"
-    ],
+, "../../types/main.ts"    ],
     "exclude": [
       "**/*.spec.ts",
       "**/*.test.ts"

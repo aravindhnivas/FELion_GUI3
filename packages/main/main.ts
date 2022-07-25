@@ -1,12 +1,12 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
-import path from 'path'
+import * as path from 'path'
 import './security-restrictions.ts'
 import unhandled from 'electron-unhandled'
 import { ROOT_DIR } from './definedEnv'
 import { startServer } from './felionpyServer'
-import fs from 'fs-extra'
+import * as fs from 'fs-extra'
+import { appPathKeys } from '../../types/main'
 const isSingleInstance = app.requestSingleInstanceLock()
-
 if (!isSingleInstance) {
     app.quit()
     process.exit(0)
@@ -43,9 +43,10 @@ async function createWindow() {
         }
     })
 
-    const pageUrl = env.DEV
+    const pageUrl: string | undefined = env.DEV
         ? env.VITE_DEV_SERVER_URL
         : new URL(path.join(app.getAppPath(), 'packages/renderer/dist/index.html'), 'file://' + __dirname).toString()
+    if(!pageUrl) throw new Error('pageUrl is undefined')
 
     await mainWindow.loadURL(pageUrl)
 }
@@ -72,19 +73,20 @@ app.on('window-all-closed', async () => {
     console.log('Application closed')
 })
 
-ipcMain.on('appInfo', (event, _arg) => {
 
-    const appPathKeys = [
-        'appData',
-        'userData',
-        'cache',
-        'temp',
-        'exe',
-        'module',
-        'logs',
-        'crashDumps',
-    ]
-    const appInfo = {}
+ipcMain.on('appInfo', (event, _arg) => {
+    const appInfo = {
+        appData: '',
+        userData: '',
+        cache: '',
+        temp: '',
+        exe: '',
+        module: '',
+        logs: '',
+        crashDumps: '',
+        ROOT_DIR: '',
+        appPath: '',
+    }
     appPathKeys.forEach((key) => (appInfo[key] = app.getPath(key)))
     appInfo.appPath = app.getAppPath()
     appInfo.ROOT_DIR = ROOT_DIR
@@ -94,6 +96,10 @@ ipcMain.on('appInfo', (event, _arg) => {
 
 ipcMain.on('appVersion', (event, _arg) => {
     event.returnValue = app.getVersion()
+})
+
+ipcMain.on('isPackaged', (event, _arg) => {
+    event.returnValue = app.isPackaged
 })
 
 ipcMain.handle('startServer', async (event, _args) => {

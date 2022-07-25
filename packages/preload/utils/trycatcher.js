@@ -1,4 +1,5 @@
 export function syncTryCatcher(fn) {
+
     return function () {
         try {
             const output = fn.apply(this, arguments)

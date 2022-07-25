@@ -1,11 +1,11 @@
 import { app, ipcMain } from 'electron'
-import path from 'path'
+import * as path from 'path'
 import { promisify } from 'util'
-import { spawn, exec } from 'child_process'
+import * as child from 'child_process';
 import { db, ROOT_DIR } from './definedEnv'
 import getPort from 'get-port'
 
-const execCommand = promisify(exec)
+const execCommand = promisify(child.exec)
 const getCurrentDevStatus = () => {
     if (!db.has('developerMode') || import.meta.env.PROD) {
         db.set('developerMode', false)
@@ -42,23 +42,19 @@ export async function getPyVersion() {
         const [version] = stdout?.split('\n')?.filter?.((line) => line.includes('Python')) || ['']
         pyVersion = version?.trim() || ''
         console.log({ stdout, version })
-        // webContents?.send('db:update', {key: "pyVersion", value: pyVersion})
         return Promise.resolve(pyVersion)
     } catch (error) {
-        console.error('could not get python version')
-        console.error(error)
+        console.error('could not get python version', error)
         return Promise.resolve("")
     }
 }
 
-let py
+let py: child.ChildProcessWithoutNullStreams | undefined
 let serverStarting = false
 
 export async function startServer(webContents: Electron.WebContents) {
-    if (serverStarting) {
-        console.log('server already starting')
-        return
-    }
+    
+    if (serverStarting) return console.log('server already starting')
 
     const { db, developerMode, pyProgram, mainpyfile } = getCurrentDevStatus()
 
@@ -102,7 +98,7 @@ export async function startServer(webContents: Electron.WebContents) {
             const finalArgs = [...finalProgram.slice(1, ), ...pyArgs]
 
             console.warn(finalProgram[0], { finalArgs })
-            py = spawn(finalProgram[0], finalArgs, opts)
+            py = child.spawn(finalProgram[0], finalArgs, opts)
 
             py.on('error', (error) => {
                 webContents?.send('db:update', {
@@ -129,7 +125,6 @@ export async function startServer(webContents: Electron.WebContents) {
             py.on('exit', () => {
                 db.set('pyServerReady', false)
                 serverStarting = false
-
                 webContents?.send('db:update', {
                     key: 'pyServerReady',
                     value: false,
@@ -146,11 +141,8 @@ export async function startServer(webContents: Electron.WebContents) {
                 const stdout = String.fromCharCode.apply(null, data)
                 console.info(stdout)
             })
-
         } catch (error) {
-
             serverStarting = false
-            console.log('Error occured while starting server')
             console.error(error, {serverStarting})
             webContents?.send('db:update', {
                 key: 'pyServerReady',
@@ -160,5 +152,4 @@ export async function startServer(webContents: Electron.WebContents) {
         }
     })
 }
-
 ipcMain.on('stopServer', (_event, _args) => py?.kill?.())

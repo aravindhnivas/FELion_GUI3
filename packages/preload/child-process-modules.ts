@@ -1,11 +1,13 @@
 import { exposeInMainWorld } from './exposeInMainWorld'
 import { promisify } from 'util'
-import { spawn, exec, execSync } from 'child_process'
+import * as child from 'child_process';
+// import { spawn, exec, execSync } from 'child_process'
+const execSync = child.execSync
 export { execSync }
-const execCommand = promisify(exec)
+const execCommand = promisify(child.exec)
 
-export const spawnFn = (cmd, args = [], opts = {}) => {
-    const process = spawn(cmd, args, opts)
+export const spawnFn = (cmd: string, args: readonly string[] = [], opts?: child.SpawnOptionsWithoutStdio | undefined) => {
+    const process = child.spawn(cmd, args, opts)
     console.log(`Spawned child pid: ${process.pid}`)
     return {
         pid: process.pid,
@@ -19,13 +21,13 @@ export const spawnFn = (cmd, args = [], opts = {}) => {
         kill(signal = 2) {
             return process.kill(signal)
         },
-        on: (key, callback) => process.on(key, callback),
-        stdout: { on: (key, callback) => process.stdout.on(key, callback) },
-        stderr: { on: (key, callback) => process.stderr.on(key, callback) },
+        on: (key: string, callback: (...args: any[]) => void) => process.on(key, callback),
+        stdout: { on: (key: string, callback: (...args: any[]) => void) => process.stdout.on(key, callback) },
+        stderr: { on: (key: string, callback: (...args: any[]) => void) => process.stderr.on(key, callback) },
     }
 }
 
-export const computeExecCommand = async (cmd) => {
+export const computeExecCommand = async (cmd: string) => {
     console.log(`Executing command: ${cmd}`)
     let error
     let stdout, stderr

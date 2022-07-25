@@ -5,7 +5,7 @@ import logger from 'electron-log'
 
 const mainWindow = BrowserWindow.getAllWindows()[0]
 autoUpdater.logger = logger
-autoUpdater.logger.transports.file.level = 'info'
+// autoUpdater.logger.transports.file.level = 'info'
 
 if (app.isPackaged) {
     try {
@@ -21,7 +21,7 @@ ipcMain.handle('checkupdate', () => {
     autoUpdater.checkForUpdates()
 })
 
-const updateLog = (info) => {
+const updateLog = (info: string) => {
     logger.info(info)
     mainWindow.webContents.send('update-log', info)
 }
