@@ -11,8 +11,8 @@ contextBridge.exposeInMainWorld('versions', versions)
 export const appInfo = ipcRenderer.sendSync('appInfo', null)
 exposeInMainWorld('appInfo', appInfo)
 
-export const { isPackaged, ROOT_DIR, PKG_DIR, RENDERER_DIR} = appInfo
-console.table({isPackaged, ROOT_DIR, PKG_DIR, RENDERER_DIR})
+export const { isPackaged, ROOT_DIR } = appInfo
+// console.table({isPackaged, ROOT_DIR, PKG_DIR, RENDERER_DIR})
 // export const ROOT_DIR = appInfo.isPackaged ? path.dirname(appInfo.module) : path.join(__dirname, '../../../')
 exposeInMainWorld('ROOT_DIR', ROOT_DIR)
 // export const PKG_DIR = path.join(ROOT_DIR, 'packages')

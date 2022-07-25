@@ -10,9 +10,9 @@ ipcMain.on('dbName',  (event, _arg) => {
 })
 
 export const ROOT_DIR = app.isPackaged ? path.dirname(app.getPath("module")) : app.getAppPath()
-export const PKG_DIR = path.join(ROOT_DIR, 'packages')
-export const RENDERER_DIR = path.join(PKG_DIR, 'renderer')
-console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, app: app.getAppPath() })
+// export const PKG_DIR = path.join(ROOT_DIR, 'packages')
+// export const RENDERER_DIR = path.join(PKG_DIR, 'renderer')
+// console.table({ __dirname, ROOT_DIR, PKG_DIR, RENDERER_DIR, app: app.getAppPath() })
 if (!db.has('pythonpath')) {
     db.set('pythonpath', path.join(ROOT_DIR, 'python3/python'))
 }

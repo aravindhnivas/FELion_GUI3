@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
 import './security-restrictions.ts'
 import unhandled from 'electron-unhandled'
-import { ROOT_DIR, RENDERER_DIR, PKG_DIR } from './definedEnv'
+import { ROOT_DIR } from './definedEnv'
 import { startServer } from './felionpyServer'
 import fs from 'fs-extra'
 const isSingleInstance = app.requestSingleInstanceLock()
@@ -92,8 +92,8 @@ ipcMain.on('appInfo', (event, _arg) => {
     appPathKeys.forEach((key) => (appInfo[key] = app.getPath(key)))
     appInfo.appPath = app.getAppPath()
     appInfo.ROOT_DIR = ROOT_DIR
-    appInfo.RENDERER_DIR = RENDERER_DIR
-    appInfo.PKG_DIR = PKG_DIR
+    // appInfo.RENDERER_DIR = RENDERER_DIR
+    // appInfo.PKG_DIR = PKG_DIR
     event.returnValue = appInfo
 })
 
