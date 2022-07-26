@@ -4,7 +4,7 @@
     import Textfield from '@smui/textfield'
     import MenuSurface from '@smui/menu-surface'
     import type { MenuSurfaceComponentDev } from '@smui/menu-surface'
-    import { tick } from 'svelte'
+    // import { tick } from 'svelte'
 
     export let configDir: string = ''
     export let selectedFile: string = ''
