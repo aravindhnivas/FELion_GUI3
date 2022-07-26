@@ -1,5 +1,5 @@
 import type { SvelteToastOptions } from '@zerodevx/svelte-toast'
-import Plotly from "plotly.js"
+// import Plotly from "plotly.js"
 export {};
 
 const felix_opo_data_from_python = <const>["SA", "pow", "base", "average", "average_per_photon", "average_rel"];

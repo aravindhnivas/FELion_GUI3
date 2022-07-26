@@ -1,7 +1,7 @@
 import { activePage } from '$src/sveltewritables'
 import { graph_detached } from '$components/Layout.svelte'
 import { react, relayout } from 'plotly.js/dist/plotly-basic'
-import Plotly from "plotly.js"
+// import Plotly from "plotly.js"
 import { find, differenceBy } from 'lodash-es'
 import { writable, get } from 'svelte/store'
 import type { Writable } from 'svelte/store'

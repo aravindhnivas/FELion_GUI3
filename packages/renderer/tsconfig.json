@@ -9,7 +9,7 @@
       "isolatedModules": true,
       "jsx": "preserve",
       "allowSyntheticDefaultImports": true,
-      "types" : ["node"],
+      // "types" : ["node"],
       "baseUrl": ".",
       "paths": {
         "$preload/*": ["../preload/*"],
@@ -21,7 +21,7 @@
     },
   
     "include": [
-      "../../node_modules/@types/node/index.d.ts",
+      // "../../node_modules/@types/node/index.d.ts",
       "../../types/**/*.d.ts",
       "types/**/*.d.ts",
       "src/**/*.js", 
