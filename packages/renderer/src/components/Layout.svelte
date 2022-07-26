@@ -46,8 +46,8 @@
     export let id: string
     export let display = 'none'
     export let filetype = 'felix'
-    export let fileChecked = []
-    export let fullfileslist = []
+    export let fileChecked: string[] = []
+    export let fullfileslist: string[] = []
     export let currentLocation = ''
     export let graphPlotted = false
     export let activateConfigModal = false

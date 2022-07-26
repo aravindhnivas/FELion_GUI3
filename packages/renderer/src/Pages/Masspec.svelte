@@ -9,28 +9,33 @@
     import { readMassFile, MassData } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
     import { onDestroy } from 'svelte'
-    // import Badge from '@smui-extra/badge'
-
     import ButtonBadge from '$components/ButtonBadge.svelte'
-    // import DygraphComponent from '$src/Pages/masspec/DygraphComponent.svelte'
+
     const filetype = 'mass'
     const id = 'Masspec'
 
-    let fileChecked = []
+    let fileChecked: string[] = []
     let currentLocation = ''
 
     $: massfiles = window.fs.existsSync(currentLocation)
         ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
         : []
     $: if (massfiles.length > 0) plotData()
-    // $: console.log($configs.max_files_to_plot.value)
 
     let graphPlotted = false
     let logScale = true
     let selected_file = ''
     let keepAnnotaions = true
 
-    async function plotData({ e = undefined, filetype = 'mass', overwride_file_limit_warning = false } = {}) {
+    async function plotData({
+        e = undefined,
+        filetype = 'mass',
+        overwride_file_limit_warning = false,
+    }: {
+        e?: ButtonClickEvent
+        filetype?: 'mass' | 'general' | 'find_peaks'
+        overwride_file_limit_warning?: boolean
+    } = {}) {
         if (!overwride_file_limit_warning && fileChecked.length > $configs['max_files_to_plot'].value) {
             showConfirm.push({
                 title: 'Too many files: safe limit is' + $configs['max_files_to_plot'].value,
@@ -45,11 +50,12 @@
                         overwride_file_limit_warning: true,
                     })
                 },
+                open: false,
             })
             return
         }
 
-        if (!window.fs.existsSync(currentLocation)) {
+        if (!window.fs.isDirectory(currentLocation)) {
             return window.createToast('Location not defined', 'danger')
         }
 
@@ -83,7 +89,7 @@
                 $plotlyEventsInfo['mplot'].annotations = []
             }
             console.log({ dataFromPython })
-            plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, 'mplot', logScale ? 'log' : 'linear', true)
+            plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, 'mplot', logScale, true)
             if (keepAnnotaions) {
                 relayout('mplot', {
                     annotations: $plotlyEventsInfo['mplot'].annotations,
@@ -102,7 +108,7 @@
         if (graphPlotted) relayout('mplot', layout)
     }
 
-    let fullfileslist = []
+    let fullfileslist: string[] = []
 
     onDestroy(() => {
         if ($plotlyEventsInfo.mplot) {
@@ -120,7 +126,7 @@
                 Masspec Plot</button
             >
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
-            <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'general' })} label="Open in Matplotlib" />
+            <ButtonBadge on:click={(e) => plotData({ e, filetype: 'general' })} label="Open in Matplotlib" />
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
     </svelte:fragment>

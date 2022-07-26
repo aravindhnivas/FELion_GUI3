@@ -1,14 +1,15 @@
 import { activePage } from '$src/sveltewritables'
 import { graph_detached } from '$components/Layout.svelte'
 import { react, relayout } from 'plotly.js/dist/plotly-basic'
+import Plotly from "plotly.js"
 import { find, differenceBy } from 'lodash-es'
 import { writable, get } from 'svelte/store'
 import type { Writable } from 'svelte/store'
 
-type PlotlyEventsInfo = {
+interface PlotlyEventsInfo {
     [name: string]: {
         eventCreated: boolean
-        annotations: Plotly.Annotations[]
+        annotations: Partial<Plotly.Annotations>[]
     }
 }
 
@@ -19,9 +20,13 @@ export const graphPlottedLists: {
 export const plotlyEventsInfo: Writable<PlotlyEventsInfo> = writable({})
 
 export function plot(
-    mainTitle: string, xtitle: string, ytitle: string,
-    data: { [name: string]: Plotly.PlotData }, graphDiv: string,
-    logScale: boolean, createPlotlyClickEvent = false
+    mainTitle: string, 
+    xtitle: string, 
+    ytitle: string,
+    data: { [name: string]: Partial<Plotly.PlotData> }, 
+    graphDiv: string,
+    logScale: boolean = false, 
+    createPlotlyClickEvent = false
 ) {
     
     // const graph_div = document.getElementById(graphDiv)
@@ -50,8 +55,8 @@ export function plot(
         // width: graph_div.clientWidth,
     }
 
-    let dataPlot: Plotly.PlotData[] = []
-    for (let x in data) {
+    const dataPlot: Partial<Plotly.PlotData>[] = []
+    for (const x in data) {
         dataPlot.push(data[x])
     }
 
@@ -73,13 +78,22 @@ export function plot(
 
         graphPlottedLists[get(activePage)] = true
 
-    } catch (err) {
-        console.error('Error occured while plotting\n', err)
-        window.handleError(err)
+    } catch (error) {
+        console.error('Error occured while plotting\n', error)
+        if(error instanceof Error)  window.handleError(error)
     }
 }
 
-export function subplot(mainTitle, xtitle, ytitle, data, graphDiv, x2, y2, data2) {
+export function subplot(
+    mainTitle: string, 
+    xtitle: string, 
+    ytitle: string, 
+    data: { [name: string]: Partial<Plotly.PlotData> }, 
+    graphDiv: string, 
+    x2: string, 
+    y2: string, 
+    data2: { [name: string]: Partial<Plotly.PlotData> }
+) {
 
     const current_graph_detached = graph_detached[get(activePage)]
 
@@ -109,14 +123,14 @@ export function subplot(mainTitle, xtitle, ytitle, data, graphDiv, x2, y2, data2
         height: 450,
         width: width
     }
-    let dataPlot1 = []
 
-    for (let x in data) {
+    const dataPlot1: Partial<Plotly.PlotData>[] = []
+    for (const x in data) {
         dataPlot1.push(data[x])
     }
 
-    let dataPlot2 = []
-    for (let x in data2) {
+    const dataPlot2: Partial<Plotly.PlotData>[] = []
+    for (const x in data2) {
         dataPlot2.push(data2[x])
     }
 
@@ -125,7 +139,7 @@ export function subplot(mainTitle, xtitle, ytitle, data, graphDiv, x2, y2, data2
 
 export function plotlyClick(graphDiv: string): boolean {
 
-    const graph = document.getElementById(graphDiv) as Plotly.PlotlyHTMLElement
+    const graph = document.getElementById(graphDiv) as Plotly.PlotlyHTMLElement & {layout: Plotly.Layout}
     plotlyEventsInfo.update((info) => {
         const contents = info[graphDiv]
         contents.annotations = []
@@ -135,13 +149,15 @@ export function plotlyClick(graphDiv: string): boolean {
     graph.on('plotly_click', (data) => {
         if (data.event.ctrlKey) {
             const { points } = data
-            const currentDataPoint = points[0]
-            const { x: mass, y: counts } = currentDataPoint
 
-            // console.log(currentDataPoint)
+            const currentDataPoint = points[0]
+            console.log(currentDataPoint)
+            
+            const { x: mass, y: counts } = currentDataPoint as {x: number, y: number }
+
             if (data.event.shiftKey) {
                 const annotate = find(get(plotlyEventsInfo)[graphDiv].annotations, (m) => {
-                    return m.x >= <number>mass - 0.2 && m.x <= <number>mass + 0.2
+                    return <number>m.x >= mass - 0.2 && <number>m.x <= mass + 0.2
                 })
 
                 const annotations = differenceBy(get(plotlyEventsInfo)[graphDiv].annotations, [annotate], 'x')
@@ -154,11 +170,13 @@ export function plotlyClick(graphDiv: string): boolean {
                 console.log(get(plotlyEventsInfo)[graphDiv].annotations, annotate)
 
             } else {
-
-                let logScale = graph?.layout.yaxis.type === 'log'
+                
+                const logScale = graph?.layout.yaxis.type === 'log'
+                
+                // @ts-ignore
                 const { color } = currentDataPoint.fullData.line || currentDataPoint.fullData.marker || ''
 
-                const annotate = {
+                const annotate: Partial<Plotly.Annotations> = {
                     text: `(${mass.toFixed(1)}, ${counts.toFixed(1)})`,
                     x: mass,
                     y: logScale ? Math.log10(counts) : counts,

@@ -1,12 +1,12 @@
 import get_files_settings_values from '$src/js/get_files_settings_values'
-
+import Plotly from "plotly.js"
 export interface MassData {
     [name: string] : {
         x: number[]
         y: number[]
         showlegend: boolean
         name: string
-        mode: string
+        mode: "lines" | "markers" | "lines+markers"
     }
 }
 export async function readMassFile(massfiles: string[]) {
