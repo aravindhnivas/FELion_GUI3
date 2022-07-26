@@ -21,7 +21,7 @@ export const plotlyEventsInfo: Writable<PlotlyEventsInfo> = writable({})
 export function plot(
     mainTitle: string, xtitle: string, ytitle: string,
     data: { [name: string]: Plotly.PlotData }, graphDiv: string,
-    logScale: boolean = null, createPlotlyClickEvent = false
+    logScale: boolean, createPlotlyClickEvent = false
 ) {
     
     // const graph_div = document.getElementById(graphDiv)
@@ -42,7 +42,7 @@ export function plot(
     const dataLayout = {
         title: mainTitle,
         xaxis: { title: xtitle },
-        yaxis: { title: ytitle, type: logScale },
+        yaxis: { title: ytitle, type: logScale ? 'log' : 'linear' },
         hovermode: 'closest',
         autosize: true,
         height: 450,
