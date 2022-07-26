@@ -5,15 +5,15 @@
     import IconButton, { Icon } from '@smui/icon-button'
     import FileReadAndLoad from '$components/FileReadAndLoad.svelte'
     export let idKey: string = 'id'
-    export let rowKeys: string[] = null
-    export let rows = []
-    export let headKeys: string[] = null
+    export let rowKeys: string[]
+    export let rows: Record<string, Object | string>[] = []
+    export let headKeys: string[]
     export let closeableRows = false
     export let includeIndex = true
 
     export let editable = false
     export let sortable = false
-    export let configDir: string = null
+    export let configDir: string
     export let options_filter: string = '.json'
     export let filename: string = ''
     export let maxHeight: string = '25em'
@@ -28,19 +28,19 @@
         if (rows.length > 0) {
             rows = uniqBy(rows, idKey)
 
-            if (rowKeys === null) {
+            if (!rowKeys) {
                 rowKeys = Object.keys(rows[0])
             }
-            if (headKeys === null) {
+            if (!headKeys) {
                 headKeys = Object.keys(rows[0])
             }
         }
         mounted = true
     })
 
-    let sortToggle = {}
-    rowKeys.forEach((key) => (sortToggle[key] = false))
-    const sortTable = (key) => {
+    let sortToggle: { [key: string]: boolean } = {}
+    rowKeys.forEach((key: string) => (sortToggle[key] = false))
+    const sortTable = (key: string) => {
         rows = orderBy(rows, key, sortToggle[key] ? 'asc' : 'desc')
     }
 
@@ -59,7 +59,7 @@
                 {...fileReadProps}
             />
         {/if}
-        <DataTable style="width: 100%; user-select:text; max-height: {maxHeight}">
+        <DataTable style="width: 100%; max-height: {maxHeight}">
             <Head>
                 <Row>
                     {#if includeIndex}
@@ -109,13 +109,13 @@
                                     {#if editable}
                                         <input type="text" bind:value={row[key]} style="color: black; width: 100%;" />
                                     {:else}
-                                        {row[key]}
+                                        <span style="user-select:text; color: black;">{row[key]}</span>
                                     {/if}
                                 </Cell>
                             {/if}
                         {/each}
                         {#if closeableRows}
-                            <Cell style="width: 5em;">
+                            <Cell>
                                 <button
                                     style="background-color: var(--color-danger);"
                                     class="button is-danger"
@@ -123,7 +123,7 @@
                                         rows = rows.filter((r) => r[idKey] !== row[idKey])
                                     }}
                                 >
-                                    X
+                                    <span class="material-symbols-outlined">close</span>
                                 </button>
                             </Cell>
                         {/if}
