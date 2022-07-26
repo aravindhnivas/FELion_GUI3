@@ -7,7 +7,7 @@ interface Type {
     general?: boolean;
 }
 
-export default async function ({ pyfile, args, target, general }: Type) {
+export default async function ({ pyfile, args, target, general }: Type): Promise<DataFromPython | string | undefined> {
     try {
         console.time('Process Started')
 
@@ -40,10 +40,10 @@ export default async function ({ pyfile, args, target, general }: Type) {
         if (general) {
             const { done } = dataFromPython
             if (!done) Promise.reject(done)
-            return Promise.resolve(done)
+            return Promise.resolve(<string>done)
         }
 
-        return Promise.resolve(dataFromPython)
+        return Promise.resolve(<DataFromPython>dataFromPython)
     } catch (error) {
         if (target?.classList.contains('is-loading')) {
             target.classList.remove('is-loading')
@@ -53,7 +53,7 @@ export default async function ({ pyfile, args, target, general }: Type) {
             const msg = error.message
             const details = error.stack || error
             console.error(error)
-            return Promise.reject(`Error after receiving data from python \n${msg} \n${details}`)
+            return Promise.reject(new Error(`Error after receiving data from python \n${msg} \n${details}`))
         }
     
     }

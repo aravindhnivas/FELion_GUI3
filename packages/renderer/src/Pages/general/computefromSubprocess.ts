@@ -31,7 +31,8 @@ export default async function ({
     computepyfile = 'main',
     shell = false,
     detached = false,
-}: Type) {
+}: Type): Promise<DataFromPython | undefined | string> {
+
     return new Promise((resolve) => {
         
         let outputFile: string
@@ -111,7 +112,7 @@ export default async function ({
             }
 
             if (error) {
-                resolve(null)
+                resolve(undefined)
                 loginfo.write(`\n\n[ERROR OCCURED]\n${error}\n`)
                 loginfo.end()
 
@@ -128,11 +129,11 @@ export default async function ({
             if (!window.fs.existsSync(outputFile)) {
                 console.warn(`${outputFile} file doesn't exists`)
                 window.handleError(`${outputFile} file doesn't exists`)
-                return resolve(null)
+                return resolve(undefined)
             }
 
             const [dataFromPython] = window.fs.readJsonSync(outputFile)
-            resolve(dataFromPython)
+            resolve(<DataFromPython>dataFromPython)
 
             if (target?.classList.contains('is-loading')) {
                 target.classList.remove('is-loading')

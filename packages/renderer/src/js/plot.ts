@@ -23,7 +23,7 @@ export function plot(
     mainTitle: string, 
     xtitle: string, 
     ytitle: string,
-    data: { [name: string]: Partial<Plotly.PlotData> }, 
+    data: DataFromPython, 
     graphDiv: string,
     logScale: boolean = false, 
     createPlotlyClickEvent = false
@@ -52,10 +52,10 @@ export function plot(
         autosize: true,
         height: 450,
         width: width,
-        // width: graph_div.clientWidth,
     }
 
-    const dataPlot: Partial<Plotly.PlotData>[] = []
+    const dataPlot: PlotData[] = []
+    
     for (const x in data) {
         dataPlot.push(data[x])
     }
@@ -88,11 +88,11 @@ export function subplot(
     mainTitle: string, 
     xtitle: string, 
     ytitle: string, 
-    data: { [name: string]: Partial<Plotly.PlotData> }, 
+    data: DataFromPython, 
     graphDiv: string, 
     x2: string, 
     y2: string, 
-    data2: { [name: string]: Partial<Plotly.PlotData> }
+    data2: DataFromPython
 ) {
 
     const current_graph_detached = graph_detached[get(activePage)]
@@ -124,12 +124,12 @@ export function subplot(
         width: width
     }
 
-    const dataPlot1: Partial<Plotly.PlotData>[] = []
+    const dataPlot1: PlotData[] = []
     for (const x in data) {
         dataPlot1.push(data[x])
     }
 
-    const dataPlot2: Partial<Plotly.PlotData>[] = []
+    const dataPlot2: PlotData[] = []
     for (const x in data2) {
         dataPlot2.push(data2[x])
     }

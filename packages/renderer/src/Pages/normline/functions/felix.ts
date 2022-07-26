@@ -2,9 +2,9 @@ import { plotlyEventCreatedFELIX, felixGraphPlotted, get } from './svelteWritabl
 import { subplot } from '../../../js/functions'
 import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
-import { relayout } from 'plotly.js/dist/plotly-basic'
+// import { relayout } from 'plotly.js/dist/plotly-basic'
 
-export async function felix_func({ dataFromPython, delta } = {}) {
+export async function felix_func({ dataFromPython, delta }: {dataFromPython: FELIXData, delta: number}) {
     await beforePlot({
         delta,
         dataFromPython,

@@ -1,14 +1,14 @@
 import get_files_settings_values from '$src/js/get_files_settings_values'
-import Plotly from "plotly.js"
-export interface MassData {
-    [name: string] : {
-        x: number[]
-        y: number[]
-        showlegend: boolean
-        name: string
-        mode: "lines" | "markers" | "lines+markers"
-    }
-}
+// import Plotly from "plotly.js"
+// export interface MassData {
+//     [name: string] : {
+//         x: number[]
+//         y: number[]
+//         showlegend: boolean
+//         name: string
+//         mode: "lines" | "markers" | "lines+markers"
+//     }
+// }
 export async function readMassFile(massfiles: string[]) {
     
     const loadbtn = document.getElementById('masspec-plot-btn') as HTMLButtonElement
@@ -22,7 +22,7 @@ export async function readMassFile(massfiles: string[]) {
     
     try {
 
-        const dataToSend: MassData = {}
+        const dataToSend: DataFromPython = {}
 
         for (const filename of massfiles) {
             if (!window.fs.isFile(filename)) return Promise.resolve([null, new Error(`File ${filename} does not exist`)])

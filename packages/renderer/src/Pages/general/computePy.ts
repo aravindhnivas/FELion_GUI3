@@ -14,7 +14,7 @@ interface Type {
 export default async function ({ e, target, pyfile, args, general}: Type) {
     
     target ||= e?.target as HTMLButtonElement
-    let dataFromPython = null
+    let dataFromPython: DataFromPython | string | undefined
     let processDivGeneral
     let processDivGeneralNum = 0
 

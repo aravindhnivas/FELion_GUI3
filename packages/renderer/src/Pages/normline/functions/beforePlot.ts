@@ -1,7 +1,7 @@
 import { felixIndex, felixOutputName, normMethod, opoMode, felixData, opoData, get } from './svelteWritables'
 import { plot } from '../../../js/functions'
 
-const get_data = (data) => {
+const get_data = (data: DataFromPython) => {
     let dataPlot = []
     for (const x in data) {
         dataPlot.push(data[x])
@@ -11,14 +11,22 @@ const get_data = (data) => {
 
 const signal = {
     rel: 'Signal = (1-C/B)*100',
-
     log: 'Signal = -ln(C/B)/Power(in J)',
     hv: 'Signal = -ln(C/B)/#Photons',
 }
 
-export default async function beforePlot({ delta, dataFromPython, graphDiv, baseGraphDiv } = {}) {
-    felixOutputName.set('averaged'), felixIndex.set([])
-    let avgdataToPlot, signal_formula, ylabel
+export default async function beforePlot(
+    { delta, dataFromPython, graphDiv, baseGraphDiv }: {
+        delta: number, dataFromPython: FELIXData, graphDiv: string, baseGraphDiv: string
+    }
+) {
+
+    felixOutputName.set('averaged')
+    felixIndex.set([])
+
+    let avgdataToPlot: DataFromPython | undefined
+    let signal_formula: string = ""
+    let ylabel: string = ""
 
     if (get(normMethod) === 'Log') {
         avgdataToPlot = dataFromPython['average']
@@ -34,7 +42,7 @@ export default async function beforePlot({ delta, dataFromPython, graphDiv, base
         ylabel = 'Normalised Intensity per photon'
     }
 
-    const set_title = (method) =>
+    const set_title = (method: "rel" | "log" | "hv") =>
         `Normalised and Averaged Spectrum (delta=${delta})<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
 
     const normMethod_datas = {
@@ -63,15 +71,17 @@ export default async function beforePlot({ delta, dataFromPython, graphDiv, base
             },
         },
     }
+
     if (get(opoMode)) {
         opoData.set(normMethod_datas)
     } else {
-        {
-            felixData.set(normMethod_datas)
-        }
+        felixData.set(normMethod_datas)
     }
 
+
     plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', dataFromPython['base'], baseGraphDiv)
+
+    if (!avgdataToPlot) return window.createToast('No data to plot', 'danger')
 
     plot(
         `Normalised and Averaged Spectrum (delta=${delta})<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
