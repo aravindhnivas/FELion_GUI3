@@ -1,21 +1,34 @@
 import get_files_settings_values from '$src/js/get_files_settings_values'
 
-export async function readMassFile(massfiles) {
-    const loadbtn = document.getElementById('masspec-plot-btn')
-    if (loadbtn.classList.contains('is-loading')) {
-        const warnmsg = 'Wait untill the previous file(s) are plotted'
-        window.createToast(warnmsg, 'warning')
-        return [null, warnmsg]
+export interface MassData {
+    [name: string] : {
+        x: number[]
+        y: number[]
+        showlegend: boolean
+        name: string
+        mode: string
     }
-
+}
+export async function readMassFile(massfiles: string[]) {
+    
+    const loadbtn = document.getElementById('masspec-plot-btn') as HTMLButtonElement
+    if (loadbtn.classList.contains('is-loading')) {
+        const warnmsg = new Error('Mass spec plot is already loading')
+        // window.createToast(warnmsg.message, 'warning')
+        return Promise.resolve([null, warnmsg])
+    }
+    
     loadbtn.classList.toggle('is-loading')
-
+    
     try {
-        const dataToSend = {}
+
+        const dataToSend: MassData = {}
 
         for (const filename of massfiles) {
-            if (!window.fs.existsSync(filename)) return
+            if (!window.fs.isFile(filename)) return Promise.resolve([null, new Error(`File ${filename} does not exist`)])
+            
             const [fileContents] = await window.fs.readFile(filename)
+            if(!fileContents) return Promise.resolve([null, new Error(`File ${filename} is empty`)])
 
             const name = window.path.basename(filename)
             console.info('content read: ', name)
@@ -42,14 +55,21 @@ export async function readMassFile(massfiles) {
 
             const label = `${name}: Res:${res?.toFixed(1)} V; B0: ${b0?.toFixed(0)} ms; trap: ${trap?.toFixed(0)} ms`
             dataToSend[name] = { x, y, name: label, mode, showlegend }
+
+            console.warn(dataToSend)
         }
 
         console.info('File read completed')
         console.info(dataToSend)
-        return [dataToSend, null]
+        return Promise.resolve([dataToSend, null])
+
     } catch (error) {
-        window.handleError(error)
-        return [null, error]
+
+        if(error instanceof Error) {
+        
+            window.handleError(error)
+            return Promise.resolve([null, error])
+        }
     } finally {
         loadbtn.classList.toggle('is-loading')
     }

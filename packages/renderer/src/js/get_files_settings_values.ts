@@ -1,20 +1,17 @@
-function validate_line(line) {
+function validate_line(line: string): boolean {
     const valid = line.trim().length > 0 && line.startsWith('# Sect01 Ion Source')
     return valid
 }
 
-export default function (loadfile) {
+export default function (loadfile: string): Promise<{[name: string]: number}> {
     return new Promise(async (resolve, reject) => {
         if (!window.fs.isFile(loadfile)) return reject('Invalid file')
-
-        // const loadfile = window.path.join(location, filename)
-
-        if (!window.fs.existsSync(loadfile)) return reject(`${loadfile} does not exist`)
+        if (!window.fs.isFile(loadfile)) return reject(`${loadfile} does not exist`)
 
         const [fileContents, error] = await window.fs.readFile(loadfile)
-        if (error) return reject(error)
+        if (error || !fileContents) return reject(error)
 
-        const variableValues = {}
+        const variableValues: {[name: string]: number} = {}
         for (const line of fileContents.split('\n')) {
             if (!validate_line(line)) continue
             const keyValuesLine = line.split(' ')
@@ -22,6 +19,7 @@ export default function (loadfile) {
             const value = parseFloat(keyValuesLine[9])
             variableValues[key] = value
         }
+        console.log(variableValues)
         return resolve(variableValues)
     })
 }

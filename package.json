@@ -13,6 +13,7 @@
     "@babel/eslint-parser": "^7.18.9",
     "@sveltejs/svelte-virtual-list": "^3.0.1",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
+    "@types/lodash-es": "^4.17.6",
     "@types/plotly.js": "^2.12.1",
     "@zerodevx/svelte-toast": "^0.7.2",
     "animate.css": "^4.1.1",

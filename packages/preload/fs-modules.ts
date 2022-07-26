@@ -37,7 +37,7 @@ export const fsUtils = {
             })
         })
     },
-    readFile: async (path: number | fs.PathLike) => {
+    readFile: async (path: number | fs.PathLike): Promise<[string | null, NodeJS.ErrnoException | null]> => {
         return new Promise((resolve) => {
             fs.readFile(path, 'utf-8', (err, data) => {
                 if (err) resolve([null, err])

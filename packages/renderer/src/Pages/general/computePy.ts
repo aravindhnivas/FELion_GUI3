@@ -2,9 +2,18 @@ import computefromServer from './computefromServer'
 import computefromSubprocess from './computefromSubprocess'
 import { pyServerReady, get, developerMode, pyProgram } from '../settings/svelteWritables'
 
-export default async function ({ e = null, target = null, pyfile = '', args = {}, general = false } = {}) {
+
+interface Type {
+    pyfile: string;
+    args: Object;
+    target?: HTMLButtonElement | null;
+    general?: boolean;
+    e?: Event;
+}
+
+export default async function ({ e, target, pyfile, args, general}: Type) {
     
-    target ||= e?.target
+    target ||= e?.target as HTMLButtonElement
     let dataFromPython = null
     let processDivGeneral
     let processDivGeneralNum = 0
@@ -39,7 +48,7 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
                 processDivGeneral = target.getElementsByClassName('tag')?.[0]
                 console.log(processDivGeneral)
                 if(processDivGeneral) {
-                    const num = processDivGeneral.textContent
+                    const num = processDivGeneral.textContent as string
                     processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
                     processDivGeneral.textContent = `${processDivGeneralNum + 1}`
                 }
@@ -63,10 +72,11 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
 
         return Promise.resolve(dataFromPython)
     } catch (error) {
-        window.handleError(error)
+        if(error instanceof Error) window.handleError(error)
+
     } finally {
         if (processDivGeneral) {
-            const num = processDivGeneral.textContent
+            const num = processDivGeneral.textContent as string
             processDivGeneralNum = isNaN(parseInt(num)) ? 0 : parseInt(num)
             const currentNum = processDivGeneralNum - 1
 
@@ -77,7 +87,5 @@ export default async function ({ e = null, target = null, pyfile = '', args = {}
             }
         }
         console.log('COMPLETED')
-        // return Promise.resolve(dataFromPython)
-
     }
 }

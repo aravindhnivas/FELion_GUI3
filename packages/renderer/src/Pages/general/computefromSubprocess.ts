@@ -1,26 +1,42 @@
 import { pyProgram, pythonscript, get, pyVersion, pyServerReady, developerMode } from '../settings/svelteWritables'
 import { running_processes } from '$src/sveltewritables'
 
-export const dispatchEvent = (target, detail, eventName) => {
+export const dispatchEvent = (target: HTMLButtonElement | null | undefined, detail: Object, eventName: string) => {
+    if (!target) return
     const pyEventClosed = new CustomEvent(eventName, { bubbles: false, detail })
-    target?.dispatchEvent(pyEventClosed)
+    target.dispatchEvent(pyEventClosed)
     console.info(eventName + ' dispatched')
 }
 
+interface Type {
+    pyfile: string;
+    args: Object;
+
+    target?: HTMLButtonElement | null;
+    general?: boolean;
+    e?: Event;
+    button?: HTMLButtonElement | null;
+    computepyfile?: string;
+    shell?: boolean;
+    detached?: boolean;
+}
+
 export default async function ({
-    e = null,
-    target = null,
-    button = null,
+    e,
+    target,
+    button,
     general = false,
     pyfile,
     args,
     computepyfile = 'main',
     shell = false,
     detached = false,
-}) {
+}: Type) {
     return new Promise((resolve) => {
-        let outputFile
-        target ||= button || e?.target
+        
+        let outputFile: string
+        target ||= button || e?.target as HTMLButtonElement
+
         if (pyfile === 'server') {
             pyServerReady.set(false)
         }
@@ -124,8 +140,8 @@ export default async function ({
             console.info('Process closed')
         })
 
-        py.stderr.on('data', (err) => {
-            const errorString = `${String.fromCharCode.apply(null, err)}\n`
+        py.stderr.on('data', (errorString) => {
+            // const errorString = `${String.fromCharCode.apply(null, err)}\n`
             if (pyfile === 'server') {
                 error = errorString
             } else {
@@ -135,9 +151,9 @@ export default async function ({
             console.log(`Output from python: ${errorString}`)
         })
 
-        py.stdout.on('data', (data) => {
-            loginfo.write(data)
-            const dataString = `${String.fromCharCode.apply(null, data)}\n`
+        py.stdout.on('data', (dataString) => {
+            loginfo.write(dataString)
+            // const dataString = `${String.fromCharCode.apply(null, data)}\n`
             if (pyfile === 'server') {
                 dataReceived = dataString
             } else {

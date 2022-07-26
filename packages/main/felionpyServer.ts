@@ -134,12 +134,12 @@ export async function startServer(webContents: Electron.WebContents) {
 
             py.stderr.on('data', (err) => {
                 const stderr = String.fromCharCode.apply(null, err)
-                console.warn(stderr)
+                console.warn("STDERR: ", stderr)
             })
 
             py.stdout.on('data', (data) => {
                 const stdout = String.fromCharCode.apply(null, data)
-                console.info(stdout)
+                console.info("Server's stdout: ", stdout)
             })
         } catch (error) {
             serverStarting = false

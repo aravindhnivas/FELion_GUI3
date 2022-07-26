@@ -6,7 +6,7 @@
     import Configs, { configs } from '$src/Pages/masspec/configs/Configs.svelte'
     import { relayout } from 'plotly.js/dist/plotly-basic'
     import { plot, plotlyEventsInfo } from '$src/js/functions'
-    import { readMassFile } from './masspec/mass'
+    import { readMassFile, MassData } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
     import { onDestroy } from 'svelte'
     // import Badge from '@smui-extra/badge'
@@ -30,12 +30,12 @@
     let selected_file = ''
     let keepAnnotaions = true
 
-    async function plotData({ e = null, filetype = 'mass', overwride_file_limit_warning = false } = {}) {
+    async function plotData({ e = undefined, filetype = 'mass', overwride_file_limit_warning = false } = {}) {
         if (!overwride_file_limit_warning && fileChecked.length > $configs['max_files_to_plot'].value) {
             showConfirm.push({
                 title: 'Too many files: safe limit is' + $configs['max_files_to_plot'].value,
                 content: 'Do you want to plot ' + fileChecked.length + ' files?',
-                callback: (response) => {
+                callback: (response: string) => {
                     if (!response) return console.warn('response: ', response)
                     console.log(response)
                     if (response?.toLowerCase() === 'cancel') return
@@ -60,25 +60,29 @@
             if (selected_file === '') return window.createToast('No files selected', 'danger')
         }
 
-        const pyfileInfo = {
+        const pyfileInfo: { [name: string]: { pyfile: string; args: Object } } = {
             mass: { pyfile: 'mass', args: { massfiles, tkplot: 'run' } },
             general: { pyfile: 'mass', args: { massfiles, tkplot: 'plot' } },
         }
 
         const { pyfile, args } = pyfileInfo[filetype]
-
         if (filetype == 'general') {
             return computePy_func({ e, pyfile, args, general: true })
         }
 
         if (filetype == 'mass' && massfiles) {
-            const [dataFromPython] = await readMassFile(massfiles)
-            if (!dataFromPython) return
+            const computedData = await readMassFile(massfiles)
+            if (computedData === undefined) return window.createToast('No data computed', 'danger')
+
+            console.log({ computedData })
+            const [dataFromPython, error] = computedData as [MassData | null, Error | string]
+            if (error instanceof Error || (error as string)) return window.handleError(error)
+            if (dataFromPython === null) return window.createToast('No data found', 'danger')
 
             if (!keepAnnotaions) {
                 $plotlyEventsInfo['mplot'].annotations = []
             }
-
+            console.log({ dataFromPython })
             plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, 'mplot', logScale ? 'log' : 'linear', true)
             if (keepAnnotaions) {
                 relayout('mplot', {

@@ -1,8 +1,15 @@
 import { pyServerPORT, get } from '../settings/svelteWritables'
-export default async function ({ target = null, general = false, pyfile, args }) {
+
+interface Type {
+    pyfile: string;
+    args: Object;
+    target?: HTMLButtonElement | null;
+    general?: boolean;
+}
+
+export default async function ({ pyfile, args, target, general }: Type) {
     try {
         console.time('Process Started')
-        // window.createToast("Process Started", "warning")
 
         if (!general) target?.classList.add('is-loading')
 
@@ -18,8 +25,7 @@ export default async function ({ target = null, general = false, pyfile, args })
             target.classList.remove('is-loading')
         }
         console.timeEnd('Process Started')
-        // window.createToast("Process completed", "success")
-        // const response = await responsePromise
+        
         console.warn(response)
         if (!response.ok) {
             const jsonErrorInfo = await response.json()
@@ -42,9 +48,13 @@ export default async function ({ target = null, general = false, pyfile, args })
         if (target?.classList.contains('is-loading')) {
             target.classList.remove('is-loading')
         }
-        const msg = error.message
-        const details = error.stack || error
-        console.error(error)
-        return Promise.reject(`Error after receiving data from python \n${msg} \n${details}`)
+
+        if(error instanceof Error) {
+            const msg = error.message
+            const details = error.stack || error
+            console.error(error)
+            return Promise.reject(`Error after receiving data from python \n${msg} \n${details}`)
+        }
+    
     }
 }

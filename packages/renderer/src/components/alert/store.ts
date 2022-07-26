@@ -1,13 +1,13 @@
 import { writable } from 'svelte/store'
-const makeStore = (initial = {}) => {
+const makeStore = <T>(initial: T) => {
     const { subscribe, set, update } = writable(initial)
     return {
         subscribe,
         set,
         update,
         reset: () => set(initial),
-        push(obj = {}) {
-            update((n) => {
+        push(obj: T) {
+            update((n: T) => {
                 return { ...n, ...obj, open: true }
             })
         },

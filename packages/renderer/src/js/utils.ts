@@ -1,11 +1,11 @@
 import {SpeedOfLight} from '$src/js/constants'
 
-export const wavenumberToMHz = (energy) => ({
+export const wavenumberToMHz = (energy: {value: number, label: string}) => ({
     ...energy,
     value: Number(energy.value * SpeedOfLight * 1e2 * 1e-6).toFixed(3),
 })
 
-export const MHzToWavenumber = (energy) => ({
+export const MHzToWavenumber = (energy: {value: number, label: string}) => ({
     ...energy,
     value: Number(energy.value / (SpeedOfLight * 1e2 * 1e-6)).toFixed(3),
 })

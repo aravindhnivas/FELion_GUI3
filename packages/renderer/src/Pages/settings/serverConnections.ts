@@ -1,15 +1,22 @@
 import { pyServerPORT, get } from './svelteWritables'
 
-export const checkTCP = async ({ target = null, portNumber = get(pyServerPORT) }) => {
+type Target = HTMLButtonElement | undefined | null
+type Type = {target?: Target, portNumber: number}
+
+export const checkTCP = async ({ target, portNumber = get(pyServerPORT) }: Type) => {
+
     try {
         target?.classList.toggle('is-loading')
         console.warn(`cheking TCP connection on port ${portNumber}`)
-        if (!window.platform === 'win32') return Promise.resolve('')
+        if (window.platform !== 'win32') return Promise.resolve('')
         const command = `netstat -ano | findstr ${portNumber}`
         const results = await window.exec(command)
         return Promise.resolve(results)
+
     } catch (error) {
-        return Promise.resolve(`>> ERROR: ${error.message}`)
+        if(error instanceof Error) {
+            return Promise.resolve(`>> ERROR: ${error.message}`)
+        }
     } finally {
         if (target?.classList.contains('is-loading')) {
             target?.classList.toggle('is-loading')
@@ -17,7 +24,7 @@ export const checkTCP = async ({ target = null, portNumber = get(pyServerPORT) }
     }
 }
 
-export const fetchServerROOT = async ({ target = null, portNumber = get(pyServerPORT) }) => {
+export const fetchServerROOT = async ({ target, portNumber = get(pyServerPORT) }: Type) => {
     try {
         console.warn('fetching python server root')
         target?.classList.toggle('is-loading')
@@ -25,7 +32,9 @@ export const fetchServerROOT = async ({ target = null, portNumber = get(pyServer
         const textresponse = await response.text()
         return Promise.resolve(textresponse)
     } catch (error) {
-        return Promise.resolve(`>> ERROR: ${error.message}`)
+        if(error instanceof Error) {
+            return Promise.resolve(`>> ERROR: ${error.message}`)
+        }
     } finally {
         if (target?.classList.contains('is-loading')) {
             target?.classList.toggle('is-loading')
@@ -33,7 +42,7 @@ export const fetchServerROOT = async ({ target = null, portNumber = get(pyServer
     }
 }
 
-export const isItfelionpy = async (portNumber = get(pyServerPORT)) => {
+export const isItfelionpy = async (portNumber: number = get(pyServerPORT)) => {
     const textresponse = await fetchServerROOT({ portNumber })
     if (textresponse?.includes('felionpy')) {
         return true

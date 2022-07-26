@@ -2,7 +2,7 @@
     import { polynomial } from 'regression'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
-    import colors from '$computeCode/colors'
+    import colors from '$src/Pages/computeCode/colors'
     import { react } from 'plotly.js/dist/plotly-basic'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
 

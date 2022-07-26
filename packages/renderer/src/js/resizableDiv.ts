@@ -1,6 +1,6 @@
 import interact from 'interactjs'
 
-const dispatchInteractEvent = (element, eventName, detail) => {
+const dispatchInteractEvent = (element: HTMLElement, eventName: string, detail: Object) => {
     const event = new CustomEvent(eventName, {
         bubbles: false,
         cancelable: true,
@@ -10,24 +10,15 @@ const dispatchInteractEvent = (element, eventName, detail) => {
     element.dispatchEvent(event)
 }
 
-// Draggable: dragstart, dragmove, draginertiastart, dragend
-// Resizable: resizestart, resizemove, resizeinertiastart, resizeend
-// Gesturable: gesturestart, gesturemove, gestureend
 
 export function resizableDiv(
-    target,
-    // width=true, height=true,
-    // left=true, top=false,
-    // right=false, bottom=false,
-    // change = { width: true, height: false },
-    // edges = { left: false, right: true, bottom: false, top: false }
+    target: HTMLElement,
     params = {
         change: { width: true, height: false },
         edges: { left: false, right: true, bottom: false, top: false },
     }
 ) {
-    // const change = { width, height }
-    // const edges = { left, right, bottom, top }
+   
     const { change, edges } = params
     console.log('resizableDiv', target, params)
     interact(target)

@@ -64,14 +64,14 @@
             window.handleError(error)
         }
 
-        ls.stdout.on('data', (data) => {
-            const writeData = String.fromCharCode.apply(null, data)
+        ls.stdout.on('data', (writeData) => {
+            // const writeData = String.fromCharCode.apply(null, data)
             commandResults = [...commandResults, { color: colorSets.info, results: `>> ${writeData || ''}` }]
             srollTerminalDiv()
         })
 
-        ls.stderr.on('data', (data) => {
-            const errorData = String.fromCharCode.apply(null, data)
+        ls.stderr.on('data', (errorData) => {
+            // const errorData = String.fromCharCode.apply(null, data)
             commandResults = [...commandResults, { color: colorSets.danger, results: `>> ${errorData || ''}` }]
 
             srollTerminalDiv()
