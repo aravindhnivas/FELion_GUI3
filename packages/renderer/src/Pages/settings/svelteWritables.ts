@@ -5,11 +5,16 @@ const pyPath: string = window.path.join(window.ROOT_DIR, 'python3/python')
 const pyScriptPath: string = window.path.join(window.ROOT_DIR, 'resources/python_files')
 
 export const developerMode = window.persistentDB("developerMode", <boolean>window.isPackaged)
-
 export const pythonpath = window.persistentDB("pythonpath", pyPath)
 export const pythonscript = window.persistentDB("pythonscript", pyScriptPath)
 
-export const felionpy = window.persistentDB("felionpy", window.path.join(window.ROOT_DIR, "resources/felionpy/felionpy"))
+const felionpyDefault = window.path.join(window.ROOT_DIR, "resources/felionpy/felionpy")
+export const felionpy = window.persistentDB("felionpy", felionpyDefault)
+
+if(window.isPackaged) {
+    developerMode.set(false)
+    felionpy.set(felionpyDefault)
+}
 
 export const pyProgram = derived(
     [developerMode, pythonpath, felionpy], 

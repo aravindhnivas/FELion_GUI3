@@ -7,9 +7,9 @@ import getPort from 'get-port'
 
 const execCommand = promisify(child.exec)
 const getCurrentDevStatus = () => {
-    if (!db.has('developerMode') || import.meta.env.PROD) {
-        db.set('developerMode', false)
-    }
+    // if (!db.has('developerMode') || import.meta.env.PROD) {
+    //     db.set('developerMode', false)
+    // }
 
     const developerMode = <boolean>db.get('developerMode')
     const pythonscript = <string>db.get('pythonscript') || path.join(ROOT_DIR, 'resources/python_files')

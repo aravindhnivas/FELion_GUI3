@@ -1,23 +1,25 @@
 {
-    "compilerOptions": {
-      "module": "esnext",
-      "target": "esnext",
-      "sourceMap": false,
-      "moduleResolution": "Node",
-      "skipLibCheck": true,
-      "strict": true,
-      "isolatedModules": true,
-      "types" : ["node"],
-      "baseUrl": ".",
-      "allowSyntheticDefaultImports": true,
-    },
-
-    "include": [
-      "./*.ts",
-      "../../types/**/*.d.ts"
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "sourceMap": false,
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "strict": true,
+    "isolatedModules": true,
+    "types": [
+      "node"
     ],
-    "exclude": [
-      "**/*.spec.ts",
-      "**/*.test.ts"
-    ]
-  }
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+  },
+  "include": [
+    "./*.ts",
+    "../../types/**/*.d.ts",
+    "vite.config.js"
+  ],
+  "exclude": [
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ]
+}
