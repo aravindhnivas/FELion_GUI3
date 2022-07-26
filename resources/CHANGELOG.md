@@ -1,9 +1,15 @@
 # CHANGELOG
 
-## v3.7.1-beta1-UNRELEASED
+## v3.8.0-UNRELEASED
 
+- Added Features
+  - Kinetics channels construction
+  - Kinetics number density and configs file save options
+  - THz simulation (as a function of k3_branch, number density and power all combined)
+  - THz simulation updates (saving output file and figures options)
 - BUG FIX:
   - Kinetics scan keyFound error
+  - Lots of bug fixes on kinetics and THz simulations
 
 ## v3.7.0
 
