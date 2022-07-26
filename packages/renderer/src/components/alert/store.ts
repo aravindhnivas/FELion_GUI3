@@ -13,9 +13,11 @@ const makeStore = <T>(initial: T) => {
         },
     }
 }
-export const showConfirm = makeStore({
+
+const defaultAlert = {
     open: false,
     title: 'Confirm',
     content: 'Are you sure?',
-    callback: null,
-})
+    callback: (response: string): void => {},
+}
+export const showConfirm = makeStore(defaultAlert)
