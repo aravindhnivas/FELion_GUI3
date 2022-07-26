@@ -13,7 +13,7 @@
 </script>
 
 <div class="channel_div">
-    <i class="material-icons">menu</i>
+    <i class="material-symbols-outlined">menu</i>
     <CustomSelect bind:value={item.type} label="type" options={['forwards', 'backwards']} />
     <Textfield bind:value={item.name} label="name" />
     <CustomSelect bind:value={item.lossFrom} label="lossFrom" options={['<resp. ion>', ...ions_lists]} />

@@ -1,8 +1,8 @@
+import 'material-symbols/outlined.css';
 import 'animate.css'
 import 'cooltipz-css'
 import 'svelte-material-ui/bare.css'
 import 'winbox/src/css/winbox.css'
-
 import './scss/variables.css'
 import './scss/smui-theme-variables.scss'
 
@@ -16,5 +16,4 @@ import './scss/toast.scss'
 import './scss/gridjs.scss'
 import 'dygraphs/dist/dygraph.css'
 import './scss/dygraph.scss'
-
 import '@material/typography/_typography.scss'

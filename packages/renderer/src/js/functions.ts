@@ -59,7 +59,7 @@ window.getID = () => Math.random().toString(32).substring(2)
 window.clickOutside = (node) => {
     console.log(node)
 
-    const handleClick = (event) => {
+    const handleClick = (event: ButtonClickEvent) => {
         if (node && !node.contains(event.target) && !event.defaultPrevented) {
             node.dispatchEvent(new CustomEvent('click_outside', {detail: event}))
         }

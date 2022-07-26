@@ -179,7 +179,7 @@
             <Textfield bind:value={configDir} label="save location" />
         </div>
     </MenuSurface>
-    <span class="material-icons" on:click={() => surface.setOpen(true)}> help </span>
+    <span class="material-symbols-outlined" on:click={() => surface.setOpen(true)}> help </span>
 </div>
 
 <style>

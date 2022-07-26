@@ -14,15 +14,15 @@
 <Panel bind:open style="background: var(--color-primary-light);">
     <Header style="padding: 0.3rem;">
         <div class="align">
-            <IconButton toggle pressed={loaded}>
-                <Icon class="material-icons">sync_problem</Icon>
-                <Icon class="material-icons" on>done</Icon>
+            <IconButton pressed={loaded}>
+                <Icon class="material-symbols-outlined">sync_problem</Icon>
+                <Icon class="material-symbols-outlined" on>done</Icon>
             </IconButton>
             {label}
         </div>
         <IconButton slot="icon" toggle pressed={open}>
-            <Icon class="material-icons" on>expand_less</Icon>
-            <Icon class="material-icons">expand_more</Icon>
+            <Icon class="material-symbols-outlined" on>expand_less</Icon>
+            <Icon class="material-symbols-outlined">expand_more</Icon>
         </IconButton>
     </Header>
     <Content class={className} style="{style}; border-top: solid 1px;">

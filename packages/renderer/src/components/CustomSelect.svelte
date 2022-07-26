@@ -57,7 +57,7 @@
 
         {#if update}
             <i
-                class="material-icons animate__animated animate__faster"
+                class="material-symbols-outlined animate__animated animate__faster"
                 on:animationend={(event) => event?.target?.classList.remove('animate__rotateIn')}
                 on:click={(event) => {
                     event?.target?.classList.add('animate__rotateIn')

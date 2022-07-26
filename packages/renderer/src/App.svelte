@@ -34,6 +34,7 @@
     </div>
 </div>
 <ConfirmAlert />
+
 <div class="layout">
     <Navbar {navItems} />
     <div id="pageContainer" style="overflow: hidden;">

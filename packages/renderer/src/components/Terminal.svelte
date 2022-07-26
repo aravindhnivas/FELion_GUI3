@@ -127,7 +127,7 @@
             </div>
 
             <div class="align v-center">
-                <IconButton class="material-icons" on:click={terminalShell}>play_arrow</IconButton>
+                <IconButton class="material-symbols-outlined" on:click={terminalShell}>play_arrow</IconButton>
                 <CustomSwitch style="margin: 0 1em;" bind:selected={openShellTerminal} label="Shell" />
                 <Textfield
                     type="number"
@@ -140,7 +140,7 @@
                 />
 
                 <IconButton
-                    class="material-icons is-pulled-right"
+                    class="material-symbols-outlined is-pulled-right"
                     style="background: #f14668; border-radius: 2em;"
                     on:click={() => (commandResults = [{ color: colorSets.normal, results: `>> cleared` }])}
                     >clear</IconButton

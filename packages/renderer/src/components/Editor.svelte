@@ -154,7 +154,7 @@
         </div>
 
         {#if reportWindowClosed}
-            <i class="material-icons" on:click={openReport}>zoom_out_map</i>
+            <i class="material-symbols-outlined" on:click={openReport}>zoom_out_map</i>
         {/if}
     </div>
 

@@ -6,6 +6,6 @@
 </script>
 
 <IconButton {style} toggle bind:pressed={toggler} on:click>
-    <Icon class="material-icons" on>{icons[0]}</Icon>
-    <Icon class="material-icons">{icons[1]}</Icon>
+    <Icon class="material-symbols-outlined" on>{icons[0]}</Icon>
+    <Icon class="material-symbols-outlined">{icons[1]}</Icon>
 </IconButton>

@@ -155,7 +155,7 @@
                 on:click={() => (showMoreOptions = !showMoreOptions)}
             >
                 More options
-                <i class=" material-icons">{showMoreOptions ? 'arrow_drop_up' : 'arrow_drop_down'}</i>
+                <i class=" material-symbols-outlined">{showMoreOptions ? 'arrow_drop_up' : 'arrow_drop_down'}</i>
             </button>
         </div>
 

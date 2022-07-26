@@ -128,7 +128,7 @@
 <div class="align h-center ">
     <button class="button is-link" on:click={computeEinsteinB}>
         {#if einsteinCoefficientB.length < 1}
-            <i class="material-icons">sync_problem</i>
+            <i class="material-symbols-outlined">sync_problem</i>
         {/if}
         Compute Einstein B
     </button>
@@ -142,7 +142,7 @@
         <Textfield bind:value={voigtline} label="voigt lineshape (Hz)" />
         <button class="button is-link " on:click={computeRates}>
             {#if !einsteinB_rateComputed}
-                <i class="material-icons">sync_problem</i>
+                <i class="material-symbols-outlined">sync_problem</i>
             {/if}
             Compute rate constants
         </button>

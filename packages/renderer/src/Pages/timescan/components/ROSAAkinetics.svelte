@@ -409,7 +409,7 @@
             <button class="button is-link" on:click={browse_folder}>Browse</button>
             <Textfield bind:value={currentLocation} label="Timescan EXPORT data location" />
             <i
-                class="material-icons animate__animated animate__faster"
+                class="material-symbols-outlined animate__animated animate__faster"
                 on:animationend={({ target }) => {
                     target.classList.remove('animate__rotateIn')
                 }}
@@ -526,7 +526,7 @@
     <svelte:fragment slot="footer_content__slot">
         <CustomSelect bind:value={selectedFile} label="Filename" options={fileCollections} />
         <button class="button is-link" on:click={computeParameters}>compute</button>
-        <i class="material-icons" on:click={() => (kinetic_plot_adjust_dialog_active = true)}>settings</i>
+        <i class="material-symbols-outlined" on:click={() => (kinetic_plot_adjust_dialog_active = true)}>settings</i>
         <ButtonBadge id="kinetic-submit-button" on:click={kineticSimulation} />
     </svelte:fragment>
 </LayoutDiv>

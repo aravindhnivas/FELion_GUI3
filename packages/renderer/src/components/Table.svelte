@@ -53,7 +53,7 @@
     {/if}
 
     {#if addextraOption}
-        <i class="material-icons" style="float: right; padding: 0.5em;" on:click={addRow}>add</i>
+        <i class="material-symbols-outlined" style="float: right; padding: 0.5em;" on:click={addRow}>add</i>
     {/if}
 
     <div class="mdc-data-table tableContainer">
@@ -76,7 +76,8 @@
                         >
                             <div class="tableIcon" on:click={() => sortTable(keys[index])}>
                                 {#if sortOption}
-                                    <i class="material-icons">{sortTypeAscending ? 'arrow_upward' : 'arrow_downward'}</i
+                                    <i class="material-symbols-outlined"
+                                        >{sortTypeAscending ? 'arrow_upward' : 'arrow_downward'}</i
                                     >
                                 {/if}
                                 {item}
@@ -104,7 +105,7 @@
                             <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;">
                                 <i
                                     id={row.id}
-                                    class="material-icons"
+                                    class="material-symbols-outlined"
                                     on:click={(e) => {
                                         rows = rows.filter((tb) => tb.id != e.target.id)
                                     }}>close</i

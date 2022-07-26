@@ -193,7 +193,7 @@
         </div>
 
         <div class="align" style="justify-content: flex-end;" class:hide={!fit_options_div}>
-            <i class="material-icons" on:click={() => (openTable = true)}>settings</i>
+            <i class="material-symbols-outlined" on:click={() => (openTable = true)}>settings</i>
             <CustomSelect bind:value={fitfile} label="fitfile" options={[...fileChecked, 'averaged']} />
             <CustomSelect bind:value={fitMethod} label="fit method" options={['gaussian', 'lorentz', 'voigt']} />
             <button

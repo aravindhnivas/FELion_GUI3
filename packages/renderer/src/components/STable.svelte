@@ -71,8 +71,8 @@
                                 <span>{key}</span>
                                 {#if sortable}
                                     <IconButton toggle bind:pressed={sortToggle[rowKeys[i]]}>
-                                        <Icon class="material-icons">arrow_downward</Icon>
-                                        <Icon class="material-icons" on>arrow_upward</Icon>
+                                        <Icon class="material-symbols-outlined">arrow_downward</Icon>
+                                        <Icon class="material-symbols-outlined" on>arrow_upward</Icon>
                                     </IconButton>
                                 {/if}
                             </div>

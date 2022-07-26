@@ -155,7 +155,7 @@
             <div class="location__div">
                 <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
                 <Textfield bind:value={currentLocation} label="Current location" style="width:100%; " />
-                <i class="material-icons" on:click={() => (activateConfigModal = true)}>build</i>
+                <i class="material-symbols-outlined" on:click={() => (activateConfigModal = true)}>build</i>
             </div>
 
             <div class="button__div align" id="{filetype}-buttonContainer">

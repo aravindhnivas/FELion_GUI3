@@ -7,13 +7,13 @@
 <div class="sub_container__div box align">
     <div class="align">
         {#if loaded}
-            <i class="material-icons">done</i>
+            <i class="material-symbols-outlined">done</i>
         {:else}
-            <i class="material-icons">sync_problem</i>
+            <i class="material-symbols-outlined">sync_problem</i>
         {/if}
         <div class="subtitle">{title}</div>
         <i
-            class="material-icons toggle"
+            class="material-symbols-outlined toggle"
             on:click={() => {
                 hide = !hide
             }}>keyboard_arrow_down</i

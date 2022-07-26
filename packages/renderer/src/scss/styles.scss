@@ -49,7 +49,7 @@ table td:not([align]) {text-align: center; padding: 1em;}
     textarea {color: black!important;}
 }
 .interact {touch-action: none;}
-.material-icons {align-self: center; }
+// .material-icons {align-self: center; }
 .tag__span {
     border-radius: 2em;
     margin: 0 1em;
@@ -60,6 +60,11 @@ ul {
 .tag:empty, .graph__div:empty {
     display: none;
 }
+
 .smui-accordion__header__title {
     padding: 0!important;
+}
+
+.material-symbols-outlined {
+    cursor: pointer;
 }

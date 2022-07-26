@@ -14,7 +14,7 @@
 <div class="config_main__div box">
     <div class="two_col__div">
         <Textfield style="border: solid 1px #fff7;" value={window.db.path} label="CONFIGS location" disabled />
-        <i class="material-icons" on:click={() => window.shell.showItemInFolder(window.db.path)}>open_in_new</i>
+        <i class="material-symbols-outlined" on:click={() => window.shell.showItemInFolder(window.db.path)}>open_in_new</i>
     </div>
 
     <div class="config__div ">

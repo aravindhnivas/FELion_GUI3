@@ -222,7 +222,7 @@
                     <Textfield bind:value={$depletionplot_figure_kwargs['rows_cols']} label="subplot (rows, cols)" />
                 </MenuSurface>
 
-                <i class="material-icons" on:click={() => surface.setOpen(true)}>settings</i>
+                <i class="material-symbols-outlined" on:click={() => surface.setOpen(true)}>settings</i>
             </div>
             <ButtonBadge on:click={(e) => plotData({ e: e, filetype: 'general' })}>Submit</ButtonBadge>
         </div>

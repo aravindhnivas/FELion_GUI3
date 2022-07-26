@@ -10,8 +10,8 @@
         <Header>
             Panel 1
             <IconButton slot="icon" toggle pressed={panel1Open}>
-                <Icon class="material-icons" on>expand_less</Icon>
-                <Icon class="material-icons">expand_more</Icon>
+                <Icon class="material-symbols-outlined" on>expand_less</Icon>
+                <Icon class="material-symbols-outlined">expand_more</Icon>
             </IconButton>
         </Header>
         <Content>The content for panel 1.</Content>
@@ -20,8 +20,8 @@
         <Header>
             Panel 2
             <IconButton slot="icon" toggle pressed={panel2Open}>
-                <Icon class="material-icons" on>expand_less</Icon>
-                <Icon class="material-icons">expand_more</Icon>
+                <Icon class="material-symbols-outlined" on>expand_less</Icon>
+                <Icon class="material-symbols-outlined">expand_more</Icon>
             </IconButton>
         </Header>
         <Content>The content for panel 2.</Content>
