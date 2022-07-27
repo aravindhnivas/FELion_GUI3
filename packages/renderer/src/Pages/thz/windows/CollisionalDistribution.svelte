@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
@@ -6,15 +6,14 @@
     import boltzman_distribution from '../functions/boltzman_distribution'
     import computePy_func from '$src/Pages/general/computePy'
 
-    export let active
-    export let energyUnit
-    export let zeemanSplit
-
-    export let energyLevels
-    export let electronSpin
-    export let numberOfLevels
+    export let active: boolean = false
+    export let energyUnit: string
+    export let zeemanSplit: boolean
+    export let energyLevels: ValueLabel[]
+    export let electronSpin: boolean
+    export let numberOfLevels: number
     export let collisionalTemp = 10
-    export let collisionalRateConstants
+    export let collisionalRateConstants: ValueLabel[] = []
 
     const title = 'Collisional cooling'
     const plotID = 'collisionalDistributionPlot'
@@ -91,7 +90,7 @@
     }
 
     $: if (windowReady) {
-        setTimeout(() => graphWindow.focus(), 100)
+        setTimeout(() => graphWindow?.focus(), 100)
     }
 </script>
 
