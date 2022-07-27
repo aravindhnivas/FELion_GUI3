@@ -76,26 +76,31 @@
     }
 
     let collisionalFileBasename = ''
+
     async function browse_collisional_file() {
         ;[collisionalFilename] = (await browse({ dir: false })) || collisionalFilename
         collisionalFileBasename = window.path.basename(collisionalFilename)
     }
 
-    const updateFilename = async () => {
+    $: if (collisionalFilename) {
         collisionalFileBasename = window.path.basename(collisionalFilename)
     }
 
-    $: if (collisionalFilename) updateFilename()
     let OpenRateConstantsPlot = false
 
     const saveCollisionalRateConstants = () => {
+        const save_dir = window.path.dirname(collisionalCoefficientJSONFile)
+
+        if (!window.fs.isDirectory(save_dir)) {
+            return window.createToast(`Directory ${save_dir} does not exist`, 'danger')
+        }
+
         const [, error] = window.fs.outputJsonSync(collisionalCoefficientJSONFile, {
             collisionalCoefficient,
             collisionalCoefficient_balance,
         })
-        if (error) {
-            return window.handleError(error)
-        }
+
+        if (error) return window.handleError(error)
         console.log(`${collisionalCoefficientJSONFile} saved`)
         window.createToast('Saved: ' + window.path.basename(collisionalCoefficientJSONFile))
     }
@@ -103,18 +108,16 @@
     let collisionalCoefficientJSONFile = ''
 
     const readcollisionalCoefficientJSONFile = () => {
-        if (window.fs.existsSync(collisionalCoefficientJSONFile)) {
-            console.log('loading: ', collisionalCoefficientJSONFile)
-            ;[{ collisionalCoefficient, collisionalCoefficient_balance }] =
-                window.fs.readJsonSync(collisionalCoefficientJSONFile)
-            if (window.db.get('active_tab') == 'Kinetics') {
-                window.createToast('loaded: ' + window.path.basename(collisionalCoefficientJSONFile), 'warning', {
-                    target: 'left',
-                })
-            }
-        }
+        if (!window.fs.isFile(collisionalCoefficientJSONFile)) return window.createToast('File not found', 'danger')
+        console.log('loading: ', collisionalCoefficientJSONFile)
+        ;[{ collisionalCoefficient, collisionalCoefficient_balance }] =
+            window.fs.readJsonSync(collisionalCoefficientJSONFile)
+        if (window.db.get('active_tab') !== 'Kinetics') return
+        window.createToast('loaded: ' + window.path.basename(collisionalCoefficientJSONFile), 'warning', {
+            target: 'left',
+        })
     }
-    // $: console.log(collisionalCoefficient.length)
+
     onMount(() => {
         const configLocation = <string>window.db.get('ROSAA_config_location') || ''
         if (!configLocation) return
