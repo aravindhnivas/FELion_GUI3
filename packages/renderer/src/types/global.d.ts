@@ -4,7 +4,7 @@ export {};
 
 const felix_opo_data_from_python = <const>["SA", "pow", "base", "average", "average_per_photon", "average_rel"];
 declare global {
-
+    
     type PlotData = Partial<Plotly.PlotData>
     interface DataFromPython {
         [key: string]: PlotData
@@ -16,6 +16,8 @@ declare global {
     type ButtonClickEvent = MouseEvent | MouseEvent & {
         currentTarget: EventTarget & HTMLButtonElement
     }
+
+    type ValueLabel = { value: number | string; label: string; id: string }
 
     interface Exposed {
         createToast: (description: string, type?: 'info' | 'danger' | 'warning' | 'success', opts?: SvelteToastOptions) => void;
