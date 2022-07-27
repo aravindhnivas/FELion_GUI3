@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { tick, onDestroy } from 'svelte'
     import WinBox from 'winbox/src/js/winbox.js'
     import { relayout } from 'plotly.js/dist/plotly-basic'
@@ -14,7 +14,7 @@
     export let x = 'center'
     export let y = 'center'
     export let background = '#634e96'
-    export let graphWindow = null
+    export let graphWindow: WinBox | null = null
     export let windowReady = false
     export let maximize = true
     export let graphMode = true
