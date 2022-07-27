@@ -15,6 +15,7 @@
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "@types/lodash-es": "^4.17.6",
     "@types/plotly.js": "^2.12.1",
+    "@types/winbox": "^0.2.1",
     "@zerodevx/svelte-toast": "^0.7.2",
     "animate.css": "^4.1.1",
     "bulma": "^0.9.4",
