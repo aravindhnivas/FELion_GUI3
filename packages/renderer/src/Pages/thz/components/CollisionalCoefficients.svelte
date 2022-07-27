@@ -5,22 +5,20 @@
     import balance_distribution from '../functions/balance_distribution'
     import CollisionalDistribution from '../windows/CollisionalDistribution.svelte'
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
-    // import BoxComponent from './BoxComponent.svelte'
     import { browse } from '$components/Layout.svelte'
-    // import CustomPanel from '$components/CustomPanel.svelte'
+    type RateObj = { value: number | string; label: string; id: string }
+    export let energyUnit: string
+    export let zeemanSplit: boolean
+    export let energyLevels: RateObj[]
 
-    export let energyUnit
-    export let zeemanSplit
-    export let energyLevels
-    export let electronSpin
-    export let numberOfLevels
-
+    export let electronSpin: boolean
+    export let numberOfLevels: number
     export let numberDensity = '4e14'
-    export let collisionalRates = []
-    export let collisionalTemp: number = null
+    export let collisionalRates: RateObj[] = []
+    export let collisionalTemp: number | null = null
     export let collisionalFilename = ''
-    export let collisionalCoefficient = []
-    export let collisionalCoefficient_balance = []
+    export let collisionalCoefficient: RateObj[] = []
+    export let collisionalCoefficient_balance: RateObj[] = []
 
     let collisionalWindow = false
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
@@ -47,7 +45,10 @@
         collisionalCoefficient.forEach((coefficient) => {
             const { label, value } = coefficient
             const levelLabels = label.split(' --> ').map((f) => f.trim())
-            let newLabel, newValue
+
+            let newLabel: string
+            let newValue: number
+
             newValue = value * balance_distribution({ ...balanceArgs, label })
             newLabel = `${levelLabels[1]} --> ${levelLabels[0]}`
 
@@ -65,8 +66,8 @@
         })
     }
 
-    const computeRate = (rate) => {
-        rate.value *= Number(numberDensity)
+    const computeRate = (rate: RateObj) => {
+        rate.value = Number(rate.value) * Number(numberDensity)
         rate.value = rate.value.toExponential(3)
         return rate
     }
@@ -177,4 +178,3 @@
         <Textfield bind:value {label} />
     {/each}
 </div>
-<!-- </CustomPanel> -->
