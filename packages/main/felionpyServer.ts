@@ -53,8 +53,12 @@ let py: child.ChildProcessWithoutNullStreams | undefined
 let serverStarting = false
 
 export async function startServer(webContents: Electron.WebContents) {
-    
-    if (serverStarting) return console.log('server already starting')
+
+    if (serverStarting) {
+
+        console.log('server already starting')
+        return Promise.resolve(false)
+    }
 
     const { db, developerMode, pyProgram, mainpyfile } = getCurrentDevStatus()
 
@@ -76,12 +80,9 @@ export async function startServer(webContents: Electron.WebContents) {
 
         if (!pyVersion) {
             pyVersion = await getPyVersion()
-            if (!pyVersion) {
-                console.error('Python is not valid. Fix it in Settings --> Configuration')
-                reject('Python is not valid. Fix it in Settings --> Configuration')
-                return
-            }
+            if (!pyVersion) return reject('could not get python version')
         }
+        
         console.log(pyVersion)
         webContents?.send('db:update', { key: 'pyVersion', value: pyVersion })
 

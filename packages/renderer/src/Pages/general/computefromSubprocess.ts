@@ -49,7 +49,8 @@ export default async function ({
             }
             target?.classList.toggle('is-loading')
         }
-
+        
+        pyVersion.set(<string>window.db.get('pyVersion'))
         if (!get(pyVersion)) {
             window.handleError('Python is not valid. Fix it in Settings --> Configuration')
             return
