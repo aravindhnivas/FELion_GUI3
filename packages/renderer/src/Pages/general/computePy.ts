@@ -72,7 +72,7 @@ export default async function ({ e, target, pyfile, args, general}: Type) {
 
         return Promise.resolve(dataFromPython)
     } catch (error) {
-        if(error instanceof Error) window.handleError(error)
+        window.handleError(error)
 
     } finally {
         if (processDivGeneral) {

@@ -80,7 +80,7 @@ export function plot(
 
     } catch (error) {
         console.error('Error occured while plotting\n', error)
-        if(error instanceof Error)  window.handleError(error)
+        window.handleError(error)
     }
 }
 

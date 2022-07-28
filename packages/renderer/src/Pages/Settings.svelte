@@ -107,7 +107,7 @@
             }
             window.checkupdate()
         } catch (error) {
-            if (event && error instanceof Error) window.handleError(error)
+            if (event) window.handleError(error)
         }
     }
 
@@ -204,7 +204,7 @@
                                             try {
                                                 await getPyVersion()
                                             } catch (error) {
-                                                if (error instanceof Error) window.handleError(error)
+                                                window.handleError(error)
                                             }
                                         }}>Save</button
                                     >
