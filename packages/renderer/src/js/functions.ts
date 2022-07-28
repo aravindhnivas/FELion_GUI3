@@ -2,8 +2,7 @@ import { mainPreModal } from '$src/sveltewritables'
 import { writable } from 'svelte/store'
 import { toast } from '@zerodevx/svelte-toast'
 import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
-// import './resizableDiv'
-// import '../Pages/general/computePy'
+import type { SvelteToastOptions } from '@zerodevx/svelte-toast'
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false)
 export const updateAvailable = writable(false)
@@ -11,7 +10,11 @@ export const newVersion = writable('')
 export const updating = writable(false)
 export { plot, subplot, plotlyClick, plotlyEventsInfo } from './plot'
 
-const toastTheme = {
+
+type ToastThemeOpts = {
+    [key in 'info' | 'success' | 'warning' | 'danger']: { [key: string]: string} 
+}
+const toastTheme:ToastThemeOpts  = <const>{
     info: {},
     success: {
         '--toastBackground': '#48BB78',
@@ -27,7 +30,13 @@ const toastTheme = {
     },
 }
 
-window.createToast = (description, type = 'info', opts = {}) => {
+export const createToast = (
+    description: string, 
+    type?: keyof ToastThemeOpts, 
+    opts: SvelteToastOptions = {}
+) => {
+    
+    if(!type) type = 'info'
     toast.push(description, {
         theme: toastTheme[type],
         pausable: true,
@@ -35,9 +44,11 @@ window.createToast = (description, type = 'info', opts = {}) => {
     })
 }
 
+window.createToast = createToast
+
 window.sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-window.handleError = (error) => {
+window.handleError = (error: string | Error) => {
     console.error(error)
     if(typeof error === 'string') {
         mainPreModal.error(error)
