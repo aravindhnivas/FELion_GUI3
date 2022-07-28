@@ -2,8 +2,6 @@ import { exposeInMainWorld } from './exposeInMainWorld'
 import fs from 'fs-extra'
 import {promises as fsPromise} from 'fs'
 import {tryF, isError} from 'ts-try'
-// import { promisify } from 'util'
-// import { syncTryCatcher, asyncTryCatcher } from './utils/trycatcher'
 export const fsUtils = {
     mkdirSync: (dir: fs.PathLike) => fs.mkdirSync(dir),
     emptyDirSync: (dir: string) => fs.emptyDirSync(dir),
@@ -28,20 +26,12 @@ export const fsUtils = {
     removeSync: (remove: string) => fs.removeSync(remove),
     readJsonSync: (path: string) => tryF(() => fs.readJsonSync(path)),
     outputJsonSync: (filename: string, obj: Object, options = { spaces: 2 }) => {
-        // const output = tryF(() => fs.outputJsonSync(filename, obj, options))
-        // return output instanceof Error ? [null, output] : [output, null]
         return tryF(() => fs.outputJsonSync(filename, obj, options))
     },
-    // readJsonSync: syncTryCatcher(fs.readJsonSync),
-    // outputJsonSync: (file: string, obj: any, options = { spaces: 2 }) => {
-    //     return syncTryCatcher(fs.outputJsonSync)(file, obj, options)
-    // },
     isError: isError,
     tryF: tryF,
-    // writeFile: asyncTryCatcher(promisify(fs.writeFile)),
     writeFile: (path: fs.PathLike, data: string) => tryF(fsPromise.writeFile(path, data, 'utf8')),
     readdir: (path: fs.PathLike) => tryF(fsPromise.readdir(path)),
-    
     exists: async (path: fs.PathLike) => {
         return new Promise((resolve) => {
             fs.exists(path, (exists) => {
