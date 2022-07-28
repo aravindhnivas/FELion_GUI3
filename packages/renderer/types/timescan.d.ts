@@ -1,5 +1,10 @@
 export as namespace Timescan;
 
+export type PlotData  = Pick<Plotly.PlotData, "x" | "y"> & {
+    error_y: {
+        array: number[];
+    };
+};
 export interface Data {
     SUM: PlotData;
     [mass: string]: PlotData;
