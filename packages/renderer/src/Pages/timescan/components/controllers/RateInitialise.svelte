@@ -1,13 +1,13 @@
 <script lang="ts">
     import Textfield from '@smui/textfield'
     import CustomPanel from '$components/CustomPanel.svelte'
-    import type { totalMassKeyType } from '$src/Pages/timescan/types/types'
+    // import type { MassKey } from 'types/types'
     import { tick } from 'svelte'
     export let legends = ''
     export let useParamsFile = false
     export let loaded = false
     export let nameOfReactants = ''
-    export let totalMassKey: totalMassKeyType = []
+    export let totalMassKey: Timescan.MassKey[] = []
     export let computeOtherParameters = (_?: boolean): void => {}
 </script>
 

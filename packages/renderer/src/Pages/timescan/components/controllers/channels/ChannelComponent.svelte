@@ -2,10 +2,10 @@
     import { createEventDispatcher } from 'svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import Textfield from '@smui/textfield'
-    import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+    // import type { LossChannel } from 'types/types'
     import { isUndefined } from 'lodash-es'
 
-    export let item: loss_channelsType
+    export let item: Timescan.LossChannel
     export let rateConstantMode = false
     export let ions_lists: string[] = []
 

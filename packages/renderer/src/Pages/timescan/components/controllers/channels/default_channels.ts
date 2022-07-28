@@ -1,15 +1,17 @@
-import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+// import type { LossChannel } from 'types/types'
 
 const baseRateConstant = -15
 export const base_slider_values_str = (max='0.5') => `0, ${max}, 1e-3`
-export const get_slider_controller = (n) => {
+export const get_slider_controller = (n: number) => {
     const val = baseRateConstant*n
     return `1e${val - 3}, 1e${val + 3}, 1e${val - 4}`
 }
 
-export default function(nameOfReactantsArr: string[] = [], rateConstantMode: boolean = false, maxGuess:string): loss_channelsType[] {
+export default function(
+    nameOfReactantsArr: string[] = [], rateConstantMode: boolean = false, maxGuess:string
+): Timescan.LossChannel[] {
 
-    let defaultChannels: loss_channelsType[] = []
+    let defaultChannels: Timescan.LossChannel[] = []
     for (let i = 1; i < nameOfReactantsArr.length; i++) {
 
         const currention = nameOfReactantsArr[i - 1]

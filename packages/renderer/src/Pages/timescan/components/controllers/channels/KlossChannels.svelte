@@ -7,11 +7,11 @@
     import Textfield from '@smui/textfield'
     import default_channels, { get_slider_controller, base_slider_values_str } from './default_channels'
 
-    import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+    // import type { loss_channelsType } from 'types/types'
 
     import CustomPanel from '$components/CustomPanel.svelte'
 
-    export let loss_channels: loss_channelsType[] = []
+    export let loss_channels: Timescan.LossChannel[] = []
     export let nameOfReactants = ''
     export let rateConstantMode = false
 
@@ -66,7 +66,7 @@
     let defaultMode = false
 
     $: nameOfReactantsArr = nameOfReactants.split(',').map((n) => n.trim())
-    let defaultChannelsArr: loss_channelsType[]
+    let defaultChannelsArr: Timescan.LossChannel[]
 
     const make_default_channels = (event?: CustomEvent) => {
         if (!defaultMode) {

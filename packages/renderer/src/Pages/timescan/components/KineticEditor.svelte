@@ -1,13 +1,13 @@
 <script lang="ts">
     import Editor from '$components/Editor.svelte'
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
-    import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+    // import type { LossChannel } from '$src/Pages/timescan/types/types'
     export let location = ''
     export let savefilename = ''
     export let reportRead = false
     export let reportSaved = false
     export let nameOfReactants = ''
-    export let loss_channels: loss_channelsType[] = []
+    export let loss_channels: Timescan.LossChannel[] = []
     export let selectedFile = ''
     export let rateConstantMode = false
 

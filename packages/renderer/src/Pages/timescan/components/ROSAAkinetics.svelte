@@ -25,7 +25,7 @@
     import KlossChannels from './controllers/channels/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
     // import { activePage } from '$src/sveltewritables'
-    import type { mainDataType, dataType, totalMassKeyType, loss_channelsType } from '$src/Pages/timescan/types/types'
+    // import type { TimescanData, TimescanPlotData, totalMassKey, LossChannel } from 'types/types'
 
     import Accordion from '@smui-extra/accordion'
     import CustomPanel from '$components/CustomPanel.svelte'
@@ -35,13 +35,13 @@
 
     let timestartIndexScan = 0
     let fileCollections: string[] = []
-    let molecule = 'CD'
-    let tag = 'He'
-    let nameOfReactants = ''
+    let molecule: string = 'CD'
+    let tag: string = 'He'
+    let nameOfReactants: string = ''
     // let ratek3 = 'k31'
     // let ratekCID = 'kCID1'
     let selectedFile = ''
-    let totalMassKey: totalMassKeyType = []
+    let totalMassKey: Timescan.MassKey[] = []
     // let k3Guess = '0, 0.5, 1e-3'
     // let kCIDGuess = '0, 2, 1e-3'
 
@@ -53,7 +53,7 @@
         console.log(result, currentLocation)
     }
 
-    const updateFiles = (node?: ButtonClickEvent) => {
+    const updateFiles = (node: ButtonClickEvent) => {
         if (!window.fs.existsSync(currentLocation)) {
             return window.createToast('Invalid location', 'danger', { target: 'left' })
         }
@@ -72,11 +72,11 @@
         updateFiles()
     }
 
-    let currentData: mainDataType
-    let currentDataBackup: mainDataType
+    let currentData: Timescan.Data
+    let currentDataBackup: Timescan.Data
 
     const sliceSUM = () => {
-        const newData: dataType = cloneDeep(currentDataBackup).SUM
+        const newData: Timescan.PlotData = cloneDeep(currentDataBackup).SUM
         currentData.SUM.x = newData.x.slice(timestartIndexScan)
         currentData.SUM.y = newData.y.slice(timestartIndexScan)
         currentData['SUM']['error_y']['array'] = newData['error_y']['array'].slice(timestartIndexScan)
@@ -87,7 +87,7 @@
         if (!selectedFile.endsWith('.scan')) return
 
         totalMassKey.forEach(({ mass }) => {
-            const newData: dataType = cloneDeep(currentDataBackup)[mass]
+            const newData: Timescan.PlotData = cloneDeep(currentDataBackup)[mass]
             if (!newData) return window.createToast(`${mass} not found`, 'danger', { target: 'left' })
             newData.x = newData.x.slice(timestartIndexScan)
             newData.y = newData.y.slice(timestartIndexScan)
@@ -135,15 +135,13 @@
         sliceData(false)
         computeOtherParameters()
     }
-
     let useParamsFile = false
+
     const kinetics_params_file = persistentWritable('kinetics_params_file', 'kinetics.params.json')
+
     $: paramsFile = window.path.join(configDir, $kinetics_params_file || '')
+
     $: paramsData = {
-        // ratek3,
-        // k3Guess,
-        // ratekCID,
-        // kCIDGuess,
         legends,
         totalMassKey,
         initialValues,
@@ -153,16 +151,12 @@
         timestartIndexScan,
         $fit_config_filename,
         kineticEditorFilename,
-        // loss_channels,
         tagFile,
     }
     let load_data_loss_channels
+
     const params_load = (data) => {
         ;({
-            // ratek3,
-            // k3Guess,
-            // ratekCID,
-            // kCIDGuess,
             legends,
             totalMassKey,
             initialValues,
@@ -171,7 +165,6 @@
             nameOfReactants,
             timestartIndexScan,
             kineticEditorFilename,
-            // loss_channels,
         } = data)
 
         if (!(molecule && tag)) {
@@ -294,7 +287,7 @@
 
     $: configDir = window.path.join(currentLocation, '../configs')
 
-    async function kineticSimulation(e) {
+    async function kineticSimulation(e: ButtonClickEvent) {
         try {
             if (!selectedFile) {
                 return window.handleError('Select a file')
@@ -335,26 +328,16 @@
                     )
                     .join()
                 kinetic_plot_adjust_configs_obj = JSON.parse(`{${kinetic_plot_adjust_configs_obj}}`)
-
                 console.log(kinetic_plot_adjust_configs_obj)
             } catch (error) {
                 kinetic_plot_adjust_configs_obj = {}
             }
 
-            // let modified_rate_constants = [ratek3, ratekCID]
-            // loss_channels.forEach(({ type, name }) => {
-            //     if (type === 'forwards') return (modified_rate_constants[0] += `, ${name}`)
-            //     modified_rate_constants[1] += `, ${name}`
-            // })
             const args = {
                 tag,
                 data,
                 molecule,
                 legends,
-                // ratek3: modified_rate_constants[0],
-                // k3Guess,
-                // ratekCID: modified_rate_constants[1],
-                // kCIDGuess,
                 selectedFile,
                 numberDensity: nHe,
                 $fit_config_filename,
@@ -366,9 +349,10 @@
                 useTaggedFile,
                 tagFile,
             }
+
             computePy_func({ e, pyfile: 'kineticsCode', args, general: true })
         } catch (error) {
-            window.handleError(error)
+            if (error instanceof Error) window.handleError(error)
         }
     }
 
@@ -381,11 +365,9 @@
     let reportRead = false
     let reportSaved = false
     const fit_config_filename = persistentWritable('kinetics_fitted_values', 'kinetics.fit.json')
-    let loss_channels: loss_channelsType[] = []
+    let loss_channels: Timescan.LossChannel[] = []
     let rateConstantMode = false
-
     onMount(() => {
-        // loadConfig()
         selectedFile = fileCollections[0] || ''
     })
 

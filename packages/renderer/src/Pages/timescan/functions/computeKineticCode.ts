@@ -1,15 +1,15 @@
 
-import type { loss_channelsType } from '$src/Pages/timescan/types/types'
+// import type { Timescan.LossChannel } from 'types/types'
 export interface ComputeKineticCodeType {
     nameOfReactants: string;
-    loss_channels: loss_channelsType[];
+    loss_channels: Timescan.LossChannel[];
     rateConstantMode: boolean
 }
 
 export class computeKineticCodeScipy {
 
     nameOfReactants: string
-    loss_channels: loss_channelsType[]
+    loss_channels: Timescan.LossChannel[]
     sliderControlls: {forwards: string[], backwards: string[]} = {forwards: [], backwards: []}
     nameOfReactantsArr: string[]
     rateForwardArr: string[]
