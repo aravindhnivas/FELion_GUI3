@@ -36,7 +36,7 @@
     let timestartIndexScan = 0
 
     function dir_changed() {
-        if (window.fs.existsSync(currentLocation)) {
+        if (window.fs.isDirectory(currentLocation)) {
             fullfiles = window.fs.readdirSync(currentLocation).filter((file) => file.endsWith('.scan'))
         }
     }

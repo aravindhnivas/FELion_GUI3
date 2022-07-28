@@ -17,7 +17,7 @@
     let fileChecked: string[] = []
     let currentLocation = ''
 
-    $: massfiles = window.fs.existsSync(currentLocation)
+    $: massfiles = window.fs.isDirectory(currentLocation)
         ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
         : []
     $: if (massfiles.length > 0) plotData()

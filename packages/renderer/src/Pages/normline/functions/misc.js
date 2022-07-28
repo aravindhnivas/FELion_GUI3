@@ -26,7 +26,7 @@ export function loadfile(name) {
     const filestem = name.endsWith('.json') ? name : `${name}.json`
     const filename = window.path.join(get(felixopoLocation), filestem)
     // const filename = window.path.join(get(felixopoLocation), `${name}.json`)
-    if (!window.fs.existsSync(filename)) {
+    if (!window.fs.isFile(filename)) {
         window.createToast(`Invalid file: ${name}.json .`, 'danger')
         return []
     }

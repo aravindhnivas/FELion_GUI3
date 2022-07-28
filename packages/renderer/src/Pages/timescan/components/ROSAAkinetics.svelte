@@ -54,7 +54,7 @@
     }
 
     const updateFiles = (node: ButtonClickEvent) => {
-        if (!window.fs.existsSync(currentLocation)) {
+        if (!window.fs.isDirectory(currentLocation)) {
             return window.createToast('Invalid location', 'danger', { target: 'left' })
         }
         window.db.set('kinetics_location', currentLocation)
@@ -300,7 +300,7 @@
             if (!currentData) {
                 return window.handleError('No data available')
             }
-            if (!window.fs.existsSync(kineticfile)) {
+            if (!window.fs.isFile(kineticfile)) {
                 return window.handleError('Compute and save kinetic equation')
             }
 

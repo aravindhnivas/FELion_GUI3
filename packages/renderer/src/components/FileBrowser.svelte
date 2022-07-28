@@ -22,7 +22,7 @@
     let otherfolders = []
     let original_files = []
 
-    $: locationStatus = window.fs.existsSync(currentLocation)
+    $: locationStatus = window.fs.isDirectory(currentLocation)
     $: parentFolder = locationStatus ? window.path.basename(currentLocation) : 'Undefined'
 
     let searchKey = ''

@@ -22,7 +22,7 @@
         if (location.length == 0) {
             return openFolder({ save: true })
         }
-        if (!window.fs.existsSync(powfile)) return writePowfile()
+        if (!window.fs.isFile(powfile)) return writePowfile()
         return showConfirm.push({
             title: 'Overwrite powerfile?',
             content: 'Do you want to overwrite the powerfile?',

@@ -50,7 +50,7 @@
     let einsteinB_rateComputed = false
 
     const simulation = async (e) => {
-        if (!window.fs.existsSync(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
+        if (!window.fs.isDirectory(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
         if (!einsteinB_rateComputed) return window.createToast('Compute einsteinB rate constants', 'danger')
@@ -146,7 +146,7 @@
         await computePy_func({ e, pyfile: 'ROSAA', args, general: true })
     }
 
-    let currentLocation = window.fs.existsSync(window.db.get('ROSAA_config_location'))
+    let currentLocation = window.fs.isDirectory(<string>window.db.get('ROSAA_config_location'))
         ? <string>window.db.get('ROSAA_config_location')
         : ''
 
@@ -345,7 +345,7 @@
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
             const { savelocation } = CONFIG.saveFile
-            if (window.fs.existsSync(savelocation)) {
+            if (window.fs.isDirectory(savelocation)) {
                 currentLocation = savelocation
             }
 

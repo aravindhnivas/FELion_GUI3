@@ -20,7 +20,7 @@
     let showTheoryFiles = false
     let theoryfilesChecked = []
 
-    $: if (window.fs.existsSync(theoryLocation)) {
+    $: if (window.fs.isDirectory(theoryLocation)) {
         theoryfiles = theoryfilesChecked.map((file) => window.path.resolve(theoryLocation, file))
     }
 
