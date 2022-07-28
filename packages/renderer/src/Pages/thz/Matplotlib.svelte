@@ -7,7 +7,7 @@
 
     export let active = false
     export let currentLocation = ''
-    let thzfiles = []
+    let thzfiles: string[] = []
 
     const dispatch = createEventDispatcher()
 
@@ -15,28 +15,23 @@
     $: if (data_location) {
         loadfiles()
     }
-    // $: fileSelected = thzfiles
-    let fileSelected = []
-    let items = []
+
+    let fileSelected: string[] = []
+    let items: { name: string; id: string }[] = []
     let loadStatus = { name: 'loading', type: 'warning' }
+
     const loadfiles = async () => {
-        try {
-            items = []
-            fileSelected = []
-            thzfiles = []
-            loadStatus = { name: 'loading', type: 'warning' }
-            const [files] = await window.fs.readdir(data_location)
-            if (!files) {
-                loadStatus = { name: 'loaded: empty', type: 'warning' }
-                return
-            }
-            // console.log(files)
-            items = files?.filter((file) => file.endsWith('.thz.dat')).map((name) => ({ name, id: window.getID() }))
-            loadStatus = { name: 'loaded', type: 'success' }
-        } catch (error) {
+        items = []
+        fileSelected = []
+        thzfiles = []
+        loadStatus = { name: 'loading', type: 'warning' }
+        const files = await window.fs.readdir(data_location)
+        if (window.fs.isError(files)) {
             loadStatus = { name: 'error', type: 'danger' }
-            window.handleError(error)
+            return
         }
+        items = files?.filter((file) => file.endsWith('.thz.dat')).map((name) => ({ name, id: window.getID() }))
+        loadStatus = { name: 'loaded', type: 'success' }
     }
 
     onMount(async () => {

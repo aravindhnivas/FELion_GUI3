@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { onMount, afterUpdate, createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition'
     import Textfield from '@smui/textfield'
@@ -51,8 +51,10 @@
             filesLoaded = false
 
             try {
-                const [folderfile, filereadErr] = await window.fs.readdir(currentLocation)
-                if (filereadErr) throw filereadErr
+                const folderfile = await window.fs.readdir(currentLocation)
+                if (window.fs.isError(folderfile)) {
+                    throw folderfile
+                }
 
                 const fileIncludePattern = new RegExp(`.+\\.[^fr]?${filetype}`) // f or r keyword is to avoid getting fscan and rscan files
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import Editor from '$components/Editor.svelte'
     import { computeKineticCodeScipy } from '../functions/computeKineticCode'
-    // import type { LossChannel } from '$src/Pages/timescan/types/types'
+
     export let location = ''
     export let savefilename = ''
     export let reportRead = false
@@ -41,16 +41,18 @@
         if (forwardChannels.length === 0) {
             return window.createToast('ERROR: Make atleast one rate equation', 'danger')
         }
-
         computedCode = new computeKineticCodeScipy(maindata)
         update_editor(computedCode.fullEquation)
     }
 
-    let filenameOpts = []
+    let filenameOpts: string[] = []
 
     const filenameUpdate = async () => {
-        const [files] = await window.fs.readdir(location)
-        if (!files) return console.log('No files')
+        const files = await window.fs.readdir(location)
+        if (window.fs.isError(files)) {
+            console.error(files)
+            return
+        }
         filenameOpts = files.filter((f) => f.startsWith(selectedFile.split('.')[0])).filter((f) => f.endsWith('.md'))
     }
 
