@@ -44,12 +44,13 @@ export const createToast = (
     })
 }
 
-export const handleError = (error: string | Error) => {
+export const handleError = (error: unknown) => {
+    window.error = error
     console.error(error)
     if(typeof error === 'string') {
         mainPreModal.error(error)
-    } else if(error instanceof Error) {
-        mainPreModal.error(error.stack)
+    } else {
+        mainPreModal.error(error)
     }
 }
 

@@ -24,6 +24,7 @@ declare global {
         sleep: (ms: number) => Promise<void>;
         getID: () => string;
         clickOutside: (node: HTMLElement) => { destroy: () => void };
+        error: unknown;
     }
     interface Window extends Exposed {}
 }

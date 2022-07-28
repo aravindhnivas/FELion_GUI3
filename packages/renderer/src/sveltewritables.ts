@@ -1,12 +1,14 @@
 import { writable } from 'svelte/store'
 
 function openModalStore() {
-    const defaultValues = {
-        modalTitle: 'Title',
+    const defaultValues: {
+        type: "danger" | "warning";
+        content: string | Error;
+        open: boolean;
+    } = {
         type: 'warning',
-        modalContent: 'Content',
+        content: 'Content',
         open: false,
-        message: 'Pre-message',
     }
 
     const { subscribe, set, update } = writable(defaultValues)
@@ -15,14 +17,13 @@ function openModalStore() {
         subscribe,
         set,
         update,
-        error(modalContent = '', modalTitle = 'Error Details', type = 'danger', message = 'Error Ocurred') {
-            update((n) => {
-                return { modalTitle, type, modalContent, message, open: true }
-            })
+        error(err: unknown) {
+            const content = err instanceof Error ? err.stack || err.message : <string>err 
+            update((_n) => ({ content, type: "danger", open: true }))
         },
-        info(modalContent = '', modalTitle = 'Output', type = 'warning', message = 'Output') {
+        info(content: string) {
             update((n) => {
-                return { modalTitle, type, modalContent, message, open: true }
+                return { content, type: "warning", open: true  }
             })
         },
         reset: () => set(defaultValues),

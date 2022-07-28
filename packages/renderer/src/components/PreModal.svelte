@@ -58,7 +58,11 @@
             </h1>
             <hr />
             <div style="user-select: text; white-space: pre-wrap;">
-                {$mainPreModal.modalContent}
+                {#if $mainPreModal.content instanceof Error}
+                    {$mainPreModal.content.stack}
+                {:else}
+                    {$mainPreModal.content}
+                {/if}
             </div>
         </div>
     </FlatList>
