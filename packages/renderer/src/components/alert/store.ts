@@ -15,7 +15,6 @@ const makeStore = <T>(initial: T) => {
 }
 
 const defaultAlert = {
-    open: false,
     title: 'Confirm',
     content: 'Are you sure?',
     callback: (response: string): void => {},
