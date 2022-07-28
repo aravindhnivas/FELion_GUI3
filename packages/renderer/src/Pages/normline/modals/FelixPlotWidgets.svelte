@@ -5,16 +5,19 @@
     import CustomCheckList from '$components/CustomCheckList.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
     import { onMount } from 'svelte'
+    export let felixPlotWidgets: {
+        text: ValueLabel<string>[]
+        boolean: ValueLabel<boolean>[]
+        number: ValueLabel<number>[]
+    }
 
-    export let felixPlotWidgets
     export let theoryLocation: string
 
-    let files_loaded = false
+    let felixOpoDatfiles: { name: string; id: string }[] = []
 
-    let felixOpoDatfiles = []
-    function loadFiles() {
-        files_loaded = false
-        let calcfiles = []
+    async function loadFiles() {
+        let calcfiles: { name: string; id: string }[] = []
+
         if (window.fs.isDirectory(theoryLocation)) {
             window.fs.readdirSync(theoryLocation).forEach((file) => {
                 if (window.fs.isFile(window.path.join(theoryLocation, file))) {
