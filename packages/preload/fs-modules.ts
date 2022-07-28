@@ -2,8 +2,8 @@ import { exposeInMainWorld } from './exposeInMainWorld'
 import fs from 'fs-extra'
 import {promises as fsPromise} from 'fs'
 import {tryF, isError} from 'ts-try'
-import { promisify } from 'util'
-import { syncTryCatcher, asyncTryCatcher } from './utils/trycatcher'
+// import { promisify } from 'util'
+// import { syncTryCatcher, asyncTryCatcher } from './utils/trycatcher'
 export const fsUtils = {
     mkdirSync: (dir: fs.PathLike) => fs.mkdirSync(dir),
     emptyDirSync: (dir: string) => fs.emptyDirSync(dir),
