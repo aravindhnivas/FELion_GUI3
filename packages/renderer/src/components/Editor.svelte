@@ -12,7 +12,7 @@
 
     export let filetype = ''
     export let editor = null
-    export let mount = null
+    export let mount: string
     export let mainTitle = 'Report/Editor'
     export let reportRead = false
     export let savefilename = 'report'
@@ -69,10 +69,12 @@
     }
 
     const writeReport = async (info = 'saved') => {
-        const contents = editor.getData()
-        const [, error] = await window.fs.writeFile(reportFile, contents, 'utf8')
-        if (error) {
-            return window.createToast("Report couldn't be saved.", 'danger')
+        const contents = editor?.getData()
+
+        const output = await window.fs.writeFile(reportFile, contents)
+
+        if (window.fs.isError(output)) {
+            return window.handleError(output)
         }
         const type = info === 'saved' ? 'success' : 'warning'
         window.createToast(`${window.path.basename(reportFile)}: report ${info}`, type)

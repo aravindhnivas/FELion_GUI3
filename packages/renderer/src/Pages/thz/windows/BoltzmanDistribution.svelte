@@ -72,15 +72,14 @@
             writeContent += `${plotData[0][i]}\t${plotData[1][i]}\n`
         }
 
-        const [, error] = await window.fs.writeFile(outputFile, writeContent)
+        const output = await window.fs.writeFile(outputFile, writeContent)
 
-        if (error) {
-            saveInfo.error = error
-            window.handleError(error)
-        } else {
-            saveInfo.msg = `Saved to ${outputFile}`
-            window.createToast(`Data saved`)
+        if (window.fs.isError(output)) {
+            saveInfo.error = output
+            return window.handleError(output)
         }
+        saveInfo.msg = `Saved to ${outputFile}`
+        window.createToast(`Data saved`)
     }
 
     const openFigure = (e) => {

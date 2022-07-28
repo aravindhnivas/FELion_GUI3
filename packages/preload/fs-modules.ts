@@ -1,5 +1,7 @@
 import { exposeInMainWorld } from './exposeInMainWorld'
 import fs from 'fs-extra'
+import {promises as fsPromise} from 'fs'
+import {tryF, isError} from 'ts-try'
 import { promisify } from 'util'
 import { syncTryCatcher, asyncTryCatcher } from './utils/trycatcher'
 export const fsUtils = {
@@ -16,20 +18,28 @@ export const fsUtils = {
     rename: (oldPath: fs.PathLike, newPath: fs.PathLike, callback: (err: NodeJS.ErrnoException) => void) => {
         return fs.rename(oldPath, newPath, callback)
     },
-    readFileSync: (filename: fs.PathOrFileDescriptor) => fs.readFileSync(filename, 'utf-8'),
+    // readFileSync: (filename: fs.PathOrFileDescriptor) => fs.readFileSync(filename, 'utf-8'),
+    readFileSync: (filename: fs.PathOrFileDescriptor) => tryF(() => fs.readFileSync(filename, 'utf-8')),
     existsSync: (location: fs.PathLike) => fs.existsSync(location),
     copySync: (src: string, dest: string) => fs.copySync(src, dest),
     writeFileSync: (path: fs.PathOrFileDescriptor, data: { toString: (arg0: string) => string | NodeJS.ArrayBufferView }) => {
         return fs.writeFileSync(path, data.toString('utf-8'))
     },
     removeSync: (remove: string) => fs.removeSync(remove),
-
-    readJsonSync: syncTryCatcher(fs.readJsonSync),
-    outputJsonSync: (file: string, obj: any, options = { spaces: 2 }) => {
-        return syncTryCatcher(fs.outputJsonSync)(file, obj, options)
+    readJsonSync: (path: string) => tryF(() => fs.readJsonSync(path)),
+    outputJsonSync: (filename: string, obj: Object, options = { spaces: 2 }) => {
+        return tryF(() => fs.outputJsonSync(filename, obj, options))
     },
-    writeFile: asyncTryCatcher(promisify(fs.writeFile)),
-    readdir: asyncTryCatcher(promisify(fs.readdir)),
+    // readJsonSync: syncTryCatcher(fs.readJsonSync),
+    // outputJsonSync: (file: string, obj: any, options = { spaces: 2 }) => {
+    //     return syncTryCatcher(fs.outputJsonSync)(file, obj, options)
+    // },
+    isError: isError,
+    tryF: tryF,
+    // writeFile: asyncTryCatcher(promisify(fs.writeFile)),
+    writeFile: (path: fs.PathLike, data: string) => tryF(fsPromise.writeFile(path, data, 'utf8')),
+    readdir: (path: fs.PathLike) => tryF(fsPromise.readdir(path)),
+    
     exists: async (path: fs.PathLike) => {
         return new Promise((resolve) => {
             fs.exists(path, (exists) => {
