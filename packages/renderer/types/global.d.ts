@@ -20,13 +20,10 @@ declare global {
 
     interface Exposed {
         createToast: typeof import('../src/js/functions').createToast;
+        handleError: typeof import('../src/js/functions').handleError;
         sleep: (ms: number) => Promise<void>;
-        handleError: (error: Error | string) => void;
         getID: () => string;
         clickOutside: (node: HTMLElement) => { destroy: () => void };
-    
     }
-
     interface Window extends Exposed {}
-
 }
