@@ -16,7 +16,9 @@ declare global {
         currentTarget: EventTarget & HTMLButtonElement
     }
 
-    type ValueLabel = { value: number | string; label: string; id: string }
+    interface ValueLabel<T = number | string | boolean> { 
+        value: T; label: string; step?: string, id: string
+     }
 
     interface Exposed {
         createToast: typeof import('../src/js/functions').createToast;
