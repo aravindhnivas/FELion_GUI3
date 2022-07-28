@@ -44,18 +44,20 @@ export const createToast = (
     })
 }
 
-window.createToast = createToast
-
-window.sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-window.handleError = (error: string | Error) => {
+export const handleError = (error: string | Error) => {
     console.error(error)
     if(typeof error === 'string') {
         mainPreModal.error(error)
-    } else {
+    } else if(error instanceof Error) {
         mainPreModal.error(error.stack)
     }
 }
+
+window.createToast = createToast
+window.handleError = handleError
+
+window.sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
 
 
 window.addEventListener('DOMContentLoaded', (event) => {
