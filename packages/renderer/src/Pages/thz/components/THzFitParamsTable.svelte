@@ -25,10 +25,8 @@
             const { freq, amp, fG, fL } = params
             dataToSave[freq] = { amp, fG, fL }
         })
-        const [, error] = window.fs.outputJsonSync(saveParamsToFile, dataToSave)
-        if (error) {
-            return window.handleError(error)
-        }
+        const result = window.fs.outputJsonSync(saveParamsToFile, dataToSave)
+        if (window.fs.isError(result)) return window.handleError(result)
         window.createToast('file saved')
     }
 

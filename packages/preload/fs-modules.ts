@@ -28,6 +28,8 @@ export const fsUtils = {
     removeSync: (remove: string) => fs.removeSync(remove),
     readJsonSync: (path: string) => tryF(() => fs.readJsonSync(path)),
     outputJsonSync: (filename: string, obj: Object, options = { spaces: 2 }) => {
+        // const output = tryF(() => fs.outputJsonSync(filename, obj, options))
+        // return output instanceof Error ? [null, output] : [output, null]
         return tryF(() => fs.outputJsonSync(filename, obj, options))
     },
     // readJsonSync: syncTryCatcher(fs.readJsonSync),

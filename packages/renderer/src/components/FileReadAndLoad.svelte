@@ -53,9 +53,11 @@
                     }
                 })
             }
+
             saveDataForFile ??= { default: dataToSave }
-            const [, error] = window.fs.outputJsonSync(savefilename, saveDataForFile)
-            if (error) return window.handleError(`Error writing ${filename}\n${error}`)
+
+            const result = window.fs.outputJsonSync(savefilename, saveDataForFile)
+            if (window.fs.isError(result)) return window.handleError(`Error writing ${filename}\n${result.message}`)
             return notify()
         }
 
@@ -76,8 +78,8 @@
             data[selectedFile]['default'] = dataToSave
         }
 
-        ;[, error] = window.fs.outputJsonSync(savefilename, data)
-        if (error) return window.handleError(`Error writing ${filename}\n${error}`)
+        const result = window.fs.outputJsonSync(savefilename, data)
+        if (window.fs.isError(result)) return window.handleError(`Error writing ${filename}\n${result.message}`)
         data_loaded = true
         return notify()
     }

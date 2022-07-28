@@ -96,12 +96,12 @@
             return window.createToast(`Directory ${save_dir} does not exist`, 'danger')
         }
 
-        const [, error] = window.fs.outputJsonSync(collisionalCoefficientJSONFile, {
+        const result = window.fs.outputJsonSync(collisionalCoefficientJSONFile, {
             collisionalCoefficient,
             collisionalCoefficient_balance,
         })
 
-        if (error) return window.handleError(error)
+        if (window.fs.isError(result)) return window.handleError(result)
         console.log(`${collisionalCoefficientJSONFile} saved`)
         window.createToast('Saved: ' + window.path.basename(collisionalCoefficientJSONFile))
     }

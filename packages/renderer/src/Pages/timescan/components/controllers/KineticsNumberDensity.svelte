@@ -39,18 +39,19 @@
     let get_datas
 
     const save_datas = async () => {
-        try {
-            if (!get_datas) return window.createToast('No datas computed', 'danger')
-            if (get_datas === null) return window.createToast('Data is not yet full computed')
-            if (Object.keys(get_datas).length === 0) return
-            contents[selectedFile] = get_datas
-            window.fs.outputJsonSync(savefilename, contents)
-            contents = window.fs.readJsonSync(savefilename)
-            if (window.fs.isError(contents)) return window.handleError(contents)
-            window.createToast(`File saved to ${window.path.basename(savefilename)} for ${selectedFile}`)
-        } catch (error) {
-            window.handleError(error)
-        }
+        if (!get_datas) return window.createToast('No datas computed', 'danger')
+        if (get_datas === null) return window.createToast('Data is not yet full computed')
+        if (Object.keys(get_datas).length === 0) return
+
+        contents[selectedFile] = get_datas
+
+        const result = window.fs.outputJsonSync(savefilename, contents)
+        if (window.fs.isError(result)) return window.handleError(result)
+
+        contents = window.fs.readJsonSync(savefilename)
+        if (window.fs.isError(contents)) return window.handleError(contents)
+
+        window.createToast(`File saved to ${window.path.basename(savefilename)} for ${selectedFile}`)
     }
 
     const compute = async () => {
@@ -87,7 +88,8 @@
             contents[key] = datas
         }
 
-        window.fs.outputJsonSync(savefilename, contents)
+        const result = window.fs.outputJsonSync(savefilename, contents)
+        if (window.fs.isError(result)) return window.handleError(result)
         window.createToast(`File saved to ${window.path.basename(savefilename)}`, 'success')
         await readConfigFile()
     }

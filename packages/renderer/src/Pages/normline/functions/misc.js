@@ -15,9 +15,9 @@ import { uniqBy } from 'lodash-es'
 export function savefile({ file = {}, name = '', location = '' } = {}) {
     const filestem = name.endsWith('.json') ? name : `${name}.json`
     const filename = window.path.join(location || get(felixopoLocation), filestem)
-    const [, error] = window.fs.outputJsonSync(filename, { file })
-    if (error) {
-        return window.handleError(error)
+    const result = window.fs.outputJsonSync(filename, { file })
+    if (window.fs.isError(result)) {
+        return window.handleError(result)
     }
     window.createToast(`${name}.json has been saved.`, 'success')
 }

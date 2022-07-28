@@ -206,7 +206,8 @@
             contents[selectedFile].default = paramsData
         }
 
-        window.fs.outputJsonSync(paramsFile, contents)
+        const result = window.fs.outputJsonSync(paramsFile, contents)
+        if (window.fs.isError(result)) return window.handleError(result)
         tagOptions = Object.keys(contents[selectedFile].tag)
         window.createToast(`saved: ${window.path.basename(paramsFile)}`, 'success', {
             target: 'left',
