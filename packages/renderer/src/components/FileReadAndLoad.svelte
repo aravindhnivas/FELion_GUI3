@@ -59,14 +59,13 @@
             return notify()
         }
 
-        let data, error
+        let data = {}
         if (window.fs.isFile(savefilename)) {
-            ;[data, error] = window.fs.readJsonSync(savefilename)
-            console.log('file read', data, error)
-            if (error) return window.handleError(error)
+            data = window.fs.readJsonSync(savefilename)
+            if (window.fs.isError(data)) return window.handleError(data)
         }
 
-        data ??= {}
+        // data ??= {}
         if (!selectedFile) return window.createToast('No file selected', 'danger', toastOpts)
         data[selectedFile] ??= { tags: {}, default: {} }
 
@@ -101,8 +100,8 @@
             return window.createToast(`File does not exists. Save it first.`, 'danger', toastOpts)
         }
 
-        const [data, error] = window.fs.readJsonSync(loadfilename)
-        if (error) return window.handleError(`Error reading ${filename}\n${error}`)
+        const data = window.fs.readJsonSync(loadfilename)
+        if (window.fs.isError(data)) return window.handleError(`Error reading ${filename}\n${data.message}`)
 
         if (singleFilemode) {
             if (singleFilemode_ObjectKey) {

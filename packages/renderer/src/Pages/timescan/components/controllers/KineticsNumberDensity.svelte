@@ -25,7 +25,8 @@
             }
             return
         }
-        ;[contents] = window.fs.readJsonSync(savefilename)
+        contents = window.fs.readJsonSync(savefilename)
+        if (window.fs.isError(contents)) return window.handleError(contents)
         if (toast) window.createToast('file read: ' + window.path.basename(savefilename))
         return await compute()
     }
@@ -44,7 +45,8 @@
             if (Object.keys(get_datas).length === 0) return
             contents[selectedFile] = get_datas
             window.fs.outputJsonSync(savefilename, contents)
-            ;[contents] = window.fs.readJsonSync(savefilename)
+            contents = window.fs.readJsonSync(savefilename)
+            if (window.fs.isError(contents)) return window.handleError(contents)
             window.createToast(`File saved to ${window.path.basename(savefilename)} for ${selectedFile}`)
         } catch (error) {
             window.handleError(error)
@@ -72,7 +74,8 @@
 
     const loadFromConfigFile = async () => {
         if (!config_file) return window.createToast('No config file loaded')
-        const [config_contents] = window.fs.readJsonSync(config_file)
+        const config_contents = window.fs.readJsonSync(config_file)
+        if (window.fs.isError(config_contents)) return window.handleError(config_contents)
         window.createToast(`File read: ${window.path.basename(config_file)}`)
 
         const keys = Object.keys(config_contents)

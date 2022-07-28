@@ -133,8 +133,12 @@ export default async function ({
                 return resolve(undefined)
             }
 
-            const [dataFromPython] = window.fs.readJsonSync(outputFile)
-            resolve(<DataFromPython>dataFromPython)
+            const dataFromPython: DataFromPython = window.fs.readJsonSync(outputFile)
+            if(window.fs.isError(dataFromPython)) {
+                resolve(undefined)
+                return window.handleError(dataFromPython)
+            }
+            resolve(dataFromPython)
 
             if (target?.classList.contains('is-loading')) {
                 target.classList.remove('is-loading')

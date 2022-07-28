@@ -31,9 +31,9 @@ export function loadfile(name) {
         return []
     }
 
-    const [getdata, error] = window.fs.readJsonSync(filename)
-    if (error) {
-        window.handleError(error)
+    const getdata = window.fs.readJsonSync(filename)
+    if (window.fs.isError(getdata)) {
+        window.handleError(getdata)
         return []
     }
 

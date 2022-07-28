@@ -34,7 +34,8 @@
 
     const loadConfig = () => {
         if (!window.fs.isFile(saveParamsToFile)) return window.createToast('No files saved yet', 'danger')
-        const [readParams] = window.fs.readJsonSync(saveParamsToFile)
+        const readParams = window.fs.readJsonSync(saveParamsToFile)
+        if (window.fs.isError(readParams)) return window.handleError(readParams)
         const frequencies = Object.keys(readParams).filter((key) => key !== 'units')
         paramsTable = frequencies.map((freq) => {
             const { amp, fG, fL } = readParams[freq]

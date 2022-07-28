@@ -111,8 +111,10 @@
     const readcollisionalCoefficientJSONFile = () => {
         if (!window.fs.isFile(collisionalCoefficientJSONFile)) return window.createToast('File not found', 'danger')
         console.log('loading: ', collisionalCoefficientJSONFile)
-        ;[{ collisionalCoefficient, collisionalCoefficient_balance }] =
-            window.fs.readJsonSync(collisionalCoefficientJSONFile)
+        const data = window.fs.readJsonSync(collisionalCoefficientJSONFile)
+        if (window.fs.isError(data)) return window.handleError(data)
+        ;({ collisionalCoefficient, collisionalCoefficient_balance } = data)
+
         if (window.db.get('active_tab') !== 'Kinetics') return
         window.createToast('loaded: ' + window.path.basename(collisionalCoefficientJSONFile), 'warning', {
             target: 'left',

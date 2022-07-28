@@ -121,8 +121,8 @@
 
         const currentJSONfile = window.path.join(currentLocation, selectedFile.replace('.scan', '_scan.json'))
 
-        ;[currentData] = window.fs.readJsonSync(currentJSONfile)
-        if (!currentData) return
+        currentData = window.fs.readJsonSync(currentJSONfile)
+        if (window.fs.isError(currentData)) return
         currentDataBackup = cloneDeep(currentData)
         console.log({ currentData })
         const totalMass = Object.keys(currentData).filter((m) => m !== 'SUM')
@@ -186,8 +186,11 @@
 
     const updateParamsFile = () => {
         let contents = {}
-        if (window.fs.existsSync(paramsFile)) {
-            ;[contents] = window.fs.readJsonSync(paramsFile)
+        if (window.fs.isFile(paramsFile)) {
+            contents = window.fs.readJsonSync(paramsFile)
+            if (window.fs.isError(contents)) {
+                contents = {}
+            }
         }
 
         contents[selectedFile] ??= { tag: {}, default: {} }
@@ -221,8 +224,9 @@
         tagOptions = []
         if (!(useParamsFile && window.fs.isFile(paramsFile))) return
 
-        const [data] = window.fs.readJsonSync(paramsFile)
-        if (!data) return window.createToast('no data found while reading file', 'danger', { target: 'left' })
+        const data = window.fs.readJsonSync(paramsFile)
+        if (window.fs.isError(data))
+            return window.createToast('no data found while reading file', 'danger', { target: 'left' })
 
         const contents = data[selectedFile]
         if (!contents) return window.createToast('no contents in the data', 'danger', { target: 'left' })
@@ -314,7 +318,6 @@
             })
             data['SUM'] = currentData['SUM']
             let kinetic_plot_adjust_configs_obj = {}
-
             try {
                 kinetic_plot_adjust_configs_obj = $kinetic_plot_adjust_configs
                     .replaceAll('=', ':')
@@ -332,7 +335,6 @@
             } catch (error) {
                 kinetic_plot_adjust_configs_obj = {}
             }
-
             const args = {
                 tag,
                 data,
@@ -349,10 +351,9 @@
                 useTaggedFile,
                 tagFile,
             }
-
             computePy_func({ e, pyfile: 'kineticsCode', args, general: true })
         } catch (error) {
-            if (error instanceof Error) window.handleError(error)
+            window.handleError(error)
         }
     }
 
