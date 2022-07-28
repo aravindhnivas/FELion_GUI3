@@ -20,7 +20,7 @@
     const filetype = 'scan'
     const id = 'Timescan'
 
-    let fileChecked = []
+    let fileChecked: string[] = []
     let currentLocation = ''
     $: scanfiles = fileChecked.map((file) => window.path.resolve(currentLocation, file))
 
@@ -28,17 +28,20 @@
     let power = '21, 21'
     // let openShell = false
     let massIndex = 0
-    let fullfiles = []
+    let fullfiles: string[] = []
     let resON_Files = ''
     let graphPlotted = false
     let resOFF_Files = ''
     let timestartIndex = 1
     let timestartIndexScan = 0
 
-    function dir_changed() {
-        if (window.fs.isDirectory(currentLocation)) {
-            fullfiles = window.fs.readdirSync(currentLocation).filter((file) => file.endsWith('.scan'))
-        }
+    async function dir_changed() {
+        if (!window.fs.isDirectory(currentLocation)) return console.error('Not a directory')
+
+        const dirRead = await window.fs.readdir(currentLocation)
+        if (window.fs.isError(dirRead)) return console.error(dirRead)
+
+        fullfiles = dirRead.filter((file) => file.endsWith('.scan'))
     }
 
     $: console.log(`ResOn: ${resON_Files}\nResOff: ${resOFF_Files}`)
