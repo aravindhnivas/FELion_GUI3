@@ -45,7 +45,9 @@ export default async function ({
         if (!general) {
             outputFile = window.path.join(window.appInfo.temp, 'FELion_GUI3', pyfile.split('.').at(-1) + '_data.json')
             if (window.fs.isFile(outputFile)) {
-                window.fs.removeSync(outputFile)
+                const output = window.fs.removeSync(outputFile)
+
+                if (window.fs.isError(output)) console.error(output)
             }
             target?.classList.toggle('is-loading')
         }
@@ -127,7 +129,7 @@ export default async function ({
                 return resolve(dataReceived)
             }
 
-            if (!window.fs.existsSync(outputFile)) {
+            if (!window.fs.isFile(outputFile)) {
                 console.warn(`${outputFile} file doesn't exists`)
                 window.handleError(`${outputFile} file doesn't exists`)
                 return resolve(undefined)

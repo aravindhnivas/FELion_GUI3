@@ -8,8 +8,8 @@ export default function (loadfile: string): Promise<{[name: string]: number}> {
         if (!window.fs.isFile(loadfile)) return reject('Invalid file')
         if (!window.fs.isFile(loadfile)) return reject(`${loadfile} does not exist`)
 
-        const [fileContents, error] = await window.fs.readFile(loadfile)
-        if (error || !fileContents) return reject(error)
+        const fileContents = await window.fs.readFile(loadfile)
+        if (window.fs.isError(fileContents)) return reject(fileContents)
 
         const variableValues: {[name: string]: number} = {}
         for (const line of fileContents.split('\n')) {

@@ -16,14 +16,13 @@ export const fsUtils = {
     rename: (oldPath: fs.PathLike, newPath: fs.PathLike, callback: (err: NodeJS.ErrnoException) => void) => {
         return fs.rename(oldPath, newPath, callback)
     },
-    // readFileSync: (filename: fs.PathOrFileDescriptor) => fs.readFileSync(filename, 'utf-8'),
     readFileSync: (filename: fs.PathOrFileDescriptor) => tryF(() => fs.readFileSync(filename, 'utf-8')),
     existsSync: (location: fs.PathLike) => fs.existsSync(location),
     copySync: (src: string, dest: string) => fs.copySync(src, dest),
-    writeFileSync: (path: fs.PathOrFileDescriptor, data: { toString: (arg0: string) => string | NodeJS.ArrayBufferView }) => {
-        return fs.writeFileSync(path, data.toString('utf-8'))
+    writeFileSync: (path: fs.PathOrFileDescriptor, data: string) => {
+        return tryF(() => fs.writeFileSync(path, data))
     },
-    removeSync: (remove: string) => fs.removeSync(remove),
+    removeSync: (path: string) => tryF(() => fs.removeSync(path)),
     readJsonSync: (path: string) => tryF(() => fs.readJsonSync(path)),
     outputJsonSync: (filename: string, obj: Object, options = { spaces: 2 }) => {
         return tryF(() => fs.outputJsonSync(filename, obj, options))
@@ -32,41 +31,14 @@ export const fsUtils = {
     tryF: tryF,
     writeFile: (path: fs.PathLike, data: string) => tryF(fsPromise.writeFile(path, data, 'utf8')),
     readdir: (path: fs.PathLike) => tryF(fsPromise.readdir(path)),
-    exists: async (path: fs.PathLike) => {
-        return new Promise((resolve) => {
-            fs.exists(path, (exists) => {
-                resolve(exists)
-            })
-        })
-    },
-    readFile: async (path: number | fs.PathLike): Promise<[string | null, NodeJS.ErrnoException | null]> => {
-        return new Promise((resolve) => {
-            fs.readFile(path, 'utf-8', (err, data) => {
-                if (err) resolve([null, err])
-                resolve([data, null])
-            })
-        })
-    },
+    readFile: async (path: fs.PathLike) => tryF(fsPromise.readFile(path, 'utf-8')),
     isFile: (path: fs.PathLike) => {
-        try {
-            return fs.statSync(path).isFile()
-        } catch (e) {
-            return false
-        }
+        const output = tryF(() => fs.statSync(path).isFile())
+        return isError(output) ? false : output
     },
     isDirectory: (path: fs.PathLike) => {
-        try {
-            return fs.statSync(path).isDirectory()
-        } catch (e) {
-            return false
-        }
-    },
-    lstatSync: (location: fs.PathLike) => {
-        const info = fs.lstatSync(location)
-        return {
-            isFile: () => info.isFile(),
-            isDirectory: () => info.isDirectory(),
-        }
+        const output = tryF(() => fs.statSync(path).isDirectory())
+        return isError(output) ? false : output
     },
     createWriteStream: (path: fs.PathLike) => {
         const writer = fs.createWriteStream(path)

@@ -85,16 +85,19 @@
                     results: `>> child process exited with code ${code}`,
                 },
             ]
+
             srollTerminalDiv()
 
             const outputLog = `${new Date().toLocaleString()}\n\n-----------------------------------------\nRunning terminal commands\n${commandResults
                 .map((cmd) => cmd.results)
                 .join('')}\n-----------------------------------------\n`
 
-            try {
-                window.fs.writeFileSync(window.path.resolve(appInfo.temp, 'FELion_GUI3/output.log'), outputLog)
-            } catch (error) {
-                window.handleError(error)
+            const output = window.fs.writeFileSync(
+                window.path.resolve(appInfo.temp, 'FELion_GUI3/output.log'),
+                outputLog
+            )
+            if (window.fs.isError(output)) {
+                return window.handleError(output)
             }
         })
     }

@@ -27,8 +27,8 @@ export async function readMassFile(massfiles: string[]) {
         for (const filename of massfiles) {
             if (!window.fs.isFile(filename)) return Promise.resolve([null, new Error(`File ${filename} does not exist`)])
             
-            const [fileContents] = await window.fs.readFile(filename)
-            if(!fileContents) return Promise.resolve([null, new Error(`File ${filename} is empty`)])
+            const fileContents = await window.fs.readFile(filename)
+            if(window.fs.isError(fileContents)) return Promise.resolve([null, new Error(`File ${filename} is empty`)])
 
             const name = window.path.basename(filename)
             console.info('content read: ', name)
