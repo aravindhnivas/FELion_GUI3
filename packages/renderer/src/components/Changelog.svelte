@@ -1,14 +1,22 @@
-<script>
+<script lang="ts">
     import { activateChangelog } from '../js/functions'
     import Modal from '$components/modal/Modal.svelte'
     import SvelteMarkdown from 'svelte-markdown'
+    import { onMount } from 'svelte'
 
     const changelogFile = window.path.join(window.ROOT_DIR, 'resources/CHANGELOG.md')
-    let source = window.fs.readFileSync(changelogFile)
+    let source: string
+
     $: if (import.meta.env.DEV && $activateChangelog) {
-        console.log('reading changelog')
-        source = window.fs.readFileSync(changelogFile)
+        readChangelog()
     }
+
+    const readChangelog = () => {
+        const fileRead = window.fs.readFileSync(changelogFile)
+        if (window.fs.isError(fileRead)) return window.handleError(fileRead)
+        source = fileRead
+    }
+    onMount(readChangelog)
 </script>
 
 {#if $activateChangelog}

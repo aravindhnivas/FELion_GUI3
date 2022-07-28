@@ -19,15 +19,20 @@ export async function readFromFile({
 
     const noSplittings = !electronSpin && !zeemanSplit
     const splittings = electronSpin || zeemanSplit
-    const fileContents = window.fs.readFileSync(energyFilename).split('\n')
+    
     let energyLevels = []
-
     let preLabel
     let value, label
     let numberOfLevels = 0
     let multilineComment = false
     let ground, excited
     let collisionalRateType
+
+    const fileRead = window.fs.readFileSync(energyFilename)
+    if (window.fs.isError(fileRead)) return Promise.reject(fileRead)
+
+    const fileContents = fileRead.split('\n')
+    
     fileContents.forEach((line) => {
         if (line.length > 1) {
             if (line.includes('//')) {

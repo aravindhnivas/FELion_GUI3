@@ -32,7 +32,7 @@
         if (!window.fs.isFile(collisionalFilename)) return window.handleError(`File not found : ${collisionalFilename}`)
 
         const fileContents = window.fs.readFileSync(collisionalFilename)
-        if (!fileContents) return null
+        if (window.fs.isError(fileContents)) return null
 
         const data = fileContents
             .split('\n')

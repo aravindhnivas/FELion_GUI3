@@ -130,7 +130,11 @@
             if (!showInfo) return
             return window.createToast('No report file named ' + window.path.basename(reportFile), 'danger')
         }
-        editor?.setData(window.fs.readFileSync(reportFile))
+
+        const fileRead = window.fs.readFileSync(reportFile)
+        if (window.fs.isError(fileRead)) return window.handleError(fileRead)
+
+        editor?.setData(fileRead)
         reportRead = true
         if (!showInfo) return
 

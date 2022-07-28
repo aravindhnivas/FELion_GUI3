@@ -233,12 +233,14 @@
         }
     }
 
-    const getYMLFileContents = (filename) => {
-        if (window.fs.existsSync(filename)) {
-            const fileContent = window.fs.readFileSync(filename)
-            const YMLcontent = Yml(fileContent)
-            return Promise.resolve(YMLcontent)
-        } else return Promise.reject(filename + " file doesn't exist")
+    const getYMLFileContents = async (filename: string) => {
+        if (!window.fs.isFile(filename)) return Promise.reject(filename + " file doesn't exist")
+
+        const fileContent = window.fs.readFileSync(filename)
+        if (window.fs.isError(fileContent)) return Promise.reject("Couldn't read file " + filename)
+
+        const YMLcontent = Yml(fileContent)
+        return Promise.resolve(YMLcontent)
     }
 
     const setID = (obj) => ({ ...obj, id: window.getID() })
@@ -313,7 +315,10 @@
     async function setConfig() {
         try {
             const configFileLocation = window.path.dirname(configFile)
-            const CONFIG = Yml(window.fs.readFileSync(configFile))
+            const fileRead = window.fs.readFileSync(configFile)
+            if (window.fs.isError(fileRead)) return window.handleError(fileRead)
+
+            const CONFIG = Yml(fileRead)
             console.table(CONFIG)
 
             let attachmentRateConstants = {}
