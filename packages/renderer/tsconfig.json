@@ -9,7 +9,6 @@
       "isolatedModules": true,
       "jsx": "preserve",
       "allowSyntheticDefaultImports": true,
-      // "types" : ["node"],
       "baseUrl": ".",
       "paths": {
         "$preload/*": ["../preload/*"],
@@ -21,7 +20,6 @@
     },
   
     "include": [
-      // "../../node_modules/@types/node/index.d.ts",
       "../../types/**/*.d.ts",
       "types/**/*.d.ts",
       "src/**/*.js", 
@@ -29,9 +27,6 @@
       "src/**/*.svelte", 
       "src/**/*.d.ts", 
       "../preload/contracts.d.ts",
-    ],
-    "exclude": [
-      "**/*.spec.ts",
-      "**/*.test.ts",
     ]
   }
+  
