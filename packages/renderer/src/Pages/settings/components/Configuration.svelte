@@ -13,6 +13,7 @@
 
     import Textfield from '@smui/textfield'
     import IconButton from '$components/IconButton.svelte'
+    import LockTextfield from '$components/LockTextfield.svelte'
     import { getPyVersion } from '../checkPython'
     import { checkTCP, fetchServerROOT } from '../serverConnections'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
@@ -23,11 +24,11 @@
         type: 'info' | 'danger' | 'warning' | 'success'
     }
 
-    let lock_felionpy_program = import.meta.env.PROD
+    // let lock_felionpy_program = import.meta.env.PROD
     let showServerControls: boolean
     let serverInfo: ServerInfo[] = []
     let serverCurrentStatus: ServerInfo = { value: '', type: 'info' }
-    let pyError: string = ''
+    // let pyError: string = ''
 
     const unsubscriber = window.db.onDidChange('pyServerReady', async (value) => {
         $pyServerReady = <boolean>value
@@ -83,7 +84,7 @@
             $pyServerReady = <boolean>window.db.get('pyServerReady')
         } catch (error) {
             if (error instanceof Error) {
-                pyError = error.message
+                console.error(error)
             }
         } finally {
             serverInfo = [...serverInfo, { value: `pyVersion: ${$pyVersion}`, type: 'info' }]
@@ -152,32 +153,11 @@
                 </div>
             {/if}
         </div>
-
-        <div class="three_col_browse">
-            <button
-                disabled={lock_felionpy_program}
-                class="button is-link"
-                on:click={async () => {
-                    const [result] = window.browse({ dir: false })
-                    if (!result) return
-
-                    console.log(result)
-                    $felionpy = result
-                }}>Browse</button
-            >
-            <Textfield disabled={lock_felionpy_program} style="width: 100%;" bind:value={$felionpy} label="felionpy" />
-            <IconButton bind:value={lock_felionpy_program} icons={{ on: 'lock', off: 'lock_open' }} />
-        </div>
-
-        {#if pyError && !pyServerReady}
-            <div class="align tag is-danger errorbox">
-                {pyError}
-            </div>
-        {/if}
+        <LockTextfield class="three_col_browse" bind:value={$felionpy} label="felionpy" browseBtn={true} />
 
         <div id="serverControllers" class="align server-control" class:hide={!showServerControls}>
             <div class="align">
-                <Textfield disabled type="number" bind:value={$pyServerPORT} label="serverPORT" />
+                <LockTextfield type="number" bind:value={$pyServerPORT} label="serverPORT" />
                 <CustomSwitch bind:selected={$serverDebug} label="serverDebug" />
                 <button
                     class="button is-link"
