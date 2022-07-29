@@ -58,6 +58,7 @@
     }
 
     onMount(async () => {
+        updateCheck()
         if (!window.isPackaged) return
         updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
     })
