@@ -8,4 +8,4 @@ export const appPathKeys = <const>[
     'logs',
     'crashDumps',
 ]
-export type AppInfo = Record<typeof appPathKeys[number] | 'ROOT_DIR' | 'appPath', string>
+export type AppInfo = Record<typeof appPathKeys[number] | 'ROOT_DIR' | 'appPath' | 'resource_directory', string>

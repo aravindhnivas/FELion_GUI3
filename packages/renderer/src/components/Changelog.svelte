@@ -4,7 +4,7 @@
     import SvelteMarkdown from 'svelte-markdown'
     import { onMount } from 'svelte'
 
-    const changelogFile = window.path.join(window.ROOT_DIR, 'resources/CHANGELOG.md')
+    const changelogFile = window.path.join(window.appInfo.resource_directory, 'CHANGELOG.md')
     let source: string
 
     $: if (import.meta.env.DEV && $activateChangelog) {

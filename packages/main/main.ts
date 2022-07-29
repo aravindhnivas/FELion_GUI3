@@ -2,7 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import * as path from 'path'
 import './security-restrictions.ts'
 import unhandled from 'electron-unhandled'
-import { ROOT_DIR } from './definedEnv'
+import { ROOT_DIR, resource_directory } from './definedEnv'
 import { startServer } from './felionpyServer'
 import * as fs from 'fs-extra'
 import { appPathKeys } from '../../types/main'
@@ -75,6 +75,7 @@ app.on('window-all-closed', async () => {
 
 
 ipcMain.on('appInfo', (event, _arg) => {
+    
     const appInfo = {
         appData: '',
         userData: '',
@@ -86,10 +87,15 @@ ipcMain.on('appInfo', (event, _arg) => {
         crashDumps: '',
         ROOT_DIR: '',
         appPath: '',
+        resource_directory: ''
     }
+
     appPathKeys.forEach((key) => (appInfo[key] = app.getPath(key)))
+    
     appInfo.appPath = app.getAppPath()
     appInfo.ROOT_DIR = ROOT_DIR
+    appInfo.resource_directory = resource_directory
+
     event.returnValue = appInfo
 })
 
