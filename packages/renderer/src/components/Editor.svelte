@@ -1,9 +1,10 @@
 <script lang="ts">
     import { showConfirm } from '$src/components/alert/store'
     import { onDestroy } from 'svelte'
-    import Textfield from '@smui/textfield'
+    // import Textfield from '@smui/textfield'
     // import { browse } from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
+    import BrowseTextfield from '$components/BrowseTextfield.svelte'
     import WinBox from 'winbox/src/js/winbox.js'
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
 
@@ -59,13 +60,6 @@
 
     $: if (window.fs.isDirectory(location)) {
         window.db.set(`${filetype}-report-md`, location)
-    }
-
-    function browse_folder() {
-        const [result] = window.browse()
-        if (!result) return
-        location = result
-        window.createToast('Location updated')
     }
 
     const writeReport = async (info = 'saved') => {
@@ -166,11 +160,12 @@
 
     {#if showReport}
         <div class="report_controler__div box" style="border: solid 1px #fff7;">
-            <div class="report_location__div">
-                <button class="button is-link" on:click={browse_folder} disabled={!enable_location_browser}
-                    >Browse</button
-                >
-                <Textfield bind:value={location} label="report location" disabled={!enable_location_browser} />
+            <BrowseTextfield
+                class="three_col_browse"
+                bind:value={location}
+                label="report location"
+                lock={!enable_location_browser}
+            >
                 <TextAndSelectOptsToggler
                     bind:value={savefilename}
                     label="report name"
@@ -178,7 +173,7 @@
                     options={filenameOpts}
                     auto_init={true}
                 />
-            </div>
+            </BrowseTextfield>
 
             <div class="btn-row">
                 <slot name="btn-row" />

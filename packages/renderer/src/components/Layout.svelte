@@ -5,13 +5,14 @@
 <script lang="ts">
     import { onMount, createEventDispatcher, tick, onDestroy } from 'svelte'
     import { fly, fade } from 'svelte/transition'
-    import Textfield from '@smui/textfield'
+    // import Textfield from '@smui/textfield'
     import { relayout } from 'plotly.js/dist/plotly-basic'
     import WinBox from 'winbox/src/js/winbox.js'
     import FileBrowser from '$components/FileBrowser.svelte'
     import Modal from '$components/Modal.svelte'
     import Editor from '$components/Editor.svelte'
     import { resizableDiv } from '$src/js/resizableDiv.js'
+    import BrowseTextfield from '$components/BrowseTextfield.svelte'
 
     export let id: string
     export let display = 'none'
@@ -23,12 +24,6 @@
     export let activateConfigModal = false
 
     const dispatch = createEventDispatcher()
-    function browse_folder() {
-        const [result] = window.browse()
-        if (!result) return
-        currentLocation = result
-        window.db.set(`${filetype}_location`, currentLocation)
-    }
 
     onMount(() => {
         graphPlotted = false
@@ -122,11 +117,9 @@
         </div>
 
         <div class="right_container__div box background-body " id="{filetype}__mainContainer__div">
-            <div class="location__div">
-                <button class="button is-link" id="{filetype}_filebrowser_btn" on:click={browse_folder}>Browse</button>
-                <Textfield bind:value={currentLocation} label="Current location" style="width:100%; " />
-                <i class="material-symbols-outlined" on:click={() => (activateConfigModal = true)}>build</i>
-            </div>
+            <BrowseTextfield class="three_col_browse" bind:value={currentLocation} label="Current location">
+                <span class="material-symbols-outlined" on:click={() => (activateConfigModal = true)}>build</span>
+            </BrowseTextfield>
 
             <div class="button__div align" id="{filetype}-buttonContainer">
                 <slot name="buttonContainer" />
@@ -218,12 +211,6 @@
             display: grid;
             row-gap: 1em;
             grid-template-rows: auto auto 1fr;
-            .location__div {
-                display: grid;
-                grid-template-columns: auto 1fr auto;
-                column-gap: 1em;
-                align-items: baseline;
-            }
         }
     }
     .plot__div {

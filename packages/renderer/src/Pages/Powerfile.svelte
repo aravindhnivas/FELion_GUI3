@@ -4,23 +4,23 @@
     import HelperText from '@smui/textfield/helper-text'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
-    // import { browse } from '../components/Layout.svelte'
+    import BrowseTextfield from '$components/BrowseTextfield.svelte'
 
     const writePowfile = async () => {
         const contents = `${initContent.trim()}\n${powerfileContent}`.trim()
-
         const output = await window.fs.writeFile(powfile, contents)
 
         if (window.fs.isError(output)) {
             return window.handleError(output)
         }
+
         window.createToast('Power file saved', 'success', { target: 'left' })
         console.log('powerfile writted: ', powfile)
     }
 
     function savefile() {
-        if (location.length == 0) {
-            return openFolder({ save: true })
+        if ($location.length == 0) {
+            return window.createToast('Please select a location', 'danger', { target: 'left' })
         }
         if (!window.fs.isFile(powfile)) return writePowfile()
         return showConfirm.push({
@@ -34,21 +34,13 @@
         })
     }
 
-    function openFolder({ save = false } = {}) {
-        const [result] = window.browse()
-        if (!result) return
-        location = result
-        window.db.set('powerfile_location', location)
-        window.createToast('Location updated', 'success')
-        if (save) savefile()
-    }
-
     let felixHz = 10
     let convert = null
     let felixShots = 16
     let powerfileContent = ''
 
-    let location = window.db.get('powerfile_location') || ''
+    const location = window.persistentDB('powerfile_location', '')
+
     let today = new Date()
 
     const dd = String(today.getDate()).padStart(2, '0')
@@ -57,7 +49,7 @@
 
     let filename = `${dd}_${mm}_${yy}-#`
 
-    $: powfile = window.path.resolve(location, `${filename}.pow`)
+    $: powfile = window.path.resolve($location, `${filename}.pow`)
     $: conversion = '_no_'
     $: convert ? (conversion = '_') : (conversion = '_no_')
     $: initContent =
@@ -74,11 +66,7 @@
 
 <section class="section animate__animated animate__fadeIn" {id} style="display:{display}">
     <div class="box main__container" id="powfileContainer">
-        <div class="location__bar">
-            <button class="button is-link" on:click={openFolder}>Browse</button>
-
-            <Textfield bind:value={location} label="Current Location" style="flex-grow:1;" />
-        </div>
+        <BrowseTextfield class="two_col_browse" bind:value={$location} label="Current location" />
 
         <div class="grid_column__container file__details__bar">
             <Textfield bind:value={filename} label="Filename" />
@@ -139,12 +127,6 @@
         display: grid;
         grid-auto-flow: column;
         grid-column-gap: 1em;
-    }
-
-    .location__bar {
-        display: flex;
-        align-items: baseline;
-        gap: 1em;
     }
 
     .file__details__bar {

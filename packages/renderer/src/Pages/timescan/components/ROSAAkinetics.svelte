@@ -1,74 +1,51 @@
 <script lang="ts">
     import { persistentWritable } from '$src/js/persistentStore'
     import { onMount } from 'svelte'
-    // import { boltzmanConstant } from '$src/js/constants'
     import { cloneDeep } from 'lodash-es'
     import Textfield from '@smui/textfield'
-
-    // import CustomSwitch from '$components/CustomSwitch.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
-
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import computePy_func from '$src/Pages/general/computePy'
     import KineticConfigTable from './controllers/KineticConfigTable.svelte'
 
     import KineticEditor from './KineticEditor.svelte'
     import MatplotlibDialog from './MatplotlibDialog.svelte'
-    // import { browse } from '$components/Layout.svelte'
-
     import ButtonBadge from '$components/ButtonBadge.svelte'
     import RateConstants from './controllers/RateConstants.svelte'
     import RateInitialise from './controllers/RateInitialise.svelte'
     import KlossChannels from './controllers/channels/KlossChannels.svelte'
     import KineticsNumberDensity from './controllers/KineticsNumberDensity.svelte'
-    // import { activePage } from '$src/sveltewritables'
-    // import type { TimescanData, TimescanPlotData, totalMassKey, LossChannel } from 'types/types'
-
     import Accordion from '@smui-extra/accordion'
     import CustomPanel from '$components/CustomPanel.svelte'
-    //
-    let currentLocation = (window.db.get('kinetics_location') as string) || ''
-    // $: config_location = window.path.join(currentLocation, '../configs')
+    import BrowseTextfield from '$components/BrowseTextfield.svelte'
+
+    const currentLocation = window.persistentDB('kinetics_location', '')
 
     let timestartIndexScan = 0
     let fileCollections: string[] = []
     let molecule: string = 'CD'
     let tag: string = 'He'
     let nameOfReactants: string = ''
-    // let ratek3 = 'k31'
-    // let ratekCID = 'kCID1'
     let selectedFile = ''
     let totalMassKey: Timescan.MassKey[] = []
-    // let k3Guess = '0, 0.5, 1e-3'
-    // let kCIDGuess = '0, 2, 1e-3'
 
-    function browse_folder() {
-        const [result] = window.browse()
-        if (!result) return
-        currentLocation = result
-        window.db.set('kinetics_location', currentLocation)
-        console.log(result, currentLocation)
-    }
-
-    const updateFiles = (node: ButtonClickEvent) => {
-        if (!window.fs.isDirectory(currentLocation)) {
+    const updateFiles = () => {
+        if (!window.fs.isDirectory($currentLocation)) {
             return window.createToast('Invalid location', 'danger', { target: 'left' })
         }
-        window.db.set('kinetics_location', currentLocation)
 
-        node?.target.classList.add('animate__rotateIn')
-
+        // target?.classList.add('animate__rotateIn')
         fileCollections = window.fs
-            .readdirSync(currentLocation)
+            .readdirSync($currentLocation)
             .filter((f) => f.endsWith('_scan.json'))
             .map((f) => f.split('.')[0].replace('_scan', '.scan'))
         console.log(fileCollections)
     }
 
-    $: if (currentLocation) {
+    $: if ($currentLocation) {
         updateFiles()
     }
 
@@ -119,7 +96,7 @@
         timestartIndexScan = 0
         loss_channels = []
 
-        const currentJSONfile = window.path.join(currentLocation, selectedFile.replace('.scan', '_scan.json'))
+        const currentJSONfile = window.path.join($currentLocation, selectedFile.replace('.scan', '_scan.json'))
 
         currentData = window.fs.readJsonSync(currentJSONfile)
         if (window.fs.isError(currentData)) return
@@ -290,7 +267,7 @@
         update_kinetic_filename(`-${tagFile}-kineticModel.md`)
     }
 
-    $: configDir = window.path.join(currentLocation, '../configs')
+    $: configDir = window.path.join($currentLocation, '../configs')
 
     async function kineticSimulation(e: ButtonClickEvent) {
         try {
@@ -347,7 +324,7 @@
                 nameOfReactantsArray,
                 kineticEditorFilename,
                 kinetic_plot_adjust_configs_obj,
-                kinetic_file_location: currentLocation,
+                kinetic_file_location: $currentLocation,
                 initialValues: initialValues.split(','),
                 useTaggedFile,
                 tagFile,
@@ -362,7 +339,7 @@
     let initialValues = ''
     // let adjustConfig = false
     let kineticEditorFilename = ''
-    $: kineticfile = window.path.join(currentLocation, kineticEditorFilename)
+    $: kineticfile = window.path.join($currentLocation, kineticEditorFilename)
 
     let reportRead = false
     let reportSaved = false
@@ -389,19 +366,13 @@
 
 <LayoutDiv id="ROSAA-kinetics">
     <svelte:fragment slot="header_content__slot">
-        <div class="location__div box">
-            <button class="button is-link" on:click={browse_folder}>Browse</button>
-            <Textfield bind:value={currentLocation} label="Timescan EXPORT data location" />
-            <i
-                class="material-symbols-outlined animate__animated animate__faster"
-                on:animationend={({ target }) => {
-                    target.classList.remove('animate__rotateIn')
-                }}
-                on:click={updateFiles}
-            >
-                refresh
-            </i>
-        </div>
+        <BrowseTextfield
+            class="three_col_browse box"
+            bind:value={$currentLocation}
+            label="Timescan EXPORT data location"
+            updateMode={true}
+            on:update={() => updateFiles()}
+        />
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
@@ -487,7 +458,7 @@
                     selectedFile,
                     rateConstantMode,
                 }}
-                bind:location={currentLocation}
+                bind:location={$currentLocation}
                 bind:savefilename={kineticEditorFilename}
                 bind:reportSaved
                 bind:reportRead
@@ -516,15 +487,6 @@
 </LayoutDiv>
 
 <style lang="scss">
-    .location__div {
-        display: grid;
-        grid-auto-flow: column;
-        grid-template-columns: auto 1fr auto;
-        align-items: baseline;
-        gap: 1em;
-        padding: 0.5em;
-    }
-
     .main_container__div {
         display: grid;
         grid-row-gap: 1em;

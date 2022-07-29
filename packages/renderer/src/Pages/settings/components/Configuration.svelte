@@ -11,9 +11,9 @@
         serverDebug,
     } from '../svelteWritables'
 
-    import Textfield from '@smui/textfield'
-    import IconButton from '$components/IconButton.svelte'
-    import LockTextfield from '$components/LockTextfield.svelte'
+    // import Textfield from '@smui/textfield'
+    import BrowseTextfield from '$components/BrowseTextfield.svelte'
+    // import LockTextfield from '$components/LockTextfield.svelte'
     import { getPyVersion } from '../checkPython'
     import { checkTCP, fetchServerROOT } from '../serverConnections'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
@@ -120,31 +120,10 @@
 
             {#if $developerMode}
                 <div class="align">
-                    <div class="two_col_browse">
-                        <button
-                            class="button is-link"
-                            on:click={() => {
-                                const [result] = window.browse({ dir: false })
-                                if (!result) return
-                                $pythonpath = result
-                            }}>Browse</button
-                        >
-                        <Textfield bind:value={$pythonpath} label="Python path" />
-                    </div>
-                    <div class="two_col_browse">
-                        <button
-                            class="button is-link"
-                            on:click={() => {
-                                const [result] = window.browse({ dir: true })
-                                if (!result) return
-                                $pythonscript = result
-                            }}>Browse</button
-                        >
-                        <Textfield bind:value={$pythonscript} label="Python script path" />
-                    </div>
-
+                    <BrowseTextfield class="two_col_browse" bind:value={$pythonpath} label="pythonpath" dir={false} />
+                    <BrowseTextfield class="two_col_browse" bind:value={$pythonscript} label="pythonscript" />
                     <button
-                        class="button is-warning ml-auto has-background-warning has-text-black"
+                        class="button is-warning ml-auto"
                         on:click={async () => {
                             const output = await getPyVersion()
                             if (output instanceof Error) window.handleError(output)
@@ -153,11 +132,17 @@
                 </div>
             {/if}
         </div>
-        <LockTextfield class="three_col_browse" bind:value={$felionpy} label="felionpy" browseBtn={true} />
+        <BrowseTextfield class="three_col_browse" bind:value={$felionpy} label="felionpy" lock={true} />
 
         <div id="serverControllers" class="align server-control" class:hide={!showServerControls}>
             <div class="align">
-                <LockTextfield type="number" bind:value={$pyServerPORT} label="serverPORT" />
+                <BrowseTextfield
+                    type="number"
+                    bind:value={$pyServerPORT}
+                    label="serverPORT"
+                    browseBtn={false}
+                    lock={true}
+                />
                 <CustomSwitch bind:selected={$serverDebug} label="serverDebug" />
                 <button
                     class="button is-link"
