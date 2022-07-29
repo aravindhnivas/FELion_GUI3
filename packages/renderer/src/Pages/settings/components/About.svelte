@@ -5,7 +5,7 @@
 <div class="animate__animated animate__fadeIn" class:hide={$currentTab !== 'About'}>
     <h1>About</h1>
     <div class="content">
-        <ul style="user-select: text;">
+        <ul style="user-select: text;" class="ml-0">
             <li>FELionGUI: {window.appVersion}</li>
             <li>{$pyVersion}</li>
             <hr />
