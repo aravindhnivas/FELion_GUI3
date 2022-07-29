@@ -14,7 +14,7 @@ CORS(app)
 
 
 def logger(*args, **kwargs):
-    print(*args, **kwargs)
+    print(*args, **kwargs, flush=True)
 
 
 @app.route("/")
@@ -57,8 +57,12 @@ def compute():
         logger(f"function execution done in {timeConsumed:.2f} s")
         
         if isinstance(output, dict):
+            logger(f"Returning received to client")
             return jsonify(output)
 
+        if not filename.exists():
+            raise Exception("Computed file is neither returned from main function or saved to temperary location")
+                    
         with open(filename, "r") as f:
             data = json.load(f)
         return jsonify(data)
