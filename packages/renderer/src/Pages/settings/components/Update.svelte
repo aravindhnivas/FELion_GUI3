@@ -3,29 +3,25 @@
     import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '$src/js/functions'
     import { onMount, onDestroy } from 'svelte'
+    import Notify from '$components/Notify.svelte'
     import type { Unsubscribe } from 'conf/dist/source/types'
 
-    let updateError = <string>window.db.get('updateError') || ''
+    const updateError = window.persistentDB('updateError', '')
     let updateIntervalCycle: NodeJS.Timer | null = null
     let updating = false
-
     let unsubscribers: Unsubscribe[] = []
 
     unsubscribers[0] = window.db.onDidChange('updateError', (err) => {
-        updateError = <string>err
+        $updateError = <string>err
     })
 
     unsubscribers[1] = window.db.onDidChange('delayupdate', (delay) => {
-        if (<number>delay) {
-            if (updateIntervalCycle) {
-                clearInterval(updateIntervalCycle)
-            }
-
-            setTimeout(() => {
-                updateCheck()
-                updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
-            }, 60 * 60 * 1000)
-        }
+        if (!(window.isPackaged && delay && updateIntervalCycle)) return
+        clearInterval(updateIntervalCycle)
+        setTimeout(() => {
+            window.checkupdate()
+            updateIntervalCycle = setInterval(window.checkupdate, $updateInterval * 60 * 1000)
+        }, 60 * 60 * 1000)
     })
 
     unsubscribers[3] = window.db.onDidChange('update-status', (status) => {
@@ -40,6 +36,7 @@
 
             case 'download-error':
                 updating = false
+                updateError.set('Download error')
                 break
 
             case 'update-downloaded':
@@ -51,16 +48,9 @@
         }
     })
 
-    function updateCheck(event?: ButtonClickEvent): void {
-        if (!window.isPackaged) return console.warn('Cannot update un-packed version')
-        if (navigator.onLine) return window.checkupdate()
-        if (event) return window.createToast('No Internet Connection!', 'warning')
-    }
-
     onMount(async () => {
-        // updateCheck()
         if (!window.isPackaged) return
-        updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
+        updateIntervalCycle = setInterval(window.checkupdate, $updateInterval * 60 * 1000)
     })
 
     onDestroy(() => {
@@ -75,13 +65,19 @@
     <h1>Update</h1>
 
     <div class="subtitle" style="width: 100%;">
-        App Version {window.appVersion}
+        Current version: {window.appVersion}
     </div>
+
     <div class="align">
         <div class="align">
-            <button class="button is-link" class:is-loading={updating} id="updateCheckBtn" on:click={updateCheck}
-                >Check update</button
+            <button
+                disabled={!window.isPackaged}
+                class="button is-link"
+                class:is-loading={updating}
+                id="updateCheckBtn"
+                on:click={window.checkupdate}>Check update</button
             >
+
             <button
                 class="button is-warning"
                 on:click={() => {
@@ -90,15 +86,12 @@
             >
         </div>
 
-        <div id="update-progress-container" style="display: none;">
-            <label for="file">Download progress:</label>
-            <progress id="update-progress" max="100" value="0"> 0%</progress>
-        </div>
-
-        {#if updateError}
-            <div class="tag is-danger errorbox animate__animated animate__fadeIn">
-                {updateError}
+        {#if window.isPackaged}
+            <div id="update-progress-container">
+                <label for="file">Download progress:</label>
+                <progress id="update-progress" max="100" value="0"> 0%</progress>
             </div>
+            <Notify bind:label={$updateError} type="danger" />
         {/if}
     </div>
 </div>
@@ -113,14 +106,5 @@
         gap: 1em;
         grid-template-columns: auto 1fr;
         align-items: center;
-    }
-
-    .errorbox {
-        white-space: pre-line;
-        height: 100%;
-        width: fit-content;
-        font-size: medium;
-        margin-left: auto;
-        border: solid 1px;
     }
 </style>
