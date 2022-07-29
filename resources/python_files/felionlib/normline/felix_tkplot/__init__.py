@@ -125,10 +125,12 @@ class PlotData:
                 wn, inten,
                 alpha=0.5 if fullfitfile.exists() else 1,
                 color=color, ec="none", step="pre",
-                # label=None if fullfitfile.exists() else label
                 label=label
             )
-
+            
+            self.ax_exp.legend(title=self.args.textWidgets.Exp_title)
+            self.line_handler[label] = current_plot_handle_exp_fill
+            
             if fullfitfile.exists():
                 simulate_exp_data = np.genfromtxt(fullfitfile).T
                 similated_freq, simulated_inten = simulate_exp_data
@@ -136,10 +138,8 @@ class PlotData:
                 (current_plot_handle_fit,) = self.ax_exp.plot(
                     similated_freq, simulated_inten, "-", c=color, lw=1.1, label=fit_label
                 )
-            self.ax_exp.legend(title=self.args.textWidgets.Exp_title)
+                self.line_handler[fit_label] = current_plot_handle_fit
             
-            self.line_handler[label] = current_plot_handle_exp_fill
-            self.line_handler[fit_label] = current_plot_handle_fit
     
     def plot_make_labels(self):
         xlabel="Wavenumber [cm$^{-1}$]"
