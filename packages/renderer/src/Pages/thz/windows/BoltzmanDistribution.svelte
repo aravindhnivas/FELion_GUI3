@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import { plot } from '../../../js/functions'
@@ -6,15 +6,16 @@
     import { sumBy } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'
     import ButtonBadge from '$src/components/ButtonBadge.svelte'
+    import WinBox from 'winbox'
 
     export let active = false
-    export let trapTemp
-    export let energyLevels
-    export let zeemanSplit
-    export let energyUnit
-    export let electronSpin
-    export let graphWindow = null
-    export let currentLocation = ''
+    export let trapTemp: string | number
+    export let energyLevels: ValueLabel<number>[] = []
+    export let zeemanSplit: boolean
+    export let energyUnit: 'cm-1' | 'MHz'
+    export let electronSpin: boolean
+    export let graphWindow: WinBox | null = null
+    export let currentLocation: string = ''
 
     const title = 'Boltzman Distribution'
     const plotID = 'boltzmanDistributionPlot'
@@ -52,7 +53,7 @@
     }
 
     $: if (windowReady) {
-        setTimeout(() => graphWindow.focus(), 100)
+        setTimeout(() => graphWindow?.focus(), 100)
     }
     $: if (windowReady && trapTemp > 0) {
         plotGraph()

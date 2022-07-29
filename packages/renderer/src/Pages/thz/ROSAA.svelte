@@ -28,16 +28,17 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
     import { wavenumberToMHz, MHzToWavenumber } from '$src/js/utils'
+    import WinBox from 'winbox'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let electronSpin = false
     let zeemanSplit = false
 
-    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening] = Array(4).fill([])
+    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening]: ValueLabel[][] = Array(4).fill([])
 
-    let k3 = { constant: [], rate: [] }
-    let kCID = { constant: [], rate: [] }
-    let attachmentCoefficients = []
+    let k3: AttachmentRate = { constant: [], rate: [] }
+    let kCID: AttachmentRate = { constant: [], rate: [] }
+    let attachmentCoefficients: ValueLabel[] = []
 
     let collisionalRateType = 'excitation'
     $: deexcitation = collisionalRateType === 'deexcitation'
@@ -45,11 +46,11 @@
     let showreport = false
     let statusReport = ''
 
-    let collisionalRates = []
-    let collisionalRateConstants = []
+    let collisionalRates: ValueLabel[] = []
+    let collisionalRateConstants: ValueLabel[] = []
     let einsteinB_rateComputed = false
 
-    const simulation = async (e) => {
+    const simulation = async (e?: Event) => {
         if (!window.fs.isDirectory(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
@@ -65,22 +66,25 @@
             if (k3.constant.length < 1) return window.createToast('Compute attachment rate constants', 'danger')
         }
 
-        const collisional_rates = {}
+        const collisional_rates: KeyStringObj = {}
         collisionalRateConstants.forEach((f) => (collisional_rates[f.label] = f.value))
 
-        const main_parameters = {}
+        const main_parameters: KeyStringObj = {}
         mainParameters.forEach((f) => (main_parameters[f.label] = f.value))
 
-        const simulation_parameters = {}
+        const simulation_parameters: KeyStringObj = {}
         simulationParameters.forEach((f) => (simulation_parameters[f.label] = f.value))
 
-        const lineshape_conditions = {}
+        const lineshape_conditions: KeyStringObj = {}
         dopplerLineshape.forEach((f) => (lineshape_conditions[f.label] = f.value))
 
-        const power_broadening = {}
+        const power_broadening: KeyStringObj = {}
         powerBroadening.forEach((f) => (power_broadening[f.label] = f.value))
 
-        const einstein_coefficient = { A: {}, B: {}, B_rateConstant: {} }
+        const einstein_coefficient: {
+            [key in 'A' | 'B' | 'B_rateConstant']: KeyStringObj
+        } = { A: {}, B: {}, B_rateConstant: {} }
+
         einsteinCoefficientA.forEach((f) => (einstein_coefficient.A[f.label] = f.value))
         einsteinCoefficientB.forEach((f) => (einstein_coefficient.B[f.label] = f.value))
         einsteinCoefficientB_rateConstant.forEach((f) => (einstein_coefficient.B_rateConstant[f.label] = f.value))
@@ -94,10 +98,11 @@
 
         attachmentCoefficients.forEach((f) => (attachment_rate_coefficients[f.label] = f.value))
 
-        const energy_levels = {}
+        const energy_levels: KeyStringObj<number> = {}
         energyLevels.slice(0, numberOfLevels).forEach((f) => (energy_levels[f.label] = f.value))
 
-        for (const key in $variableRange) {
+        const keys = <const>['k3_branch', 'numberDensity', 'power']
+        for (const key of keys) {
             const values = $variableRange[key].split(',').map((v) => parseFloat(v))
             console.log(values)
             if (values.length < 3) {
@@ -194,18 +199,18 @@
 
     const variablesList = ['time', 'He density(cm-3)', 'Power(W)', 'a(k_up/k_down)', 'all']
 
-    let einsteinCoefficientA = []
-    let einsteinCoefficientB = []
-    let einsteinCoefficientB_rateConstant = []
+    let einsteinCoefficientA: ValueLabel[] = []
+    let einsteinCoefficientB: ValueLabel[] = []
+    let einsteinCoefficientB_rateConstant: ValueLabel[] = []
 
-    let collisionalCoefficient = []
+    let collisionalCoefficient: ValueLabel[] = []
 
-    let energyUnit = 'cm-1'
+    let energyUnit: 'cm-1' | 'MHz' = 'cm-1'
     let numberOfLevels = 3
     let numberDensity = '2e14'
-    let energyFilename
-    let einsteinFilename
-    let collisionalFilename
+    let energyFilename: string
+    let einsteinFilename: string
+    let collisionalFilename: string
 
     $: configFile = window.path.join(currentLocation, configFilename)
     $: boltzmanArgs = {
@@ -217,7 +222,7 @@
     }
 
     let configLoaded = false
-    let collisionalCoefficient_balance = []
+    let collisionalCoefficient_balance: ValueLabel[] = []
     let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
@@ -243,17 +248,17 @@
         return Promise.resolve(YMLcontent)
     }
 
-    const setID = (obj) => ({ ...obj, id: window.getID() })
-    const correctObjValue = (obj) => ({
+    const setID = (obj: Omit<ValueLabel, 'id'>): ValueLabel => ({ ...obj, id: window.getID() })
+    const correctObjValue = (obj: ValueLabel) => ({
         ...obj,
-        value: obj.value.toExponential(3),
+        value: Number(obj.value).toExponential(3),
     })
 
-    let trapArea
+    let trapArea: string
     let excitedTo = ''
     let excitedFrom = ''
-    let upperLevelEnergy
-    let lowerLevelEnergy
+    let upperLevelEnergy: number
+    let lowerLevelEnergy: number
     let transitionFrequency = 0
 
     let ionMass = 14
@@ -261,10 +266,10 @@
     let ionTemp = 12
     let trapTemp = 5
     let gaussian = 0
-    let collisionalTemp: number = null
+    let collisionalTemp: number | null = null
     let Cg = 0 // doppler-broadening proportionality constant
 
-    let power = '2e-5'
+    let power: string | number = '2e-5'
     let dipole = 1
     let lorrentz = 0
     let Cp = 0 // power-broadening proportionality constant
@@ -274,8 +279,8 @@
         console.log('energyLevels updated')
         if (!energyLevels) return console.warn('No energyLevels defined', energyLevels)
         console.log(energyLevels)
-        lowerLevelEnergy = energyLevels?.filter((energy) => energy.label == excitedFrom)?.[0]?.value || 0
-        upperLevelEnergy = energyLevels?.filter((energy) => energy.label == excitedTo)?.[0]?.value || 0
+        lowerLevelEnergy = energyLevels.filter((energy) => energy.label == excitedFrom)?.[0]?.value || 0
+        upperLevelEnergy = energyLevels.filter((energy) => energy.label == excitedTo)?.[0]?.value || 0
 
         transitionFrequency = upperLevelEnergy - lowerLevelEnergy
         if (energyUnit == 'cm-1') {
@@ -294,9 +299,12 @@
         gaussian = Number(Number(transitionFrequency * Cg).toFixed(3)) // in MHz
     }
     const updatePower = () => {
+        console.log({ powerBroadening, trapArea })
         ;[dipole, power] = powerBroadening.map((f) => Number(f.value))
         trapArea = mainParameters?.filter((params) => params.label === 'trap_area (sq-meter)')?.[0]?.value || ''
-        Cp = ((2 * dipole * DebyeToCm) / PlanksConstant) * Math.sqrt(1 / (trapArea * SpeedOfLight * VaccumPermitivity))
+        Cp =
+            ((2 * dipole * DebyeToCm) / PlanksConstant) *
+            Math.sqrt(1 / (Number(trapArea) * SpeedOfLight * VaccumPermitivity))
         lorrentz = Number(Number(Cp * Math.sqrt(Number(power)) * 1e-6).toFixed(3))
     }
 
@@ -311,7 +319,11 @@
             updatePower()
         }
     }
-    const energyInfos = { 'cm-1': [], MHz: [] }
+    const energyInfos: {
+        'cm-1': ValueLabel<number>[]
+        MHz: ValueLabel<number>[]
+    } = { 'cm-1': [], MHz: [] }
+
     async function setConfig() {
         try {
             const configFileLocation = window.path.dirname(configFile)
@@ -321,7 +333,9 @@
             const CONFIG = Yml(fileRead)
             console.table(CONFIG)
 
-            let attachmentRateConstants = {}
+            let attachmentRateConstants: {
+                [key in 'k3' | 'kCID']: Omit<ValueLabel, 'id'>[]
+            } = { k3: [], kCID: [] }
 
             ;({
                 mainParameters,
@@ -405,7 +419,7 @@
         }
     }
 
-    let boltzmanWindow
+    let boltzmanWindow: WinBox | null = null
     let openBoltzmanWindow = false
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
     let simulationMethod = 'Normal'

@@ -7,19 +7,20 @@
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
     // import { browse } from '$components/Layout.svelte'
 
-    export let energyUnit: string
+    export let energyUnit: 'cm-1' | 'MHz'
     export let zeemanSplit: boolean
-    export let energyLevels: ValueLabel[]
+    export let energyLevels: ValueLabel<number>[]
 
     export let electronSpin: boolean
     export let numberOfLevels: number
     export let numberDensity = '4e14'
     export let collisionalRates: ValueLabel[] = []
-    export let collisionalTemp: number | null = null
+    export let collisionalTemp: number
     export let collisionalFilename = ''
     export let collisionalCoefficient: ValueLabel[] = []
     export let collisionalCoefficient_balance: ValueLabel[] = []
 
+    // console.log({ collisionalTemp })
     let collisionalWindow = false
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {
@@ -67,8 +68,8 @@
     }
 
     const computeRate = (rate: ValueLabel) => {
-        rate.value = Number(rate.value) * Number(numberDensity)
-        rate.value = rate.value.toExponential(3)
+        const value = Number(rate.value) * Number(numberDensity)
+        rate.value = value.toExponential(3)
         return rate
     }
 

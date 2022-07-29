@@ -16,9 +16,11 @@ declare global {
         currentTarget: EventTarget & HTMLButtonElement
     }
 
-    interface ValueLabel<T = number | string | boolean> { 
+    interface ValueLabel<T = string> { 
         value: T; label: string; step?: string, id: string
     }
+
+    type KeyStringObj<T=string> = {[key: string]: T}
 
     type persistentDB<T> = ReturnType<typeof window.persistentDB<T>>
     

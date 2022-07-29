@@ -5,14 +5,16 @@
     import { plot } from '../../../js/functions'
     import boltzman_distribution from '../functions/boltzman_distribution'
     import computePy_func from '$src/Pages/general/computePy'
+    import WinBox from 'winbox'
 
     export let active: boolean = false
-    export let energyUnit: string
+    export let energyUnit: 'cm-1' | 'MHz'
     export let zeemanSplit: boolean
-    export let energyLevels: ValueLabel[]
+
+    export let energyLevels: ValueLabel<number>[]
     export let electronSpin: boolean
     export let numberOfLevels: number
-    export let collisionalTemp = 10
+    export let collisionalTemp: number = 10
     export let collisionalRateConstants: ValueLabel[] = []
 
     const title = 'Collisional cooling'
@@ -20,7 +22,7 @@
 
     let duration = 600
     let initialTemp = Number(localStorage.getItem('collisional-Init-Temp')) || 300
-    let graphWindow = null
+    let graphWindow: WinBox
     let windowReady = false
     let numberDensity = '2e14'
     let totalSteps = 1000

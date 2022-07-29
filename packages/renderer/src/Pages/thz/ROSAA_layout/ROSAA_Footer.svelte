@@ -7,7 +7,7 @@
     export let showreport = false
     export let statusReport = ''
     export let simulationMethod = 'Normal'
-    export let simulation = null
+    export let simulation: (e?: Event) => Promise<void>
     const simulationMethods = ['Normal', 'FixedPopulation', 'withoutCollisionalConstants']
 </script>
 

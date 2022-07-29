@@ -1,24 +1,23 @@
-<script>
+<script lang="ts">
     import Textfield from '@smui/textfield'
     import { cloneDeep } from 'lodash-es'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
-    // import BoxComponent from './BoxComponent.svelte'
-    // import CustomPanel from '$components/CustomPanel.svelte'
-    export let numberDensity
-    export let attachmentCoefficients = []
-    export let k3 = { constant: [], rate: [] }
-    export let kCID = { constant: [], rate: [] }
+
+    export let numberDensity: string
+    export let attachmentCoefficients: ValueLabel[] = []
+    export let k3: AttachmentRate = { constant: [], rate: [] }
+    export let kCID: AttachmentRate = { constant: [], rate: [] }
 
     const computeAttachmentRate = () => {
         k3.rate = cloneDeep(k3.constant).map((rate) => ({
             ...rate,
-            value: Number(rate.value * numberDensity ** 2).toFixed(3),
+            value: Number(Number(rate.value) * Number(numberDensity) ** 2).toFixed(3),
             id: window.getID(),
         }))
 
         kCID.rate = cloneDeep(kCID.constant).map((rate) => ({
             ...rate,
-            value: Number(rate.value * numberDensity).toFixed(3),
+            value: Number(+rate.value * +numberDensity).toFixed(3),
             id: window.getID(),
         }))
     }
@@ -27,10 +26,6 @@
     }
 </script>
 
-<!-- <CustomPanel
-    label="Rare-gas attachment (K3) and dissociation (kCID) constants"
-    loaded={attachmentCoefficients.length > 0}
-> -->
 <div class="align h-center mb-5">
     {#each attachmentCoefficients as { label, value, id } (id)}
         <CustomTextSwitch bind:value {label} step={0.1} />
@@ -71,4 +66,3 @@
         {/each}
     </div>
 </div>
-<!-- </CustomPanel> -->

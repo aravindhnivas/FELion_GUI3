@@ -1,25 +1,24 @@
-<script>
+<script lang="ts">
     import { cloneDeep, find } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import computePy_func from '$src/Pages/general/computePy'
-    // import BoxComponent from './BoxComponent.svelte'
     import { PlanksConstant, SpeedOfLight } from '$src/js/constants'
     import { computeStatisticalWeight } from '../functions/balance_distribution'
-    // import CustomPanel from '$components/CustomPanel.svelte'
 
-    export let einsteinCoefficientA = []
-    export let einsteinCoefficientB = []
-    export let einsteinCoefficientB_rateConstant = []
+    export let einsteinCoefficientA: ValueLabel[] = []
+    export let einsteinCoefficientB: ValueLabel[] = []
+    export let einsteinCoefficientB_rateConstant: ValueLabel[] = []
 
     export let einsteinB_rateComputed = false
+
     export let lorrentz = 0.32
     export let gaussian = 0.21
-    export let power = '2e-5'
+    export let power: string | number = '2e-5'
     export let trapArea = '5e-5'
-    export let energyUnit
-    export let zeemanSplit
-    export let energyLevels
-    export let electronSpin
+    export let energyUnit: 'cm-1' | 'MHz'
+    export let zeemanSplit: boolean
+    export let energyLevels: ValueLabel<number>[]
+    export let electronSpin: boolean
 
     async function computeEinsteinB() {
         try {
@@ -31,14 +30,14 @@
             const einsteinCoefficientB_emission = einsteinCoefficientA.map(({ label, value }) => {
                 const [final, initial] = label.split('-->').map((l) => l.trim())
 
-                const v0 = find(energyLevels, (e) => e?.label == initial)?.value
-                const v1 = find(energyLevels, (e) => e?.label == final)?.value
+                const v0 = find(energyLevels, (e) => e?.label == initial)?.value ?? 0
+                const v1 = find(energyLevels, (e) => e?.label == final)?.value ?? 0
 
-                const freq = parseFloat(v1) - parseFloat(v0)
+                const freq = Number(v1) - Number(v0)
                 const freqInHz = energyUnit === 'MHz' ? freq * 1e6 : freq * SpeedOfLight * 100
 
                 const constTerm = SpeedOfLight ** 3 / (8 * Math.PI * PlanksConstant * freqInHz ** 3)
-                const B = constTerm * value
+                const B = constTerm * +value
 
                 return {
                     label,
@@ -78,26 +77,26 @@
 
     let voigtline = ''
 
-    async function computeRates(e) {
+    async function computeRates(e?: Event) {
         if (einsteinCoefficientB.length < 1) return
         const lineshape = await computeLineshape(e)
         if (!lineshape) return
         voigtline = lineshape
 
-        const constantTerm = parseFloat(power) / (parseFloat(trapArea) * SpeedOfLight)
+        const constantTerm = Number(power) / (Number(trapArea) * SpeedOfLight)
         const norm = constantTerm * parseFloat(voigtline)
 
         einsteinCoefficientB = einsteinCoefficientB_rateConstant.map((rateconstant) => ({
             ...rateconstant,
-            value: Number(rateconstant.value * norm).toExponential(3),
+            value: Number(+rateconstant.value * norm).toExponential(3),
         }))
         einsteinB_rateComputed = einsteinCoefficientB.length > 0
     }
 
     let computing_lineshape = false
-    async function computeLineshape(e = null) {
+    async function computeLineshape(e?: Event) {
         if (computing_lineshape) return
-        if (!lorrentz || !gaussian) return createToast('Compute gaussian and lorrentz parameters')
+        if (!lorrentz || !gaussian) return window.createToast('Compute gaussian and lorrentz parameters')
         computing_lineshape = true
         const dataFromPython = await computePy_func({
             e,
