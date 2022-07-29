@@ -5,7 +5,7 @@
     import NumberDensity from '$src/Pages/misc/NumberDensity.svelte'
     import TextAndSelectOptsToggler from '$src/components/TextAndSelectOptsToggler.svelte'
     import { activePage } from '$src/sveltewritables'
-    import { browse } from '$components/Layout.svelte'
+    // import { browse } from '$components/Layout.svelte'
 
     export let nHe = ''
     export let selectedFile = ''
@@ -66,9 +66,9 @@
     }
 
     let config_file = ''
-    const browseFromConfigFile = async () => {
+    const browseFromConfigFile = () => {
         config_file = ''
-        const [result] = await browse({ filetype: 'configs.json', dir: false })
+        const [result] = window.browse({ filetype: 'configs.json', dir: false })
         if (!result) return
         config_file = result
     }

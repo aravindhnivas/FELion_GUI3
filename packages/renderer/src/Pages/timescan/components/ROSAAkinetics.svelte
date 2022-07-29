@@ -17,7 +17,7 @@
 
     import KineticEditor from './KineticEditor.svelte'
     import MatplotlibDialog from './MatplotlibDialog.svelte'
-    import { browse } from '$components/Layout.svelte'
+    // import { browse } from '$components/Layout.svelte'
 
     import ButtonBadge from '$components/ButtonBadge.svelte'
     import RateConstants from './controllers/RateConstants.svelte'
@@ -45,8 +45,8 @@
     // let k3Guess = '0, 0.5, 1e-3'
     // let kCIDGuess = '0, 2, 1e-3'
 
-    async function browse_folder() {
-        const [result] = await browse()
+    function browse_folder() {
+        const [result] = window.browse()
         if (!result) return
         currentLocation = result
         window.db.set('kinetics_location', currentLocation)

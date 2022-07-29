@@ -10,14 +10,15 @@
     } from './settings/svelteWritables'
     import { updateInterval } from '$src/sveltewritables'
     import { activateChangelog } from '../js/functions'
-    import { getPyVersion, resetPyConfig } from './settings/checkPython'
+
+    import { getPyVersion } from './settings/checkPython'
     import Textfield from '@smui/textfield'
     import { onMount, onDestroy, tick } from 'svelte'
     import Changelog from '$components/Changelog.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { checkTCP, fetchServerROOT } from './settings/serverConnections'
     import { Unsubscribe } from 'conf/dist/source/types'
-    import { browse } from '$src/components/Layout.svelte'
+    // import { browse } from 'components/Layout.svelte'
     import IconButton from '$components/IconButton.svelte'
 
     let pyError = ''
@@ -71,7 +72,7 @@
             if ($pyServerReady) {
                 await updateServerInfo()
             }
-            if (import.meta.env.DEV) return
+            if (!window.isPackaged) return
             updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
         }
     })
@@ -102,7 +103,7 @@
     })
 
     function updateCheck(event?: ButtonClickEvent) {
-        if (import.meta.env.DEV) return console.info('Cannot update in DEV mode')
+        if (!window.isPackaged) return console.info('Cannot update un-packed version')
 
         try {
             if (!navigator.onLine) {
@@ -212,21 +213,34 @@
 
                             {#if $developerMode}
                                 <div class="align">
-                                    <Textfield bind:value={$pythonpath} label="Python path" style="width: 100%; " />
-                                    <Textfield
-                                        bind:value={$pythonscript}
-                                        label="Python script path"
-                                        style="width: 100%; "
-                                    />
-                                    <button class="button is-link" on:click={resetPyConfig}>Reset</button>
+                                    <div class="two_col_browse">
+                                        <button
+                                            class="button is-link"
+                                            on:click={() => {
+                                                const [result] = window.browse({ dir: false })
+                                                if (!result) return
+                                                $pythonpath = result
+                                            }}>Browse</button
+                                        >
+                                        <Textfield bind:value={$pythonpath} label="Python path" />
+                                    </div>
+                                    <div class="two_col_browse">
+                                        <button
+                                            class="button is-link"
+                                            on:click={() => {
+                                                const [result] = window.browse({ dir: true })
+                                                if (!result) return
+                                                $pythonscript = result
+                                            }}>Browse</button
+                                        >
+                                        <Textfield bind:value={$pythonscript} label="Python script path" />
+                                    </div>
+
                                     <button
-                                        class="button is-link"
+                                        class="button is-warning ml-auto has-background-warning has-text-black"
                                         on:click={async () => {
-                                            try {
-                                                await getPyVersion()
-                                            } catch (error) {
-                                                window.handleError(error)
-                                            }
+                                            const output = await getPyVersion()
+                                            if (output instanceof Error) window.handleError(output)
                                         }}>Save</button
                                     >
                                 </div>
@@ -234,12 +248,12 @@
                         </div>
 
                         <!-- {#if import.meta.env.DEV} -->
-                        <div class="browse__div">
+                        <div class="three_col_browse">
                             <button
                                 disabled={lock_felionpy_program}
                                 class="button is-link"
                                 on:click={async () => {
-                                    const [result] = await browse({ dir: false })
+                                    const [result] = window.browse({ dir: false })
                                     if (!result) return
 
                                     console.log(result)
@@ -375,14 +389,6 @@
 </section>
 
 <style lang="scss">
-    .browse__div {
-        display: grid;
-        grid-auto-flow: column;
-        align-items: center;
-        gap: 1em;
-        grid-template-columns: auto 1fr auto;
-        width: 100%;
-    }
     section {
         margin: 0;
         padding: 0;
@@ -454,6 +460,7 @@
         height: calc(42vh - 5rem);
         max-height: calc(42vh - 5rem);
     }
+
     .infos__div {
         display: flex;
         flex-direction: column;
@@ -461,6 +468,7 @@
             display: grid;
             grid-auto-flow: column;
             grid-template-columns: 1fr auto;
+            align-items: flex-end;
         }
     }
 </style>

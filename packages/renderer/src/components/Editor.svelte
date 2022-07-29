@@ -2,7 +2,7 @@
     import { showConfirm } from '$src/components/alert/store'
     import { onDestroy } from 'svelte'
     import Textfield from '@smui/textfield'
-    import { browse } from '$components/Layout.svelte'
+    // import { browse } from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import WinBox from 'winbox/src/js/winbox.js'
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
@@ -61,8 +61,8 @@
         window.db.set(`${filetype}-report-md`, location)
     }
 
-    async function browse_folder() {
-        const [result] = await browse()
+    function browse_folder() {
+        const [result] = window.browse()
         if (!result) return
         location = result
         window.createToast('Location updated')

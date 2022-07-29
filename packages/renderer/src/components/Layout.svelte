@@ -1,34 +1,4 @@
 <script lang="ts" context="module">
-    import type { OpenDialogSyncOptions } from 'electron'
-
-    export async function browse({ filetype = '', dir = true, multiple = false } = {}) {
-        const properties = []
-        const type = dir ? 'openDirectory' : 'openFile'
-
-        properties.push(type)
-
-        if (multiple) {
-            properties.push('multiSelections')
-        }
-
-        const options: OpenDialogSyncOptions = {
-            filters: [
-                { name: filetype, extensions: [`*${filetype}`] },
-                { name: 'All Files', extensions: ['*'] },
-            ],
-            properties,
-        }
-
-        const { showOpenDialogSync } = window.dialogs
-
-        console.table(options)
-        console.log('Directory: ', dir)
-        console.log('multiSelections: ', multiple)
-
-        const result = (await showOpenDialogSync(options)) || ['']
-        return result
-    }
-
     export const graph_detached: { [name: string]: boolean } = {}
 </script>
 
@@ -53,8 +23,8 @@
     export let activateConfigModal = false
 
     const dispatch = createEventDispatcher()
-    async function browse_folder() {
-        const [result] = await browse()
+    function browse_folder() {
+        const [result] = window.browse()
         if (!result) return
         currentLocation = result
         window.db.set(`${filetype}_location`, currentLocation)

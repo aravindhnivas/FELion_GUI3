@@ -1,5 +1,5 @@
 import { tick } from 'svelte'
-import { browse } from '$components/Layout.svelte'
+// import { browse } from '$components/Layout.svelte'
 
 export async function readFromFile({
     bowseFile = true,
@@ -10,9 +10,9 @@ export async function readFromFile({
     twoLabel = true,
     collisionalFile = false,
 } = {}) {
-    if (!energyFilename || bowseFile) {
-        const energyDetailsFile = await browse({ dir: false })
 
+    if (!energyFilename || bowseFile) {
+        const energyDetailsFile = window.browse({ dir: false })
         if (energyDetailsFile) return Promise.reject('No files selected')
         energyFilename = energyDetailsFile[0]
     }

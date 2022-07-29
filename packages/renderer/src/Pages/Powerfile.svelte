@@ -4,7 +4,7 @@
     import HelperText from '@smui/textfield/helper-text'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
-    import { browse } from '../components/Layout.svelte'
+    // import { browse } from '../components/Layout.svelte'
 
     const writePowfile = async () => {
         const contents = `${initContent.trim()}\n${powerfileContent}`.trim()
@@ -34,8 +34,8 @@
         })
     }
 
-    async function openFolder({ save = false } = {}) {
-        const [result] = await browse()
+    function openFolder({ save = false } = {}) {
+        const [result] = window.browse()
         if (!result) return
         location = result
         window.db.set('powerfile_location', location)

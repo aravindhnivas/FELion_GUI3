@@ -4,7 +4,7 @@
     import Accordion from '@smui-extra/accordion'
     import { parse as Yml } from 'yaml'
 
-    import { browse } from '$components/Layout.svelte'
+    // import { browse } from '$components/Layout.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
@@ -161,8 +161,8 @@
         window.db.set('ROSAA_config_location', currentLocation)
     }
 
-    async function browse_folder() {
-        const [result] = await browse({ filetype: 'yml', dir: false })
+    function browse_folder() {
+        const [result] = window.browse({ filetype: 'yml', dir: false })
         console.log(result)
         if (!result) return
         configFilename = window.path.basename(result)

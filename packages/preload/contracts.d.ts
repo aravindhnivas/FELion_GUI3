@@ -12,6 +12,7 @@ interface Exposed {
     readonly exec: typeof import('./child-process-modules').exec;
 
     readonly dialogs: Readonly<typeof import('./dialogs-modules').dialogs>;
+    browse: typeof import('./dialogs-modules').browse;
     readonly reload: Readonly<typeof import('./dialogs-modules').reload>;
     readonly relaunch: Readonly<typeof import('./dialogs-modules').relaunch>;
     appInfo: typeof import('./definedEnv').appInfo;

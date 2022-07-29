@@ -5,7 +5,7 @@
     import balance_distribution from '../functions/balance_distribution'
     import CollisionalDistribution from '../windows/CollisionalDistribution.svelte'
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
-    import { browse } from '$components/Layout.svelte'
+    // import { browse } from '$components/Layout.svelte'
 
     export let energyUnit: string
     export let zeemanSplit: boolean
@@ -78,8 +78,8 @@
 
     let collisionalFileBasename = ''
 
-    async function browse_collisional_file() {
-        ;[collisionalFilename] = (await browse({ dir: false })) || collisionalFilename
+    function browse_collisional_file() {
+        ;[collisionalFilename] = window.browse({ dir: false }) || collisionalFilename
         collisionalFileBasename = window.path.basename(collisionalFilename)
     }
 

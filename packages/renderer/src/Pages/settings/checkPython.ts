@@ -1,15 +1,4 @@
-import { pythonpath, pythonscript, pyVersion, developerMode, pyProgram, get } from './svelteWritables'
-
-export async function resetPyConfig() {
-    const pyPath = window.path.join(window.ROOT_DIR, 'python3/python')
-    const pyScriptPath = window.path.join(window.ROOT_DIR, 'resources/python_files')
-    
-    pythonscript.set(pyScriptPath)
-    const output = await window.exec(`${pyPath} -V`)
-    if (output instanceof Error) return window.handleError(output)
-    pythonpath.set(pyPath)
-    window.createToast('Location resetted', 'warning')
-}
+import { pythonscript, pyVersion, developerMode, pyProgram, get } from './svelteWritables'
 
 export async function getPyVersion(e?: ButtonClickEvent) {
 

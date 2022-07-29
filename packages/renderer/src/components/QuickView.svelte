@@ -1,5 +1,5 @@
 <script>
-    import { browse } from './Layout.svelte'
+    // import { browse } from './Layout.svelte'
     import { fade } from 'svelte/transition'
 
     export let style = ''
@@ -8,8 +8,8 @@
     export let footer = true
     export let currentLocation = ''
 
-    async function browse_folder() {
-        const [result] = await browse()
+    function browse_folder() {
+        const [result] = window.browse()
         if (!result) return
         currentLocation = result
         window.createToast('Location updated')

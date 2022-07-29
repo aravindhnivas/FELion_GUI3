@@ -2,7 +2,7 @@
     import { addTraces } from 'plotly.js/dist/plotly-basic'
     import Textfield from '@smui/textfield'
     import Modal from '$components/Modal.svelte'
-    import { browse } from '$components/Layout.svelte'
+    // import { browse } from '$components/Layout.svelte'
     import { graphDiv } from '../functions/svelteWritables'
     import computePy_func from '$src/Pages/general/computePy'
 
@@ -15,8 +15,8 @@
     export let addedFile = {}
     export let extrafileAdded = 0
 
-    async function addFileSelection() {
-        const result = await browse({ dir: false, multiple: true })
+    function addFileSelection() {
+        const result = window.browse({ dir: false, multiple: true })
         if (!result) return
         addedfiles = addedFile['files'] = result
         window.createToast('Files added')
