@@ -3,8 +3,8 @@ import {exposeInMainWorld} from './exposeInMainWorld'
 import { versions, platform } from 'process'
 import * as path from 'path'
 import * as fs from 'fs-extra'
-import { AppInfo } from '../../types/main'
-
+// import { AppInfo } from '../../types/main'
+// export type {AppInfo}
 const env = import.meta.env
 contextBridge.exposeInMainWorld('env', env)
 

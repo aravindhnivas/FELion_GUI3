@@ -1,10 +1,9 @@
 import { exposeInMainWorld } from './exposeInMainWorld'
 import { promisify } from 'util'
 import * as child from 'child_process';
-// import { spawn, exec, execSync } from 'child_process'
+import { tryF } from 'ts-try';
 const execSync = child.execSync
 export { execSync }
-const execCommand = promisify(child.exec)
 
 type SpawnPick = Pick<child.ChildProcessWithoutNullStreams, "pid" | "killed" | "ref" | "unref" | "kill" | "on">
 type SpawnReturnType = SpawnPick & {
@@ -45,26 +44,13 @@ export function spawnFn(cmd: string, args: readonly string[] = [], opts?: child.
     };
 }
 
-export async function computeExecCommand(cmd: string) {
-    
+export async function exec(cmd: string) {
     console.log(`Executing command: ${cmd}`);
-    
-    let error: Error | undefined;
-    let stdout: string = "";
-    let stderr: string = "";
-
-    try {
-        ;({ stdout, stderr } = await execCommand(cmd));
-    
-    } catch (err) {
-        error = <Error>err;
-        console.log(`Erro occured while executing command: ${cmd}`);
-    }
-    const data = { stdout, stderr };
-    console.log(`Execution completed: \n${cmd}\n --> `, data);
-    return [data, error];
+    const fn = promisify(child.exec);
+    const data = await tryF(fn(cmd));
+    return data
 }
 
 exposeInMainWorld('spawn', spawnFn)
-exposeInMainWorld('exec', computeExecCommand)
+exposeInMainWorld('exec', exec)
 exposeInMainWorld('execSync', execSync)

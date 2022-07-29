@@ -5,13 +5,13 @@ export async function resetPyConfig() {
     const pyScriptPath = window.path.join(window.ROOT_DIR, 'resources/python_files')
     
     pythonscript.set(pyScriptPath)
-    const [,error] = await window.exec(`${pyPath} -V`)
-    if (error instanceof Error) return window.handleError(error)
+    const output = await window.exec(`${pyPath} -V`)
+    if (output instanceof Error) return window.handleError(output)
     pythonpath.set(pyPath)
     window.createToast('Location resetted', 'warning')
 }
 
-export async function getPyVersion(e: ButtonClickEvent) {
+export async function getPyVersion(e?: ButtonClickEvent) {
 
     const target = e?.target as HTMLButtonElement
     target?.classList.toggle('is-loading')
@@ -20,24 +20,18 @@ export async function getPyVersion(e: ButtonClickEvent) {
     const pyArgs = get(developerMode) ? window.path.join(get(pythonscript), 'main.py') : ''
 
     const command = `${get(pyProgram)} ${pyArgs} ${pyfile} {} `
-    const computedOutput = await window.exec(command)
-    if(computedOutput === undefined) return window.handleError(new Error('Could not get python version'))
 
-    const [data, error] = await window.exec(command)
-
-    if (error instanceof Error) {
+    const data = await window.exec(command)
+    if (data instanceof Error) {
         target?.classList.toggle('is-loading')
-        return Promise.reject(error)
+        return Promise.resolve(data)
     }
-
-    const { stdout } = data as { stdout: string, stderr: string }
-
+    const { stdout } = data
     const [version] = stdout?.split('\n').filter?.((line) => line.includes('Python')) || ['']
     pyVersion.set(version?.trim() || '')
     console.log({ stdout, version })
-
     window.createToast("python location updated", 'success')
     target?.classList.toggle('is-loading')
-    if (get(pyVersion)) return Promise.resolve(get(pyVersion))
+    return Promise.resolve(get(pyVersion))
 
 }

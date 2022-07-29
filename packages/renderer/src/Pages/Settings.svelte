@@ -63,14 +63,14 @@
             }
             $pyServerReady = <boolean>window.db.get('pyServerReady')
         } catch (error) {
-            pyError = String(error)
+            if (error instanceof Error) {
+                pyError = error.message
+            }
         } finally {
             serverInfo = [...serverInfo, { value: `pyVersion: ${$pyVersion}`, type: 'info' }]
-            await updateServerInfo()
-            // if ($pyServerReady) {
-            //     // serverCurrentStatus = { value: 'server starting...', type: 'info' }
-            //     await updateServerInfo()
-            // }
+            if ($pyServerReady) {
+                await updateServerInfo()
+            }
             if (import.meta.env.DEV) return
             updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
         }
@@ -101,7 +101,7 @@
         }
     })
 
-    function updateCheck(event = null) {
+    function updateCheck(event?: ButtonClickEvent) {
         if (import.meta.env.DEV) return console.info('Cannot update in DEV mode')
 
         try {
@@ -124,35 +124,39 @@
     let serverInfo: ServerInfo[] = []
     let serverCurrentStatus: ServerInfo = { value: '', type: 'info' }
 
-    const updateServerInfo = async (e: ButtonClickEvent) => {
+    const updateServerInfo = async (e?: ButtonClickEvent) => {
         serverCurrentStatus = { value: 'server starting...', type: 'info' }
         serverInfo = [...serverInfo, serverCurrentStatus]
-        const rootpage = (await fetchServerROOT({ target: e?.target })) as string
-        if (rootpage && rootpage.includes('Server running')) {
+
+        const target = e?.target as HTMLButtonElement
+        const rootpage = await fetchServerROOT({ target })
+
+        if (rootpage instanceof Error) {
+            serverInfo = [...serverInfo, { value: rootpage.message, type: 'danger' }]
+            serverCurrentStatus = { value: 'server closed', type: 'danger' }
+        } else {
             $pyServerReady = true
             serverInfo = [...serverInfo, { value: rootpage, type: 'success' }]
             serverCurrentStatus = { value: `server running: port(${$pyServerPORT})`, type: 'success' }
             return
-        } else {
-            serverInfo = [...serverInfo, { value: rootpage, type: 'danger' }]
-            serverCurrentStatus = { value: 'server closed', type: 'danger' }
-            // window.stopServer()
-            // serverInfo = []
         }
     }
 
     const serverDebug = window.persistentDB('serverDebug', false)
-    const updateTCPInfo = async (e = null) => {
-        const [{ stdout }] = await checkTCP({ target: e?.target })
-        if (stdout) {
-            serverInfo = [...serverInfo, { value: stdout, type: 'info' }]
-        } else {
+    const updateTCPInfo = async (e?: ButtonClickEvent) => {
+        const target = e?.target as HTMLButtonElement
+        const data = await checkTCP({ target })
+
+        if (data instanceof Error) {
             serverInfo = [
                 ...serverInfo,
                 { value: `ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`, type: 'danger' },
             ]
+            return
         }
+        serverInfo = [...serverInfo, { value: data.stdout, type: 'info' }]
     }
+
     const tabs = ['Configuration', 'Update', 'About', 'Infos']
     let showServerControls = false
 
@@ -192,32 +196,17 @@
                         <div class="tag is-warning">
                             {$pyVersion || 'Python undefined'}
                         </div>
-                        <!-- <div class="tag" class:is-danger={!$pyServerReady} class:is-success={$pyServerReady}> -->
                         <div class="tag is-{serverCurrentStatus.type}">
-                            <!-- {$pyServerReady ? `server running (port: ${$pyServerPORT})` : 'felionpy server closed'} -->
                             {serverCurrentStatus.value}
                         </div>
 
                         <div class="align">
-                            <button
-                                class="button is-link"
-                                on:click={() => {
-                                    $developerMode = !$developerMode
-                                }}
-                            >
+                            <button class="button is-link" on:click={() => ($developerMode = !$developerMode)}>
                                 Developer mode: {$developerMode}
                             </button>
                             <button class="button is-link" on:click={getPyVersion}>getPyVersion</button>
 
-                            <button
-                                class="button is-link"
-                                on:click={async () => {
-                                    showServerControls = !showServerControls
-                                    await tick()
-                                    const controllerDiv = document.getElementById('serverControllers')
-                                    controllerDiv?.scrollIntoView()
-                                }}
-                            >
+                            <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
                                 Show server controls
                             </button>
 

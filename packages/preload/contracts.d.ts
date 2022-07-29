@@ -9,12 +9,12 @@ interface Exposed {
 
     readonly execSync: typeof import('./child-process-modules').execSync;
     readonly spawn: typeof import('./child-process-modules').spawnFn;
-    readonly exec: typeof import('./child-process-modules').computeExecCommand;
+    readonly exec: typeof import('./child-process-modules').exec;
 
     readonly dialogs: Readonly<typeof import('./dialogs-modules').dialogs>;
     readonly reload: Readonly<typeof import('./dialogs-modules').reload>;
     readonly relaunch: Readonly<typeof import('./dialogs-modules').relaunch>;
-    readonly appInfo: Readonly<typeof import('./definedEnv').appInfo>;
+    appInfo: typeof import('./definedEnv').appInfo;
     readonly ROOT_DIR: Readonly<typeof import('./definedEnv').ROOT_DIR>;
     readonly appVersion: Readonly<typeof import('./definedEnv').appVersion>;
     readonly platform: Readonly<typeof import('./definedEnv').platform>;
