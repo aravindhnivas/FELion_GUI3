@@ -1,6 +1,6 @@
 import { pyServerPORT, get } from './svelteWritables'
 
-type Target = HTMLButtonElement | undefined | null
+type Target = EventTarget & HTMLButtonElement
 type Type = {target?: Target, portNumber: number}
 
 export const checkTCP = async ({ target, portNumber = get(pyServerPORT) }: Type) => {
