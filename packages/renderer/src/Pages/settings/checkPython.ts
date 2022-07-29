@@ -11,8 +11,9 @@ export async function resetPyConfig() {
     window.createToast('Location resetted', 'warning')
 }
 
-export async function getPyVersion({target}: {target: HTMLButtonElement}) {
+export async function getPyVersion(e: ButtonClickEvent) {
 
+    const target = e?.target as HTMLButtonElement
     target?.classList.toggle('is-loading')
 
     const pyfile = 'getVersion'
