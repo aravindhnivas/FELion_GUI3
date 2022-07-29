@@ -11,7 +11,14 @@ export default async function ({ pyfile, args, target, general }: Type): Promise
     try {
         console.time('Process Started')
 
-        if (!general) target?.classList.add('is-loading')
+        if (!general) {
+            target?.classList.add('is-loading')
+            const outputFile = window.path.join(window.appInfo.temp, 'FELion_GUI3', pyfile.split('.').at(-1) + '_data.json')
+            if (window.fs.isFile(outputFile)) {
+                const output = window.fs.removeSync(outputFile)
+                if (window.fs.isError(output)) console.error(output)
+            }
+        }
 
         const URL = `http://localhost:${get(pyServerPORT)}/`
 
