@@ -15,7 +15,9 @@ const config = {
     files: ['packages/**/dist/**'],
     extraFiles: [
         // copy to ROOT_DIR (or Contents in mac)
-        'resources',
+        'resources/*.md',
+        'resources/python_files/**',
+        'resources/felionpy/**',
     ],
     publish: [
         {
