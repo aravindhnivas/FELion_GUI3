@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron'
+import { app, ipcMain, webContents } from 'electron'
 import * as path from 'path'
 import { promisify } from 'util'
 import * as child from 'child_process';
@@ -51,11 +51,37 @@ export async function getPyVersion() {
 
 let py: child.ChildProcessWithoutNullStreams | undefined
 let serverStarting = false
+// db.onDidChange('pyServerReady', (value) => {
+//     console.info('pyServerReady', value)
+// })
+
+const spawnServer = (webContents: Electron.WebContents) => {
+    console.info('pyServerReady', db.get('pyServerReady'))
+    webContents?.send('db:update', {
+        key: 'pyServerReady',
+        value: true,
+    })
+    serverStarting = false
+    console.log('server ready')
+}
+
+const closeServer = (webContents: Electron.WebContents) => {
+    console.info('pyServerReady', db.get('pyServerReady'))
+    webContents?.send('db:update', {
+        key: 'pyServerReady',
+        value: false,
+    })
+    serverStarting = false
+    console.log('server closed')
+}
+const handleServerError = (error: Error | string, webContents: Electron.WebContents) => {
+    console.error('server error\n', error)
+    closeServer(webContents)
+}
 
 export async function startServer(webContents: Electron.WebContents) {
 
     if (serverStarting) {
-
         console.log('server already starting')
         return Promise.resolve(false)
     }
@@ -89,49 +115,30 @@ export async function startServer(webContents: Electron.WebContents) {
         const pyfile = 'server'
         const sendArgs = [pyfile, JSON.stringify({ port: availablePORT, debug: serverDebug })]
         const pyArgs = developerMode ? [mainpyfile, ...sendArgs] : sendArgs
+        
         console.warn({ pyProgram, pyArgs })
-
+        
         const opts = {}
 
         try {
             serverStarting = true
             const finalProgram = pyProgram.split(' ')
             const finalArgs = [...finalProgram.slice(1, ), ...pyArgs]
-
             console.warn(finalProgram[0], { finalArgs })
+
             py = child.spawn(finalProgram[0], finalArgs, opts)
 
             py.on('error', (error) => {
-                webContents?.send('db:update', {
-                    key: 'pyServerReady',
-                    value: false,
-                })
-                serverStarting = false
-                console.error('could not start felionpy server', error)
+                handleServerError(error, webContents)
                 reject(error)
             })
 
             py.on('spawn', () => {
-                db.set('pyServerReady', true)
-                webContents?.send('db:update', {
-                    key: 'pyServerReady',
-                    value: true,
-                })
-                console.info('pyServerReady', db.get('pyServerReady'))
-                serverStarting = false
+                spawnServer(webContents)
                 resolve(true)
-                console.log('server ready')
             })
 
-            py.on('exit', () => {
-                db.set('pyServerReady', false)
-                serverStarting = false
-                webContents?.send('db:update', {
-                    key: 'pyServerReady',
-                    value: false,
-                })
-                console.log('server closed')
-            })
+            py.on('exit', () => closeServer(webContents))
 
             py.stderr.on('data', (err) => {
                 const stderr = String.fromCharCode.apply(null, err)
@@ -142,13 +149,9 @@ export async function startServer(webContents: Electron.WebContents) {
                 const stdout = String.fromCharCode.apply(null, data)
                 console.info("Server's stdout: ", stdout)
             })
+
         } catch (error) {
-            serverStarting = false
-            console.error(error, {serverStarting})
-            webContents?.send('db:update', {
-                key: 'pyServerReady',
-                value: false,
-            })
+            handleServerError(<Error>error, webContents)
             reject(error)
         }
     })

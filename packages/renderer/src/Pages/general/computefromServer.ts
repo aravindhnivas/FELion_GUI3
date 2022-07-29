@@ -9,7 +9,7 @@ interface Type {
 
 export default async function ({ pyfile, args, target, general }: Type): Promise<DataFromPython | string | undefined> {
     try {
-        console.time('Process Started')
+        console.time('Computation took')
 
         if (!general) {
             target?.classList.add('is-loading')
@@ -31,7 +31,7 @@ export default async function ({ pyfile, args, target, general }: Type): Promise
         if (target?.classList.contains('is-loading')) {
             target.classList.remove('is-loading')
         }
-        console.timeEnd('Process Started')
+        console.timeEnd('Computation took')
         
         console.warn(response)
         if (!response.ok) {
