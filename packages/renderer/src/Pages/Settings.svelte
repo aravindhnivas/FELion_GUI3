@@ -12,7 +12,7 @@
     import { activateChangelog } from '../js/functions'
     import { getPyVersion, resetPyConfig } from './settings/checkPython'
     import Textfield from '@smui/textfield'
-    import { onMount, onDestroy } from 'svelte'
+    import { onMount, onDestroy, tick } from 'svelte'
     import Changelog from '$components/Changelog.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { checkTCP, fetchServerROOT } from './settings/serverConnections'
@@ -28,9 +28,13 @@
 
     unsubscribers[0] = window.db.onDidChange('pyServerReady', async (value: boolean) => {
         $pyServerReady = value
+
         if ($pyServerReady) {
-            serverInfo += `>> fetching server status\n`
+            serverInfo = [...serverInfo, { value: 'fetching server status', type: 'info' }]
             await updateServerInfo()
+        } else {
+            serverCurrentStatus = { value: 'server closed', type: 'danger' }
+            serverInfo = [...serverInfo, serverCurrentStatus]
         }
     })
 
@@ -61,15 +65,16 @@
         } catch (error) {
             pyError = String(error)
         } finally {
-            serverInfo += `>> pyVersion: ${$pyVersion}\n`
-            if ($pyServerReady) {
-                await updateServerInfo()
-            }
+            serverInfo = [...serverInfo, { value: `pyVersion: ${$pyVersion}`, type: 'info' }]
+            await updateServerInfo()
+            // if ($pyServerReady) {
+            //     // serverCurrentStatus = { value: 'server starting...', type: 'info' }
+            //     await updateServerInfo()
+            // }
             if (import.meta.env.DEV) return
             updateIntervalCycle = setInterval(updateCheck, $updateInterval * 60 * 1000)
         }
     })
-    // console.log('meta', import.meta.env)
     let updating = false
 
     unsubscribers[3] = window.db.onDidChange('update-status', (status) => {
@@ -111,14 +116,28 @@
         }
     }
 
-    let serverInfo = ''
+    interface ServerInfo {
+        value: string
+        type: 'info' | 'danger' | 'warning' | 'success'
+    }
 
-    const updateServerInfo = async (e: ButtonClickEvent = null) => {
-        const rootpage = await fetchServerROOT({ target: e?.target })
-        if (!rootpage.includes('ERROR')) {
+    let serverInfo: ServerInfo[] = []
+    let serverCurrentStatus: ServerInfo = { value: '', type: 'info' }
+
+    const updateServerInfo = async (e: ButtonClickEvent) => {
+        serverCurrentStatus = { value: 'server starting...', type: 'info' }
+        serverInfo = [...serverInfo, serverCurrentStatus]
+        const rootpage = (await fetchServerROOT({ target: e?.target })) as string
+        if (rootpage && rootpage.includes('Server running')) {
             $pyServerReady = true
-            serverInfo += `>> ${rootpage}\n`
+            serverInfo = [...serverInfo, { value: rootpage, type: 'success' }]
+            serverCurrentStatus = { value: `server running: port(${$pyServerPORT})`, type: 'success' }
             return
+        } else {
+            serverInfo = [...serverInfo, { value: rootpage, type: 'danger' }]
+            serverCurrentStatus = { value: 'server closed', type: 'danger' }
+            // window.stopServer()
+            // serverInfo = []
         }
     }
 
@@ -126,9 +145,12 @@
     const updateTCPInfo = async (e = null) => {
         const [{ stdout }] = await checkTCP({ target: e?.target })
         if (stdout) {
-            serverInfo += `>> ${stdout}\n`
+            serverInfo = [...serverInfo, { value: stdout, type: 'info' }]
         } else {
-            serverInfo += `>> ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`
+            serverInfo = [
+                ...serverInfo,
+                { value: `ERROR occured while checking TCP connection on port:${$pyServerPORT}\n`, type: 'danger' },
+            ]
         }
     }
     const tabs = ['Configuration', 'Update', 'About', 'Infos']
@@ -170,8 +192,10 @@
                         <div class="tag is-warning">
                             {$pyVersion || 'Python undefined'}
                         </div>
-                        <div class="tag" class:is-danger={!$pyServerReady} class:is-success={$pyServerReady}>
-                            {$pyServerReady ? `server running (port: ${$pyServerPORT})` : 'felionpy server closed'}
+                        <!-- <div class="tag" class:is-danger={!$pyServerReady} class:is-success={$pyServerReady}> -->
+                        <div class="tag is-{serverCurrentStatus.type}">
+                            <!-- {$pyServerReady ? `server running (port: ${$pyServerPORT})` : 'felionpy server closed'} -->
+                            {serverCurrentStatus.value}
                         </div>
 
                         <div class="align">
@@ -185,7 +209,15 @@
                             </button>
                             <button class="button is-link" on:click={getPyVersion}>getPyVersion</button>
 
-                            <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
+                            <button
+                                class="button is-link"
+                                on:click={async () => {
+                                    showServerControls = !showServerControls
+                                    await tick()
+                                    const controllerDiv = document.getElementById('serverControllers')
+                                    controllerDiv?.scrollIntoView()
+                                }}
+                            >
                                 Show server controls
                             </button>
 
@@ -242,16 +274,21 @@
                             </div>
                         {/if}
 
-                        <div class="align server-control" class:hide={!showServerControls}>
+                        <div id="serverControllers" class="align server-control" class:hide={!showServerControls}>
                             <div class="align">
                                 <Textfield disabled type="number" bind:value={$pyServerPORT} label="serverPORT" />
                                 <CustomSwitch bind:selected={$serverDebug} label="serverDebug" />
 
-                                <button class="button is-link" on:click={window.startServer} disabled={$pyServerReady}>
+                                <button
+                                    class="button is-link"
+                                    class:is-loading={serverCurrentStatus.value.includes('starting')}
+                                    on:click={window.startServer}
+                                    disabled={$pyServerReady && serverCurrentStatus.value.includes('running')}
+                                >
                                     STARTserver
                                 </button>
 
-                                {#if $pyServerReady}
+                                {#if $pyServerReady && serverCurrentStatus.value.includes('running')}
                                     <button class="button is-danger" on:click={window.stopServer}> STOPserver </button>
                                 {/if}
 
@@ -265,14 +302,16 @@
                                 <button
                                     class="button is-danger"
                                     on:click={() => {
-                                        serverInfo = ''
+                                        serverInfo = []
                                     }}>Clear</button
                                 >
                             </div>
                         </div>
 
-                        <div class="serverContainer align box">
-                            {serverInfo}
+                        <div id="serverInfo__div" class="serverContainer align box">
+                            {#each serverInfo as info (info)}
+                                <span class="has-text-{info.type}" style="width: 100%;">>> {info.value}</span>
+                            {/each}
                         </div>
                     </div>
                 </div>
@@ -417,6 +456,8 @@
     }
 
     .serverContainer {
+        display: flex;
+        align-content: flex-start;
         overflow: auto;
         user-select: text;
         white-space: pre-wrap;
