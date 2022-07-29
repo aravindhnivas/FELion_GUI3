@@ -65,9 +65,12 @@ class normplot:
 
     def begin_compute(self):
 
-        for filename in self.received_files:
+        percent_completed = 0
+        for counter, filename in enumerate(self.received_files):
             self.compute(filename)
             print("computing", filename.name, flush=True)
+            percent_completed = (counter+1) / len(self.received_files) * 100
+            print(f"{percent_completed:.2f}% completed", flush=True)
 
         # For Normalised Intensity
         binns, intens = self.felix_binning(self.xs, self.ys)
@@ -355,5 +358,6 @@ def main(args):
     
     Normplot = normplot(felixfiles, delta)
     Normplot.begin_compute()
+    # Normplot.save_data_to_temp_file()
     return Normplot.dataToSend
     
