@@ -1,8 +1,4 @@
 import { writable, get, derived } from 'svelte/store'
-// type persistentDB<T> = ReturnType<typeof window.persistentDB<T>>
-export const developerMode = window.isPackaged 
-    ? writable(false)
-    : window.persistentDB("developerMode", import.meta.env.DEV)
 
 const setDefault = (key: string) => {
     const initialValue = <string>window.db.get(key)
@@ -14,6 +10,9 @@ const setDefault = (key: string) => {
 export const pythonpath = setDefault("pythonpath")
 export const pythonscript = setDefault("pythonscript")
 export const felionpy = setDefault("felionpy")
+
+export const developerMode = window.persistentDB("developerMode", import.meta.env.DEV)
+if(window.isPackaged) {developerMode.set(false)};
 
 export const pyProgram = derived(
     [developerMode, pythonpath, felionpy],
@@ -30,4 +29,6 @@ export const mainpyfile = derived([developerMode, pythonscript], ([$developerMod
     return $developerMode ? window.path.join($pythonscript, 'main.py') : ''
 });
 
+export const currentTab = window.persistentDB('settingsActiveTab', 'Configuration')
+export const serverDebug = window.persistentDB('serverDebug', false)
 export { get };
