@@ -1,9 +1,7 @@
 import { ipcRenderer } from 'electron'
 import { exposeInMainWorld } from './exposeInMainWorld'
 import {db, persistentDB} from './persistentDB'
-// import Store from 'electron-store'
-// export const db = new Store({ name: 'db' })
-// export const db = new Store({ name: 'db' })
+import type { OnDidChangeCallback, OnDidAnyChangeCallback } from 'conf/dist/source/types';
 
 db.set('updateError', '')
 
@@ -28,7 +26,7 @@ export const dbObject = {
     has(key: string) {
         return db.has(key)
     },
-    set(key: string, value) {
+    set(key: string, value: unknown) {
         return db.set(key, value)
     },
     delete(key: string) {
@@ -38,8 +36,8 @@ export const dbObject = {
     clear: () => db.clear(),
     reset: () => db.reset(),
     path: db.path,
-    onDidChange: <T>(key: string, callback: (value: T) => unknown ) => db.onDidChange(key, callback),
-    onDidAnyChange: (callback: (value: Object) => unknown ) => db.onDidAnyChange(callback),
+    onDidChange: (key: string, callback: OnDidChangeCallback<unknown>) => db.onDidChange(key, callback),
+    onDidAnyChange: (callback: OnDidAnyChangeCallback<Record<string, unknown>> ) => db.onDidAnyChange(callback),
 }
 
 exposeInMainWorld('db', dbObject)
