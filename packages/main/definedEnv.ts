@@ -14,14 +14,14 @@ export const ROOT_DIR = app.isPackaged ? path.dirname(app.getPath("module")) : a
 if (!db.has('pythonpath')) {
     db.set('pythonpath', path.join(ROOT_DIR, 'python3/python'))
 }
-if (app.isPackaged || !db.has('pythonscript')) {
+if (import.meta.env.PROD|| !db.has('pythonscript')) {
     db.set('pythonscript', path.join(ROOT_DIR, 'resources/python_files'))
 }
-if (app.isPackaged || !db.has('felionpy')) {
+if (import.meta.env.PROD|| !db.has('felionpy')) {
     db.set('felionpy', path.join(ROOT_DIR, 'resources/felionpy/felionpy'))
 }
 
-if (app.isPackaged || !db.has('developerMode')) {
+if (import.meta.env.PROD|| !db.has('developerMode')) {
     db.set('developerMode', false)
 }
 

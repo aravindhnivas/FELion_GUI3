@@ -1,29 +1,19 @@
-import { app, ipcMain, webContents } from 'electron'
+import { ipcMain } from 'electron'
 import * as path from 'path'
 import { promisify } from 'util'
 import * as child from 'child_process';
-import { db, ROOT_DIR } from './definedEnv'
+import { db } from './definedEnv'
 import getPort from 'get-port'
 
 const execCommand = promisify(child.exec)
 const getCurrentDevStatus = () => {
-    // if (!db.has('developerMode') || import.meta.env.PROD) {
-    //     db.set('developerMode', false)
-    // }
-
     const developerMode = <boolean>db.get('developerMode')
-    const pythonscript = <string>db.get('pythonscript') || path.join(ROOT_DIR, 'resources/python_files')
-    const pythonpath = <string>db.get('pythonpath') || path.join(ROOT_DIR, 'resources/python_files')
+    const pythonscript = <string>db.get('pythonscript')
+    const pythonpath = <string>db.get('pythonpath')
     
-    let pyProgram
     const felionpy = <string>db.get('felionpy')
-    if (app.isPackaged) {
-        pyProgram = felionpy || path.join(ROOT_DIR, '../../', "resources/felionpy/felionpy")
-    } else {
-        pyProgram = developerMode ? pythonpath : felionpy
-    }
-
     const mainpyfile = developerMode ? path.join(pythonscript, 'main.py') : ''
+    const pyProgram = developerMode ? pythonpath : felionpy
 
     return { db, developerMode, pyProgram, mainpyfile }
 }
@@ -51,9 +41,7 @@ export async function getPyVersion() {
 
 let py: child.ChildProcessWithoutNullStreams | undefined
 let serverStarting = false
-// db.onDidChange('pyServerReady', (value) => {
-//     console.info('pyServerReady', value)
-// })
+
 
 const spawnServer = (webContents: Electron.WebContents) => {
     console.info('pyServerReady', db.get('pyServerReady'))
