@@ -18,8 +18,10 @@ declare global {
 
     interface ValueLabel<T = number | string | boolean> { 
         value: T; label: string; step?: string, id: string
-     }
+    }
 
+    type persistentDB<T> = ReturnType<typeof window.persistentDB<T>>
+    
     interface Exposed {
         createToast: typeof import('../src/js/functions').createToast;
         handleError: typeof import('../src/js/functions').handleError;
