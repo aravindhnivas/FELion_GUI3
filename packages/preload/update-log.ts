@@ -1,5 +1,8 @@
 import { ipcRenderer } from 'electron'
+import { db } from './persistentDB'
 import { exposeInMainWorld } from './exposeInMainWorld'
+import {isPackaged} from './definedEnv'
+
 ipcRenderer.on('update-log', (_, info) => console.warn(info))
 ipcRenderer.on('update-progress', (_, progressObj) => {
     const progressContainer = <HTMLElement>document.getElementById('update-progress-container')
@@ -12,6 +15,8 @@ ipcRenderer.on('update-progress', (_, progressObj) => {
 })
 
 export function checkupdate(): void {
+    if(!isPackaged) return db.set('updateError', 'Cannot check for updates in dev mode')
+    if (!navigator.onLine) return db.set('updateError', 'No internet connection')
     ipcRenderer.invoke('checkupdate', null)
     localStorage.setItem('update-error', '')
 }
