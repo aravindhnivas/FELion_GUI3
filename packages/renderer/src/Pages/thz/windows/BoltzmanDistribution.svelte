@@ -22,34 +22,36 @@
 
     let windowReady = false
 
-    let plotData = [[], []]
+    let plotData: (string[] | number[])[] = [[], []]
 
     function plotGraph() {
-        const { distribution, partitionValue } = boltzman_distribution({
+        const computedData = boltzman_distribution({
             energyLevels,
-            trapTemp,
+            trapTemp: Number(trapTemp),
             electronSpin,
             zeemanSplit,
             energyUnit,
         })
-        // console.log()
+        if (computedData === null) return
+
+        const { distribution, partitionValue } = computedData
         console.log('Computing', distribution)
-        if (distribution) {
-            const totalSum = sumBy(distribution, (e) => e.value).toFixed(2)
-            const energyLevel = distribution.map((e) => e.label)
-            const populations = distribution.map((e) => e.value)
-            plotData = [energyLevel, populations]
-            const data = {
-                x: energyLevel,
-                y: populations,
-                mode: 'lines+markers',
-                showlegend: true,
-                name: `Temp: ${trapTemp}K, Z: ${partitionValue}, Total: ${totalSum}`,
-            }
-            const dataToPlot = { data }
-            plot(`${title}: ${trapTemp}K`, 'Energy Levels', 'Population', dataToPlot, plotID)
-            console.log('Plotted')
+
+        const totalSum = sumBy(distribution, (e) => e.value)
+        const energyLevel = distribution.map((e) => e.label)
+        const populations = distribution.map((e) => e.value)
+        plotData = [energyLevel, populations]
+
+        const data: PlotData = {
+            x: energyLevel,
+            y: populations,
+            mode: 'lines+markers',
+            showlegend: true,
+            name: `Temp: ${trapTemp}K, Z: ${partitionValue.toFixed(2)}, Total: ${totalSum.toFixed(2)}`,
         }
+        const dataToPlot = { data }
+        plot(`${title}: ${trapTemp}K`, 'Energy Levels', 'Population', dataToPlot, plotID)
+        console.log('Plotted')
     }
 
     $: if (windowReady) {
@@ -76,14 +78,14 @@
         const output = await window.fs.writeFile(outputFile, writeContent)
 
         if (window.fs.isError(output)) {
-            saveInfo.error = output
+            saveInfo.error = output.message
             return window.handleError(output)
         }
         saveInfo.msg = `Saved to ${outputFile}`
         window.createToast(`Data saved`)
     }
 
-    const openFigure = (e) => {
+    const openFigure = (e?: Event) => {
         if (!window.fs.isFile(outputFile)) {
             window.createToast('No data to open', 'danger')
             return

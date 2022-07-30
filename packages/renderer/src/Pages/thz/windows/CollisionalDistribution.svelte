@@ -6,12 +6,13 @@
     import boltzman_distribution from '../functions/boltzman_distribution'
     import computePy_func from '$src/Pages/general/computePy'
     import WinBox from 'winbox'
+    import { persistentWritable } from '$src/js/persistentStore'
 
     export let active: boolean = false
-    export let energyUnit: 'cm-1' | 'MHz'
+    export let energyUnit: EnergyUnit = 'cm-1'
     export let zeemanSplit: boolean
 
-    export let energyLevels: ValueLabel<number>[]
+    export let energyLevels: EnergyLevels
     export let electronSpin: boolean
     export let numberOfLevels: number
     export let collisionalTemp: number = 10
@@ -21,26 +22,30 @@
     const plotID = 'collisionalDistributionPlot'
 
     let duration = 600
-    let initialTemp = Number(localStorage.getItem('collisional-Init-Temp')) || 300
+    const initialTemp = persistentWritable('collisionalDistribution_initialTemp', 300)
     let graphWindow: WinBox
     let windowReady = false
     let numberDensity = '2e14'
     let totalSteps = 1000
-    async function computeCollisionalProcess(e) {
+    async function computeCollisionalProcess(e?: Event) {
         try {
-            localStorage.setItem('collisional-Init-Temp', String(initialTemp))
-            const { distribution: boltzmanDistribution } = boltzman_distribution({
-                trapTemp: initialTemp,
+            const boltzman_distribution_initial_temp = boltzman_distribution({
+                trapTemp: $initialTemp,
                 energyUnit,
                 zeemanSplit,
                 energyLevels,
                 electronSpin,
             })
-            const energyKeys = boltzmanDistribution.map((f) => f.label)
-            const collisionalRateConstantValues = {}
 
+            if (boltzman_distribution_initial_temp === null) return
+
+            const { distribution: boltzmanDistribution } = boltzman_distribution_initial_temp
+            const energyKeys = boltzmanDistribution.map((f) => f.label)
+
+            const collisionalRateConstantValues: KeyStringObj = {}
             collisionalRateConstants.forEach((f) => (collisionalRateConstantValues[f.label] = f.value))
-            const { distribution: boltzmanDistributionCold } = boltzman_distribution({
+
+            const boltzman_distribution_traptemp = boltzman_distribution({
                 trapTemp: collisionalTemp,
                 energyUnit,
                 zeemanSplit,
@@ -48,10 +53,16 @@
                 electronSpin,
             })
 
-            const boltzmanDistributionValues = {}
+            if (boltzman_distribution_traptemp === null) return
+
+            const { distribution: boltzmanDistributionCold } = boltzman_distribution_traptemp
+
+            const boltzmanDistributionValues: KeyStringObj<number> = {}
             boltzmanDistribution.forEach((f) => (boltzmanDistributionValues[f.label] = f.value))
-            const boltzmanDistributionColdValues = {}
+
+            const boltzmanDistributionColdValues: KeyStringObj<number> = {}
             boltzmanDistributionCold.forEach((f) => (boltzmanDistributionColdValues[f.label] = f.value))
+
             const pyfile = 'ROSAA.collisionalSimulation'
 
             const args = {
@@ -67,7 +78,9 @@
             const dataFromPython = await computePy_func({ e, pyfile, args })
             if (!dataFromPython) return
 
-            const { data, collisionalBoltzmanPlotData, differenceFromBoltzman } = dataFromPython
+            const { data, collisionalBoltzmanPlotData, differenceFromBoltzman } = <{ [key: string]: DataFromPython }>(
+                dataFromPython
+            )
 
             plot(` Distribution: ${collisionalTemp}K`, 'Time (s)', 'Population', data, plotID)
 
@@ -99,7 +112,7 @@
 <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
     <svelte:fragment slot="header_content__slot">
         <div class="header">
-            <CustomTextSwitch bind:value={initialTemp} label="Initial temp (K)" />
+            <CustomTextSwitch bind:value={$initialTemp} label="Initial temp (K)" />
             <CustomTextSwitch bind:value={collisionalTemp} label="Coll. temp (K)" />
             <CustomTextSwitch bind:value={duration} label="duration (in ms)" />
             <Textfield bind:value={totalSteps} label="totalSteps" />

@@ -5,9 +5,9 @@
     import { PlanksConstant, SpeedOfLight } from '$src/js/constants'
     import { computeStatisticalWeight } from '../functions/balance_distribution'
 
-    export let einsteinCoefficientA: ValueLabel[] = []
-    export let einsteinCoefficientB: ValueLabel[] = []
-    export let einsteinCoefficientB_rateConstant: ValueLabel[] = []
+    export let einsteinCoefficientA: Coefficients = []
+    export let einsteinCoefficientB: Coefficients = []
+    export let einsteinCoefficientB_rateConstant: Coefficients = []
 
     export let einsteinB_rateComputed = false
 
@@ -15,9 +15,9 @@
     export let gaussian = 0.21
     export let power: string | number = '2e-5'
     export let trapArea = '5e-5'
-    export let energyUnit: 'cm-1' | 'MHz'
+    export let energyUnit: EnergyUnit = 'cm-1'
     export let zeemanSplit: boolean
-    export let energyLevels: ValueLabel<number>[]
+    export let energyLevels: EnergyLevels = []
     export let electronSpin: boolean
 
     async function computeEinsteinB() {

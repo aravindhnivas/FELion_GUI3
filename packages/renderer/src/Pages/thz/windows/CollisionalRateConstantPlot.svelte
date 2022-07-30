@@ -1,31 +1,32 @@
-<script>
+<script lang="ts">
     import { polynomial } from 'regression'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import colors from '$src/Pages/computeCode/colors'
     import { react } from 'plotly.js/dist/plotly-basic'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
+    import WinBox from 'winbox'
 
     export let active = false
     export let collisionalTemp = 7
     export let collisionalFilename = ''
-    export let collisionalCoefficient = []
+    export let collisionalCoefficient: Coefficients = []
 
-    let graphWindow = null
+    let graphWindow: WinBox | null = null
     let windowReady = false
 
     $: if (windowReady) {
-        setTimeout(() => graphWindow.focus(), 100)
+        setTimeout(() => graphWindow?.focus(), 100)
     }
 
-    function linspace(start, stop, num, endpoint = true) {
+    function linspace(start: number, stop: number, num: number, endpoint = true) {
         const div = endpoint ? num - 1 : num
         const step = (stop - start) / div
         return Array.from({ length: num }, (_, i) => start + step * i)
     }
 
-    let originalRateConstants = []
-    let givenTemperature = []
+    let originalRateConstants: { x: number[]; y: number[]; name: string }[] = []
+    let givenTemperature: number[] = []
     let tempIndex = 0
     async function readCollisionalDataFromFile() {
         console.info(collisionalFilename)
@@ -51,19 +52,21 @@
         originalRateConstants = []
 
         rateConstantsRawData.forEach((currentRate) => {
-            currentRate = currentRate
+            const rateArr = currentRate
                 .trim()
                 .split('\t')
                 .map((r) => r.trim())
-            const [i, j] = [currentRate[0], currentRate[1]]
+            const [i, j] = [rateArr[0], rateArr[1]]
             const label = `${i} --> ${j}`
 
-            const currentRequiredRateData = currentRate.slice(2, 2 + givenTemperature.length).map((r) => parseFloat(r))
+            const currentRequiredRateData = rateArr.slice(2, 2 + givenTemperature.length).map((r) => parseFloat(r))
+
             const addData = {
                 x: givenTemperature,
                 y: currentRequiredRateData,
                 name: label,
             }
+
             originalRateConstants = [...originalRateConstants, addData]
         })
         rescaleData()
@@ -80,7 +83,7 @@
         height: 450,
     }
 
-    let dataToPlot = []
+    let dataToPlot: PlotData[] = []
     let scaleRateConstant = '1e12'
 
     const rescaleData = () => {

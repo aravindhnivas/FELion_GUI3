@@ -34,11 +34,11 @@
     let electronSpin = false
     let zeemanSplit = false
 
-    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening]: ValueLabel[][] = Array(4).fill([])
+    let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening]: Coefficients[] = Array(4).fill([])
 
     let k3: AttachmentRate = { constant: [], rate: [] }
     let kCID: AttachmentRate = { constant: [], rate: [] }
-    let attachmentCoefficients: ValueLabel[] = []
+    let attachmentCoefficients: Coefficients = []
 
     let collisionalRateType = 'excitation'
     $: deexcitation = collisionalRateType === 'deexcitation'
@@ -46,8 +46,8 @@
     let showreport = false
     let statusReport = ''
 
-    let collisionalRates: ValueLabel[] = []
-    let collisionalRateConstants: ValueLabel[] = []
+    let collisionalRates: Coefficients = []
+    let collisionalRateConstants: Coefficients = []
     let einsteinB_rateComputed = false
 
     const simulation = async (e?: Event) => {
@@ -199,13 +199,13 @@
 
     const variablesList = ['time', 'He density(cm-3)', 'Power(W)', 'a(k_up/k_down)', 'all']
 
-    let einsteinCoefficientA: ValueLabel[] = []
-    let einsteinCoefficientB: ValueLabel[] = []
-    let einsteinCoefficientB_rateConstant: ValueLabel[] = []
+    let einsteinCoefficientA: Coefficients = []
+    let einsteinCoefficientB: Coefficients = []
+    let einsteinCoefficientB_rateConstant: Coefficients = []
 
-    let collisionalCoefficient: ValueLabel[] = []
+    let collisionalCoefficient: Coefficients = []
 
-    let energyUnit: 'cm-1' | 'MHz' = 'cm-1'
+    let energyUnit: EnergyUnit = 'cm-1'
     let numberOfLevels = 3
     let numberDensity = '2e14'
     let energyFilename: string
@@ -222,7 +222,7 @@
     }
 
     let configLoaded = false
-    let collisionalCoefficient_balance: ValueLabel[] = []
+    let collisionalCoefficient_balance: Coefficients = []
     let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
@@ -319,10 +319,7 @@
             updatePower()
         }
     }
-    const energyInfos: {
-        'cm-1': ValueLabel<number>[]
-        MHz: ValueLabel<number>[]
-    } = { 'cm-1': [], MHz: [] }
+    const energyInfos: EnergyInfos = { 'cm-1': [], MHz: [] }
 
     async function setConfig() {
         try {

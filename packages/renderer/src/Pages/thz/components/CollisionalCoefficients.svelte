@@ -7,18 +7,18 @@
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
     // import { browse } from '$components/Layout.svelte'
 
-    export let energyUnit: 'cm-1' | 'MHz'
+    export let energyUnit: EnergyUnit = 'cm-1'
     export let zeemanSplit: boolean
-    export let energyLevels: ValueLabel<number>[]
+    export let energyLevels: EnergyLevels
 
     export let electronSpin: boolean
     export let numberOfLevels: number
     export let numberDensity = '4e14'
-    export let collisionalRates: ValueLabel[] = []
+    export let collisionalRates: Coefficients = []
     export let collisionalTemp: number
     export let collisionalFilename = ''
-    export let collisionalCoefficient: ValueLabel[] = []
-    export let collisionalCoefficient_balance: ValueLabel[] = []
+    export let collisionalCoefficient: Coefficients = []
+    export let collisionalCoefficient_balance: Coefficients = []
 
     // console.log({ collisionalTemp })
     let collisionalWindow = false
@@ -34,7 +34,7 @@
     }
 
     const compteCollisionalBalanceConstants = () => {
-        const balanceArgs = {
+        const balanceArgs: Omit<BalanceDistributionOptions, 'label'> = {
             energyLevels,
             collisionalTemp,
             electronSpin,
@@ -47,11 +47,11 @@
             const { label, value } = coefficient
             const levelLabels = label.split(' --> ').map((f) => f.trim())
 
-            let newLabel: string
-            let newValue: number
+            const balance = balance_distribution({ ...balanceArgs, label })
+            if (balance === null) return
 
-            newValue = value * balance_distribution({ ...balanceArgs, label })
-            newLabel = `${levelLabels[1]} --> ${levelLabels[0]}`
+            const newValue = Number(value) * balance
+            const newLabel = `${levelLabels[1]} --> ${levelLabels[0]}`
 
             const alreadyComputed = find(collisionalCoefficient, (rate) => rate.label == newLabel)
             if (!alreadyComputed) {
@@ -175,7 +175,6 @@
 <div class="align h-center">
     <Textfield bind:value={numberDensity} label="numberDensity (cm-3)" />
 </div>
-
 <div class="align h-center">
     {#each collisionalRates as { label, value, id } (id)}
         <Textfield bind:value {label} />
