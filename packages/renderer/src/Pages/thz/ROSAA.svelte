@@ -16,6 +16,7 @@
     import ROSAA_Footer from './ROSAA_layout/ROSAA_Footer.svelte'
     import CustomPanel from '$components/CustomPanel.svelte'
     import SeparateWindow from '$components/SeparateWindow.svelte'
+    import IconButton from '$components/IconButton.svelte'
 
     import {
         amuToKG,
@@ -248,7 +249,11 @@
         return Promise.resolve(YMLcontent)
     }
 
-    const setID = (obj: Omit<ValueLabel, 'id'>): ValueLabel => ({ ...obj, id: window.getID() })
+    const setID = <T extends OnlyValueLabel<T['value']>>(obj: T): ValueLabel<T['value']> => ({
+        ...obj,
+        id: window.getID(),
+    })
+
     const correctObjValue = (obj: ValueLabel) => ({
         ...obj,
         value: Number(obj.value).toExponential(3),
@@ -371,23 +376,26 @@
                 ? window.path.join(configFileLocation, 'files', collisionalFilename)
                 : ''
 
-            let energyLevelsStore = []
+            let energyLevelsStore_NoKey: OnlyValueLabel<number>[] = []
+            // let energyLevelsStore: EnergyLevels = []
 
             if (energyFilename) {
-                ;({ levels: energyLevelsStore, unit: energyUnit } = await getYMLFileContents(energyFilename))
+                ;({ levels: energyLevelsStore_NoKey, unit: energyUnit } = await getYMLFileContents(energyFilename))
             } else {
-                energyLevelsStore = []
+                energyLevelsStore_NoKey = []
             }
+            // console.log(energyLevelsStore_NoKey)
+            const energyLevelsStore: EnergyLevels = energyLevelsStore_NoKey
+                .map((e) => ({ ...e, value: Number(e.value) }))
+                .map(setID)
 
-            energyLevelsStore = energyLevelsStore.map(setID)
-
-            energyInfos[`${energyUnit}`] = energyLevelsStore
-
+            energyInfos[energyUnit] = energyLevelsStore
             if (energyUnit === 'cm-1') {
                 energyInfos['MHz'] = energyLevelsStore.map(wavenumberToMHz)
             } else {
                 energyInfos['cm-1'] = energyLevelsStore.map(MHzToWavenumber)
             }
+            // console.log({ energyLevelsStore_NoKey, energyLevelsStore, energyUnit, energyInfos })
 
             numberOfLevels = energyLevelsStore.length
             excitedFrom = energyLevelsStore?.[0].label
@@ -415,7 +423,7 @@
             return Promise.reject(error)
         }
     }
-
+    let lock_energylevels = true
     let boltzmanWindow: WinBox | null = null
     let openBoltzmanWindow = false
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
@@ -530,11 +538,18 @@
                                 >
                                     Show Boltzman distribution
                                 </button>
+                                <IconButton bind:value={lock_energylevels} icons={{ on: 'lock', off: 'lock_open' }} />
                             </div>
 
                             <div class="align h-center">
                                 {#each energyLevels as { label, value, id } (id)}
-                                    <Textfield bind:value {label} />
+                                    <Textfield
+                                        bind:value
+                                        {label}
+                                        disabled={lock_energylevels}
+                                        type="number"
+                                        input$step="0.0001"
+                                    />
                                 {/each}
                             </div>
                         </CustomPanel>

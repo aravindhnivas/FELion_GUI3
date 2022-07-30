@@ -16,6 +16,10 @@ declare global {
         currentTarget: EventTarget & HTMLButtonElement
     }
 
+    interface OnlyValueLabel<T=string> {
+        value: T
+        label: string
+    }
     interface ValueLabel<T = string> { 
         value: T; label: string; step?: string, id: string
     }
