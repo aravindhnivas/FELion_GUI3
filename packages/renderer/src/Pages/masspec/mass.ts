@@ -1,34 +1,31 @@
 import get_files_settings_values from '$src/js/get_files_settings_values'
-// import Plotly from "plotly.js"
-// export interface MassData {
-//     [name: string] : {
-//         x: number[]
-//         y: number[]
-//         showlegend: boolean
-//         name: string
-//         mode: "lines" | "markers" | "lines+markers"
-//     }
-// }
+
 export async function readMassFile(massfiles: string[]) {
-    
-    const loadbtn = document.getElementById('masspec-plot-btn') as HTMLButtonElement
-    if (loadbtn.classList.contains('is-loading')) {
-        const warnmsg = new Error('Mass spec plot is already loading')
-        // window.createToast(warnmsg.message, 'warning')
-        return Promise.resolve([null, warnmsg])
-    }
-    
-    loadbtn.classList.toggle('is-loading')
-    
+    const loadbtn = document.getElementById('masspec-plot-btn')
     try {
+        
+        if (loadbtn?.classList.contains('is-loading')) {
+            console.warn('Mass spec plot is already loading')
+            return null
+        }
+        
+        loadbtn?.classList.toggle('is-loading')
 
         const dataToSend: DataFromPython = {}
 
         for (const filename of massfiles) {
-            if (!window.fs.isFile(filename)) return Promise.resolve([null, new Error(`File ${filename} does not exist`)])
+            if (!window.fs.isFile(filename)) {
+                window.createToast(`File ${filename} does not exist`, 'danger')
+                // return Promise.resolve(null)
+                continue
+            }
             
             const fileContents = await window.fs.readFile(filename)
-            if(window.fs.isError(fileContents)) return Promise.resolve([null, new Error(`File ${filename} is empty`)])
+            if(window.fs.isError(fileContents)){
+                window.createToast(`${filename} file content is empty`, 'danger')
+                // return Promise.resolve(null)
+                continue
+            }
 
             const name = window.path.basename(filename)
             console.info('content read: ', name)
@@ -61,16 +58,14 @@ export async function readMassFile(massfiles: string[]) {
 
         console.info('File read completed')
         console.info(dataToSend)
-        return Promise.resolve([dataToSend, null])
+        return Promise.resolve(dataToSend)
 
     } catch (error) {
-
-        if(error instanceof Error) {
         
-            window.handleError(error)
-            return Promise.resolve([null, error])
-        }
+        window.handleError(error)
+        return Promise.resolve(null)
+
     } finally {
-        loadbtn.classList.toggle('is-loading')
+        loadbtn?.classList.toggle('is-loading')
     }
 }

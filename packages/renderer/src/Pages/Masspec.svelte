@@ -6,7 +6,7 @@
     import Configs, { configs } from '$src/Pages/masspec/configs/Configs.svelte'
     import { relayout } from 'plotly.js/dist/plotly-basic'
     import { plot, plotlyEventsInfo } from '$src/js/functions'
-    import { readMassFile, MassData } from './masspec/mass'
+    import { readMassFile } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
     import { onDestroy } from 'svelte'
     import ButtonBadge from '$components/ButtonBadge.svelte'
@@ -50,7 +50,6 @@
                         overwride_file_limit_warning: true,
                     })
                 },
-                open: false,
             })
             return
         }
@@ -77,14 +76,9 @@
         }
 
         if (filetype == 'mass' && massfiles) {
-            const computedData = await readMassFile(massfiles)
-            if (computedData === undefined) return window.createToast('No data computed', 'danger')
-
-            console.log({ computedData })
-            const [dataFromPython, error] = computedData as [MassData | null, Error | string]
-            if (error instanceof Error || (error as string)) return window.handleError(error)
-            if (dataFromPython === null) return window.createToast('No data found', 'danger')
-
+            const dataFromPython = await readMassFile(massfiles)
+            if (dataFromPython === null) return
+            console.log({ dataFromPython })
             if (!keepAnnotaions) {
                 $plotlyEventsInfo['mplot'].annotations = []
             }
