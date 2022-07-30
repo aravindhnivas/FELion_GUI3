@@ -1,6 +1,6 @@
 import { graphDiv, normMethod, normMethodDatas, opoMode, get } from './svelteWritables'
 import { subplot, plot } from '$src/js/functions'
-import { react } from 'plotly.js/dist/plotly-basic'
+import { react } from 'plotly.js-basic-dist'
 import { felix_func } from './felix'
 import { opofile_func } from './opofile'
 

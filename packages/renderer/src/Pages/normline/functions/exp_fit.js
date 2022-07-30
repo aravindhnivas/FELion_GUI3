@@ -12,7 +12,7 @@ import {
     felixPlotAnnotations,
     expfittedLinesCollectedData,
 } from './svelteWritables'
-import { relayout, addTraces } from 'plotly.js/dist/plotly-basic'
+import { relayout, addTraces } from 'plotly.js-basic-dist'
 import { uniqBy } from 'lodash-es'
 
 export function exp_fit_func({ dataFromPython } = {}) {

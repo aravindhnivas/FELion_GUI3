@@ -20,7 +20,7 @@
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import { plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
-    import { react } from 'plotly.js/dist/plotly-basic'
+    import { react } from 'plotly.js-basic-dist'
 
     /////////////////////////////////////////////////////////////////////////
 

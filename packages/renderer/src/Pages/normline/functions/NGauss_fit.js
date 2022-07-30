@@ -7,7 +7,7 @@ import {
     normMethods,
     get,
 } from './svelteWritables'
-import { addTraces } from 'plotly.js/dist/plotly-basic'
+import { addTraces } from 'plotly.js-basic-dist'
 import { uniqBy } from 'lodash-es'
 import { writable } from 'svelte/store'
 

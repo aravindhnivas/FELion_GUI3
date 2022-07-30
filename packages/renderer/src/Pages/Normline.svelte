@@ -29,7 +29,7 @@
     // import IconButton from '$components/IconButton.svelte'
     import Layout from '$components/Layout.svelte'
     import CustomRadio from '$components/CustomRadio.svelte'
-    import { deleteTraces } from 'plotly.js/dist/plotly-basic'
+    import { deleteTraces } from 'plotly.js-basic-dist'
     import { onDestroy } from 'svelte'
     ///////////////////////////////////////////////////////////////////////
 

@@ -6,7 +6,7 @@ import {
     felixAnnotationColor,
     get,
 } from './svelteWritables'
-import { relayout } from 'plotly.js/dist/plotly-basic'
+import { relayout } from 'plotly.js-basic-dist'
 export function find_peaks_func({ dataFromPython } = {}) {
     const annotations = dataFromPython[2]['annotations']
 

@@ -4,7 +4,7 @@
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import GetLabviewSettings from '$components/GetLabviewSettings.svelte'
     import Configs, { configs } from '$src/Pages/masspec/configs/Configs.svelte'
-    import { relayout } from 'plotly.js/dist/plotly-basic'
+    import { relayout } from 'plotly.js-basic-dist'
     import { plot, plotlyEventsInfo } from '$src/js/functions'
     import { readMassFile } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
@@ -96,8 +96,8 @@
     }
 
     const linearlogCheck = () => {
-        const layout = {
-            yaxis: { title: 'Counts', type: logScale ? 'log' : null },
+        const layout: Partial<Plotly.Layout> = {
+            yaxis: { title: 'Counts', type: logScale ? 'log' : undefined },
         }
         if (graphPlotted) relayout('mplot', layout)
     }

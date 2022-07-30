@@ -1,7 +1,7 @@
 <script lang="ts">
     import { tick, onDestroy } from 'svelte'
     import WinBox from 'winbox/src/js/winbox.js'
-    import { relayout } from 'plotly.js/dist/plotly-basic'
+    import { relayout } from 'plotly.js-basic-dist'
 
     export let id = window.getID()
     export let title = 'Title'

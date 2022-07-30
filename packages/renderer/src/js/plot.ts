@@ -1,11 +1,9 @@
 import { activePage } from '$src/sveltewritables'
-import { graph_detached } from '$components/Layout.svelte'
-import { react, relayout } from 'plotly.js/dist/plotly-basic'
-// import Plotly from "plotly.js"
+import { react, relayout } from 'plotly.js-basic-dist'
 import { find, differenceBy } from 'lodash-es'
 import { writable, get } from 'svelte/store'
-import type { Writable } from 'svelte/store'
 
+export const graph_detached = writable<{ [name: string]: boolean }>({})
 interface PlotlyEventsInfo {
     [name: string]: {
         eventCreated: boolean
@@ -17,7 +15,7 @@ export const graphPlottedLists: {
     [key: string]: boolean
 } = {}
 
-export const plotlyEventsInfo: Writable<PlotlyEventsInfo> = writable({})
+export const plotlyEventsInfo= writable<PlotlyEventsInfo>({})
 
 export function plot(
     mainTitle: string, 
@@ -30,7 +28,7 @@ export function plot(
 ) {
     
     // const graph_div = document.getElementById(graphDiv)
-    const current_graph_detached = graph_detached[get(activePage)]
+    const current_graph_detached = get(graph_detached)[get(activePage)]
 
     const graph_container = document.querySelector(
         current_graph_detached 
@@ -40,11 +38,8 @@ export function plot(
     
     const pad = graphPlottedLists[get(activePage)] ? 16 : 32
     const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
-    
-    // console.log(graph_container, width)
-    // console.log({ graph_detached })
 
-    const dataLayout = {
+    const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { title: xtitle },
         yaxis: { title: ytitle, type: logScale ? 'log' : 'linear' },
@@ -95,7 +90,7 @@ export function subplot(
     data2: DataFromPython
 ) {
 
-    const current_graph_detached = graph_detached[get(activePage)]
+    const current_graph_detached = get(graph_detached)[get(activePage)]
 
     const graph_container = document.querySelector(
         current_graph_detached 
@@ -106,7 +101,7 @@ export function subplot(
     const pad = graphPlottedLists[get(activePage)] ? 16 : 32
     const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
 
-    const dataLayout = {
+    const dataLayout: Partial<Plotly.Layout>  = {
         title: mainTitle,
         xaxis: { domain: [0, 0.4], title: xtitle },
         yaxis: { title: ytitle },

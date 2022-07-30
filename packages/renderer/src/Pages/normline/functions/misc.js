@@ -9,7 +9,7 @@ import {
     get,
 } from './svelteWritables'
 
-import { relayout } from 'plotly.js/dist/plotly-basic'
+import { relayout } from 'plotly.js-basic-dist'
 import { uniqBy } from 'lodash-es'
 
 export function savefile({ file = {}, name = '', location = '' } = {}) {

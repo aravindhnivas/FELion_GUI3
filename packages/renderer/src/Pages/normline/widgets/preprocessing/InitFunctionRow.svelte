@@ -24,7 +24,7 @@
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import { subplot, plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
-    import { react, relayout } from 'plotly.js/dist/plotly-basic'
+    import { react, relayout } from 'plotly.js-basic-dist'
     // import Badge from '@smui-extra/badge'
     import ButtonBadge from '$components/ButtonBadge.svelte'
     ///////////////////////////////////////////////////////////////////////////

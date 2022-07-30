@@ -5,7 +5,7 @@
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { plot } from '../js/functions'
-    import { relayout } from 'plotly.js/dist/plotly-basic'
+    import { relayout } from 'plotly.js-basic-dist'
     import { cloneDeep } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'
     import MenuSurface from '@smui/menu-surface'

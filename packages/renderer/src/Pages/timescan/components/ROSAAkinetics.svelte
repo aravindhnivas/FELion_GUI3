@@ -493,12 +493,6 @@
         padding-right: 1em;
     }
 
-    .box {
-        margin: 0;
-        padding: 0.5em;
-        border: solid 1px #fff7;
-    }
-
     .parm_save__div {
         align-items: flex-end;
         justify-content: flex-end;

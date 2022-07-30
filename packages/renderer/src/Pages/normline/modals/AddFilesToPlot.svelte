@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { addTraces } from 'plotly.js/dist/plotly-basic'
+    import { addTraces } from 'plotly.js-basic-dist'
     import Textfield from '@smui/textfield'
     import Modal from '$components/Modal.svelte'
     // import { browse } from '$components/Layout.svelte'

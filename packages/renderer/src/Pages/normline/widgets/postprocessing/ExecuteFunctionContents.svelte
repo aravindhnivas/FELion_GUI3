@@ -17,7 +17,7 @@
     import { savefile, loadfile } from '../../functions/misc'
     import { NGauss_fit_func } from '../../functions/NGauss_fit'
     import { exp_fit_func } from '../../functions/exp_fit'
-    import { relayout, deleteTraces } from 'plotly.js/dist/plotly-basic'
+    import { relayout, deleteTraces } from 'plotly.js-basic-dist'
     import { dropRight, sortBy } from 'lodash-es'
     import computePy_func from '$src/Pages/general/computePy'
     import CustomSwitch from '$components/CustomSwitch.svelte'

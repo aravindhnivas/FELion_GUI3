@@ -1,18 +1,15 @@
-<script lang="ts" context="module">
-    export const graph_detached: { [name: string]: boolean } = {}
-</script>
-
 <script lang="ts">
     import { onMount, createEventDispatcher, tick, onDestroy } from 'svelte'
     import { fly, fade } from 'svelte/transition'
-    // import Textfield from '@smui/textfield'
-    import { relayout } from 'plotly.js/dist/plotly-basic'
+    import { relayout } from 'plotly.js-basic-dist'
     import WinBox from 'winbox/src/js/winbox.js'
     import FileBrowser from '$components/FileBrowser.svelte'
     import Modal from '$components/Modal.svelte'
     import Editor from '$components/Editor.svelte'
-    import { resizableDiv } from '$src/js/resizableDiv.js'
     import BrowseTextfield from '$components/BrowseTextfield.svelte'
+
+    import { graph_detached } from '$src/js/plot'
+    import { resizableDiv } from '$src/js/resizableDiv.js'
 
     export let id: string
     export let display = 'none'
@@ -29,7 +26,7 @@
         graphPlotted = false
         console.log(id, 'mounted')
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
-        graph_detached[id] = false
+        $graph_detached[id] = false
     })
 
     let graphDivContainer
@@ -62,14 +59,14 @@
             bottom: 50,
             onclose: () => {
                 graphwindowClosed = true
-                graph_detached[id] = false
+                $graph_detached[id] = false
             },
         })
 
         graphWindow?.maximize(true)
         changeGraphDivWidth()
 
-        graph_detached[id] = true
+        $graph_detached[id] = true
     }
 
     $: if (graphwindowClosed) {

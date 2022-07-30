@@ -1,5 +1,5 @@
 <script>
-    import { relayout, addTraces, deleteTraces } from 'plotly.js/dist/plotly-basic'
+    import { relayout, addTraces, deleteTraces } from 'plotly.js-basic-dist'
     import { plot, plotlyEventsInfo } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import Layout from '$components/Layout.svelte'
