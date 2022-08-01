@@ -1,7 +1,15 @@
 <script lang="ts">
     import { energyLevels, numberOfLevels, energyUnit, transitionFrequency } from './stores/energy'
     import { einsteinCoefficientA, einsteinCoefficientB, einsteinCoefficientB_rateConstant } from './stores/einstein'
-    import { electronSpin, zeemanSplit, currentLocation, excitedFrom, excitedTo, trapTemp } from './stores/common'
+    import {
+        electronSpin,
+        zeemanSplit,
+        currentLocation,
+        excitedFrom,
+        excitedTo,
+        trapTemp,
+        configFile,
+    } from './stores/common'
     import { collisionalRateConstants } from './stores/collisional'
     import { tick } from 'svelte'
     import Textfield from '@smui/textfield'
@@ -29,6 +37,8 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
     import { setID, correctObjValue, getYMLFileContents } from '$src/js/utils'
+    import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
+    import VariableSelector from './components/header/VariableSelector.svelte'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening]: Coefficients[] = Array(4).fill([])
@@ -150,11 +160,8 @@
 
     function browse_folder() {
         const [result] = window.browse({ filetype: 'yml', dir: false })
-        console.log(result)
         if (!result) return
-        configFilename = window.path.basename(result)
-        $currentLocation = window.path.dirname(result)
-        window.db.set('ROSAA_config_file', configFilename)
+        $configFile = result
     }
 
     const resetConfig = () => {
@@ -172,7 +179,7 @@
     let includeSpontaneousEmission = true
     let variable = 'time'
 
-    const variableRange = persistentWritable('THz_simulation_variables_range', {
+    const variableRange: VariableOptions = persistentWritable('THz_simulation_variables_range', {
         power: '1e-7, 1e-2, 50',
         numberDensity: '1e12, 1e16, 50',
         k3_branch: '0.1, 1, 0.1',
@@ -180,23 +187,16 @@
 
     const variablesList = ['time', 'He density(cm-3)', 'Power(W)', 'a(k_up/k_down)', 'all']
 
-    // let collisionalCoefficient: Coefficients = []
-
-    // let energyUnit: EnergyUnit = 'cm-1'
-    // let numberOfLevels = 3
     let numberDensity = '2e14'
     let energyFilename: string
     let einsteinFilename: string
     let collisionalFilename: string
 
-    $: configFile = window.path.join($currentLocation, configFilename)
-
     let configLoaded = false
-    let configFilename = <string>window.db.get('ROSAA_config_file') || ''
+    // let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
-            console.log({ configFile })
-            if (window.fs.isFile(configFile)) {
+            if (window.fs.isFile($configFile)) {
                 await setConfig()
                 await tick()
                 return
@@ -252,8 +252,7 @@
 
     async function setConfig() {
         try {
-            const configFileLocation = window.path.dirname(configFile)
-            const fileRead = window.fs.readFileSync(configFile)
+            const fileRead = window.fs.readFileSync($configFile)
             if (window.fs.isError(fileRead)) return window.handleError(fileRead)
 
             const CONFIG = Yml(fileRead)
@@ -284,10 +283,10 @@
             // ({savefilename}         = CONFIG.saveFile);
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
-            const { savelocation } = CONFIG.saveFile
-            if (window.fs.isDirectory(savelocation)) {
-                $currentLocation = savelocation
-            }
+            // const { savelocation } = CONFIG.saveFile
+            // if (window.fs.isDirectory(savelocation)) {
+            //     $currentLocation = savelocation
+            // }
             ;({
                 energy: energyFilename,
                 einsteinA: einsteinFilename,
@@ -298,12 +297,12 @@
                 configsBaseName = CONFIG.filenames.base
             }
 
-            energyFilename = energyFilename ? window.path.join(configFileLocation, configsBaseName, energyFilename) : ''
+            energyFilename = energyFilename ? window.path.join($currentLocation, configsBaseName, energyFilename) : ''
             einsteinFilename = einsteinFilename
-                ? window.path.join(configFileLocation, configsBaseName, einsteinFilename)
+                ? window.path.join($currentLocation, configsBaseName, einsteinFilename)
                 : ''
             collisionalFilename = collisionalFilename
-                ? window.path.join(configFileLocation, configsBaseName, collisionalFilename)
+                ? window.path.join($currentLocation, configsBaseName, collisionalFilename)
                 : ''
 
             if (einsteinFilename) {
@@ -327,6 +326,7 @@
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
     let simulationMethod = 'Normal'
     const figure = { dpi: 100, size: '10, 6', show: true }
+
     let toggle_modal = false
     let progress = 0
     let showProgress = false
@@ -334,12 +334,13 @@
 
 <LayoutDiv id="ROSAA__modal" {progress} bind:showProgress>
     <svelte:fragment slot="header_content__slot">
-        <div class="locationColumn box px-3 py-2 v-center" style="border: solid 1px #fff9;">
-            <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
-            <Textfield bind:value={$currentLocation} label="CONFIG location" />
-            <Textfield bind:value={configFilename} label="CONFIG file" />
-        </div>
-
+        <BrowseTextfield
+            class="two_col_browse box"
+            dir={false}
+            filetype="yml"
+            bind:value={$configFile}
+            label="config file"
+        />
         <div class="align box px-3 py-2" class:hide={showreport} style="border: solid 1px #fff9;">
             <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
             <CustomCheckbox bind:value={includeAttachmentRate} label="includeAttachmentRate" />
@@ -360,25 +361,8 @@
                     >Open separately</button
                 >
             </div>
-            {#if variable !== 'time'}
-                <div class="variable__div">
-                    <Textfield
-                        class={variable === 'all' || variable === 'a(k_up/k_down)' ? '' : 'hide'}
-                        bind:value={$variableRange.k3_branch}
-                        label="a: (min, max, incremeant-step-size)"
-                    />
-                    <Textfield
-                        class={variable === 'all' || variable === 'Power(W)' ? '' : 'hide'}
-                        bind:value={$variableRange.power}
-                        label="P: (min, max, total-#steps-logarithmic-spaced)"
-                    />
-                    <Textfield
-                        class={variable === 'all' || variable === 'He density(cm-3)' ? '' : 'hide'}
-                        bind:value={$variableRange.numberDensity}
-                        label="nHe: (min, max, total-#steps-logarithmic-spaced)"
-                    />
-                </div>
-            {/if}
+
+            <VariableSelector {variable} {variableRange} />
         </div>
     </svelte:fragment>
 
@@ -473,19 +457,3 @@
         <ROSAA_Footer bind:showreport bind:statusReport bind:progress bind:simulationMethod {simulation} />
     </svelte:fragment>
 </LayoutDiv>
-
-<style lang="scss">
-    .locationColumn {
-        display: grid;
-        grid-gap: 1em;
-        grid-auto-flow: column;
-        grid-template-columns: auto 1fr auto;
-    }
-
-    .variable__div {
-        display: grid;
-        gap: 1em;
-        width: 100%;
-        grid-auto-flow: column;
-    }
-</style>
