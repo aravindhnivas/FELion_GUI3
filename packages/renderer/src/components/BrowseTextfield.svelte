@@ -18,12 +18,6 @@
     const update = async (e: { currentTarget: HTMLElement }) => {
         e.currentTarget.classList.add('animate__rotateIn')
         dispatch('update')
-
-        // if (typeof value !== 'string') return
-        // if (window.fs.isDirectory(value)) {
-        //     const files = await window.fs.readdir(value)
-        //     dispatch('files', { files })
-        // }
     }
 </script>
 
