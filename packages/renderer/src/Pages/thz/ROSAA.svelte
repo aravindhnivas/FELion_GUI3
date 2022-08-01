@@ -271,15 +271,16 @@
     let ionTemp = 12
     let trapTemp = 5
     let gaussian = 0
-    let collisionalTemp: number | null = null
-    let Cg = 0 // doppler-broadening proportionality constant
 
+    let collisionalTemp: number = 5
+    let Cg = 0 // doppler-broadening proportionality constant
     let power: string | number = '2e-5'
     let dipole = 1
     let lorrentz = 0
     let Cp = 0 // power-broadening proportionality constant
 
     $: console.log(mainParameters)
+
     const updateEnergyLevels = () => {
         console.log('energyLevels updated')
         if (!energyLevels) return console.warn('No energyLevels defined', energyLevels)
@@ -630,13 +631,14 @@
                                 bind:collisionalRates
                                 bind:collisionalCoefficient
                                 bind:collisionalCoefficient_balance
+                                {currentLocation}
                                 {energyUnit}
                                 {zeemanSplit}
-                                {electronSpin}
                                 {energyLevels}
+                                {electronSpin}
+                                {numberOfLevels}
                                 {collisionalTemp}
                                 {collisionalFilename}
-                                {numberOfLevels}
                             />
                         </CustomPanel>
                         <CustomPanel

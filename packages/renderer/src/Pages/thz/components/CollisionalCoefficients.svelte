@@ -5,22 +5,21 @@
     import balance_distribution from '../functions/balance_distribution'
     import CollisionalDistribution from '../windows/CollisionalDistribution.svelte'
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
-    // import { browse } from '$components/Layout.svelte'
 
     export let energyUnit: EnergyUnit = 'cm-1'
     export let zeemanSplit: boolean
     export let energyLevels: EnergyLevels
+    export let currentLocation: string = ''
 
     export let electronSpin: boolean
     export let numberOfLevels: number
     export let numberDensity = '4e14'
     export let collisionalRates: Coefficients = []
-    export let collisionalTemp: number
+    export let collisionalTemp: number = 5
     export let collisionalFilename = ''
     export let collisionalCoefficient: Coefficients = []
     export let collisionalCoefficient_balance: Coefficients = []
 
-    // console.log({ collisionalTemp })
     let collisionalWindow = false
     $: collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
     $: collisionalArgs = {
@@ -96,7 +95,7 @@
         if (!window.fs.isDirectory(save_dir)) {
             return window.createToast(`Directory ${save_dir} does not exist`, 'danger')
         }
-
+        console.log(save_dir)
         const result = window.fs.outputJsonSync(collisionalCoefficientJSONFile, {
             collisionalCoefficient,
             collisionalCoefficient_balance,
@@ -107,7 +106,8 @@
         window.createToast('Saved: ' + window.path.basename(collisionalCoefficientJSONFile))
     }
 
-    let collisionalCoefficientJSONFile = ''
+    // let collisionalCoefficientJSONFile = ''
+    $: collisionalCoefficientJSONFile = window.path.join(currentLocation, 'files', 'collisionalCoefficients.json')
 
     const readcollisionalCoefficientJSONFile = () => {
         if (!window.fs.isFile(collisionalCoefficientJSONFile)) return window.createToast('File not found', 'danger')
@@ -123,10 +123,7 @@
     }
 
     onMount(() => {
-        const configLocation = <string>window.db.get('ROSAA_config_location') || ''
-        if (!configLocation) return
-        console.log(configLocation)
-        collisionalCoefficientJSONFile = window.path.join(configLocation, 'files', 'collisionalCoefficients.json')
+        if (!window.fs.isFile(collisionalCoefficientJSONFile)) return
         readcollisionalCoefficientJSONFile()
     })
 </script>
