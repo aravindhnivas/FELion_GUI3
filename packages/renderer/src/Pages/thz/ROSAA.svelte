@@ -325,7 +325,9 @@
             updatePower()
         }
     }
+
     const energyInfos: EnergyInfos = { 'cm-1': [], MHz: [] }
+    let configsBaseName = 'files'
 
     async function setConfig() {
         try {
@@ -365,16 +367,22 @@
             if (window.fs.isDirectory(savelocation)) {
                 currentLocation = savelocation
             }
-
             ;({
                 energy: energyFilename,
                 einsteinA: einsteinFilename,
                 collision: collisionalFilename,
             } = CONFIG.filenames)
-            energyFilename = energyFilename ? window.path.join(configFileLocation, 'files', energyFilename) : ''
-            einsteinFilename = einsteinFilename ? window.path.join(configFileLocation, 'files', einsteinFilename) : ''
+
+            if ('base' in CONFIG.filenames) {
+                configsBaseName = CONFIG.filenames.base
+            }
+
+            energyFilename = energyFilename ? window.path.join(configFileLocation, configsBaseName, energyFilename) : ''
+            einsteinFilename = einsteinFilename
+                ? window.path.join(configFileLocation, configsBaseName, einsteinFilename)
+                : ''
             collisionalFilename = collisionalFilename
-                ? window.path.join(configFileLocation, 'files', collisionalFilename)
+                ? window.path.join(configFileLocation, configsBaseName, collisionalFilename)
                 : ''
 
             let energyLevelsStore_NoKey: OnlyValueLabel<number>[] = []
@@ -631,7 +639,6 @@
                                 bind:collisionalRates
                                 bind:collisionalCoefficient
                                 bind:collisionalCoefficient_balance
-                                {currentLocation}
                                 {energyUnit}
                                 {zeemanSplit}
                                 {energyLevels}

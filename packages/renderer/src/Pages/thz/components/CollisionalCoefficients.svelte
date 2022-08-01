@@ -1,4 +1,6 @@
 <script lang="ts">
+    import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
+
     import Textfield from '@smui/textfield'
     import { find, cloneDeep } from 'lodash-es'
     import { onMount } from 'svelte'
@@ -9,7 +11,7 @@
     export let energyUnit: EnergyUnit = 'cm-1'
     export let zeemanSplit: boolean
     export let energyLevels: EnergyLevels
-    export let currentLocation: string = ''
+    // export let currentLocation: string = ''
 
     export let electronSpin: boolean
     export let numberOfLevels: number
@@ -76,17 +78,6 @@
         collisionalRates = cloneDeep(collisionalRateConstants).map(computeRate)
     }
 
-    let collisionalFileBasename = ''
-
-    function browse_collisional_file() {
-        ;[collisionalFilename] = window.browse({ dir: false }) || collisionalFilename
-        collisionalFileBasename = window.path.basename(collisionalFilename)
-    }
-
-    $: if (collisionalFilename) {
-        collisionalFileBasename = window.path.basename(collisionalFilename)
-    }
-
     let OpenRateConstantsPlot = false
 
     const saveCollisionalRateConstants = () => {
@@ -95,7 +86,7 @@
         if (!window.fs.isDirectory(save_dir)) {
             return window.createToast(`Directory ${save_dir} does not exist`, 'danger')
         }
-        console.log(save_dir)
+        // console.log(save_dir)
         const result = window.fs.outputJsonSync(collisionalCoefficientJSONFile, {
             collisionalCoefficient,
             collisionalCoefficient_balance,
@@ -106,8 +97,8 @@
         window.createToast('Saved: ' + window.path.basename(collisionalCoefficientJSONFile))
     }
 
-    // let collisionalCoefficientJSONFile = ''
-    $: collisionalCoefficientJSONFile = window.path.join(currentLocation, 'files', 'collisionalCoefficients.json')
+    $: configFileDir = window.path.dirname(collisionalFilename)
+    $: collisionalCoefficientJSONFile = window.path.join(configFileDir, 'collisionalCoefficients.json')
 
     const readcollisionalCoefficientJSONFile = () => {
         if (!window.fs.isFile(collisionalCoefficientJSONFile)) return window.createToast('File not found', 'danger')
@@ -141,8 +132,14 @@
     <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
     <button class="button is-link " on:click={() => (collisionalWindow = true)}>Compute Collisional Cooling</button>
     <div class="align h-center">
-        <button class="button is-link" on:click={browse_collisional_file}>Browse</button>
-        <Textfield bind:value={collisionalFileBasename} label="collisionalFilename" disabled variant="outlined" />
+        <BrowseTextfield
+            dir={false}
+            filetype="txt"
+            class="three_col_browse"
+            bind:value={collisionalFilename}
+            label="collisionalFilename"
+            lock={true}
+        />
         <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
         <button class="button is-link" on:click={() => (OpenRateConstantsPlot = true)}>Compute rate constants</button>
         <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
