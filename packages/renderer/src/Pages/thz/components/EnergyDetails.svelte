@@ -9,6 +9,7 @@
     import WinBox from 'winbox'
     import { wavenumberToMHz, MHzToWavenumber, getYMLFileContents, setID } from '$src/js/utils'
     import BoltzmanDistribution from '../windows/BoltzmanDistribution.svelte'
+    import { tick } from 'svelte'
 
     export let energyFilename: string = ''
 
@@ -29,9 +30,6 @@
             .map((e) => ({ ...e, value: Number(e.value) }))
             .map(setID)
 
-        $excitedFrom = energyLevelsStore?.[0].label
-        $excitedTo = energyLevelsStore?.[1].label
-
         $energyInfos[$energyUnit] = energyLevelsStore
 
         if ($energyUnit === 'cm-1') {
@@ -40,6 +38,10 @@
             $energyInfos['cm-1'] = energyLevelsStore.map(MHzToWavenumber)
         }
         $numberOfLevels = energyLevelsStore.length
+
+        await tick()
+        $excitedFrom = energyLevelsStore?.[0].label
+        $excitedTo = energyLevelsStore?.[1].label
     }
 
     $: if (window.fs.isFile(energyFilename)) {

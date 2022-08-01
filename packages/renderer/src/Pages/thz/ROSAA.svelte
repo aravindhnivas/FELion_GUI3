@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { energyLevels, numberOfLevels } from './stores/energy'
+    import { energyLevels, numberOfLevels, energyUnit, transitionFrequency } from './stores/energy'
     import { einsteinCoefficientA, einsteinCoefficientB, einsteinCoefficientB_rateConstant } from './stores/einstein'
     import { electronSpin, zeemanSplit, currentLocation, excitedFrom, excitedTo, trapTemp } from './stores/common'
     import { collisionalRateConstants } from './stores/collisional'
@@ -28,7 +28,7 @@
     } from '$src/js/constants'
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
-    import { setID, correctObjValue } from '$src/js/utils'
+    import { setID, correctObjValue, getYMLFileContents } from '$src/js/utils'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening]: Coefficients[] = Array(4).fill([])
@@ -46,7 +46,7 @@
     const simulation = async (e?: Event) => {
         if (!window.fs.isDirectory($currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
-        if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
+        if (!$transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
 
         if (includeCollision) {
             if ($collisionalRateConstants.length < 1)
@@ -123,7 +123,7 @@
             simulation_parameters,
             einstein_coefficient,
             energy_levels,
-            energyUnit,
+            energyUnit: $energyUnit,
             power_broadening,
             lineshape_conditions,
             attachment_rate_coefficients,
@@ -182,7 +182,7 @@
 
     // let collisionalCoefficient: Coefficients = []
 
-    let energyUnit: EnergyUnit = 'cm-1'
+    // let energyUnit: EnergyUnit = 'cm-1'
     // let numberOfLevels = 3
     let numberDensity = '2e14'
     let energyFilename: string
@@ -192,7 +192,6 @@
     $: configFile = window.path.join($currentLocation, configFilename)
 
     let configLoaded = false
-    // let collisionalCoefficient_balance: Coefficients = []
     let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
@@ -208,21 +207,7 @@
         }
     }
 
-    const getYMLFileContents = async (filename: string) => {
-        if (!window.fs.isFile(filename)) return Promise.reject(filename + " file doesn't exist")
-
-        const fileContent = window.fs.readFileSync(filename)
-        if (window.fs.isError(fileContent)) return Promise.reject("Couldn't read file " + filename)
-
-        const YMLcontent = Yml(fileContent)
-        return Promise.resolve(YMLcontent)
-    }
-
     let trapArea: string
-    let upperLevelEnergy: number
-    let lowerLevelEnergy: number
-    let transitionFrequency = 0
-
     let ionMass = 14
     let RGmass = 4
     let ionTemp = 12
@@ -235,20 +220,6 @@
     let lorrentz = 0
     let Cp = 0 // power-broadening proportionality constant
 
-    const updateEnergyLevels = () => {
-        console.log('energyLevels updated')
-        if (!$energyLevels) return console.warn('No energyLevels defined', $energyLevels)
-        console.log($energyLevels)
-        lowerLevelEnergy = $energyLevels.filter((energy) => energy.label == $excitedFrom)?.[0]?.value || 0
-        upperLevelEnergy = $energyLevels.filter((energy) => energy.label == $excitedTo)?.[0]?.value || 0
-
-        transitionFrequency = upperLevelEnergy - lowerLevelEnergy
-        if (energyUnit == 'cm-1') {
-            transitionFrequency *= SpeedOfLight * 1e2 * 1e-6
-        }
-        updateDoppler()
-    }
-
     const updateDoppler = () => {
         console.log('Changing doppler parameters')
         ;[ionMass, RGmass, ionTemp, $trapTemp] = dopplerLineshape.map((f) => Number(f.value))
@@ -256,7 +227,7 @@
         collisionalTemp = Number(Number((RGmass * ionTemp + ionMass * $trapTemp) / (ionMass + RGmass)).toFixed(1))
         const sqrtTerm = (8 * boltzmanConstant * Math.log(2) * ionTemp) / (ionMass * amuToKG * SpeedOfLight ** 2)
         Cg = Math.sqrt(sqrtTerm)
-        gaussian = Number(Number(transitionFrequency * Cg).toFixed(3)) // in MHz
+        gaussian = Number(Number($transitionFrequency * Cg).toFixed(3)) // in MHz
     }
     const updatePower = () => {
         console.log({ powerBroadening, trapArea })
@@ -269,10 +240,7 @@
     }
 
     $: {
-        if ($energyLevels.length > 1) {
-            updateEnergyLevels()
-        }
-        if (dopplerLineshape.length) {
+        if ($transitionFrequency || dopplerLineshape.length) {
             updateDoppler()
         }
         if (powerBroadening.length) {
@@ -347,7 +315,7 @@
             window.createToast('CONFIG loaded')
 
             updatePower()
-            updateEnergyLevels()
+            updateDoppler()
             configLoaded = true
             return Promise.resolve('config loaded')
         } catch (error) {
@@ -455,18 +423,13 @@
                                     options={$energyLevels.map((f) => f.label)}
                                     bind:value={$excitedFrom}
                                     label="excitedFrom"
-                                    on:change={updateEnergyLevels}
                                 />
                                 <CustomSelect
                                     options={$energyLevels.map((f) => f.label)}
                                     bind:value={$excitedTo}
                                     label="excitedTo"
-                                    on:change={updateEnergyLevels}
                                 />
-                                <Textfield
-                                    value={Number(upperLevelEnergy - lowerLevelEnergy) || 0}
-                                    label="transitionFrequency ({energyUnit})"
-                                />
+                                <Textfield value={$transitionFrequency.toFixed(3)} label="Frequency ({$energyUnit})" />
                             </div>
                         </CustomPanel>
 
