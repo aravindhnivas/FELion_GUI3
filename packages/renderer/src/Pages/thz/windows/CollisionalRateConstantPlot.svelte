@@ -1,5 +1,6 @@
 <script lang="ts">
     import { collisionalCoefficient } from '../stores/collisional'
+    import { collisionalTemp } from '../stores/common'
     import { polynomial } from 'regression'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
@@ -7,11 +8,8 @@
     import { react } from 'plotly.js-basic-dist'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
     import WinBox from 'winbox'
-
     export let active = false
-    export let collisionalTemp = 7
     export let collisionalFilename = ''
-    // export let collisionalCoefficient: Coefficients = []
 
     let graphWindow: WinBox | null = null
     let windowReady = false
@@ -123,7 +121,7 @@
             const currentCollisionalRateConstant = equation
                 .map((coeff, index) => {
                     const powerOrder = polyOrder - index
-                    return coeff * collisionalTemp ** powerOrder
+                    return coeff * $collisionalTemp ** powerOrder
                 })
                 .reduce((a, b) => a + b)
 
@@ -167,7 +165,7 @@
 
     let autoCompute = false
 
-    $: if (collisionalTemp && autoCompute) {
+    $: if ($collisionalTemp && autoCompute) {
         readCollisionalDataFromFile()
         fitDataFunction()
     }
@@ -198,7 +196,7 @@
             <Textfield bind:value={tempIndex} label="Temperature Index" />
             <button class="button is-link" on:click={readCollisionalDataFromFile}>Read data</button>
             <button class="button is-link" on:click={rescaleData}>Rescale Data</button>
-            <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
+            <Textfield bind:value={$collisionalTemp} label="collisionalTemp" />
             <button class="button is-link" on:click={fitDataFunction}>Fit Data</button>
             <CustomCheckbox bind:value={autoCompute} label="autoCompute" />
         </div>

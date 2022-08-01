@@ -5,6 +5,7 @@
         collisionalRates,
         collisionalRateConstants,
     } from '../stores/collisional'
+    import { numberDensity, collisionalTemp } from '../stores/common'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import Textfield from '@smui/textfield'
     import { find, cloneDeep } from 'lodash-es'
@@ -14,12 +15,9 @@
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
     import CustomPanel from '$src/components/CustomPanel.svelte'
 
-    export let numberDensity = '4e14'
-    export let collisionalTemp: number = 5
     export let collisionalFilename = ''
 
     let collisionalWindow = false
-    // $: collisionalRateConstants = [...$collisionalCoefficient, ...$collisionalCoefficient_balance]
 
     const compteCollisionalBalanceConstants = () => {
         $collisionalCoefficient_balance = []
@@ -28,7 +26,7 @@
             const { label, value } = coefficient
             const levelLabels = label.split(' --> ').map((f) => f.trim())
 
-            const balance = balance_distribution({ collisionalTemp, label })
+            const balance = balance_distribution({ collisionalTemp: $collisionalTemp, label })
             if (balance === null) return
 
             const newValue = Number(value) * balance
@@ -49,12 +47,12 @@
     }
 
     const computeRate = (rate: ValueLabel) => {
-        const value = Number(rate.value) * Number(numberDensity)
+        const value = Number(rate.value) * Number($numberDensity)
         rate.value = value.toExponential(3)
         return rate
     }
 
-    $: if ($collisionalRateConstants.length > 0 && numberDensity) {
+    $: if ($collisionalRateConstants.length > 0 && $numberDensity) {
         $collisionalRates = cloneDeep($collisionalRateConstants).map(computeRate)
     }
 
@@ -102,10 +100,10 @@
     })
 </script>
 
-<CollisionalDistribution {collisionalTemp} bind:active={collisionalWindow} />
-<CollisionalRateConstantPlot {collisionalFilename} bind:active={OpenRateConstantsPlot} bind:collisionalTemp />
+<CollisionalDistribution bind:active={collisionalWindow} />
+<CollisionalRateConstantPlot {collisionalFilename} bind:active={OpenRateConstantsPlot} />
 
-<CustomPanel label="Collisional rate constants" loaded={collisionalFilename?.length > 0}>
+<CustomPanel label="Collisional rate constants" loaded={$collisionalRateConstants.length > 0}>
     <div class="align h-center">
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
         <button class="button is-link " on:click={() => (collisionalWindow = true)}>Compute Collisional Cooling</button>
@@ -118,7 +116,7 @@
                 label="collisionalFilename"
                 lock={true}
             />
-            <Textfield bind:value={collisionalTemp} label="collisionalTemp" />
+            <Textfield bind:value={$collisionalTemp} label="collisionalTemp" />
             <button class="button is-link" on:click={() => (OpenRateConstantsPlot = true)}
                 >Compute rate constants</button
             >
@@ -147,7 +145,7 @@
     <hr />
     <div class="align h-center subtitle">Collisional Rates (per sec)</div>
     <div class="align h-center">
-        <Textfield bind:value={numberDensity} label="numberDensity (cm-3)" />
+        <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
     </div>
     <div class="align h-center">
         {#each $collisionalRates as { label, value, id } (id)}

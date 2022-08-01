@@ -1,10 +1,11 @@
 <script lang="ts">
+    import {numberDensity} from '../stores/common'
     import Textfield from '@smui/textfield'
     import { cloneDeep } from 'lodash-es'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import CustomPanel from '$src/components/CustomPanel.svelte'
 
-    export let numberDensity: string
+    // export let numberDensity: string
     export let attachmentCoefficients: ValueLabel[] = []
     export let k3: AttachmentRate = { constant: [], rate: [] }
     export let kCID: AttachmentRate = { constant: [], rate: [] }
@@ -12,17 +13,17 @@
     const computeAttachmentRate = () => {
         k3.rate = cloneDeep(k3.constant).map((rate) => ({
             ...rate,
-            value: Number(Number(rate.value) * Number(numberDensity) ** 2).toFixed(3),
+            value: Number(Number(rate.value) * Number($numberDensity) ** 2).toFixed(3),
             id: window.getID(),
         }))
 
         kCID.rate = cloneDeep(kCID.constant).map((rate) => ({
             ...rate,
-            value: Number(+rate.value * +numberDensity).toFixed(3),
+            value: Number(+rate.value * +$numberDensity).toFixed(3),
             id: window.getID(),
         }))
     }
-    $: if (numberDensity) {
+    $: if ($numberDensity) {
         computeAttachmentRate()
     }
 </script>
@@ -38,7 +39,7 @@
     </div>
 
     <div class="align h-center">
-        <Textfield bind:value={numberDensity} label="numberDensity (cm-3)" />
+        <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
         <button class="button is-link" on:click={computeAttachmentRate}>Compute rate constants</button>
 
         <div class="align h-center">

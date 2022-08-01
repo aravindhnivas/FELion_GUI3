@@ -9,6 +9,10 @@
         excitedTo,
         trapTemp,
         configFile,
+        numberDensity,
+        trapArea,
+        collisionalTemp,
+        configLoaded,
     } from './stores/common'
     import { collisionalRateConstants } from './stores/collisional'
     import { tick } from 'svelte'
@@ -55,7 +59,7 @@
 
     const simulation = async (e?: Event) => {
         if (!window.fs.isDirectory($currentLocation)) return window.createToast("Location doesn't exist", 'danger')
-        if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
+        if (!$configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!$transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
 
         if (includeCollision) {
@@ -141,8 +145,8 @@
             zeemanSplit: $zeemanSplit,
             excitedFrom: $excitedFrom,
             excitedTo: $excitedTo,
-            numberDensity,
-            collisionalTemp,
+            numberDensity: $numberDensity,
+            collisionalTemp: $collisionalTemp,
             simulationMethod,
             figure,
         }
@@ -179,15 +183,13 @@
 
     const variablesList = ['time', 'He density(cm-3)', 'Power(W)', 'a(k_up/k_down)', 'all']
 
-    let numberDensity = '2e14'
     let energyFilename: string
     let einsteinFilename: string
     let collisionalFilename: string
 
-    let configLoaded = false
-    // let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
+            $configLoaded = false
             if (window.fs.isFile($configFile)) {
                 await setConfig()
                 await tick()
@@ -198,13 +200,11 @@
         }
     }
 
-    let trapArea: string
     let ionMass = 14
     let RGmass = 4
     let ionTemp = 12
     let gaussian = 0
 
-    let collisionalTemp: number = 5
     let Cg = 0 // doppler-broadening proportionality constant
     let power: string | number = '2e-5'
     let dipole = 1
@@ -216,26 +216,25 @@
         console.log('Changing doppler parameters')
         ;[ionMass, RGmass, ionTemp, $trapTemp] = dopplerLineshape.map((f) => Number(f.value))
 
-        collisionalTemp = Number(Number((RGmass * ionTemp + ionMass * $trapTemp) / (ionMass + RGmass)).toFixed(1))
+        $collisionalTemp = Number(Number((RGmass * ionTemp + ionMass * $trapTemp) / (ionMass + RGmass)).toFixed(1))
         const sqrtTerm = (8 * boltzmanConstant * Math.log(2) * ionTemp) / (ionMass * amuToKG * SpeedOfLight ** 2)
         Cg = Math.sqrt(sqrtTerm)
         console.warn({ $transitionFrequency })
         gaussian = Number(Number($transitionFrequency * Cg).toFixed(3)) // in MHz
     }
-    const updatePower = async () => {
-        await tick()
-        console.log({ powerBroadening, trapArea })
+    const updatePower = () => {
+        console.log({ powerBroadening, $trapArea })
         ;[dipole, power] = powerBroadening.map((f) => Number(f.value))
-        trapArea = mainParameters?.filter((params) => params.label === 'trap_area (sq-meter)')?.[0]?.value || ''
-        console.warn({ trapArea })
+        $trapArea = mainParameters?.filter((params) => params.label === 'trap_area (sq-meter)')?.[0]?.value || ''
+        console.warn({ $trapArea })
         Cp =
             ((2 * dipole * DebyeToCm) / PlanksConstant) *
-            Math.sqrt(1 / (Number(trapArea) * SpeedOfLight * VaccumPermitivity))
+            Math.sqrt(1 / (Number($trapArea) * SpeedOfLight * VaccumPermitivity))
         lorrentz = Number(Number(Cp * Math.sqrt(Number(power)) * 1e-6).toFixed(3))
     }
 
     $: {
-        if ($transitionFrequency > 0 || dopplerLineshape.length) {
+        if ($configLoaded && ($transitionFrequency > 0 || dopplerLineshape.length)) {
             updateDoppler()
         }
         if (powerBroadening.length) {
@@ -247,6 +246,8 @@
 
     async function setConfig() {
         try {
+            $configLoaded = false
+
             const fileRead = window.fs.readFileSync($configFile)
             if (window.fs.isError(fileRead)) return window.handleError(fileRead)
 
@@ -274,7 +275,12 @@
             attachmentCoefficients = attachmentCoefficients.map(setID)
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue)
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue)
-            ;({ trapTemp: $trapTemp, zeemanSplit: $zeemanSplit, electronSpin: $electronSpin, numberDensity } = CONFIG)
+            ;({
+                trapTemp: $trapTemp,
+                zeemanSplit: $zeemanSplit,
+                electronSpin: $electronSpin,
+                numberDensity: $numberDensity,
+            } = CONFIG)
 
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
@@ -295,18 +301,8 @@
             collisionalFilename = collisionalFilename
                 ? window.path.join($currentLocation, configsBaseName, collisionalFilename)
                 : ''
-
-            if (einsteinFilename) {
-                const { rateConstants } = await getYMLFileContents(einsteinFilename)
-                $einsteinCoefficientA = rateConstants.map(setID).map(correctObjValue)
-            } else {
-                $einsteinCoefficientA = []
-            }
             window.createToast('CONFIG loaded')
-
-            updatePower()
-            updateDoppler()
-            configLoaded = true
+            $configLoaded = true
             return Promise.resolve('config loaded')
         } catch (error) {
             window.handleError(error)
@@ -414,7 +410,7 @@
                                 <CustomTextSwitch step={0.5} bind:value {label} />
                             {/each}
                             <Textfield
-                                bind:value={collisionalTemp}
+                                bind:value={$collisionalTemp}
                                 label="collisionalTemp(K)"
                                 type="number"
                                 input$step="0.1"
@@ -430,9 +426,9 @@
                             <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" variant="outlined" />
                         </CustomPanel>
 
-                        <EinsteinCoefficients {power} {gaussian} {trapArea} {lorrentz} />
-                        <CollisionalCoefficients bind:numberDensity {collisionalTemp} {collisionalFilename} />
-                        <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
+                        <EinsteinCoefficients {einsteinFilename} {power} {gaussian} {lorrentz} />
+                        <CollisionalCoefficients {collisionalFilename} />
+                        <AttachmentCoefficients bind:k3 bind:kCID bind:attachmentCoefficients />
                     </Accordion>
                 </div>
             </svelte:fragment>

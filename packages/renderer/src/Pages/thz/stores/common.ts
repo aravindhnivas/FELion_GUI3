@@ -14,3 +14,13 @@ export const currentLocation = derived(configFile, ($configFile) => {
 export const excitedTo = writable<string>('');
 export const excitedFrom = writable<string>('');
 export const trapTemp = writable<number>(5);
+
+export const numberDensity = writable<string>('');
+export const trapArea = writable<string>('');
+
+export const collisionalTemp = writable<number>(7);
+export const configLoaded = writable<boolean>(false);
+
+// export const gaussian = writable<string>('');
+// export const lorrentz = writable<string>('');
+

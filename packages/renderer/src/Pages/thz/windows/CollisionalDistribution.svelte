@@ -1,6 +1,7 @@
 <script lang="ts">
     import { collisionalRateConstants } from '../stores/collisional'
     import { numberOfLevels } from '../stores/energy'
+    import { collisionalTemp } from '../stores/common'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
@@ -11,8 +12,6 @@
     import { persistentWritable } from '$src/js/persistentStore'
 
     export let active: boolean = false
-    export let collisionalTemp: number = 10
-    // export let collisionalRateConstants: ValueLabel[] = []
 
     const title = 'Collisional cooling'
     const plotID = 'collisionalDistributionPlot'
@@ -35,7 +34,7 @@
             const collisionalRateConstantValues: KeyStringObj = {}
             $collisionalRateConstants.forEach((f) => (collisionalRateConstantValues[f.label] = f.value))
 
-            const boltzman_distribution_traptemp = boltzman_distribution(collisionalTemp)
+            const boltzman_distribution_traptemp = boltzman_distribution($collisionalTemp)
 
             if (boltzman_distribution_traptemp === null) return
 
@@ -66,10 +65,10 @@
                 dataFromPython
             )
 
-            plot(` Distribution: ${collisionalTemp}K`, 'Time (s)', 'Population', data, plotID)
+            plot(` Distribution: ${$collisionalTemp}K`, 'Time (s)', 'Population', data, plotID)
 
             plot(
-                ` Distribution: ${collisionalTemp}K`,
+                ` Distribution: ${$collisionalTemp}K`,
                 'Energy Levels',
                 'Population',
                 collisionalBoltzmanPlotData,
@@ -97,7 +96,7 @@
     <svelte:fragment slot="header_content__slot">
         <div class="header">
             <CustomTextSwitch bind:value={$initialTemp} label="Initial temp (K)" />
-            <CustomTextSwitch bind:value={collisionalTemp} label="Coll. temp (K)" />
+            <CustomTextSwitch bind:value={$collisionalTemp} label="Coll. temp (K)" />
             <CustomTextSwitch bind:value={duration} label="duration (in ms)" />
             <Textfield bind:value={totalSteps} label="totalSteps" />
             <Textfield bind:value={numberDensity} label="Number density (cm-3)" />

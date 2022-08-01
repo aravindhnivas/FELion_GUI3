@@ -1,17 +1,21 @@
 <script lang="ts">
     import { energyUnit, energyLevels } from '../stores/energy'
     import { einsteinCoefficientA, einsteinCoefficientB, einsteinCoefficientB_rateConstant } from '../stores/einstein'
-    import { cloneDeep, find } from 'lodash-es'
+    import { trapArea, configLoaded } from '../stores/common'
+    import { cloneDeep, find, isArray } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import computePy_func from '$src/Pages/general/computePy'
     import { PlanksConstant, SpeedOfLight } from '$src/js/constants'
     import { computeStatisticalWeight } from '../functions/balance_distribution'
     import CustomPanel from '$src/components/CustomPanel.svelte'
+    import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
+    import { correctObjValue, getYMLFileContents, setID } from '$src/js/utils'
+    import { tick } from 'svelte'
 
     export let lorrentz = 0.32
     export let gaussian = 0.21
     export let power: string | number = '2e-5'
-    export let trapArea = '5e-5'
+    export let einsteinFilename: string = ''
 
     let einsteinB_rateComputed = false
     async function computeEinsteinB() {
@@ -75,23 +79,38 @@
         if (!lineshape) return
         voigtline = lineshape
 
-        const constantTerm = Number(power) / (Number(trapArea) * SpeedOfLight)
+        const constantTerm = Number(power) / (Number($trapArea) * SpeedOfLight)
         const norm = constantTerm * parseFloat(voigtline)
+
         console.log({ $einsteinCoefficientB_rateConstant, norm })
+
         $einsteinCoefficientB = $einsteinCoefficientB_rateConstant.map((rateconstant) => ({
             ...rateconstant,
             value: Number(+rateconstant.value * norm).toExponential(3),
         }))
+
         einsteinB_rateComputed = $einsteinCoefficientB.length > 0
-        console.log({ einsteinB_rateComputed })
     }
 
     let computing_lineshape = false
 
     async function computeLineshape(e?: Event) {
+        if (!$configLoaded) return
         if (computing_lineshape) return
-        if (!lorrentz) return window.createToast('Invalid Lorrentz parameters', 'danger')
-        if (!gaussian) return window.createToast('Invalid Gaussian parameters', 'danger')
+
+        console.log({ lorrentz, gaussian })
+        if (!(lorrentz > 0)) {
+            if (e) {
+                window.createToast('Invalid Lorrentz parameters', 'danger')
+            }
+            return
+        }
+        if (!(gaussian > 0)) {
+            if (e) {
+                window.createToast('Invalid Gaussian parameters', 'danger')
+            }
+            return
+        }
 
         computing_lineshape = true
         const dataFromPython = await computePy_func({
@@ -108,13 +127,30 @@
     $: if ($einsteinCoefficientA.length) {
         computeEinsteinB()
     }
+
+    const readFile = async () => {
+        const data = await getYMLFileContents(einsteinFilename)
+        if (!isArray(data?.rateConstants)) return window.createToast('EinsteinA - Invalid file format', 'danger')
+        $einsteinCoefficientA = data.rateConstants.map(setID).map(correctObjValue)
+    }
+    $: if (window.fs.isFile(einsteinFilename)) {
+        readFile()
+    }
 </script>
 
-<CustomPanel
-    label="Einstein Co-efficients"
-    loaded={$einsteinCoefficientA.length > 0 && $einsteinCoefficientB.length > 0}
->
+<CustomPanel label="Einstein Co-efficients" loaded={einsteinB_rateComputed}>
     <div class="align h-center subtitle">Einstein A Co-efficients</div>
+
+    <BrowseTextfield
+        dir={false}
+        filetype="yml"
+        class="three_col_browse"
+        bind:value={einsteinFilename}
+        label="filename"
+        lock={true}
+    >
+        <button class="button is-warning" on:click={readFile}>load</button>
+    </BrowseTextfield>
 
     <div class="align h-center mb-5">
         {#if $einsteinCoefficientA.length > 0}
