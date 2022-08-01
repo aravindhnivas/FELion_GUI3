@@ -159,10 +159,8 @@
         .replaceAll('^', '')
 
     const resetConfig = () => {
-        $einsteinCoefficientA = $einsteinCoefficientB = []
-        $energyLevels = []
+        $einsteinCoefficientA = $einsteinCoefficientB = attachmentCoefficients = []
         simulationParameters = mainParameters = dopplerLineshape = powerBroadening = []
-        attachmentCoefficients = []
         window.createToast('Config file cleared', 'warning')
     }
 
