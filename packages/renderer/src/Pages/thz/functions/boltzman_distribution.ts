@@ -1,21 +1,15 @@
+import {energyLevels, get_KT} from '../stores/energy';
+import {get} from 'svelte/store';
 import { sumBy } from 'lodash-es'
-import { boltzmanConstantInMHz, boltzmanConstantInWavenumber } from '$src/js/constants'
 import { compute_Gj } from './balance_distribution'
 
-export default function ({
-    energyLevels = [], trapTemp = 5, electronSpin = false, zeemanSplit = false, energyUnit = 'cm-1',
-}: BoltzmanDistributionOptions) {
+export default function (temperature: number) {
 
-    const kB = {
-        MHz: boltzmanConstantInMHz,
-        'cm-1': boltzmanConstantInWavenumber,
-    }
-
-    const KT = kB[energyUnit] * trapTemp
+    const KT = get_KT(temperature)
     
     try {
-        const distribution = energyLevels.map(({ label, value: currentEnergy }) => {
-            const Gj = compute_Gj({zeemanSplit, electronSpin, label})
+        const distribution = get(energyLevels).map(({ label, value: currentEnergy }) => {
+            const Gj = compute_Gj(label)
             const value = Gj * Math.exp(-currentEnergy / KT)
             return { label, value }
         })

@@ -1,23 +1,23 @@
 <script lang="ts">
+    import { energyLevels, numberOfLevels } from './stores/energy'
+    import { einsteinCoefficientA, einsteinCoefficientB, einsteinCoefficientB_rateConstant } from './stores/einstein'
+    import { electronSpin, zeemanSplit, currentLocation, excitedFrom, excitedTo, trapTemp } from './stores/common'
+    import { collisionalRateConstants } from './stores/collisional'
     import { tick } from 'svelte'
     import Textfield from '@smui/textfield'
     import Accordion from '@smui-extra/accordion'
     import { parse as Yml } from 'yaml'
-
-    // import { browse } from '$components/Layout.svelte'
     import CustomSelect from '$components/CustomSelect.svelte'
     import LayoutDiv from '$components/LayoutDiv.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
-    import BoltzmanDistribution from './windows/BoltzmanDistribution.svelte'
     import EinsteinCoefficients from './components/EinsteinCoefficients.svelte'
     import CollisionalCoefficients from './components/CollisionalCoefficients.svelte'
     import AttachmentCoefficients from './components/AttachmentCoefficients.svelte'
     import ROSAA_Footer from './ROSAA_layout/ROSAA_Footer.svelte'
     import CustomPanel from '$components/CustomPanel.svelte'
     import SeparateWindow from '$components/SeparateWindow.svelte'
-    import IconButton from '$components/IconButton.svelte'
-
+    import EnergyDetails from './components/EnergyDetails.svelte'
     import {
         amuToKG,
         DebyeToCm,
@@ -28,12 +28,8 @@
     } from '$src/js/constants'
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
-    import { wavenumberToMHz, MHzToWavenumber } from '$src/js/utils'
-    import WinBox from 'winbox'
+    import { setID, correctObjValue } from '$src/js/utils'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    let electronSpin = false
-    let zeemanSplit = false
 
     let [mainParameters, simulationParameters, dopplerLineshape, powerBroadening]: Coefficients[] = Array(4).fill([])
 
@@ -47,19 +43,13 @@
     let showreport = false
     let statusReport = ''
 
-    let collisionalRates: Coefficients = []
-    let collisionalRateConstants: Coefficients = []
-    let einsteinB_rateComputed = false
-
     const simulation = async (e?: Event) => {
-        if (!window.fs.isDirectory(currentLocation)) return window.createToast("Location doesn't exist", 'danger')
+        if (!window.fs.isDirectory($currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
-        if (!einsteinB_rateComputed) return window.createToast('Compute einsteinB rate constants', 'danger')
 
         if (includeCollision) {
-            collisionalRateConstants = [...collisionalCoefficient, ...collisionalCoefficient_balance]
-            if (collisionalRateConstants.length < 1)
+            if ($collisionalRateConstants.length < 1)
                 return window.createToast('Compute collisional rate constants', 'danger')
         }
 
@@ -68,7 +58,7 @@
         }
 
         const collisional_rates: KeyStringObj = {}
-        collisionalRateConstants.forEach((f) => (collisional_rates[f.label] = f.value))
+        $collisionalRateConstants.forEach((f) => (collisional_rates[f.label] = f.value))
 
         const main_parameters: KeyStringObj = {}
         mainParameters.forEach((f) => (main_parameters[f.label] = f.value))
@@ -86,9 +76,9 @@
             [key in 'A' | 'B' | 'B_rateConstant']: KeyStringObj
         } = { A: {}, B: {}, B_rateConstant: {} }
 
-        einsteinCoefficientA.forEach((f) => (einstein_coefficient.A[f.label] = f.value))
-        einsteinCoefficientB.forEach((f) => (einstein_coefficient.B[f.label] = f.value))
-        einsteinCoefficientB_rateConstant.forEach((f) => (einstein_coefficient.B_rateConstant[f.label] = f.value))
+        $einsteinCoefficientA.forEach((f) => (einstein_coefficient.A[f.label] = f.value))
+        $einsteinCoefficientB.forEach((f) => (einstein_coefficient.B[f.label] = f.value))
+        $einsteinCoefficientB_rateConstant.forEach((f) => (einstein_coefficient.B_rateConstant[f.label] = f.value))
 
         const attachment_rate_coefficients = {
             rateConstants: {
@@ -100,7 +90,7 @@
         attachmentCoefficients.forEach((f) => (attachment_rate_coefficients[f.label] = f.value))
 
         const energy_levels: KeyStringObj<number> = {}
-        energyLevels.slice(0, numberOfLevels).forEach((f) => (energy_levels[f.label] = f.value))
+        $energyLevels.slice(0, $numberOfLevels).forEach((f) => (energy_levels[f.label] = f.value))
 
         const keys = <const>['k3_branch', 'numberDensity', 'power']
         for (const key of keys) {
@@ -115,10 +105,10 @@
         }
 
         const args = {
-            trapTemp,
+            trapTemp: $trapTemp,
             variable,
             $variableRange,
-            numberOfLevels,
+            numberOfLevels: $numberOfLevels,
             includeCollision,
             includeAttachmentRate,
             gaussian,
@@ -126,7 +116,7 @@
             includeSpontaneousEmission,
             writefile,
             savefilename,
-            currentLocation,
+            currentLocation: $currentLocation,
             deexcitation,
             collisional_rates,
             main_parameters,
@@ -137,10 +127,10 @@
             power_broadening,
             lineshape_conditions,
             attachment_rate_coefficients,
-            electronSpin,
-            zeemanSplit,
-            excitedFrom,
-            excitedTo,
+            electronSpin: $electronSpin,
+            zeemanSplit: $zeemanSplit,
+            excitedFrom: $excitedFrom,
+            excitedTo: $excitedTo,
             numberDensity,
             collisionalTemp,
             simulationMethod,
@@ -151,35 +141,25 @@
         statusReport = ''
         await computePy_func({ e, pyfile: 'ROSAA', args, general: true })
     }
-
-    let currentLocation = window.fs.isDirectory(<string>window.db.get('ROSAA_config_location'))
-        ? <string>window.db.get('ROSAA_config_location')
-        : ''
-
     let moleculeName = ''
     let tagName = 'He'
 
-    $: savefilename = `${moleculeName}_${tagName}_f-${variable.split('(')[0]}__transition_${excitedFrom}-${excitedTo}`
+    $: savefilename = `${moleculeName}_${tagName}_f-${variable.split('(')[0]}__transition_${$excitedFrom}-${$excitedTo}`
         .replaceAll('$', '')
         .replaceAll('^', '')
-
-    $: if (window.fs.isDirectory(currentLocation)) {
-        window.db.set('ROSAA_config_location', currentLocation)
-    }
 
     function browse_folder() {
         const [result] = window.browse({ filetype: 'yml', dir: false })
         console.log(result)
         if (!result) return
         configFilename = window.path.basename(result)
-        currentLocation = window.path.dirname(result)
-        window.db.set('ROSAA_config_location', currentLocation)
+        $currentLocation = window.path.dirname(result)
         window.db.set('ROSAA_config_file', configFilename)
     }
 
     const resetConfig = () => {
-        einsteinCoefficientA = einsteinCoefficientB = []
-        energyLevels = []
+        $einsteinCoefficientA = $einsteinCoefficientB = []
+        $energyLevels = []
         simulationParameters = mainParameters = dopplerLineshape = powerBroadening = []
         attachmentCoefficients = []
         window.createToast('Config file cleared', 'warning')
@@ -200,30 +180,19 @@
 
     const variablesList = ['time', 'He density(cm-3)', 'Power(W)', 'a(k_up/k_down)', 'all']
 
-    let einsteinCoefficientA: Coefficients = []
-    let einsteinCoefficientB: Coefficients = []
-    let einsteinCoefficientB_rateConstant: Coefficients = []
-
-    let collisionalCoefficient: Coefficients = []
+    // let collisionalCoefficient: Coefficients = []
 
     let energyUnit: EnergyUnit = 'cm-1'
-    let numberOfLevels = 3
+    // let numberOfLevels = 3
     let numberDensity = '2e14'
     let energyFilename: string
     let einsteinFilename: string
     let collisionalFilename: string
 
-    $: configFile = window.path.join(currentLocation, configFilename)
-    $: boltzmanArgs = {
-        energyLevels,
-        trapTemp,
-        electronSpin,
-        zeemanSplit,
-        energyUnit,
-    }
+    $: configFile = window.path.join($currentLocation, configFilename)
 
     let configLoaded = false
-    let collisionalCoefficient_balance: Coefficients = []
+    // let collisionalCoefficient_balance: Coefficients = []
     let configFilename = <string>window.db.get('ROSAA_config_file') || ''
     async function loadConfig() {
         try {
@@ -249,19 +218,7 @@
         return Promise.resolve(YMLcontent)
     }
 
-    const setID = <T extends OnlyValueLabel<T['value']>>(obj: T): ValueLabel<T['value']> => ({
-        ...obj,
-        id: window.getID(),
-    })
-
-    const correctObjValue = (obj: ValueLabel) => ({
-        ...obj,
-        value: Number(obj.value).toExponential(3),
-    })
-
     let trapArea: string
-    let excitedTo = ''
-    let excitedFrom = ''
     let upperLevelEnergy: number
     let lowerLevelEnergy: number
     let transitionFrequency = 0
@@ -269,7 +226,6 @@
     let ionMass = 14
     let RGmass = 4
     let ionTemp = 12
-    let trapTemp = 5
     let gaussian = 0
 
     let collisionalTemp: number = 5
@@ -279,14 +235,12 @@
     let lorrentz = 0
     let Cp = 0 // power-broadening proportionality constant
 
-    $: console.log(mainParameters)
-
     const updateEnergyLevels = () => {
         console.log('energyLevels updated')
-        if (!energyLevels) return console.warn('No energyLevels defined', energyLevels)
-        console.log(energyLevels)
-        lowerLevelEnergy = energyLevels.filter((energy) => energy.label == excitedFrom)?.[0]?.value || 0
-        upperLevelEnergy = energyLevels.filter((energy) => energy.label == excitedTo)?.[0]?.value || 0
+        if (!$energyLevels) return console.warn('No energyLevels defined', $energyLevels)
+        console.log($energyLevels)
+        lowerLevelEnergy = $energyLevels.filter((energy) => energy.label == $excitedFrom)?.[0]?.value || 0
+        upperLevelEnergy = $energyLevels.filter((energy) => energy.label == $excitedTo)?.[0]?.value || 0
 
         transitionFrequency = upperLevelEnergy - lowerLevelEnergy
         if (energyUnit == 'cm-1') {
@@ -297,9 +251,9 @@
 
     const updateDoppler = () => {
         console.log('Changing doppler parameters')
-        ;[ionMass, RGmass, ionTemp, trapTemp] = dopplerLineshape.map((f) => Number(f.value))
+        ;[ionMass, RGmass, ionTemp, $trapTemp] = dopplerLineshape.map((f) => Number(f.value))
 
-        collisionalTemp = Number(Number((RGmass * ionTemp + ionMass * trapTemp) / (ionMass + RGmass)).toFixed(1))
+        collisionalTemp = Number(Number((RGmass * ionTemp + ionMass * $trapTemp) / (ionMass + RGmass)).toFixed(1))
         const sqrtTerm = (8 * boltzmanConstant * Math.log(2) * ionTemp) / (ionMass * amuToKG * SpeedOfLight ** 2)
         Cg = Math.sqrt(sqrtTerm)
         gaussian = Number(Number(transitionFrequency * Cg).toFixed(3)) // in MHz
@@ -315,7 +269,7 @@
     }
 
     $: {
-        if (energyLevels.length > 1) {
+        if ($energyLevels.length > 1) {
             updateEnergyLevels()
         }
         if (dopplerLineshape.length) {
@@ -326,7 +280,6 @@
         }
     }
 
-    const energyInfos: EnergyInfos = { 'cm-1': [], MHz: [] }
     let configsBaseName = 'files'
 
     async function setConfig() {
@@ -359,13 +312,13 @@
             attachmentCoefficients = attachmentCoefficients.map(setID)
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue)
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue)
-            ;({ trapTemp, zeemanSplit, electronSpin, numberDensity } = CONFIG)
+            ;({ trapTemp: $trapTemp, zeemanSplit: $zeemanSplit, electronSpin: $electronSpin, numberDensity } = CONFIG)
             // ({savefilename}         = CONFIG.saveFile);
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
             const { savelocation } = CONFIG.saveFile
             if (window.fs.isDirectory(savelocation)) {
-                currentLocation = savelocation
+                $currentLocation = savelocation
             }
             ;({
                 energy: energyFilename,
@@ -385,44 +338,14 @@
                 ? window.path.join(configFileLocation, configsBaseName, collisionalFilename)
                 : ''
 
-            let energyLevelsStore_NoKey: OnlyValueLabel<number>[] = []
-            // let energyLevelsStore: EnergyLevels = []
-
-            if (energyFilename) {
-                ;({ levels: energyLevelsStore_NoKey, unit: energyUnit } = await getYMLFileContents(energyFilename))
-            } else {
-                energyLevelsStore_NoKey = []
-            }
-            // console.log(energyLevelsStore_NoKey)
-            const energyLevelsStore: EnergyLevels = energyLevelsStore_NoKey
-                .map((e) => ({ ...e, value: Number(e.value) }))
-                .map(setID)
-
-            energyInfos[energyUnit] = energyLevelsStore
-            if (energyUnit === 'cm-1') {
-                energyInfos['MHz'] = energyLevelsStore.map(wavenumberToMHz)
-            } else {
-                energyInfos['cm-1'] = energyLevelsStore.map(MHzToWavenumber)
-            }
-            // console.log({ energyLevelsStore_NoKey, energyLevelsStore, energyUnit, energyInfos })
-
-            numberOfLevels = energyLevelsStore.length
-            excitedFrom = energyLevelsStore?.[0].label
-            excitedTo = energyLevelsStore?.[1].label
-
             if (einsteinFilename) {
-                ;({ rateConstants: einsteinCoefficientA } = await getYMLFileContents(einsteinFilename))
-                einsteinCoefficientA = einsteinCoefficientA.map(setID).map(correctObjValue)
+                const { rateConstants } = await getYMLFileContents(einsteinFilename)
+                $einsteinCoefficientA = rateConstants.map(setID).map(correctObjValue)
             } else {
-                einsteinCoefficientA = []
+                $einsteinCoefficientA = []
             }
-
             window.createToast('CONFIG loaded')
-            console.log({
-                energyLevels,
-                collisionalCoefficient,
-                einsteinCoefficientA,
-            })
+
             updatePower()
             updateEnergyLevels()
             configLoaded = true
@@ -432,30 +355,20 @@
             return Promise.reject(error)
         }
     }
-    let lock_energylevels = true
-    let boltzmanWindow: WinBox | null = null
-    let openBoltzmanWindow = false
+
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
     let simulationMethod = 'Normal'
     const figure = { dpi: 100, size: '10, 6', show: true }
-    $: energyLevels = energyInfos[`${energyUnit}`]
     let toggle_modal = false
     let progress = 0
     let showProgress = false
 </script>
 
-<BoltzmanDistribution
-    {...boltzmanArgs}
-    bind:active={openBoltzmanWindow}
-    bind:graphWindow={boltzmanWindow}
-    {currentLocation}
-/>
-
 <LayoutDiv id="ROSAA__modal" {progress} bind:showProgress>
     <svelte:fragment slot="header_content__slot">
         <div class="locationColumn box px-3 py-2 v-center" style="border: solid 1px #fff9;">
             <button class="button is-link" id="thz_modal_filebrowser_btn" on:click={browse_folder}>Browse</button>
-            <Textfield bind:value={currentLocation} label="CONFIG location" />
+            <Textfield bind:value={$currentLocation} label="CONFIG location" />
             <Textfield bind:value={configFilename} label="CONFIG file" />
         </div>
 
@@ -463,8 +376,8 @@
             <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
             <CustomCheckbox bind:value={includeAttachmentRate} label="includeAttachmentRate" />
             <CustomCheckbox bind:value={includeSpontaneousEmission} label="includeSpontaneousEmission" />
-            <CustomCheckbox bind:value={electronSpin} label="Electron Spin" />
-            <CustomCheckbox bind:value={zeemanSplit} label="Zeeman" />
+            <CustomCheckbox bind:value={$electronSpin} label="Electron Spin" />
+            <CustomCheckbox bind:value={$zeemanSplit} label="Zeeman" />
         </div>
 
         <div class="align box px-3 py-2" class:hide={showreport} style="border: solid 1px #fff9; min-height: 5em;">
@@ -528,40 +441,7 @@
                             </div>
                         </CustomPanel>
 
-                        <CustomPanel label="Energy Levels" loaded={energyLevels.length > 0}>
-                            <div class="align h-center">
-                                <Textfield
-                                    bind:value={numberOfLevels}
-                                    input$step={1}
-                                    input$min={0}
-                                    type={'number'}
-                                    label="numberOfLevels (J levels)"
-                                />
-                                <CustomSelect options={['MHz', 'cm-1']} bind:value={energyUnit} label="energyUnit" />
-                                <button
-                                    class="button is-link"
-                                    on:click={() => {
-                                        openBoltzmanWindow = true
-                                        setTimeout(() => boltzmanWindow?.focus(), 100)
-                                    }}
-                                >
-                                    Show Boltzman distribution
-                                </button>
-                                <IconButton bind:value={lock_energylevels} icons={{ on: 'lock', off: 'lock_open' }} />
-                            </div>
-
-                            <div class="align h-center">
-                                {#each energyLevels as { label, value, id } (id)}
-                                    <Textfield
-                                        bind:value
-                                        {label}
-                                        disabled={lock_energylevels}
-                                        type="number"
-                                        input$step="0.0001"
-                                    />
-                                {/each}
-                            </div>
-                        </CustomPanel>
+                        <EnergyDetails bind:energyFilename />
 
                         <CustomPanel label="Simulation parameters" loaded={simulationParameters.length > 0}>
                             <div class="align h-center mb-5">
@@ -572,14 +452,14 @@
 
                             <div class="align h-center">
                                 <CustomSelect
-                                    options={energyLevels.map((f) => f.label)}
-                                    bind:value={excitedFrom}
+                                    options={$energyLevels.map((f) => f.label)}
+                                    bind:value={$excitedFrom}
                                     label="excitedFrom"
                                     on:change={updateEnergyLevels}
                                 />
                                 <CustomSelect
-                                    options={energyLevels.map((f) => f.label)}
-                                    bind:value={excitedTo}
+                                    options={$energyLevels.map((f) => f.label)}
+                                    bind:value={$excitedTo}
                                     label="excitedTo"
                                     on:change={updateEnergyLevels}
                                 />
@@ -611,49 +491,9 @@
                             <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" variant="outlined" />
                         </CustomPanel>
 
-                        <CustomPanel
-                            label="Einstein Co-efficients"
-                            loaded={einsteinCoefficientA.length > 0 &&
-                                einsteinCoefficientB.length > 0 &&
-                                einsteinB_rateComputed}
-                        >
-                            <EinsteinCoefficients
-                                bind:einsteinCoefficientA
-                                bind:einsteinCoefficientB
-                                bind:einsteinB_rateComputed
-                                bind:einsteinCoefficientB_rateConstant
-                                {power}
-                                {gaussian}
-                                {trapArea}
-                                {lorrentz}
-                                {energyUnit}
-                                {zeemanSplit}
-                                {electronSpin}
-                                {energyLevels}
-                            />
-                        </CustomPanel>
-
-                        <CustomPanel label="Collisional rate constants" loaded={collisionalFilename?.length > 0}>
-                            <CollisionalCoefficients
-                                bind:numberDensity
-                                bind:collisionalRates
-                                bind:collisionalCoefficient
-                                bind:collisionalCoefficient_balance
-                                {energyUnit}
-                                {zeemanSplit}
-                                {energyLevels}
-                                {electronSpin}
-                                {numberOfLevels}
-                                {collisionalTemp}
-                                {collisionalFilename}
-                            />
-                        </CustomPanel>
-                        <CustomPanel
-                            label="Rare-gas attachment (K3) and dissociation (kCID) constants"
-                            loaded={attachmentCoefficients.length > 0}
-                        >
-                            <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
-                        </CustomPanel>
+                        <EinsteinCoefficients {power} {gaussian} {trapArea} {lorrentz} />
+                        <CollisionalCoefficients bind:numberDensity {collisionalTemp} {collisionalFilename} />
+                        <AttachmentCoefficients bind:k3 bind:kCID bind:numberDensity bind:attachmentCoefficients />
                     </Accordion>
                 </div>
             </svelte:fragment>
@@ -662,7 +502,6 @@
 
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:value={writefile} label="writefile" />
-
         <Textfield bind:value={savefilename} label="savefilename" />
         <CustomCheckbox bind:value={figure.show} label="show figure" />
     </svelte:fragment>

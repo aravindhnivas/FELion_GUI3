@@ -1,32 +1,24 @@
-import { boltzmanConstantInMHz, boltzmanConstantInWavenumber } from '$src/js/constants'
+import {energyLevels, get_KT} from '../stores/energy';
+import {zeemanSplit, electronSpin } from '../stores/common';
+import {get} from 'svelte/store';
 
 export default function ({
     label = '',
-    energyLevels = [],
     collisionalTemp = 5,
-    electronSpin = false,
-    zeemanSplit = false,
-    energyUnit = 'cm-1',
 }: BalanceDistributionOptions) {
-    const kB = {
-        MHz: boltzmanConstantInMHz,
-        'cm-1': boltzmanConstantInWavenumber,
-    }
-
-    const KT = kB[energyUnit] * collisionalTemp
+    
+    const KT = get_KT(collisionalTemp)
 
     try {
         const [initial, final] = label.split(' --> ').map((f) => f.trim())
         const { Gi, Gf } = computeStatisticalWeight({
-            electronSpin,
-            zeemanSplit,
             final,
             initial,
         })
         const Gw = Gi / Gf
 
         const energy_levels: KeyStringObj<number> = {}
-        energyLevels.forEach((f) => (energy_levels[f.label] = f.value))
+        get(energyLevels).forEach((f) => (energy_levels[f.label] = f.value))
 
         const delE = energy_levels[final] - energy_levels[initial]
         const rateConstant = Gw * Math.exp(delE / KT)
@@ -38,14 +30,10 @@ export default function ({
     }
 }
 
-export function compute_Gj({zeemanSplit, electronSpin, label}: {
-    zeemanSplit: boolean,
-    electronSpin: boolean,
-    label: string,
-}){
-    if(zeemanSplit){
+export function compute_Gj(label: string){
+    if(get(zeemanSplit)){
         return 1
-    } else if(electronSpin){
+    } else if(get(electronSpin)){
         const j = parseFloat(label.split('_')[1])
         return 2 * j + 1
     } else {
@@ -53,8 +41,8 @@ export function compute_Gj({zeemanSplit, electronSpin, label}: {
     }
 }
 
-export function computeStatisticalWeight({ electronSpin = false, zeemanSplit = false, final, initial }: ComputeStatisticalWeightOptions) {
-    const Gi = compute_Gj({zeemanSplit, electronSpin, label: initial})
-    const Gf = compute_Gj({zeemanSplit, electronSpin, label: final})
+export function computeStatisticalWeight({ final, initial }: ComputeStatisticalWeightOptions) {
+    const Gi = compute_Gj(initial)
+    const Gf = compute_Gj(final)
     return { Gi, Gf }
 }

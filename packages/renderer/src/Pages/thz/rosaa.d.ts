@@ -12,24 +12,24 @@ type Coefficients = ValueLabel<string>[]
 interface BalanceDistributionOptions {
 
     label: string;
-    energyLevels: EnergyLevels;
+    // energyLevels: EnergyLevels;
     collisionalTemp: number;
-    electronSpin: boolean;
-    zeemanSplit: boolean;
-    energyUnit: EnergyUnit;
+    // electronSpin: boolean;
+    // zeemanSplit: boolean;
+    // energyUnit: EnergyUnit;
 }
 
 interface ComputeStatisticalWeightOptions {
-    electronSpin: boolean;
-    zeemanSplit: boolean;
+    // electronSpin: boolean;
+    // zeemanSplit: boolean;
     final: string;
     initial: string;
 }
 
 interface BoltzmanDistributionOptions {
-    energyLevels: EnergyLevels;
+    // energyLevels: EnergyLevels;
     trapTemp: number;
-    electronSpin: boolean;
-    zeemanSplit: boolean;
-    energyUnit: EnergyUnit;
+    // electronSpin: boolean;
+    // zeemanSplit: boolean;
+    // energyUnit: EnergyUnit;
 }

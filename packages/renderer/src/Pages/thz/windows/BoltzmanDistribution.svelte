@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { trapTemp, currentLocation } from '../stores/common'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import { plot } from '../../../js/functions'
@@ -9,13 +10,13 @@
     import WinBox from 'winbox'
 
     export let active = false
-    export let trapTemp: string | number
-    export let energyLevels: ValueLabel<number>[] = []
-    export let zeemanSplit: boolean
-    export let energyUnit: 'cm-1' | 'MHz'
-    export let electronSpin: boolean
+    // export let trapTemp: string | number
+    // export let energyLevels: ValueLabel<number>[] = []
+    // export let zeemanSplit: boolean
+    // export let energyUnit: 'cm-1' | 'MHz'
+    // export let electronSpin: boolean
     export let graphWindow: WinBox | null = null
-    export let currentLocation: string = ''
+    // export let currentLocation: string = ''
 
     const title = 'Boltzman Distribution'
     const plotID = 'boltzmanDistributionPlot'
@@ -25,13 +26,7 @@
     let plotData: (string[] | number[])[] = [[], []]
 
     function plotGraph() {
-        const computedData = boltzman_distribution({
-            energyLevels,
-            trapTemp: Number(trapTemp),
-            electronSpin,
-            zeemanSplit,
-            energyUnit,
-        })
+        const computedData = boltzman_distribution($trapTemp)
         if (computedData === null) return
 
         const { distribution, partitionValue } = computedData
@@ -57,15 +52,15 @@
     $: if (windowReady) {
         setTimeout(() => graphWindow?.focus(), 100)
     }
-    $: if (windowReady && trapTemp > 0) {
+    $: if (windowReady && $trapTemp > 0) {
         plotGraph()
     }
 
     const saveInfo = { msg: '', error: '' }
-    $: outputFile = window.path.join(currentLocation, '../output/datas', `boltzman_distribution${trapTemp}K.dat`)
+    $: outputFile = window.path.join($currentLocation, '../output/datas', `boltzman_distribution${trapTemp}K.dat`)
 
     const saveData = async () => {
-        console.log({ currentLocation, plotData })
+        console.log({ $currentLocation, plotData })
         window.fs.ensureDirSync(window.path.dirname(outputFile))
 
         const length = plotData[0].length
@@ -91,7 +86,7 @@
             return
         }
 
-        const figsDir = window.path.join(currentLocation, '../output/figs')
+        const figsDir = window.path.join($currentLocation, '../output/figs')
         window.fs.ensureDirSync(figsDir)
 
         const args = {
@@ -111,7 +106,7 @@
 <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
     <svelte:fragment slot="header_content__slot">
         <div class="align">
-            <CustomTextSwitch bind:value={trapTemp} label="Temperature (K)" />
+            <CustomTextSwitch bind:value={$trapTemp} label="Temperature (K)" />
             <button class="button is-link" on:click={plotGraph}>Compute</button>
             <button class="button is-link" on:click={saveData}>Save data</button>
             <ButtonBadge label="Produce figure" on:click={openFigure} />

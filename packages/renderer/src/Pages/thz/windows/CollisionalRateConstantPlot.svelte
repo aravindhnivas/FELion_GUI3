@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { collisionalCoefficient } from '../stores/collisional'
     import { polynomial } from 'regression'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
@@ -10,7 +11,7 @@
     export let active = false
     export let collisionalTemp = 7
     export let collisionalFilename = ''
-    export let collisionalCoefficient: Coefficients = []
+    // export let collisionalCoefficient: Coefficients = []
 
     let graphWindow: WinBox | null = null
     let windowReady = false
@@ -107,7 +108,7 @@
     }
 
     const fitDataFunction = () => {
-        collisionalCoefficient = []
+        $collisionalCoefficient = []
 
         const fittedTemp = linspace(givenTemperature[0], givenTemperature.at(-1), 100)
 
@@ -130,8 +131,8 @@
                 { currentCollisionalRateConstant },
                 currentCollisionalRateConstant / parseFloat(scaleRateConstant)
             )
-            collisionalCoefficient = [
-                ...collisionalCoefficient,
+            $collisionalCoefficient = [
+                ...$collisionalCoefficient,
                 {
                     label: dataObj.name,
                     value: (currentCollisionalRateConstant / parseFloat(scaleRateConstant)).toExponential(2),
@@ -158,7 +159,7 @@
                 mode: 'lines',
             }
         })
-        console.log({ collisionalCoefficient })
+        console.log({ $collisionalCoefficient })
 
         console.log({ fitData, dataToPlot })
         react('rateConstantsPlot', [...dataToPlot, ...fitData], layout)

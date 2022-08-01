@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { collisionalRateConstants } from '../stores/collisional'
+    import { numberOfLevels } from '../stores/energy'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
@@ -9,14 +11,8 @@
     import { persistentWritable } from '$src/js/persistentStore'
 
     export let active: boolean = false
-    export let energyUnit: EnergyUnit = 'cm-1'
-    export let zeemanSplit: boolean
-
-    export let energyLevels: EnergyLevels
-    export let electronSpin: boolean
-    export let numberOfLevels: number
     export let collisionalTemp: number = 10
-    export let collisionalRateConstants: ValueLabel[] = []
+    // export let collisionalRateConstants: ValueLabel[] = []
 
     const title = 'Collisional cooling'
     const plotID = 'collisionalDistributionPlot'
@@ -29,13 +25,7 @@
     let totalSteps = 1000
     async function computeCollisionalProcess(e?: Event) {
         try {
-            const boltzman_distribution_initial_temp = boltzman_distribution({
-                trapTemp: $initialTemp,
-                energyUnit,
-                zeemanSplit,
-                energyLevels,
-                electronSpin,
-            })
+            const boltzman_distribution_initial_temp = boltzman_distribution($initialTemp)
 
             if (boltzman_distribution_initial_temp === null) return
 
@@ -43,15 +33,9 @@
             const energyKeys = boltzmanDistribution.map((f) => f.label)
 
             const collisionalRateConstantValues: KeyStringObj = {}
-            collisionalRateConstants.forEach((f) => (collisionalRateConstantValues[f.label] = f.value))
+            $collisionalRateConstants.forEach((f) => (collisionalRateConstantValues[f.label] = f.value))
 
-            const boltzman_distribution_traptemp = boltzman_distribution({
-                trapTemp: collisionalTemp,
-                energyUnit,
-                zeemanSplit,
-                energyLevels,
-                electronSpin,
-            })
+            const boltzman_distribution_traptemp = boltzman_distribution(collisionalTemp)
 
             if (boltzman_distribution_traptemp === null) return
 
@@ -72,7 +56,7 @@
                 collisionalRateConstantValues,
                 duration,
                 energyKeys,
-                numberOfLevels,
+                numberOfLevels: $numberOfLevels,
             }
 
             const dataFromPython = await computePy_func({ e, pyfile, args })
