@@ -20,7 +20,3 @@ export const trapArea = writable<string>('');
 
 export const collisionalTemp = writable<number>(7);
 export const configLoaded = writable<boolean>(false);
-
-// export const gaussian = writable<string>('');
-// export const lorrentz = writable<string>('');
-
