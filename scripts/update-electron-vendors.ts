@@ -1,17 +1,9 @@
-const { writeFile } = require('fs/promises')
-const { execSync } = require('child_process')
-const electron = require('electron')
-const path = require('path')
+import { writeFile } from 'fs/promises'
+import { execSync } from 'child_process'
+import electron from 'electron'
+import path from 'path'
 
-/**
- * Returns versions of electron vendors
- * The performance of this feature is very poor and can be improved
- * @see https://github.com/electron/electron/issues/28006
- *
- * @returns {NodeJS.ProcessVersions}
- */
-
-function getVendors() {
+function getVendors(): NodeJS.ProcessVersions {
     const output = execSync(`${electron} -p "JSON.stringify(process.versions)"`, {
         env: { ELECTRON_RUN_AS_NODE: '1' },
         encoding: 'utf-8',
@@ -21,10 +13,8 @@ function getVendors() {
 
 function updateVendors() {
     const electronRelease = getVendors()
-
     const nodeMajorVersion = electronRelease.node.split('.')[0]
     const chromeMajorVersion = electronRelease.v8.split('.')[0] + electronRelease.v8.split('.')[1]
-
     const browserslistrcPath = path.resolve(process.cwd(), '.browserslistrc')
 
     return Promise.all([
@@ -45,6 +35,5 @@ function updateVendors() {
 
 updateVendors().catch((err) => {
     console.error(err)
-
     process.exit(1)
 })

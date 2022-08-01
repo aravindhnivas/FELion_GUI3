@@ -1,4 +1,4 @@
-const {spawn} = require('child_process')
+import { spawn } from 'child_process'
 
 function build() {
     const args = "run -n felionpy pyinstaller D:\\FELion_GUI3\\resources\\build\\felionpy.spec --distpath D:\\FELion_GUI3\\resources --workpath D:\\FELion_GUI3\\resources\\build --noconfirm".split(' ')

@@ -1,17 +1,13 @@
-#!/usr/bin/env node
-
-const { createServer, build, createLogger } = require('vite')
-const electronPath = require('electron')
-const { spawn } = require('child_process')
+import { createServer, build, createLogger, LogLevel, InlineConfig, ViteDevServer } from 'vite'
+import electronPath from 'electron'
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process'
 
 /** @type 'production' | 'development'' */
 const mode = (process.env.MODE = process.env.MODE || 'development')
 
-/** @type {import('vite').LogLevel} */
-const LOG_LEVEL = 'info'
+const LOG_LEVEL: LogLevel = 'info'
 
-/** @type {import('vite').InlineConfig} */
-const sharedConfig = {
+const sharedConfig: InlineConfig  = {
     mode,
     build: {
         watch: {},
@@ -32,7 +28,9 @@ const stderrFilterPatterns = [
  * @param {{name: string; configFile: string; writeBundle: import('rollup').OutputPlugin['writeBundle'] }} param0
  * @returns {import('rollup').RollupWatcher}
  */
-const getWatcher = ({ name, configFile, writeBundle }) => {
+const getWatcher = ({ name, configFile, writeBundle }: {
+    name: string, configFile: string, writeBundle: import('rollup').OutputPlugin['writeBundle']
+}) => {
     return build({
         ...sharedConfig,
         configFile,
@@ -40,12 +38,7 @@ const getWatcher = ({ name, configFile, writeBundle }) => {
     })
 }
 
-/**
- * Start or restart App when source files are changed
- * @param {import('vite').ViteDevServer} viteDevServer
- * @returns {Promise<import('vite').RollupOutput | Array<import('vite').RollupOutput> | import('vite').RollupWatcher>}
- */
-const setupMainPackageWatcher = (viteDevServer) => {
+const setupMainPackageWatcher = (viteDevServer: ViteDevServer) => {
     // Write a value to an environment variable to pass it to the main process.
     {
         const protocol = `http${viteDevServer.config.server.https ? 's' : ''}:`
@@ -60,8 +53,7 @@ const setupMainPackageWatcher = (viteDevServer) => {
         prefix: '[main]',
     })
 
-    /** @type {ChildProcessWithoutNullStreams | null} */
-    let spawnProcess = null
+    let spawnProcess: ChildProcessWithoutNullStreams | null = null
 
     return getWatcher({
         name: 'reload-app-on-main-package-change',
@@ -86,12 +78,7 @@ const setupMainPackageWatcher = (viteDevServer) => {
     })
 }
 
-/**
- * Start or restart App when source files are changed
- * @param {import('vite').ViteDevServer} viteDevServer
- * @returns {Promise<import('vite').RollupOutput | Array<import('vite').RollupOutput> | import('vite').RollupWatcher>}
- */
-const setupPreloadPackageWatcher = (viteDevServer) => {
+const setupPreloadPackageWatcher = (viteDevServer: ViteDevServer) => {
     return getWatcher({
         name: 'reload-page-on-preload-package-change',
         configFile: 'packages/preload/vite.config.js',
