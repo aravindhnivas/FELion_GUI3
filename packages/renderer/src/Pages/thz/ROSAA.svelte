@@ -158,12 +158,6 @@
         .replaceAll('$', '')
         .replaceAll('^', '')
 
-    function browse_folder() {
-        const [result] = window.browse({ filetype: 'yml', dir: false })
-        if (!result) return
-        $configFile = result
-    }
-
     const resetConfig = () => {
         $einsteinCoefficientA = $einsteinCoefficientB = []
         $energyLevels = []
@@ -201,7 +195,6 @@
                 await tick()
                 return
             }
-            browse_folder()
         } catch (error) {
             window.handleError(error)
         }
@@ -280,13 +273,9 @@
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue)
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue)
             ;({ trapTemp: $trapTemp, zeemanSplit: $zeemanSplit, electronSpin: $electronSpin, numberDensity } = CONFIG)
-            // ({savefilename}         = CONFIG.saveFile);
+
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
-            // const { savelocation } = CONFIG.saveFile
-            // if (window.fs.isDirectory(savelocation)) {
-            //     $currentLocation = savelocation
-            // }
             ;({
                 energy: energyFilename,
                 einsteinA: einsteinFilename,
@@ -340,7 +329,9 @@
             filetype="yml"
             bind:value={$configFile}
             label="config file"
-        />
+        >
+            <button class="button is-warning" on:click={loadConfig}>load</button>
+        </BrowseTextfield>
         <div class="align box px-3 py-2" class:hide={showreport} style="border: solid 1px #fff9;">
             <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
             <CustomCheckbox bind:value={includeAttachmentRate} label="includeAttachmentRate" />
@@ -355,7 +346,6 @@
             </div>
             <div class="align v-center" style="width: auto; margin-left: auto;">
                 <CustomSelect options={variablesList} bind:value={variable} label="variable" />
-                <button class="button is-link" on:click={loadConfig}>Load config</button>
                 <button class="button is-link" on:click={resetConfig}>Reset Config</button>
                 <button class="button is-warning" on:click={() => (toggle_modal = !toggle_modal)}
                     >Open separately</button
