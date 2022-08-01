@@ -212,18 +212,22 @@
     let Cp = 0 // power-broadening proportionality constant
 
     const updateDoppler = () => {
+        if (!($transitionFrequency > 0)) return
         console.log('Changing doppler parameters')
         ;[ionMass, RGmass, ionTemp, $trapTemp] = dopplerLineshape.map((f) => Number(f.value))
 
         collisionalTemp = Number(Number((RGmass * ionTemp + ionMass * $trapTemp) / (ionMass + RGmass)).toFixed(1))
         const sqrtTerm = (8 * boltzmanConstant * Math.log(2) * ionTemp) / (ionMass * amuToKG * SpeedOfLight ** 2)
         Cg = Math.sqrt(sqrtTerm)
+        console.warn({ $transitionFrequency })
         gaussian = Number(Number($transitionFrequency * Cg).toFixed(3)) // in MHz
     }
-    const updatePower = () => {
+    const updatePower = async () => {
+        await tick()
         console.log({ powerBroadening, trapArea })
         ;[dipole, power] = powerBroadening.map((f) => Number(f.value))
         trapArea = mainParameters?.filter((params) => params.label === 'trap_area (sq-meter)')?.[0]?.value || ''
+        console.warn({ trapArea })
         Cp =
             ((2 * dipole * DebyeToCm) / PlanksConstant) *
             Math.sqrt(1 / (Number(trapArea) * SpeedOfLight * VaccumPermitivity))
@@ -231,7 +235,7 @@
     }
 
     $: {
-        if ($transitionFrequency || dopplerLineshape.length) {
+        if ($transitionFrequency > 0 || dopplerLineshape.length) {
             updateDoppler()
         }
         if (powerBroadening.length) {
