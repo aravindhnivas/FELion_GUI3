@@ -81,3 +81,10 @@ ul {
 .three_col_browse {
     grid-template-columns: auto 1fr auto;
 }
+
+
+.just-flex {
+    display: flex;
+    gap: 1em;
+    align-items: center;
+}
