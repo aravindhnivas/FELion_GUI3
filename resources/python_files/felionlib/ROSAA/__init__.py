@@ -450,10 +450,9 @@ class ROSAA:
         widget.ax.legend(title="- ON -- OFF")
         widget.optimize_figure(setBound=False)
         widget.fig.tight_layout()
+        self.legend_handler_for_extra_plots = {}
 
-        legend_handler1 = {}
-
-        widget1 = felionQtWindow(
+        self.widget_for_extra_plots = felionQtWindow(
             figDPI=200,
             figTitle=f"Population stability at {self.simulateTime[-1]*1000:.0f} ms",
             figXlabel="Energy Levels",
@@ -462,65 +461,111 @@ class ROSAA:
             savefilename=f"{savefilename}_boltzman_comparision",
         )
 
-        (legend_handler1["Coll. + Att. + Rad."],) = widget1.ax.plot(
-            self.energyKeys, self.lightON_distribution.T[-1][: len(self.energyKeys)], label=f"Coll. + Att. + Rad."
+        self.oldValues = {
+            "on": np.copy(self.lightON_distribution),
+            "off": np.copy(self.lightOFF_distribution),
+        }
+        # Boltzman distribution
+        (self.legend_handler_for_extra_plots[f"Boltzman distribution"],) = self.widget_for_extra_plots.ax.plot(
+            self.energyKeys, self.boltzmanDistributionCold, "k--", label=f"Boltzman distribution", zorder=2
         )
 
-        (legend_handler1["Coll. + Att."],) = widget1.ax.plot(
-            self.energyKeys, self.lightOFF_distribution.T[-1][: len(self.energyKeys)], label=f"Coll. + Att."
-        )
-
-        if self.includeAttachmentRate:
-
-            signal_index = len(self.energyKeys) + 1
-
-            signal = (
-                1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:])
-            ) * 100
-
-            signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
-            widget2 = felionQtWindow(
-                title=f"Signal",
-                figDPI=200,
-                figTitle=self.transitionTitleLabel,
-                figXlabel="Time (ms)",
-                figYlabel="Signal (%)",
-                location=self.figs_location,
-                savefilename=savefilename,
-            )
-            widget2.ax.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
-
-            if self.verbose:
-                logger(f"Signal: {round(signal[-1])} (%)")
-            widget2.optimize_figure(setBound=False)
-            widget2.fig.tight_layout()
-
+        # Only collision
         nHe = float(conditions["numberDensity"])
         self.includeAttachmentRate = False
-        self.Simulate(nHe)
 
-        (legend_handler1[f"C"],) = widget1.ax.plot(
+        self.Simulate(nHe)
+        (self.legend_handler_for_extra_plots["Coll."],) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
             self.lightOFF_distribution.T[-1][: len(self.energyKeys)],
-            "C2+",
+            "C0+",
             label="Coll.",
             ms=10,
             zorder=10,
         )
 
-        (legend_handler1[f"Boltzman distribution"],) = widget1.ax.plot(
-            self.energyKeys, self.boltzmanDistributionCold, "k--", label=f"Boltzman distribution", zorder=2
+        ################################################################################################
+        ################################################################################################
+
+        # Old values ON
+        (self.legend_handler_for_extra_plots["Coll. + Att."],) = self.widget_for_extra_plots.ax.plot(
+            self.energyKeys, self.oldValues["off"].T[-1][: len(self.energyKeys)], "C1-", label=f"Coll. + Att."
+        )
+        (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = self.widget_for_extra_plots.ax.plot(
+            self.energyKeys,
+            self.oldValues["on"].T[-1][: len(self.energyKeys)],
+            "C2-",
+            label=f"Coll. + Att. + Rad.",
         )
 
-        # widget1.ax.legend(title="T$_{coll}=7$ K")
-        # widget1.makeLegendToggler(legend_handler1, edit_legend=True)
-        # handles, labels = widget1.ax.get_legend_handles_labels()
-        # order = [0, 1, 3, 2]
-        # widget1.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
+        ################################################################################################
+        ################################################################################################
 
-        widget1.makeLegendToggler(legend_handler1, edit_legend=True)
-        widget1.optimize_figure(setBound=False)
-        widget1.fig.tight_layout()
+        # Coll << Rad without Att
+
+        self.includeAttachmentRate = False
+        self.power = self.power * 1e5
+        self.computeEinsteinBRates()
+        self.Simulate(nHe)
+
+        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. (without Att.)"],) = self.widget_for_extra_plots.ax.plot(
+            self.energyKeys,
+            self.lightON_distribution.T[-1][: len(self.energyKeys)],
+            "C3--",
+            label=f"Coll. $\ll$ Rad. (without Att.)",
+        )
+
+        self.includeAttachmentRate = True
+
+        # Coll << Rad with Att
+        self.Simulate(nHe)
+
+        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. (with Att.)"],) = self.widget_for_extra_plots.ax.plot(
+            self.energyKeys,
+            self.lightON_distribution.T[-1][: len(self.energyKeys)],
+            "C3.-",
+            label=f"Coll. $\ll$ Rad. (with Att.)",
+        )
+
+        ################################################################################################
+        ################################################################################################
+
+        # self.widget_for_extra_plots.ax.grid(True, which="both", axis="x")
+        # handles, labels = self.widget_for_extra_plots.ax.get_legend_handles_labels()
+        # order = [3, 2, 4, 1, 0]
+        # self.widget_for_extra_plots.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
+        ################################################################################################
+        ################################################################################################
+
+        self.widget_for_extra_plots.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
+        self.widget_for_extra_plots.optimize_figure(setBound=False)
+        self.widget_for_extra_plots.fig.tight_layout()
+        self.plotAttachmentRate()
+
+    def plotAttachmentRate(self):
+
+        if not self.includeAttachmentRate:
+            return
+
+        signal_index = len(self.energyKeys) + 1
+        signal = (1 - (self.oldValues["on"][signal_index][1:] / self.oldValues["off"][signal_index][1:])) * 100
+
+        signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
+        widget2 = felionQtWindow(
+            title=f"Signal",
+            figDPI=200,
+            figTitle=self.transitionTitleLabel,
+            figXlabel="Time (ms)",
+            figYlabel="Signal (%)",
+            location=self.figs_location,
+            savefilename=savefilename,
+        )
+        widget2.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} (%)")
+
+        if self.verbose:
+            logger(f"Signal: {round(signal[-1])} (%)")
+        widget2.optimize_figure(setBound=False)
+        widget2.fig.tight_layout()
 
     def WriteData(self, name: str, dataToSend: dict):
         fulloutput_location = self.save_location or datas_location
