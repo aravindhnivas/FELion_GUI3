@@ -51,14 +51,13 @@ class ROSAA:
         if self.includeSpontaneousEmission:
             self.einsteinA_Rates = {key: float(value) for key, value in conditions["einstein_coefficient"]["A"].items()}
 
-            self.power = float(power)
-            # if self.power is None:
-            #     self.power = float(conditions["power_broadening"]["power(W)"])
+        self.power = float(power)
+        # if self.power is None:
+        #     self.power = float(conditions["power_broadening"]["power(W)"])
+        self.computeEinsteinBRates()
 
-            self.computeEinsteinBRates()
-
-            if self.verbose:
-                logger(f"{self.power=}")
+        if self.verbose:
+            logger(f"{self.power=}")
 
         self.excitedFrom = str(conditions["excitedFrom"])
         self.excitedTo = str(conditions["excitedTo"])
@@ -104,9 +103,9 @@ class ROSAA:
             self.legends.append(label)
 
         if self.includeAttachmentRate:
-            self.legends += [f"{self.molecule}{self.taggingPartner}"]
+            self.legends += [f"{self.taggingPartner}{self.molecule}"]
             self.legends += [
-                f"{self.molecule}{self.taggingPartner}$_{i+1}$" for i in range(1, self.totalAttachmentLevels)
+                f"{self.taggingPartner}$_{i+1}${self.molecule}" for i in range(1, self.totalAttachmentLevels)
             ]
 
         self.fixedPopulation = conditions["simulationMethod"] == "FixedPopulation"
@@ -125,10 +124,6 @@ class ROSAA:
                 + f"{lgto[1]}"
                 + "}$"
             )
-
-        # nHe = float(nHe) or float(conditions["nHe"])
-        # if nHe is None:
-        #     nHe = float(conditions["numberDensity"])
 
         self.withoutCollisionalConstants = conditions["simulationMethod"] == "withoutCollisionalConstants"
         if self.fixedPopulation or self.withoutCollisionalConstants:
@@ -224,12 +219,18 @@ class ROSAA:
                 attachment = []
 
                 for j in self.energyKeys:
+                    # selectionRule = i != j
+                    # if "_" in str(i):
+                    #     selectionRule = i.split("_")[0] != j.split("_")[0]
+
                     if i != j:
+                        # if selectionRule:
 
                         key = f"{j} --> {i}"
                         keyInverse = f"{i} --> {j}"
 
                         if self.includeCollision:
+
                             if key in self.collisionalRateConstants and keyInverse in self.collisionalRateConstants:
                                 R_coll = (
                                     self.collisionalRateConstants[key] * N[j]
@@ -238,6 +239,7 @@ class ROSAA:
                                 collisional.append(R_coll)
 
                             if self.includeSpontaneousEmission:
+
                                 if key in self.einsteinA_Rates:
                                     R_einsteinA = self.einsteinA_Rates[key] * N[j]
                                     einstein.append(R_einsteinA)
@@ -408,11 +410,10 @@ class ROSAA:
         if not self.figs_location.exists():
             self.figs_location.mkdir()
         widget = felionQtWindow(
-            title=f"Population ratio",
             figDPI=200,
             figTitle=self.transitionTitleLabel,
             figXlabel="Time (ms)",
-            figYlabel="Population",
+            figYlabel="Population ratio",
             location=self.figs_location,
         )
 
@@ -446,21 +447,39 @@ class ROSAA:
             linestyles="dashdot",
         )
 
-        # widget.makeLegendToggler(legend_handler, edit_legend=True)
-
         widget.ax.legend(title="- ON -- OFF")
         widget.optimize_figure(setBound=False)
         widget.fig.tight_layout()
 
+        legend_handler1 = {}
+
+        widget1 = felionQtWindow(
+            figDPI=200,
+            figTitle=f"Population stability at {self.simulateTime[-1]*1000:.0f} ms",
+            figXlabel="Energy Levels",
+            figYlabel="Population ratio",
+            location=self.figs_location,
+            savefilename=f"{savefilename}_boltzman_comparision",
+        )
+
+        (legend_handler1["Coll. + Att. + Rad."],) = widget1.ax.plot(
+            self.energyKeys, self.lightON_distribution.T[-1][: len(self.energyKeys)], label=f"Coll. + Att. + Rad."
+        )
+
+        (legend_handler1["Coll. + Att."],) = widget1.ax.plot(
+            self.energyKeys, self.lightOFF_distribution.T[-1][: len(self.energyKeys)], label=f"Coll. + Att."
+        )
+
         if self.includeAttachmentRate:
 
             signal_index = len(self.energyKeys) + 1
+
             signal = (
                 1 - (self.lightON_distribution[signal_index][1:] / self.lightOFF_distribution[signal_index][1:])
             ) * 100
 
             signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
-            widget1 = felionQtWindow(
+            widget2 = felionQtWindow(
                 title=f"Signal",
                 figDPI=200,
                 figTitle=self.transitionTitleLabel,
@@ -469,12 +488,39 @@ class ROSAA:
                 location=self.figs_location,
                 savefilename=savefilename,
             )
-            widget1.ax.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
+            widget2.ax.plot(plotSimulationTime_milliSecond[1:], signal, label=f"Signal: {round(signal[-1])} (%)")
 
             if self.verbose:
                 logger(f"Signal: {round(signal[-1])} (%)")
-            widget1.optimize_figure(setBound=False)
-            widget1.fig.tight_layout()
+            widget2.optimize_figure(setBound=False)
+            widget2.fig.tight_layout()
+
+        nHe = float(conditions["numberDensity"])
+        self.includeAttachmentRate = False
+        self.Simulate(nHe)
+
+        (legend_handler1[f"C"],) = widget1.ax.plot(
+            self.energyKeys,
+            self.lightOFF_distribution.T[-1][: len(self.energyKeys)],
+            "C2+",
+            label="Coll.",
+            ms=10,
+            zorder=10,
+        )
+
+        (legend_handler1[f"Boltzman distribution"],) = widget1.ax.plot(
+            self.energyKeys, self.boltzmanDistributionCold, "k--", label=f"Boltzman distribution", zorder=2
+        )
+
+        # widget1.ax.legend(title="T$_{coll}=7$ K")
+        # widget1.makeLegendToggler(legend_handler1, edit_legend=True)
+        # handles, labels = widget1.ax.get_legend_handles_labels()
+        # order = [0, 1, 3, 2]
+        # widget1.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
+
+        widget1.makeLegendToggler(legend_handler1, edit_legend=True)
+        widget1.optimize_figure(setBound=False)
+        widget1.fig.tight_layout()
 
     def WriteData(self, name: str, dataToSend: dict):
         fulloutput_location = self.save_location or datas_location
