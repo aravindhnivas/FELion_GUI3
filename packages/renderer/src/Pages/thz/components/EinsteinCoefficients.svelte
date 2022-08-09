@@ -18,6 +18,7 @@
     export let einsteinFilename: string = ''
 
     let einsteinB_rateComputed = false
+
     async function computeEinsteinB() {
         try {
             console.log('Computing Einstein B constants', {
@@ -128,14 +129,18 @@
         computeEinsteinB()
     }
 
-    const readFile = async () => {
+    const loadfile = async () => {
+        if(!window.fs.isFile(einsteinFilename)) return window.createToast('File not found', 'danger')
         const data = await getYMLFileContents(einsteinFilename)
         if (!isArray(data?.rateConstants)) return window.createToast('EinsteinA - Invalid file format', 'danger')
         $einsteinCoefficientA = data.rateConstants.map(setID).map(correctObjValue)
     }
-    $: if (window.fs.isFile(einsteinFilename)) {
-        readFile()
+
+    const after_configs_loaded = async () => {
+        await tick()
+        loadfile()
     }
+    $: if($configLoaded) {after_configs_loaded()}
 </script>
 
 <CustomPanel label="Einstein Co-efficients" loaded={einsteinB_rateComputed}>
@@ -149,7 +154,7 @@
         label="filename"
         lock={true}
     >
-        <button class="button is-warning" on:click={readFile}>load</button>
+        <button class="button is-warning" on:click={loadfile}>load</button>
     </BrowseTextfield>
 
     <div class="align h-center mb-5">

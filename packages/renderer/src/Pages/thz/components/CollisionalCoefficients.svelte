@@ -5,11 +5,12 @@
         collisionalRates,
         collisionalRateConstants,
     } from '../stores/collisional'
-    import { numberDensity, collisionalTemp } from '../stores/common'
+    import { numberDensity, collisionalTemp, configLoaded} from '../stores/common'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import Textfield from '@smui/textfield'
     import { find, cloneDeep } from 'lodash-es'
-    import { onMount } from 'svelte'
+    import { onMount, tick} from 'svelte'
+
     import balance_distribution from '../functions/balance_distribution'
     import CollisionalDistribution from '../windows/CollisionalDistribution.svelte'
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
@@ -60,16 +61,14 @@
 
     const saveCollisionalRateConstants = () => {
         const save_dir = window.path.dirname(collisionalCoefficientJSONFile)
-
         if (!window.fs.isDirectory(save_dir)) {
             return window.createToast(`Directory ${save_dir} does not exist`, 'danger')
         }
-        // console.log(save_dir)
+
         const result = window.fs.outputJsonSync(collisionalCoefficientJSONFile, {
             $collisionalCoefficient,
             $collisionalCoefficient_balance,
         })
-
         if (window.fs.isError(result)) return window.handleError(result)
         console.log(`${collisionalCoefficientJSONFile} saved`)
         window.createToast('Saved: ' + window.path.basename(collisionalCoefficientJSONFile))
@@ -78,8 +77,12 @@
     $: configFileDir = window.path.dirname(collisionalFilename)
     $: collisionalCoefficientJSONFile = window.path.join(configFileDir, 'collisionalCoefficients.json')
 
-    const readcollisionalCoefficientJSONFile = () => {
-        if (!window.fs.isFile(collisionalCoefficientJSONFile)) return window.createToast('File not found', 'danger')
+    const readcollisionalCoefficientJSONFile = (toast=true) => {
+        if (!window.fs.isFile(collisionalCoefficientJSONFile)) {
+            if(!toast) return console.warn(`${collisionalCoefficientJSONFile} does not exist`)
+            return window.createToast('File not found', 'danger')
+        }
+        
         console.log('loading: ', collisionalCoefficientJSONFile)
         const data = window.fs.readJsonSync(collisionalCoefficientJSONFile)
         if (window.fs.isError(data)) return window.handleError(data)
@@ -94,16 +97,17 @@
         })
     }
 
-    onMount(() => {
-        if (!window.fs.isFile(collisionalCoefficientJSONFile)) return
+    const after_configs_loaded = async () => {
+        await tick()
         readcollisionalCoefficientJSONFile()
-    })
+    }
+    $: if($configLoaded) {after_configs_loaded()}
 </script>
 
 <CollisionalDistribution bind:active={collisionalWindow} />
 <CollisionalRateConstantPlot {collisionalFilename} bind:active={OpenRateConstantsPlot} />
 
-<CustomPanel label="Collisional rate constants" loaded={$collisionalRateConstants.length > 0}>
+<CustomPanel label="Collisional rate constants" loaded={$numberDensity && $collisionalRateConstants.length > 0}>
     <div class="align h-center">
         <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
         <button class="button is-link " on:click={() => (collisionalWindow = true)}>Compute Collisional Cooling</button>
@@ -115,12 +119,15 @@
                 bind:value={collisionalFilename}
                 label="collisionalFilename"
                 lock={true}
+                on:fileupdate={(e)=>{
+                    console.log(e)
+                }}
             />
             <Textfield bind:value={$collisionalTemp} label="collisionalTemp" />
             <button class="button is-link" on:click={() => (OpenRateConstantsPlot = true)}
                 >Compute rate constants</button
             >
-            <button class="button is-link" on:click={readcollisionalCoefficientJSONFile}>Read</button>
+            <button class="button is-warning" on:click={readcollisionalCoefficientJSONFile}>load</button>
             <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
         </div>
     </div>
@@ -143,10 +150,16 @@
     {/if}
 
     <hr />
+    
     <div class="align h-center subtitle">Collisional Rates (per sec)</div>
-    <div class="align h-center">
-        <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
-    </div>
+    
+    {#if $numberDensity}
+
+        <div class="align h-center">
+            <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
+        </div>
+    {/if}
+    
     <div class="align h-center">
         {#each $collisionalRates as { label, value, id } (id)}
             <Textfield bind:value {label} />

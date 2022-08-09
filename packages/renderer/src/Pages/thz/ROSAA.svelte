@@ -243,8 +243,8 @@
     }
 
     let configsBaseName = 'files'
-
     async function setConfig() {
+        
         try {
             $configLoaded = false
 
@@ -279,9 +279,11 @@
                 trapTemp: $trapTemp,
                 zeemanSplit: $zeemanSplit,
                 electronSpin: $electronSpin,
-                numberDensity: $numberDensity,
             } = CONFIG)
 
+            const {numberDensity: nd} = CONFIG
+            $numberDensity = nd
+            console.warn({$numberDensity})
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
             ;({
@@ -301,6 +303,7 @@
             collisionalFilename = collisionalFilename
                 ? window.path.join($currentLocation, configsBaseName, collisionalFilename)
                 : ''
+            await tick()
             window.createToast('CONFIG loaded')
             $configLoaded = true
             return Promise.resolve('config loaded')

@@ -30,6 +30,7 @@
                 const [result] = window.browse({ dir, filetype })
                 if (!result) return
                 value = result
+                dispatch('fileupdate', result)
             }}>Browse</button
         >
     {/if}

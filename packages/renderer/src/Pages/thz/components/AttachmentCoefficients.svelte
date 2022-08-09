@@ -5,12 +5,12 @@
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import CustomPanel from '$src/components/CustomPanel.svelte'
 
-    // export let numberDensity: string
     export let attachmentCoefficients: ValueLabel[] = []
     export let k3: AttachmentRate = { constant: [], rate: [] }
     export let kCID: AttachmentRate = { constant: [], rate: [] }
 
     const computeAttachmentRate = () => {
+
         k3.rate = cloneDeep(k3.constant).map((rate) => ({
             ...rate,
             value: Number(Number(rate.value) * Number($numberDensity) ** 2).toFixed(3),
@@ -22,6 +22,7 @@
             value: Number(+rate.value * +$numberDensity).toFixed(3),
             id: window.getID(),
         }))
+        console.log('Computed attachment rates')
     }
     $: if ($numberDensity) {
         computeAttachmentRate()
@@ -39,7 +40,11 @@
     </div>
 
     <div class="align h-center">
-        <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
+
+        {#if $numberDensity}
+            <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
+        {/if}
+        
         <button class="button is-link" on:click={computeAttachmentRate}>Compute rate constants</button>
 
         <div class="align h-center">
