@@ -1,10 +1,38 @@
 from pathlib import Path as pt
-
-# import numpy as np
+import json
 from felionlib.utils.felionQt import felionQtWindow
+
+widget: felionQtWindow = None
+
+
+def plotFromJSON(fileName: str, legend_handler: dict = None):
+    with open(fileName, "r") as f:
+        data = json.load(f)
+
+        for key, value in data.items():
+
+            x = value["x"]
+            y = value["y"]
+            # label = key
+
+            plot_args = ()
+            plot_kwargs = {"label": key}
+
+            if "plot_args" in value:
+                plot_args = value["plot_args"]
+            if "plot_kwargs" in value:
+                plot_kwargs = value["plot_kwargs"]
+
+            print(f"{plot_args=}", flush=True)
+            print(f"{plot_kwargs=}", flush=True)
+
+            label = plot_kwargs["label"] if "label" in plot_kwargs else key
+            (legend_handler[label],) = widget.ax.plot(x, y, *plot_args, **plot_kwargs)
 
 
 def main(args):
+
+    global widget
 
     files = [pt(i) for i in args["files"]]
     figArgs = args["figArgs"]
@@ -13,6 +41,10 @@ def main(args):
     legend_handler = {}
 
     for file in files:
+        if file.suffix == ".json":
+            plotFromJSON(file, legend_handler)
+            continue
+
         x, y = [], []
         with open(file, "r") as f:
             for line in f.readlines():

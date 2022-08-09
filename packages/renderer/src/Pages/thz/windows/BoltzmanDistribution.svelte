@@ -1,6 +1,7 @@
 <script lang="ts">
-    import { trapTemp, currentLocation } from '../stores/common'
+    import { trapTemp, currentLocation, output_dir} from '../stores/common'
     import SeparateWindow from '$components/SeparateWindow.svelte'
+    import Notify from '$components/Notify.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import { plot } from '../../../js/functions'
     import boltzman_distribution from '../functions/boltzman_distribution'
@@ -8,15 +9,10 @@
     import computePy_func from '$src/Pages/general/computePy'
     import ButtonBadge from '$src/components/ButtonBadge.svelte'
     import WinBox from 'winbox'
+    import {save_data_to_file} from '../functions/utils'
 
     export let active = false
-    // export let trapTemp: string | number
-    // export let energyLevels: ValueLabel<number>[] = []
-    // export let zeemanSplit: boolean
-    // export let energyUnit: 'cm-1' | 'MHz'
-    // export let electronSpin: boolean
     export let graphWindow: WinBox | null = null
-    // export let currentLocation: string = ''
 
     const title = 'Boltzman Distribution'
     const plotID = 'boltzmanDistributionPlot'
@@ -42,42 +38,31 @@
             y: populations,
             mode: 'lines+markers',
             showlegend: true,
-            name: `Temp: ${trapTemp}K, Z: ${partitionValue.toFixed(2)}, Total: ${totalSum.toFixed(2)}`,
+            name: `Temp: ${$trapTemp}K, Z: ${partitionValue.toFixed(2)}, Total: ${totalSum.toFixed(2)}`,
         }
         const dataToPlot = { data }
-        plot(`${title}: ${trapTemp}K`, 'Energy Levels', 'Population', dataToPlot, plotID)
+        plot(`${title}: ${$trapTemp}K`, 'Energy Levels', 'Population', dataToPlot, plotID)
         console.log('Plotted')
     }
 
     $: if (windowReady) {
         setTimeout(() => graphWindow?.focus(), 100)
     }
+
     $: if (windowReady && $trapTemp > 0) {
         plotGraph()
     }
 
-    const saveInfo = { msg: '', error: '' }
-    $: outputFile = window.path.join($currentLocation, '../output/datas', `boltzman_distribution${trapTemp}K.dat`)
+    let saveInfo = { msg: '', error: '' }
+    $: outputFile = window.path.join($output_dir, `boltzman/boltzman_distribution${$trapTemp}K.dat`)
 
     const saveData = async () => {
-        console.log({ $currentLocation, plotData })
-        window.fs.ensureDirSync(window.path.dirname(outputFile))
-
         const length = plotData[0].length
-
         let writeContent = '# Energy Levels\t Population \n'
         for (let i = 0; i < length; i++) {
             writeContent += `${plotData[0][i]}\t${plotData[1][i]}\n`
         }
-
-        const output = await window.fs.writeFile(outputFile, writeContent)
-
-        if (window.fs.isError(output)) {
-            saveInfo.error = output.message
-            return window.handleError(output)
-        }
-        saveInfo.msg = `Saved to ${outputFile}`
-        window.createToast(`Data saved`)
+        saveInfo = await save_data_to_file(outputFile, writeContent)
     }
 
     const openFigure = (e?: Event) => {
@@ -112,20 +97,7 @@
             <ButtonBadge label="Produce figure" on:click={openFigure} />
         </div>
 
-        {#if saveInfo.error || saveInfo.msg}
-            <div class="block mt-5">
-                <span class="notification  is-success" class:is-danger={saveInfo.error}>
-                    {saveInfo.error || saveInfo.msg}
-                    <button
-                        class="delete is-danger"
-                        on:click={() => {
-                            saveInfo.error = ''
-                            saveInfo.msg = ''
-                        }}
-                    />
-                </span>
-            </div>
-        {/if}
+        <Notify label={saveInfo.error || saveInfo.msg} type={saveInfo.error ? 'danger': 'success'}  />
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">

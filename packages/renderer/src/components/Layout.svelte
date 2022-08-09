@@ -121,8 +121,8 @@
             <div class="button__div align" id="{filetype}-buttonContainer">
                 <slot name="buttonContainer" />
                 {#if graphPlotted}
-                    <button class="button is-warning animate__animated animate__fadeIn" on:click={openGraph}
-                        >Graph:Open separately</button
+                    <button transition:fade class="button is-warning flex" on:click={openGraph}
+                        ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
                     >
                 {/if}
             </div>

@@ -348,8 +348,8 @@
             <div class="align v-center" style="width: auto; margin-left: auto;">
                 <CustomSelect options={variablesList} bind:value={variable} label="variable" />
                 <button class="button is-link" on:click={resetConfig}>Reset Config</button>
-                <button class="button is-warning" on:click={() => (toggle_modal = !toggle_modal)}
-                    >Open separately</button
+                <button class="button is-warning flex" on:click={() => (toggle_modal = !toggle_modal)}
+                    ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
                 >
             </div>
 

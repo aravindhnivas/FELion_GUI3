@@ -11,6 +11,11 @@ export const currentLocation = derived(configFile, ($configFile) => {
     return window.path.dirname($configFile)
 });
 
+export const output_dir = derived(currentLocation, ($currentLocation) => {
+    if(!window.fs.isDirectory($currentLocation)) return null
+    return window.path.join($currentLocation, 'output/datas')
+});
+
 export const excitedTo = writable<string>('');
 export const excitedFrom = writable<string>('');
 export const trapTemp = writable<number>(5);

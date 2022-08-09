@@ -18,7 +18,7 @@
 
     export let collisionalFilename = ''
 
-    let collisionalWindow = false
+    let activate_collisional_simulation_window = false
 
     const compteCollisionalBalanceConstants = () => {
         $collisionalCoefficient_balance = []
@@ -104,14 +104,13 @@
     $: if($configLoaded) {after_configs_loaded()}
 </script>
 
-<CollisionalDistribution bind:active={collisionalWindow} />
+<CollisionalDistribution bind:active={activate_collisional_simulation_window} />
 <CollisionalRateConstantPlot {collisionalFilename} bind:active={OpenRateConstantsPlot} />
 
 <CustomPanel label="Collisional rate constants" loaded={$numberDensity && $collisionalRateConstants.length > 0}>
     <div class="align h-center">
-        <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
-        <button class="button is-link " on:click={() => (collisionalWindow = true)}>Compute Collisional Cooling</button>
         <div class="align h-center">
+
             <BrowseTextfield
                 dir={false}
                 filetype="txt"
@@ -121,14 +120,21 @@
                 lock={true}
                 on:fileupdate={(e)=>{
                     console.log(e)
-                }}
-            />
+                }}>
+                <button class="button is-warning" on:click={readcollisionalCoefficientJSONFile}>load</button>
+                <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
+            </BrowseTextfield>
+            
             <Textfield bind:value={$collisionalTemp} label="collisionalTemp" />
-            <button class="button is-link" on:click={() => (OpenRateConstantsPlot = true)}
-                >Compute rate constants</button
+            <button class="button is-warning" on:click={() => (OpenRateConstantsPlot = true)}
+                >Derive rate from fit</button
             >
-            <button class="button is-warning" on:click={readcollisionalCoefficientJSONFile}>load</button>
-            <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
+
+            <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
+            <button class="button is-link flex" on:click={() => (activate_collisional_simulation_window = true)}>
+                <span>Simulate Collisional Cooling</span><span class="material-symbols-outlined">open_in_full</span>
+            </button>
+
         </div>
     </div>
 

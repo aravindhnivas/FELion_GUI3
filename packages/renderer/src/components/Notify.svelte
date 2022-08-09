@@ -4,7 +4,7 @@
 </script>
 
 {#if label}
-    <div class="block mt-5">
+    <div class="align block mt-5">
         <span class="notification is-{type}">
             {label}
             <button

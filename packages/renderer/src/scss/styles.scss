@@ -25,7 +25,12 @@ table td:not([align]) {text-align: center; padding: 1em;}
     gap: 1em; 
     width: 100%;
 }
-
+.flex {
+    display: flex; 
+    align-items: center;
+    gap: 1em; 
+}
+.no-wrap {flex-wrap: nowrap!important;}
 .v-center {align-items: center!important;}
 .h-center {justify-content: center!important;}
 .h-end {justify-content: flex-end!important;}
