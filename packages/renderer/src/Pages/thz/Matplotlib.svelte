@@ -13,6 +13,7 @@
 
     $: data_location = window.path.resolve(currentLocation, 'EXPORT')
     $: if (data_location) {
+        thzfiles = []
         loadfiles()
     }
 
