@@ -12,7 +12,9 @@ from felionlib.utils.felionQt import felionQtWindow
 from scipy.constants import speed_of_light
 
 from .plot import main as ROSAA3D_plot
+import matplotlib as mpl
 
+mpl.style.use("seaborn")
 
 speedOfLightIn_cm = speed_of_light * 100
 qapp = None
@@ -469,7 +471,6 @@ class ROSAA:
 
         self.widget_for_extra_plots = felionQtWindow(
             figDPI=200,
-            # figTitle=f"Population stability at {self.simulateTime[-1]*1000:.0f} ms",
             figXlabel="Energy Levels",
             figYlabel="Population ratio",
             location=self.figs_location,
@@ -478,7 +479,7 @@ class ROSAA:
 
         # Boltzman distribution
         (self.legend_handler_for_extra_plots[f"Boltzman distribution"],) = self.widget_for_extra_plots.ax.plot(
-            self.energyKeys, self.boltzmanDistributionCold, "k--", label=f"Boltzman distribution", zorder=2
+            self.energyKeys, self.boltzmanDistributionCold, "k-", label=f"Boltzman distribution", zorder=2, alpha=0.5
         )
 
         # Only collision
@@ -489,9 +490,9 @@ class ROSAA:
         (self.legend_handler_for_extra_plots["Coll."],) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
             self.lightOFF_distribution.T[-1][: len(self.energyKeys)],
-            "C0+",
+            "ko",
             label="Coll.",
-            ms=10,
+            ms=5,
             zorder=10,
         )
 
@@ -519,11 +520,13 @@ class ROSAA:
         self.computeEinsteinBRates()
         self.Simulate(nHe)
 
-        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. (without Att.)"],) = self.widget_for_extra_plots.ax.plot(
+        (
+            self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],
+        ) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
             self.lightON_distribution.T[-1][: len(self.energyKeys)],
             "C3--",
-            label=f"Coll. $\ll$ Rad. (without Att.)",
+            label=f"Coll. $\ll$ Rad. ;(without Att.)",
         )
 
         self.includeAttachmentRate = True
@@ -531,11 +534,11 @@ class ROSAA:
         # Coll << Rad with Att
         self.Simulate(nHe)
 
-        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. (with Att.)"],) = self.widget_for_extra_plots.ax.plot(
+        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
             self.lightON_distribution.T[-1][: len(self.energyKeys)],
-            "C3.-",
-            label=f"Coll. $\ll$ Rad. (with Att.)",
+            "C3-",
+            label=f"Coll. $\ll$ Rad. ;(with Att.)",
         )
 
         ################################################################################################
@@ -547,7 +550,7 @@ class ROSAA:
         # self.widget_for_extra_plots.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
         ################################################################################################
         ################################################################################################
-        self.widget_for_extra_plots.ax.legend(title="t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
+        self.widget_for_extra_plots.ax.legend(title="At t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
         self.widget_for_extra_plots.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
         self.widget_for_extra_plots.optimize_figure(setBound=False)
 
