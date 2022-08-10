@@ -318,7 +318,6 @@ class ROSAA:
         # self.k3_branch = float(self.attachment_rate_coefficients["a(k31)"])
 
         self.k31_excited = self.k3_branch * self.k3[0]
-
         self.kCID = [float(_) for _ in self.rateConstants["kCID"]]
         self.kCID_branch = float(self.attachment_rate_coefficients["branching-ratio(kCID)"])
 
@@ -327,17 +326,18 @@ class ROSAA:
 
     def Simulate(self, nHe, duration=None, t0=0, ratio=[]):
 
-        if not duration:
-            duration = self.simulation_parameters["Simulation time(ms)"]
-            duration = float(duration) * 1e-3  # converting ms ==> s
+        self.duration = duration
+        if self.duration is None:
+            self.duration = self.simulation_parameters["Simulation time(ms)"]
+            self.duration = float(self.duration) * 1e-3  # converting ms ==> s
 
         # t0 = 0.005 if self.fixedPopulation else 0
-        if duration <= t0:
-            duration = t0 * 5
-        tspan = [t0, duration]
+        if self.duration <= t0:
+            self.duration = t0 * 5
 
+        tspan = [t0, self.duration]
         totalSteps = int(self.simulation_parameters["Total steps"])
-        self.simulateTime = np.linspace(t0, duration, totalSteps)
+        self.simulateTime = np.linspace(t0, self.duration, totalSteps)
 
         # Simulation start
 
@@ -380,7 +380,7 @@ class ROSAA:
                 "ode": {"method": ode_method},
                 "molecule": self.molecule,
                 "tag": self.taggingPartner,
-                "duration": duration,
+                "duration": self.duration,
                 "numberDensity": f"{nHe:.2e}",
             },
             "legends": self.legends,
@@ -421,6 +421,7 @@ class ROSAA:
                 figXlabel="Time (ms)",
                 figYlabel="Population ratio",
                 location=self.figs_location,
+                savefilename=f"{savefilename}_{self.duration}ms_population_ratio",
             )
 
             if qapp is None:
@@ -474,7 +475,7 @@ class ROSAA:
             figXlabel="Energy Levels",
             figYlabel="Population ratio",
             location=self.figs_location,
-            savefilename=f"{savefilename}_boltzman_comparision",
+            savefilename=f"{savefilename}_{self.duration}ms_boltzman_comparision",
         )
 
         # Boltzman distribution
@@ -575,7 +576,7 @@ class ROSAA:
             figXlabel="Time (ms)",
             figYlabel="Signal (%)",
             location=self.figs_location,
-            savefilename=savefilename,
+            savefilename=f"{savefilename}_{self.duration}ms_signal",
         )
         widget.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} (%)")
 
