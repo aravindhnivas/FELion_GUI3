@@ -5,11 +5,11 @@
         collisionalRates,
         collisionalRateConstants,
     } from '../stores/collisional'
-    import { numberDensity, collisionalTemp, configLoaded} from '../stores/common'
+    import { numberDensity, collisionalTemp, configLoaded } from '../stores/common'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import Textfield from '@smui/textfield'
     import { find, cloneDeep } from 'lodash-es'
-    import { onMount, tick} from 'svelte'
+    import { onMount, tick } from 'svelte'
 
     import balance_distribution from '../functions/balance_distribution'
     import CollisionalDistribution from '../windows/CollisionalDistribution.svelte'
@@ -77,12 +77,12 @@
     $: configFileDir = window.path.dirname(collisionalFilename)
     $: collisionalCoefficientJSONFile = window.path.join(configFileDir, 'collisionalCoefficients.json')
 
-    const readcollisionalCoefficientJSONFile = (toast=true) => {
+    const readcollisionalCoefficientJSONFile = (toast = true) => {
         if (!window.fs.isFile(collisionalCoefficientJSONFile)) {
-            if(!toast) return console.warn(`${collisionalCoefficientJSONFile} does not exist`)
+            if (!toast) return console.warn(`${collisionalCoefficientJSONFile} does not exist`)
             return window.createToast('File not found', 'danger')
         }
-        
+
         console.log('loading: ', collisionalCoefficientJSONFile)
         const data = window.fs.readJsonSync(collisionalCoefficientJSONFile)
         if (window.fs.isError(data)) return window.handleError(data)
@@ -101,16 +101,20 @@
         await tick()
         readcollisionalCoefficientJSONFile()
     }
-    $: if($configLoaded) {after_configs_loaded()}
+    $: if ($configLoaded) {
+        after_configs_loaded()
+    }
 </script>
 
 <CollisionalDistribution bind:active={activate_collisional_simulation_window} />
 <CollisionalRateConstantPlot {collisionalFilename} bind:active={OpenRateConstantsPlot} />
 
-<CustomPanel label="Collisional rate constants" loaded={$numberDensity && $collisionalRateConstants.length > 0}>
+<CustomPanel
+    label="Collisional rate constants"
+    loaded={$numberDensity.length > 0 && $collisionalRateConstants.length > 0}
+>
     <div class="align h-center">
         <div class="align h-center">
-
             <BrowseTextfield
                 dir={false}
                 filetype="txt"
@@ -118,13 +122,14 @@
                 bind:value={collisionalFilename}
                 label="collisionalFilename"
                 lock={true}
-                on:fileupdate={(e)=>{
+                on:fileupdate={(e) => {
                     console.log(e)
-                }}>
-                <button class="button is-warning" on:click={readcollisionalCoefficientJSONFile}>load</button>
+                }}
+            >
+                <button class="button is-warning" on:click={() => readcollisionalCoefficientJSONFile()}>load</button>
                 <button class="button is-link" on:click={saveCollisionalRateConstants}>Save</button>
             </BrowseTextfield>
-            
+
             <Textfield bind:value={$collisionalTemp} label="collisionalTemp" />
             <button class="button is-warning" on:click={() => (OpenRateConstantsPlot = true)}
                 >Derive rate from fit</button
@@ -134,7 +139,6 @@
             <button class="button is-link flex" on:click={() => (activate_collisional_simulation_window = true)}>
                 <span>Simulate Collisional Cooling</span><span class="material-symbols-outlined">open_in_full</span>
             </button>
-
         </div>
     </div>
 
@@ -154,18 +158,12 @@
             {/each}
         </div>
     {/if}
-
     <hr />
-    
     <div class="align h-center subtitle">Collisional Rates (per sec)</div>
-    
-    {#if $numberDensity}
+    <div class="align h-center">
+        <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
+    </div>
 
-        <div class="align h-center">
-            <Textfield bind:value={$numberDensity} label="numberDensity (cm-3)" />
-        </div>
-    {/if}
-    
     <div class="align h-center">
         {#each $collisionalRates as { label, value, id } (id)}
             <Textfield bind:value {label} />

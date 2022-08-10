@@ -257,6 +257,9 @@
 
             const CONFIG = Yml(fileRead)
             console.table(CONFIG)
+            ;({ numberDensity: $numberDensity } = CONFIG)
+            console.warn({ $numberDensity })
+            await tick()
 
             let attachmentRateConstants: {
                 [key in 'k3' | 'kCID']: Omit<ValueLabel, 'id'>[]
@@ -281,9 +284,6 @@
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue)
             ;({ trapTemp: $trapTemp, zeemanSplit: $zeemanSplit, electronSpin: $electronSpin } = CONFIG)
 
-            const { numberDensity: nd } = CONFIG
-            $numberDensity = nd
-            console.warn({ $numberDensity })
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
             ;({
