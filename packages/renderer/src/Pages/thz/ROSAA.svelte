@@ -106,8 +106,10 @@
         const energy_levels: KeyStringObj<number> = {}
         $energyLevels.slice(0, $numberOfLevels).forEach((f) => (energy_levels[f.label] = f.value))
 
-        const keys = <const>['k3_branch', 'numberDensity', 'power']
+        const keys = <const>['k3_branch', 'numberDensity', 'power', 'statistics']
         for (const key of keys) {
+            if (key === 'statistics') continue
+
             const values = $variableRange[key].split(',').map((v) => parseFloat(v))
             console.log(values)
             if (values.length < 3) {
@@ -121,6 +123,7 @@
         const args = {
             trapTemp: $trapTemp,
             variable,
+            plots_to_include,
             $variableRange,
             numberOfLevels: $numberOfLevels,
             includeCollision,
@@ -174,14 +177,16 @@
     let includeAttachmentRate = true
     let includeSpontaneousEmission = true
     let variable = 'time'
+    let plots_to_include = { signal: true, main: true, population_stability: false }
 
     const variableRange: VariableOptions = persistentWritable('THz_simulation_variables_range', {
         power: '1e-7, 1e-2, 50',
         numberDensity: '1e12, 1e16, 50',
         k3_branch: '0.1, 1, 0.1',
+        sampleSize: 5,
     })
 
-    const variablesList = ['time', 'He density(cm-3)', 'Power(W)', 'a(k_up/k_down)', 'all']
+    const variablesList = ['time', 'He density(cm-3)', 'Power(W)', 'a(k_up/k_down)', 'all', 'statistics']
 
     let energyFilename: string
     let einsteinFilename: string
@@ -244,7 +249,6 @@
 
     let configsBaseName = 'files'
     async function setConfig() {
-        
         try {
             $configLoaded = false
 
@@ -275,15 +279,11 @@
             attachmentCoefficients = attachmentCoefficients.map(setID)
             k3.constant = attachmentRateConstants.k3.map(setID).map(correctObjValue)
             kCID.constant = attachmentRateConstants.kCID.map(setID).map(correctObjValue)
-            ;({
-                trapTemp: $trapTemp,
-                zeemanSplit: $zeemanSplit,
-                electronSpin: $electronSpin,
-            } = CONFIG)
+            ;({ trapTemp: $trapTemp, zeemanSplit: $zeemanSplit, electronSpin: $electronSpin } = CONFIG)
 
-            const {numberDensity: nd} = CONFIG
+            const { numberDensity: nd } = CONFIG
             $numberDensity = nd
-            console.warn({$numberDensity})
+            console.warn({ $numberDensity })
             moleculeName = mainParameters.filter((params) => params.label == 'molecule')?.[0]?.value || ''
             tagName = mainParameters?.filter((params) => params.label == 'tagging partner')?.[0]?.value || ''
             ;({
@@ -353,7 +353,7 @@
                 >
             </div>
 
-            <VariableSelector {variable} {variableRange} />
+            <VariableSelector {variable} {variableRange} bind:plots_to_include />
         </div>
     </svelte:fragment>
 

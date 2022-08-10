@@ -24,4 +24,5 @@ type VariableOptions = ReturnType<typeof window.persistentDB<{
     power: string;
     numberDensity: string;
     k3_branch: string;
+    sampleSize: number;
 }>>

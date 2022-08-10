@@ -24,7 +24,6 @@ class ROSAA:
         nHe: float,
         power: float,
         k3_branch: float,
-        plotGraph=False,
         writefile=None,
         verbose=False,
         save_location: pt = None,
@@ -132,9 +131,6 @@ class ROSAA:
                 logger(f"{self.boltzmanDistributionCold=}")
         else:
             self.Simulate(nHe)
-
-        if plotGraph:
-            self.Plot()
 
     def computeEinsteinBRates(self):
         trapArea = float(conditions["main_parameters"]["trap_area (sq-meter)"])
@@ -403,53 +399,72 @@ class ROSAA:
         if self.verbose:
             logger(f"Total simulation time {(end_time - self.start_time):.2f} s")
 
-    def Plot(self):
+    def Plot(self, plots_to_include: dict[str, bool]):
 
         global qapp
+        self.oldValues = {
+            "on": np.copy(self.lightON_distribution),
+            "off": np.copy(self.lightOFF_distribution),
+        }
+
         self.figs_location: pt = output_dir / "figs"
         if not self.figs_location.exists():
             self.figs_location.mkdir()
-        widget = felionQtWindow(
-            figDPI=200,
-            figTitle=self.transitionTitleLabel,
-            figXlabel="Time (ms)",
-            figYlabel="Population ratio",
-            location=self.figs_location,
-        )
 
-        if qapp is None:
-            qapp = widget.qapp
+        if plots_to_include["main"]:
 
-        plotSimulationTime_milliSecond: np.ndarray = self.simulateTime * 1e3
-        counter = 0
-        legend_handler = {}
+            widget = felionQtWindow(
+                figDPI=200,
+                figTitle=self.transitionTitleLabel,
+                figXlabel="Time (ms)",
+                figYlabel="Population ratio",
+                location=self.figs_location,
+            )
 
-        for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
+            if qapp is None:
+                qapp = widget.qapp
 
-            lg = f"{self.legends[counter]}"
+            plotSimulationTime_milliSecond: np.ndarray = self.simulateTime * 1e3
+            counter = 0
+            legend_handler = {}
 
-            (_on_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=lg)
-            (_off_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
+            for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
 
-            legend_handler[lg] = _on_plot
-            # legend_handler[lg] = [_on_plot, _off_plot]
+                lg = f"{self.legends[counter]}"
 
-            counter += 1
+                (_on_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=lg)
+                (_off_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
 
-        widget.ax.plot(plotSimulationTime_milliSecond, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
-        widget.ax.plot(plotSimulationTime_milliSecond, self.lightOFF_distribution.sum(axis=0), "--k")
+                legend_handler[lg] = _on_plot
+                # legend_handler[lg] = [_on_plot, _off_plot]
 
-        widget.ax.hlines(
-            1,
-            0,
-            plotSimulationTime_milliSecond[-1] + plotSimulationTime_milliSecond[-1] * 0.2,
-            colors="k",
-            linestyles="dashdot",
-        )
+                counter += 1
 
-        widget.ax.legend(title="- ON -- OFF")
-        widget.optimize_figure(setBound=False)
-        widget.fig.tight_layout()
+            widget.ax.plot(plotSimulationTime_milliSecond, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
+            widget.ax.plot(plotSimulationTime_milliSecond, self.lightOFF_distribution.sum(axis=0), "--k")
+
+            widget.ax.hlines(
+                1,
+                0,
+                plotSimulationTime_milliSecond[-1] + plotSimulationTime_milliSecond[-1] * 0.2,
+                colors="k",
+                linestyles="dashdot",
+            )
+
+            widget.ax.legend(title="- ON -- OFF")
+            widget.optimize_figure(setBound=False)
+
+            widget.fig.tight_layout()
+
+        if plots_to_include["signal"]:
+            self.plotAttachmentRate()
+
+        if plots_to_include["population_stability"]:
+
+            self.stabilityPlots()
+
+    def stabilityPlots(self):
+        global qapp
         self.legend_handler_for_extra_plots = {}
 
         self.widget_for_extra_plots = felionQtWindow(
@@ -461,10 +476,6 @@ class ROSAA:
             savefilename=f"{savefilename}_boltzman_comparision",
         )
 
-        self.oldValues = {
-            "on": np.copy(self.lightON_distribution),
-            "off": np.copy(self.lightOFF_distribution),
-        }
         # Boltzman distribution
         (self.legend_handler_for_extra_plots[f"Boltzman distribution"],) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys, self.boltzmanDistributionCold, "k--", label=f"Boltzman distribution", zorder=2
@@ -539,11 +550,14 @@ class ROSAA:
         self.widget_for_extra_plots.ax.legend(title="t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
         self.widget_for_extra_plots.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
         self.widget_for_extra_plots.optimize_figure(setBound=False)
+
         self.widget_for_extra_plots.fig.tight_layout()
-        self.plotAttachmentRate()
+
+        if qapp is None:
+            qapp = self.widget_for_extra_plots.qapp
 
     def plotAttachmentRate(self):
-
+        global qapp
         if not self.includeAttachmentRate:
             return
 
@@ -551,7 +565,7 @@ class ROSAA:
         signal = (1 - (self.oldValues["on"][signal_index][1:] / self.oldValues["off"][signal_index][1:])) * 100
 
         signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
-        widget2 = felionQtWindow(
+        widget = felionQtWindow(
             title=f"Signal",
             figDPI=200,
             figTitle=self.transitionTitleLabel,
@@ -560,12 +574,15 @@ class ROSAA:
             location=self.figs_location,
             savefilename=savefilename,
         )
-        widget2.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} (%)")
+        widget.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} (%)")
 
         if self.verbose:
             logger(f"Signal: {round(signal[-1])} (%)")
-        widget2.optimize_figure(setBound=False)
-        widget2.fig.tight_layout()
+        widget.optimize_figure(setBound=False)
+        widget.fig.tight_layout()
+
+        if qapp is None:
+            qapp = widget.qapp
 
     def WriteData(self, name: str, dataToSend: dict):
         fulloutput_location = self.save_location or datas_location
@@ -592,7 +609,44 @@ datas_location: pt = None
 conditions = None
 savefilename = None
 includeAttachmentRate = False
-# fOf_appendOutputFileName = None
+
+
+def get_statistics(N=5):
+
+    current_nHe = float(conditions["numberDensity"])
+    current_Power = float(conditions["power_broadening"]["power(W)"])
+    current_k3_branch = float(conditions["attachment_rate_coefficients"]["a(k31)"])
+
+    excitedFrom = str(conditions["excitedFrom"])
+    excitedTo = str(conditions["excitedTo"])
+
+    energyKeys = list(conditions["energy_levels"].keys())
+
+    excitedToIndex = energyKeys.index(excitedTo)
+    excitedFromIndex = energyKeys.index(excitedFrom)
+
+    VALUES = []
+    start_timer = time.perf_counter()
+
+    for i in range(N):
+        current_cycle_timer = time.perf_counter()
+
+        currentData = ROSAA(
+            nHe=current_nHe, power=current_Power, k3_branch=current_k3_branch, plotGraph=False, verbose=False
+        )
+
+        on = currentData.lightON_distribution
+        changeInPopulationRatioOn = on[excitedToIndex][-1] / on[excitedFromIndex][-1]
+        VALUES.append(changeInPopulationRatioOn)
+        logger(f"{(i+1) / N :.1%} done. {i+1}/{N}. Took {time.perf_counter() - current_cycle_timer:.2f} seconds.")
+
+    logger(f"{N} simulations done. Took {time.perf_counter() - start_timer:.2f} seconds.")
+
+    statistics_filename = output_dir / f"{savefilename}_population_ratio.json"
+    json.dump(VALUES, open(statistics_filename, "w+"), sort_keys=True, indent=4, separators=(",", ": "))
+    logger(
+        f"{statistics_filename} file saved. The population ratio (up/down) is {np.mean(VALUES):.2f} +/- {np.std(VALUES):.2f}."
+    )
 
 
 def main(arguments):
@@ -622,10 +676,17 @@ def main(arguments):
     current_nHe = float(conditions["numberDensity"])
     current_Power = float(conditions["power_broadening"]["power(W)"])
     current_k3_branch = float(conditions["attachment_rate_coefficients"]["a(k31)"])
+    plotGraph = figure["show"]
+
+    plots_to_include = conditions["plots_to_include"]
 
     if variable == "time":
+        current_data = ROSAA(nHe=current_nHe, power=current_Power, k3_branch=current_k3_branch, verbose=True)
+        current_data.Plot(plots_to_include)
 
-        ROSAA(nHe=current_nHe, power=current_Power, k3_branch=current_k3_branch, plotGraph=figure["show"], verbose=True)
+    elif variable == "statistics":
+        N = int(conditions["$variableRange"]["sampleSize"])
+        get_statistics(N=N)
 
     elif variable == "He density(cm-3)":
 
