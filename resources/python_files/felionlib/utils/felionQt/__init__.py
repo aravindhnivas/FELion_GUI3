@@ -803,7 +803,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def set_bound_controller_values(self):
         def set_min_max_val(widget: QtWidgets.QLineEdit, val: float):
-            widget.setText(f"{val:.2f}")
+            widget.setText(round(val, int(self.xy_bound_rounded_value_widget.text())).__str__())
 
         xbound: tuple[float, float] = self.ax.get_xbound()
         ybound: tuple[float, float] = self.ax.get_ybound()
@@ -879,10 +879,19 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
         bound_layout = QtWidgets.QVBoxLayout()
 
+        get_XY_bound_layout = QtWidgets.QHBoxLayout()
+
         update_bound_values = QtWidgets.QPushButton("GET XY bound")
         update_bound_values.clicked.connect(self.set_bound_controller_values)
 
-        bound_layout.addWidget(update_bound_values)
+        self.xy_bound_rounded_value_widget = QtWidgets.QLineEdit("2")
+        self.xy_bound_rounded_value_widget.setToolTip("rounding value for bound")
+        self.xy_bound_rounded_value_widget.returnPressed.connect(self.set_bound_controller_values)
+
+        get_XY_bound_layout.addWidget(update_bound_values, 4)
+        get_XY_bound_layout.addWidget(self.xy_bound_rounded_value_widget, 1)
+
+        bound_layout.addLayout(get_XY_bound_layout)
 
         xbound_layout = QtWidgets.QHBoxLayout()
         xbound_layout.addWidget(QtWidgets.QLabel("xbound"))
