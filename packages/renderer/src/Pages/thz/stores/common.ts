@@ -1,3 +1,4 @@
+import { numberOfLevels } from './energy'
 import { derived, writable } from "svelte/store";
 
 export const electronSpin = writable<boolean>(false);
@@ -25,3 +26,4 @@ export const trapArea = writable<string>('');
 
 export const collisionalTemp = writable<number>(7);
 export const configLoaded = writable<boolean>(false);
+export const plot_colors = writable('default');

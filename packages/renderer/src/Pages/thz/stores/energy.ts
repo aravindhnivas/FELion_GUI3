@@ -19,6 +19,7 @@ export const kB = derived([energyUnit], ([$energyUnit]) => {
     return Boltzmann[$energyUnit]
 });
 
+
 export const get_KT = (T: number) => get(kB) * T
 
 export const transitionFrequency = derived([excitedFrom, excitedTo], ([$excitedFrom, $excitedTo]) => {

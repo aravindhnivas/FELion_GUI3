@@ -66,7 +66,7 @@ class ROSAA:
 
         self.start_time = time.perf_counter()
 
-        self.writefile = writefile or conditions["writefile"]
+        self.writefile: bool = writefile or conditions["writefile"]
         # if self.writefile is None:
         #     self.writefile = conditions["writefile"]
 
@@ -133,6 +133,9 @@ class ROSAA:
                 logger(f"{self.boltzmanDistributionCold=}")
         else:
             self.Simulate(nHe)
+
+        # setting colors for plotting
+        self.colors = plot_colors or pltColors
 
     def computeEinsteinBRates(self):
         trapArea = float(conditions["main_parameters"]["trap_area (sq-meter)"])
@@ -417,11 +420,10 @@ class ROSAA:
 
             widget = felionQtWindow(
                 figDPI=200,
-                figTitle=self.transitionTitleLabel,
-                figXlabel="Time (ms)",
+                figXlabel="Time [ms]",
                 figYlabel="Population ratio",
                 location=self.figs_location,
-                savefilename=f"{savefilename}_{self.duration}ms_population_ratio",
+                savefilename=f"{savefilename}_{self.duration}s_population_ratio",
             )
 
             if qapp is None:
@@ -435,8 +437,10 @@ class ROSAA:
 
                 lg = f"{self.legends[counter]}"
 
-                (_on_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=pltColors[counter], label=lg)
-                (_off_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=pltColors[counter])
+                color = self.colors[counter]
+                logger(f"{color=}")
+                (_on_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=color, label=lg)
+                (_off_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=color)
 
                 legend_handler[lg] = _on_plot
                 # legend_handler[lg] = [_on_plot, _off_plot]
@@ -463,10 +467,10 @@ class ROSAA:
             self.plotAttachmentRate()
 
         if plots_to_include["population_stability"]:
-
             self.stabilityPlots()
 
     def stabilityPlots(self):
+
         global qapp
         self.legend_handler_for_extra_plots = {}
 
@@ -475,8 +479,10 @@ class ROSAA:
             figXlabel="Energy Levels",
             figYlabel="Population ratio",
             location=self.figs_location,
-            savefilename=f"{savefilename}_{self.duration}ms_boltzman_comparision",
+            savefilename=f"{savefilename}_{self.duration}s_boltzman_comparision",
         )
+
+        dataToSend = {"boltzmann": self.boltzmanDistributionCold}
 
         # Boltzman distribution
         (self.legend_handler_for_extra_plots[f"Boltzman distribution"],) = self.widget_for_extra_plots.ax.plot(
@@ -486,11 +492,12 @@ class ROSAA:
         # Only collision
         nHe = float(conditions["numberDensity"])
         self.includeAttachmentRate = False
-
         self.Simulate(nHe)
+
+        dataToSend["Coll."] = self.lightOFF_distribution.T[-1][: len(self.energyKeys)]
         (self.legend_handler_for_extra_plots["Coll."],) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
-            self.lightOFF_distribution.T[-1][: len(self.energyKeys)],
+            dataToSend["Coll."],
             "ko",
             label="Coll.",
             ms=5,
@@ -501,12 +508,15 @@ class ROSAA:
         ################################################################################################
 
         # Old values ON
+        dataToSend["Coll. + Att."] = self.oldValues["off"].T[-1][: len(self.energyKeys)]
+        dataToSend["Coll. + Att. + Rad."] = self.oldValues["on"].T[-1][: len(self.energyKeys)]
+
         (self.legend_handler_for_extra_plots["Coll. + Att."],) = self.widget_for_extra_plots.ax.plot(
-            self.energyKeys, self.oldValues["off"].T[-1][: len(self.energyKeys)], "C1-", label=f"Coll. + Att."
+            self.energyKeys, dataToSend["Coll. + Att."], "C1-", label=f"Coll. + Att."
         )
         (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
-            self.oldValues["on"].T[-1][: len(self.energyKeys)],
+            dataToSend["Coll. + Att. + Rad."],
             "C2-",
             label=f"Coll. + Att. + Rad.",
         )
@@ -521,11 +531,13 @@ class ROSAA:
         self.computeEinsteinBRates()
         self.Simulate(nHe)
 
+        dataToSend["Coll. << Rad. ;(without Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
+
         (
             self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],
         ) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
-            self.lightON_distribution.T[-1][: len(self.energyKeys)],
+            dataToSend["Coll. << Rad. ;(without Att.)"],
             "C3--",
             label=f"Coll. $\ll$ Rad. ;(without Att.)",
         )
@@ -534,7 +546,7 @@ class ROSAA:
 
         # Coll << Rad with Att
         self.Simulate(nHe)
-
+        dataToSend["Coll. << Rad. ;(with Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
         (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = self.widget_for_extra_plots.ax.plot(
             self.energyKeys,
             self.lightON_distribution.T[-1][: len(self.energyKeys)],
@@ -551,11 +563,17 @@ class ROSAA:
         # self.widget_for_extra_plots.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
         ################################################################################################
         ################################################################################################
-        self.widget_for_extra_plots.ax.legend(title="At t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
+
+        # self.widget_for_extra_plots.ax.legend(title="At t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
         self.widget_for_extra_plots.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
         self.widget_for_extra_plots.optimize_figure()
-
         self.widget_for_extra_plots.fig.tight_layout()
+
+        if self.writefile:
+            for key in dataToSend:
+                dataToSend[key] = dataToSend[key].tolist()
+            dataToSend["energyKeys"] = self.energyKeys
+            self.WriteData(f"{savefilename}_{self.duration}s_boltzman_comparision", dataToSend)
 
         if qapp is None:
             qapp = self.widget_for_extra_plots.qapp
@@ -572,16 +590,15 @@ class ROSAA:
         widget = felionQtWindow(
             title=f"Signal",
             figDPI=200,
-            figTitle=self.transitionTitleLabel,
-            figXlabel="Time (ms)",
-            figYlabel="Signal (%)",
+            figXlabel="Time [ms]",
+            figYlabel="HeCD$^+$ Depletion [%]",
             location=self.figs_location,
-            savefilename=f"{savefilename}_{self.duration}ms_signal",
+            savefilename=f"{savefilename}_{self.duration}s_signal",
         )
-        widget.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} (%)")
+        widget.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} [%]")
 
         if self.verbose:
-            logger(f"Signal: {round(signal[-1])} (%)")
+            logger(f"Signal: {round(signal[-1])} [%]")
         widget.optimize_figure()
         widget.fig.tight_layout()
 
@@ -612,7 +629,9 @@ output_dir: pt = None
 datas_location: pt = None
 conditions = None
 savefilename = None
+
 includeAttachmentRate = False
+plot_colors = None
 
 
 def get_statistics(N=5):
@@ -655,12 +674,17 @@ def get_statistics(N=5):
 
 def main(arguments):
 
-    global conditions, figure, savefilename, location, output_dir, datas_location, includeAttachmentRate
+    global conditions, figure, savefilename, location, output_dir, datas_location, includeAttachmentRate, plot_colors
 
     conditions = arguments
 
     savefilename = conditions["savefilename"]
     location = pt(conditions["currentLocation"])
+
+    if conditions["$plot_colors"] == "" or conditions["$plot_colors"] == "default":
+        plot_colors = None
+    else:
+        plot_colors = [pltColors[int(c.strip())] for c in conditions["$plot_colors"].split(",")]
 
     output_dir = location / "output"
     if not output_dir.exists():
@@ -892,10 +916,10 @@ def functionOfVariable(
     if plot:
 
         if changeVariable == "numberDensity":
-            xlabel = currentData.taggingPartner + "number density (cm$^{-3})$"
+            xlabel = currentData.taggingPartner + "number density [cm$^{-3}$]"
 
         elif changeVariable == "power":
-            xlabel = "Power (W)"
+            xlabel = "Power [W]"
 
         elif changeVariable == "k3_branch":
             xlabel = "a (k_up / k_down)"
@@ -939,7 +963,7 @@ def functionOfVariable(
                 title=f"Signal",
                 figDPI=200,
                 figXlabel=xlabel,
-                figYlabel="Signal (%)",
+                figYlabel="HeCD$^+$ Depletion [%]",
                 location=output_dir / "figs",
                 xscale="linear" if changeVariable == "k3_branch" else "log",
                 savefilename=f"{outputFileName}.signal",

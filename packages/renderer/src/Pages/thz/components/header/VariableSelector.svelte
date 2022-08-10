@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { plot_colors } from '../../stores/common'
     import Textfield from '@smui/textfield'
     import CustomCheckbox from '$src/components/CustomCheckbox.svelte'
 
@@ -12,6 +13,7 @@
         <CustomCheckbox label="Population ratio simulation plot" bind:value={plots_to_include.main} />
         <CustomCheckbox label="Signal plot" bind:value={plots_to_include.signal} />
         <CustomCheckbox label="population stability plot" bind:value={plots_to_include.population_stability} />
+        <Textfield bind:value={$plot_colors} label="plots_colors (index)" />
     </div>
 {:else}
     <div class="variable__div">

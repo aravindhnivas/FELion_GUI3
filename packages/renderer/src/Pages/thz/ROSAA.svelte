@@ -13,6 +13,7 @@
         trapArea,
         collisionalTemp,
         configLoaded,
+        plot_colors,
     } from './stores/common'
     import { collisionalRateConstants } from './stores/collisional'
     import { tick } from 'svelte'
@@ -125,6 +126,7 @@
             variable,
             plots_to_include,
             $variableRange,
+            $plot_colors,
             numberOfLevels: $numberOfLevels,
             includeCollision,
             includeAttachmentRate,
