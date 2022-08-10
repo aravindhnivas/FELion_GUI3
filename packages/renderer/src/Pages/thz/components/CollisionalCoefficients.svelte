@@ -8,7 +8,7 @@
     import { numberDensity, collisionalTemp, configLoaded } from '../stores/common'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import Textfield from '@smui/textfield'
-    import { find, cloneDeep } from 'lodash-es'
+    import { find, cloneDeep, isEmpty } from 'lodash-es'
     import { onMount, tick } from 'svelte'
 
     import balance_distribution from '../functions/balance_distribution'
@@ -86,12 +86,12 @@
         console.log('loading: ', collisionalCoefficientJSONFile)
         const data = window.fs.readJsonSync(collisionalCoefficientJSONFile)
         if (window.fs.isError(data)) return window.handleError(data)
-        ;({
-            collisionalCoefficient: $collisionalCoefficient,
-            collisionalCoefficient_balance: $collisionalCoefficient_balance,
-        } = data)
+
+        if (isEmpty(data)) return window.createToast('Collisional data file is empty', 'danger')
+        ;({ $collisionalCoefficient, $collisionalCoefficient_balance } = data)
 
         if (window.db.get('active_tab') !== 'Kinetics') return
+
         window.createToast('loaded: ' + window.path.basename(collisionalCoefficientJSONFile), 'warning', {
             target: 'left',
         })
