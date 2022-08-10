@@ -454,7 +454,7 @@ class ROSAA:
 
         self.widget_for_extra_plots = felionQtWindow(
             figDPI=200,
-            figTitle=f"Population stability at {self.simulateTime[-1]*1000:.0f} ms",
+            # figTitle=f"Population stability at {self.simulateTime[-1]*1000:.0f} ms",
             figXlabel="Energy Levels",
             figYlabel="Population ratio",
             location=self.figs_location,
@@ -536,7 +536,7 @@ class ROSAA:
         # self.widget_for_extra_plots.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
         ################################################################################################
         ################################################################################################
-
+        self.widget_for_extra_plots.ax.legend(title="t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
         self.widget_for_extra_plots.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
         self.widget_for_extra_plots.optimize_figure(setBound=False)
         self.widget_for_extra_plots.fig.tight_layout()
