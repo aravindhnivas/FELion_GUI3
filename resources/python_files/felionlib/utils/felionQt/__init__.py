@@ -802,17 +802,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.controlLayout.addLayout(controllerLayout)
 
     def set_bound_controller_values(self):
-        def set_min_max_val(widget: QtWidgets.QDoubleSpinBox, val: float):
-
-            factor = 10 if val <= 0 else val * 10
-
-            _min = val - factor
-            _max = val + factor
-            print(f"{_min=}, {_max=}, {val=}, {factor=}", flush=True)
-
-            widget.setMinimum(_min)
-            widget.setMaximum(_max)
-            widget.setValue(val)
+        def set_min_max_val(widget: QtWidgets.QLineEdit, val: float):
+            widget.setText(f"{val:.2f}")
 
         xbound: tuple[float, float] = self.ax.get_xbound()
         ybound: tuple[float, float] = self.ax.get_ybound()
@@ -824,11 +815,14 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def create_minmax_controller(self, calltype: str, axis: str = "x", draw=True):
 
-        main_widget = QtWidgets.QDoubleSpinBox()
+        # main_widget = QtWidgets.QDoubleSpinBox()
+        # main_widget.setKeyboardTracking(False)
+        main_widget = QtWidgets.QLineEdit()
 
-        main_widget.setKeyboardTracking(False)
+        def updated_callback():
 
-        def updated_callback(val: float):
+            nonlocal main_widget
+            val = float(main_widget.text())
             kwargs = {f"{calltype}": val}
             fn = self.ax.set_xbound if axis == "x" else self.ax.set_ybound
             fn(**kwargs)
@@ -836,8 +830,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
                 self.draw()
             print("bound updated", flush=True)
 
-        main_widget.valueChanged.connect(updated_callback)
-        # main_widget.change
+        main_widget.returnPressed.connect(updated_callback)
+        # main_widget.valueChanged.connect(updated_callback)
         return main_widget
 
     def layout_of_control_this_widget(self, this_widget: QtWidgets.QDoubleSpinBox):
@@ -867,6 +861,20 @@ class felionQtWindow(QtWidgets.QMainWindow):
         controlLayout.addWidget(yaxis_invert_button_widget)
         self.controlLayout.addLayout(controlLayout)
 
+    def set_bound(self, axis="x", draw=True):
+        if axis == "x":
+            self.ax.set_xbound(
+                lower=float(self.xbound_lower_widget.text()), upper=float(self.xbound_upper_widget.text())
+            )
+
+        elif axis == "y":
+            self.ax.set_ybound(
+                lower=float(self.ybound_lower_widget.text()), upper=float(self.ybound_upper_widget.text())
+            )
+        if draw:
+            self.draw()
+        print("bound updated", flush=True)
+
     def figure_axes_bound_controller(self):
 
         bound_layout = QtWidgets.QVBoxLayout()
@@ -888,11 +896,19 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.ybound_lower_widget = self.create_minmax_controller("lower", axis="y")
         self.ybound_upper_widget = self.create_minmax_controller("upper", axis="y")
 
+        setX_bound_values = QtWidgets.QPushButton("SET X bound")
+        setY_bound_values = QtWidgets.QPushButton("SET Y bound")
+
+        setX_bound_values.clicked.connect(lambda: self.set_bound(axis="x", draw=True))
+        setY_bound_values.clicked.connect(lambda: self.set_bound(axis="y", draw=True))
+
         xbound_layout.addWidget(self.xbound_lower_widget)
         xbound_layout.addWidget(self.xbound_upper_widget)
+        xbound_layout.addWidget(setX_bound_values)
 
         ybound_layout.addWidget(self.ybound_lower_widget)
         ybound_layout.addWidget(self.ybound_upper_widget)
+        ybound_layout.addWidget(setY_bound_values)
 
         bound_layout.addLayout(xbound_layout)
         bound_layout.addLayout(ybound_layout)

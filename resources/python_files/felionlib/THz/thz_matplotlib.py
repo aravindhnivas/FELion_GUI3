@@ -87,8 +87,7 @@ def main(args):
         widget.ax.set_xlabel(unit)
         
     widget.makeLegendToggler(legend_handler, edit_legend=True)
-    widget.optimize_figure(setBound=False)
-    
+    widget.optimize_figure()
     widget.fig.tight_layout()
     widget.qapp.exec()
     

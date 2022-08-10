@@ -454,7 +454,7 @@ class ROSAA:
             )
 
             widget.ax.legend(title="- ON -- OFF")
-            widget.optimize_figure(setBound=False)
+            widget.optimize_figure()
 
             widget.fig.tight_layout()
 
@@ -552,7 +552,7 @@ class ROSAA:
         ################################################################################################
         self.widget_for_extra_plots.ax.legend(title="At t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
         self.widget_for_extra_plots.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
-        self.widget_for_extra_plots.optimize_figure(setBound=False)
+        self.widget_for_extra_plots.optimize_figure()
 
         self.widget_for_extra_plots.fig.tight_layout()
 
@@ -581,7 +581,7 @@ class ROSAA:
 
         if self.verbose:
             logger(f"Signal: {round(signal[-1])} (%)")
-        widget.optimize_figure(setBound=False)
+        widget.optimize_figure()
         widget.fig.tight_layout()
 
         if qapp is None:
@@ -921,7 +921,7 @@ def functionOfVariable(
                     constantLabel += f"a={value[0]:.2f} {value[1]}\n"
 
         widget.ax.plot(dataList, populationChange, "-k", label=constantLabel)
-        widget.optimize_figure(setBound=False)
+        widget.optimize_figure()
         widget.fig.tight_layout()
         if qapp is None:
             qapp = widget.qapp
@@ -945,7 +945,7 @@ def functionOfVariable(
             )
 
             widget1.ax.plot(dataList, signalChange, "-k", label=constantLabel)
-            widget1.optimize_figure(setBound=False)
+            widget1.optimize_figure()
             widget1.fig.tight_layout()
 
         dataToSend["signalChange"] = np.around(signalChange, 3).tolist()
