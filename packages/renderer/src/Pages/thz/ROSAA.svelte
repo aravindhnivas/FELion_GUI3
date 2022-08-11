@@ -444,6 +444,7 @@
         <CustomCheckbox bind:value={writefile} label="writefile" />
         <Textfield bind:value={savefilename} label="savefilename" />
         <CustomCheckbox bind:value={figure.show} label="show figure" />
+        <Textfield style="width: 5em;" bind:value={figure.dpi} label="DPI" type="number" input$step={10} />
     </svelte:fragment>
 
     <svelte:fragment slot="footer_content__slot">
