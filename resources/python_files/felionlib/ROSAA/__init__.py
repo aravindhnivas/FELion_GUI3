@@ -417,14 +417,15 @@ class ROSAA:
             self.figs_location.mkdir()
 
         if plots_to_include["main"]:
-
             widget = felionQtWindow(
-                figDPI=200,
+                figDPI=figure["dpi"],
                 figXlabel="Time [ms]",
                 figYlabel="Population ratio",
                 location=self.figs_location,
                 savefilename=f"{savefilename}_{self.duration}s_population_ratio",
             )
+
+            widget.showMaximized()
 
             if qapp is None:
                 qapp = widget.qapp
@@ -474,18 +475,18 @@ class ROSAA:
         global qapp
         self.legend_handler_for_extra_plots = {}
 
-        self.widget_for_extra_plots = felionQtWindow(
-            figDPI=200,
+        widget = felionQtWindow(
+            figDPI=figure["dpi"],
             figXlabel="Energy Levels",
             figYlabel="Population ratio",
             location=self.figs_location,
             savefilename=f"{savefilename}_{self.duration}s_boltzman_comparision",
         )
-
+        widget.showMaximized()
         dataToSend = {"boltzmann": self.boltzmanDistributionCold}
 
         # Boltzman distribution
-        (self.legend_handler_for_extra_plots[f"Boltzman distribution"],) = self.widget_for_extra_plots.ax.plot(
+        (self.legend_handler_for_extra_plots[f"Boltzman distribution"],) = widget.ax.plot(
             self.energyKeys, self.boltzmanDistributionCold, "k-", label=f"Boltzman distribution", zorder=2, alpha=0.5
         )
 
@@ -495,7 +496,7 @@ class ROSAA:
         self.Simulate(nHe)
 
         dataToSend["Coll."] = self.lightOFF_distribution.T[-1][: len(self.energyKeys)]
-        (self.legend_handler_for_extra_plots["Coll."],) = self.widget_for_extra_plots.ax.plot(
+        (self.legend_handler_for_extra_plots["Coll."],) = widget.ax.plot(
             self.energyKeys,
             dataToSend["Coll."],
             "ko",
@@ -511,10 +512,10 @@ class ROSAA:
         dataToSend["Coll. + Att."] = self.oldValues["off"].T[-1][: len(self.energyKeys)]
         dataToSend["Coll. + Att. + Rad."] = self.oldValues["on"].T[-1][: len(self.energyKeys)]
 
-        (self.legend_handler_for_extra_plots["Coll. + Att."],) = self.widget_for_extra_plots.ax.plot(
+        (self.legend_handler_for_extra_plots["Coll. + Att."],) = widget.ax.plot(
             self.energyKeys, dataToSend["Coll. + Att."], "C1-", label=f"Coll. + Att."
         )
-        (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = self.widget_for_extra_plots.ax.plot(
+        (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = widget.ax.plot(
             self.energyKeys,
             dataToSend["Coll. + Att. + Rad."],
             "C2-",
@@ -533,9 +534,7 @@ class ROSAA:
 
         dataToSend["Coll. << Rad. ;(without Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
 
-        (
-            self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],
-        ) = self.widget_for_extra_plots.ax.plot(
+        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],) = widget.ax.plot(
             self.energyKeys,
             dataToSend["Coll. << Rad. ;(without Att.)"],
             "C3--",
@@ -547,7 +546,7 @@ class ROSAA:
         # Coll << Rad with Att
         self.Simulate(nHe)
         dataToSend["Coll. << Rad. ;(with Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
-        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = self.widget_for_extra_plots.ax.plot(
+        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = widget.ax.plot(
             self.energyKeys,
             self.lightON_distribution.T[-1][: len(self.energyKeys)],
             "C3-",
@@ -557,17 +556,17 @@ class ROSAA:
         ################################################################################################
         ################################################################################################
 
-        # self.widget_for_extra_plots.ax.grid(True, which="both", axis="x")
-        # handles, labels = self.widget_for_extra_plots.ax.get_legend_handles_labels()
+        # widget.ax.grid(True, which="both", axis="x")
+        # handles, labels = widget.ax.get_legend_handles_labels()
         # order = [3, 2, 4, 1, 0]
-        # self.widget_for_extra_plots.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
+        # widget.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
         ################################################################################################
         ################################################################################################
 
-        # self.widget_for_extra_plots.ax.legend(title="At t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
-        self.widget_for_extra_plots.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
-        self.widget_for_extra_plots.optimize_figure()
-        self.widget_for_extra_plots.fig.tight_layout()
+        # widget.ax.legend(title="At t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
+        widget.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
+        widget.optimize_figure()
+        widget.fig.tight_layout()
 
         if self.writefile:
             for key in dataToSend:
@@ -576,7 +575,7 @@ class ROSAA:
             self.WriteData(f"{savefilename}_{self.duration}s_boltzman_comparision", dataToSend)
 
         if qapp is None:
-            qapp = self.widget_for_extra_plots.qapp
+            qapp = widget.qapp
 
     def plotAttachmentRate(self):
         global qapp
@@ -589,12 +588,14 @@ class ROSAA:
         signal = np.around(np.nan_to_num(signal).clip(min=0), 1)
         widget = felionQtWindow(
             title=f"Signal",
-            figDPI=200,
+            figDPI=figure["dpi"],
             figXlabel="Time [ms]",
             figYlabel="HeCD$^+$ Depletion [%]",
             location=self.figs_location,
             savefilename=f"{savefilename}_{self.duration}s_signal",
         )
+
+        widget.showMaximized()
         widget.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} [%]")
 
         if self.verbose:
@@ -704,7 +705,7 @@ def main(arguments):
     current_nHe = float(conditions["numberDensity"])
     current_Power = float(conditions["power_broadening"]["power(W)"])
     current_k3_branch = float(conditions["attachment_rate_coefficients"]["a(k31)"])
-    plotGraph = figure["show"]
+    # plotGraph = figure["show"]
 
     plots_to_include = conditions["plots_to_include"]
 
@@ -925,12 +926,13 @@ def functionOfVariable(
             xlabel = "a (k_up / k_down)"
 
         title = currentData.transitionTitleLabel
+
         ylabel = title.split(":")[-1].replace("$", "")
         ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
 
         widget = felionQtWindow(
             title=f"Population ratio",
-            figDPI=200,
+            figDPI=figure["dpi"],
             figXlabel=xlabel,
             figYlabel=ylabel,
             location=output_dir / "figs",
@@ -961,7 +963,7 @@ def functionOfVariable(
         if plot:
             widget1 = felionQtWindow(
                 title=f"Signal",
-                figDPI=200,
+                figDPI=figure["dpi"],
                 figXlabel=xlabel,
                 figYlabel="HeCD$^+$ Depletion [%]",
                 location=output_dir / "figs",
