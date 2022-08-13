@@ -130,7 +130,7 @@
     }
 
     const loadfile = async () => {
-        if(!window.fs.isFile(einsteinFilename)) return window.createToast('File not found', 'danger')
+        if (!window.fs.isFile(einsteinFilename)) return window.createToast('File not found', 'danger')
         const data = await getYMLFileContents(einsteinFilename)
         if (!isArray(data?.rateConstants)) return window.createToast('EinsteinA - Invalid file format', 'danger')
         $einsteinCoefficientA = data.rateConstants.map(setID).map(correctObjValue)
@@ -140,7 +140,9 @@
         await tick()
         loadfile()
     }
-    $: if($configLoaded) {after_configs_loaded()}
+    $: if ($configLoaded) {
+        after_configs_loaded()
+    }
 </script>
 
 <CustomPanel label="Einstein Co-efficients" loaded={einsteinB_rateComputed}>
@@ -166,7 +168,7 @@
     </div>
 
     <div class="align h-center ">
-        <button class="button is-link" on:click={computeEinsteinB}>
+        <button class="button is-link" class:is-loading={computing_lineshape} on:click={computeEinsteinB}>
             {#if $einsteinCoefficientB.length < 1}
                 <i class="material-symbols-outlined">sync_problem</i>
             {/if}
