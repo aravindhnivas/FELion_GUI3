@@ -2,7 +2,7 @@
     import { energyUnit, energyLevels } from '../stores/energy'
     import { einsteinCoefficientA, einsteinCoefficientB, einsteinCoefficientB_rateConstant } from '../stores/einstein'
     import { trapArea, configLoaded } from '../stores/common'
-    import { cloneDeep, find, isArray } from 'lodash-es'
+    import { cloneDeep, find, findIndex, isArray } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import computePy_func from '$src/Pages/general/computePy'
     import { PlanksConstant, SpeedOfLight } from '$src/js/constants'
@@ -11,11 +11,15 @@
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import { correctObjValue, getYMLFileContents, setID } from '$src/js/utils'
     import { tick } from 'svelte'
+    import Clipboard from 'svelte-clipboard'
+    import { makeTableRow, makeTable, formatNumber } from '../functions/utils'
 
     export let lorrentz = 0.32
     export let gaussian = 0.21
     export let power: string | number = '2e-5'
     export let einsteinFilename: string = ''
+    export let moleculeName = ''
+    export let tagName = ''
 
     let einsteinB_rateComputed = false
 
@@ -143,6 +147,37 @@
     $: if ($configLoaded) {
         after_configs_loaded()
     }
+
+    let fullTable = ''
+
+    const copyAsTeXTable = () => {
+        const caption = `Derived radiative rates at P=${formatNumber(
+            power
+        )} W, ${moleculeName} ion for an initial $|i\\rangle$ state transitions into final $|j\\rangle$ state with $A_{ij}$ spontaneous emission, $B_{ij}$ stimulated absorption and $B_{ji}$ stimulated emission. All $A_{ij}$, $B_{ij}$ and $B_{ji}$ are in units of s$^{-1}$.`
+
+        const label = `tab:radiative-rate-coefficients`
+
+        const levels = $einsteinCoefficientA.map((e) => e.label)
+        let body = ''
+
+        for (const level of levels) {
+            const [from, to] = level.split('-->')
+            body += `\n\t\t${from.trim()} & ${to.trim()} & `
+
+            const A_val = find($einsteinCoefficientA, (e) => e.label == level)?.value
+
+            const B_val = find($einsteinCoefficientB, (e) => e.label == level)?.value
+            const B_balance = find($einsteinCoefficientB, (e) => e.label == `${to.trim()} --> ${from.trim()}`)?.value
+            console.log({ A_val, B_val, B_balance })
+            if (A_val && B_val && B_balance) {
+                body += `${formatNumber(A_val)} & ${formatNumber(B_val)} & ${formatNumber(B_balance)} \\\\`
+            }
+        }
+        const column_align = 'rclll'
+        const header = `i & j & $A_{ij}$ & $B_{ij}$ & $B_{ji}$`
+
+        fullTable = makeTable(caption, label, column_align, header, body)
+    }
 </script>
 
 <CustomPanel label="Einstein Co-efficients" loaded={einsteinB_rateComputed}>
@@ -174,6 +209,23 @@
             {/if}
             Compute Einstein B
         </button>
+
+        <Clipboard
+            text={fullTable}
+            let:copy
+            on:copy={() => {
+                window.createToast('Copied to clipboard', 'success')
+            }}
+        >
+            <button
+                class="button is-warning"
+                on:click={async () => {
+                    copyAsTeXTable()
+                    await tick()
+                    copy()
+                }}>copy as TeXTable</button
+            >
+        </Clipboard>
     </div>
 
     {#if $einsteinCoefficientB.length > 0}

@@ -41,7 +41,7 @@
     } from '$src/js/constants'
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
-    import { setID, correctObjValue, getYMLFileContents } from '$src/js/utils'
+    import { setID, correctObjValue } from '$src/js/utils'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import VariableSelector from './components/header/VariableSelector.svelte'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -433,7 +433,7 @@
                         </CustomPanel>
 
                         <EinsteinCoefficients {einsteinFilename} {power} {gaussian} {lorrentz} />
-                        <CollisionalCoefficients {collisionalFilename} />
+                        <CollisionalCoefficients {collisionalFilename} {moleculeName} {tagName} />
                         <AttachmentCoefficients bind:k3 bind:kCID bind:attachmentCoefficients />
                     </Accordion>
                 </div>

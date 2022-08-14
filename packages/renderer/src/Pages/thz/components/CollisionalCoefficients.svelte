@@ -9,14 +9,18 @@
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import Textfield from '@smui/textfield'
     import { find, cloneDeep, isEmpty } from 'lodash-es'
-    import { onMount, tick } from 'svelte'
+    import { tick } from 'svelte'
 
     import balance_distribution from '../functions/balance_distribution'
     import CollisionalDistribution from '../windows/CollisionalDistribution.svelte'
     import CollisionalRateConstantPlot from '../windows/CollisionalRateConstantPlot.svelte'
     import CustomPanel from '$src/components/CustomPanel.svelte'
+    import Clipboard from 'svelte-clipboard'
+    import { makeTableRow, makeTable, formatNumber } from '../functions/utils'
 
     export let collisionalFilename = ''
+    export let moleculeName = ''
+    export let tagName = ''
 
     let activate_collisional_simulation_window = false
 
@@ -104,6 +108,30 @@
     $: if ($configLoaded) {
         after_configs_loaded()
     }
+
+    let fullTable = ''
+
+    const copyAsTeXTable = () => {
+        const caption = `Derived collisional rates at $T=${$collisionalTemp}$ K, ${moleculeName} collision with ${tagName} [${formatNumber(
+            $numberDensity
+        )} cm$^{-3}$ number density] for an initial $|i\\rangle$ state transitions into final $|j\\rangle$ state via $k_{ij}$ rate coefficients [in cm$^3$/s] and $R_{ij}$ rate [in s$^{-1}$].`
+
+        const label = `tab:collisional-rate-coefficients`
+
+        let body = ''
+        const table = $collisionalCoefficient.map((rate) => makeTableRow(rate, $numberDensity)).join('\n\t\t')
+        const table_balance = $collisionalCoefficient_balance
+            .map((rate) => makeTableRow(rate, $numberDensity))
+            .join('\n\t\t')
+        body += `\n\t\t${table}`
+        if (!isEmpty(table_balance)) {
+            body += `\n\t\t\\\\`
+            body += `\n\t\t${table_balance}`
+        }
+        const column_align = 'rclll'
+        const header = `i && j & $k_{ij}$ & $R_{ij}$`
+        fullTable = makeTable(caption, label, column_align, header, body)
+    }
 </script>
 
 <CollisionalDistribution bind:active={activate_collisional_simulation_window} />
@@ -136,9 +164,27 @@
             >
 
             <button class="button is-link " on:click={compteCollisionalBalanceConstants}>Compute balance rate</button>
+
             <button class="button is-link flex" on:click={() => (activate_collisional_simulation_window = true)}>
                 <span>Simulate Collisional Cooling</span><span class="material-symbols-outlined">open_in_full</span>
             </button>
+
+            <Clipboard
+                text={fullTable}
+                let:copy
+                on:copy={() => {
+                    window.createToast('Copied to clipboard', 'success')
+                }}
+            >
+                <button
+                    class="button is-warning"
+                    on:click={async () => {
+                        copyAsTeXTable()
+                        await tick()
+                        copy()
+                    }}>copy as TeXTable</button
+                >
+            </Clipboard>
         </div>
     </div>
 
