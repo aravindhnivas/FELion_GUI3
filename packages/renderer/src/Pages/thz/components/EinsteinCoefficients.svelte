@@ -2,7 +2,7 @@
     import { energyUnit, energyLevels } from '../stores/energy'
     import { einsteinCoefficientA, einsteinCoefficientB, einsteinCoefficientB_rateConstant } from '../stores/einstein'
     import { trapArea, configLoaded } from '../stores/common'
-    import { cloneDeep, find, findIndex, isArray } from 'lodash-es'
+    import { cloneDeep, find, isArray } from 'lodash-es'
     import Textfield from '@smui/textfield'
     import computePy_func from '$src/Pages/general/computePy'
     import { PlanksConstant, SpeedOfLight } from '$src/js/constants'
@@ -12,14 +12,14 @@
     import { correctObjValue, getYMLFileContents, setID } from '$src/js/utils'
     import { tick } from 'svelte'
     import Clipboard from 'svelte-clipboard'
-    import { makeTableRow, makeTable, formatNumber } from '../functions/utils'
+    import { makeTable, formatNumber } from '../functions/utils'
 
     export let lorrentz = 0.32
     export let gaussian = 0.21
     export let power: string | number = '2e-5'
     export let einsteinFilename: string = ''
     export let moleculeName = ''
-    export let tagName = ''
+    // export let tagName = ''
 
     let einsteinB_rateComputed = false
 
