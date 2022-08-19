@@ -15,7 +15,7 @@
     export let sortable = false
     export let configDir: string
     export let options_filter: string = '.json'
-    export let filename: string = ''
+    export let filename: string = 'data'
     export let maxHeight: string = '25em'
     export let fileReadProps = {}
 

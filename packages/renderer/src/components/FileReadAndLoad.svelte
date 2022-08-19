@@ -128,6 +128,7 @@
             if (toast) notify('loaded')
             return
         }
+
         if (!data?.[selectedFile]) {
             return window.createToast(`No data found for ${selectedFile} file`, 'danger', toastOpts)
         }
@@ -150,11 +151,14 @@
         if (!data[selectedFile]['default']) {
             return window.createToast(`default-mode: No data found for ${selectedFile} file`, 'danger', toastOpts)
         }
+
         dataToSave = data[selectedFile]['default']
         data_loaded = true
+
         if (toast) notify('loaded')
         return
     }
+
     $: if (!singleFilemode && selectedFile && (useParamsFile || useTaggedFile)) {
         load_data(false)
     }
