@@ -1,12 +1,12 @@
 <script lang="ts">
     import { onMount } from 'svelte'
 
-    export let options = []
+    export let options: string[] = []
     export let label = ''
     export let value = ''
     export let multiple = false
 
-    export let update = null
+    export let update: ((toast?: boolean) => void) | null = null
     export let auto_init = false
     export let lookIn: string = ''
     export let lookFor: string = '*'
@@ -34,6 +34,8 @@
             value ||= options[0] || ''
         }
     })
+
+    $: if (update && lookIn) update(false)
 </script>
 
 <div class="container">
@@ -58,10 +60,10 @@
         {#if update}
             <i
                 class="material-symbols-outlined animate__animated animate__faster"
-                on:animationend={(event) => event?.target?.classList.remove('animate__rotateIn')}
-                on:click={(event) => {
-                    event?.target?.classList.add('animate__rotateIn')
-                    update()
+                on:animationend={({ currentTarget }) => currentTarget.classList.remove('animate__rotateIn')}
+                on:click={({ currentTarget }) => {
+                    currentTarget.classList.add('animate__rotateIn')
+                    update?.()
                 }}
             >
                 refresh

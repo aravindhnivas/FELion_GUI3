@@ -18,6 +18,10 @@
     $: savefilename = window.path.join(configDir, filename)
     let contents = {}
 
+    $: if (window.fs.isFile(savefilename)) {
+        readConfigFile()
+    }
+
     const readConfigFile = async (toast = true) => {
         if (!window.fs.isFile(savefilename)) {
             if ($activePage === 'Kinetics') {

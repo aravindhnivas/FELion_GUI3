@@ -37,12 +37,12 @@
             return window.createToast('Invalid location', 'danger', { target: 'left' })
         }
 
-        // target?.classList.add('animate__rotateIn')
         fileCollections = window.fs
             .readdirSync($currentLocation)
             .filter((f) => f.endsWith('_scan.json'))
             .map((f) => f.split('.')[0].replace('_scan', '.scan'))
         console.log(fileCollections)
+        selectedFile ||= fileCollections[0]
     }
 
     $: if ($currentLocation) {

@@ -432,7 +432,7 @@
                             <Textfield value={voigtFWHM} label="Voigt - FWHM (MHz)" variant="outlined" />
                         </CustomPanel>
 
-                        <EinsteinCoefficients {einsteinFilename} {power} {gaussian} {lorrentz} />
+                        <EinsteinCoefficients {einsteinFilename} {power} {gaussian} {lorrentz} {moleculeName} />
                         <CollisionalCoefficients {collisionalFilename} {moleculeName} {tagName} />
                         <AttachmentCoefficients bind:k3 bind:kCID bind:attachmentCoefficients />
                     </Accordion>
