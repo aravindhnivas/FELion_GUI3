@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { trapTemp, currentLocation, output_dir} from '../stores/common'
+    import { trapTemp, currentLocation, output_dir } from '../stores/common'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import Notify from '$components/Notify.svelte'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
@@ -9,7 +9,7 @@
     import computePy_func from '$src/Pages/general/computePy'
     import ButtonBadge from '$src/components/ButtonBadge.svelte'
     import WinBox from 'winbox'
-    import {save_data_to_file} from '../functions/utils'
+    import { save_data_to_file } from '../functions/utils'
 
     export let active = false
     export let graphWindow: WinBox | null = null
@@ -97,7 +97,7 @@
             <ButtonBadge label="Produce figure" on:click={openFigure} />
         </div>
 
-        <Notify label={saveInfo.error || saveInfo.msg} type={saveInfo.error ? 'danger': 'success'}  />
+        <Notify label={saveInfo.error || saveInfo.msg} type={saveInfo.error ? 'danger' : 'success'} />
     </svelte:fragment>
 
     <svelte:fragment slot="main_content__slot">
