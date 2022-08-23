@@ -48,6 +48,7 @@
     "svelte-preprocess": "^4.10.7",
     "svelte-sortable-list": "^1.1.0",
     "ts-try": "^0.2.0",
+    "tsx": "^3.8.2",
     "vite": "^3.0.8",
     "winbox": "^0.2.4",
     "yaml": "^2.1.1"
