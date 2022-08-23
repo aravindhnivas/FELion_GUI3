@@ -11,9 +11,7 @@
         serverDebug,
     } from '../svelteWritables'
 
-    // import Textfield from '@smui/textfield'
     import BrowseTextfield from '$components/BrowseTextfield.svelte'
-    // import LockTextfield from '$components/LockTextfield.svelte'
     import { getPyVersion } from '../checkPython'
     import { checkTCP, fetchServerROOT } from '../serverConnections'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
@@ -23,23 +21,18 @@
         value: string
         type: 'info' | 'danger' | 'warning' | 'success'
     }
-
-    // let lock_felionpy_program = import.meta.env.PROD
     let showServerControls: boolean
     let serverInfo: ServerInfo[] = []
     let serverCurrentStatus: ServerInfo = { value: '', type: 'info' }
-    // let pyError: string = ''
 
     const unsubscriber = window.db.onDidChange('pyServerReady', async (value) => {
         $pyServerReady = <boolean>value
-
         if ($pyServerReady) {
             serverInfo = [...serverInfo, { value: 'fetching server status', type: 'info' }]
-            await updateServerInfo()
-        } else {
-            serverCurrentStatus = { value: 'server closed', type: 'danger' }
-            serverInfo = [...serverInfo, serverCurrentStatus]
+            return await updateServerInfo()
         }
+        serverCurrentStatus = { value: 'server closed', type: 'danger' }
+        serverInfo = [...serverInfo, serverCurrentStatus]
     })
 
     const updateTCPInfo = async (e?: ButtonClickEvent) => {
@@ -83,9 +76,7 @@
             }
             $pyServerReady = <boolean>window.db.get('pyServerReady')
         } catch (error) {
-            if (error instanceof Error) {
-                console.error(error)
-            }
+            if (error instanceof Error) console.error(error)
         } finally {
             serverInfo = [...serverInfo, { value: `pyVersion: ${$pyVersion}`, type: 'info' }]
             if ($pyServerReady) {
@@ -93,13 +84,11 @@
             }
         }
     })
-
     onDestroy(unsubscriber)
 </script>
 
 <div class="align animate__animated animate__fadeIn" class:hide={$currentTab !== 'Configuration'}>
     <h1>Configuration</h1>
-
     <div class="align">
         <div class="tag is-warning">
             {$pyVersion || 'Python undefined'}
@@ -113,7 +102,6 @@
                 Developer mode: {$developerMode}
             </button>
             <button class="button is-link" on:click={getPyVersion}>getPyVersion</button>
-
             <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
                 Show server controls
             </button>
@@ -171,7 +159,7 @@
             </div>
         </div>
 
-        <div id="serverInfo__div" class="serverContainer align box">
+        <div id="serverInfo__div" class="align box">
             {#each serverInfo as info (info)}
                 <span class="has-text-{info.type}" style="width: 100%;">>> {info.value}</span>
             {/each}
@@ -180,7 +168,7 @@
 </div>
 
 <style>
-    .serverContainer {
+    #serverInfo__div {
         display: flex;
         align-content: flex-start;
         overflow: auto;
