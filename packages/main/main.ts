@@ -25,7 +25,7 @@ async function createWindow() {
         show: false,
         webPreferences: {
             preload: path.join(app.getAppPath(), 'packages/preload/dist/preload.cjs'),
-            nodeIntegration: true,
+            nodeIntegration: true, spellcheck: false
         },
     })
 
