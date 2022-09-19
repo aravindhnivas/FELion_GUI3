@@ -4,11 +4,11 @@
     
     let CONFIGS = window.db.store()
     const unsubscribe = window.db.onDidAnyChange((newValue, oldValue) => {
+        if(!newValue) return
         CONFIGS = newValue
     })
-
-    onDestroy(unsubscribe)
     
+    onDestroy(unsubscribe)
 </script>
 
 <div class="config_main__div box">
@@ -20,7 +20,12 @@
     <div class="config__div ">
         {#each Object.keys(CONFIGS) as label}
             <div class="config_content">
-                <Textfield bind:value={CONFIGS[label]} {label} />
+                <Textfield bind:value={CONFIGS[label]} {label} on:keyup={e => {
+                    if (e.key === 'Enter') {
+                        window.db.set(label, CONFIGS[label])
+                        window.createToast('Saved', 'success')
+                    }
+                }} />
                 <button
                     class="button is-success"
                     on:click={()=>{

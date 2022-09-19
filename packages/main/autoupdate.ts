@@ -21,6 +21,11 @@ ipcMain.handle('checkupdate', () => {
     autoUpdater.checkForUpdates()
 })
 
+ipcMain.handle('quitAndInstall', () => {
+    if(!updateReadyToInstall) return console.warn('update not ready to install')
+    autoUpdater.quitAndInstall()
+})
+
 const updateLog = (info: string) => {
     logger.info(info)
     mainWindow.webContents.send('update-log', info)
@@ -70,9 +75,12 @@ autoUpdater.on('download-progress', (progressObj) => {
     mainWindow.webContents.send('update-progress', progressObj)
 })
 
-autoUpdater.on('update-downloaded', async (info) => {
-    logger.info('update-downloaded' + info)
+let updateReadyToInstall = false
 
+autoUpdater.on('update-downloaded', async (info) => {
+
+    updateReadyToInstall = true
+    logger.info('update-downloaded' + info)
     mainWindow.webContents.send('db:update', {
         key: 'update-status',
         value: 'update-downloaded',
@@ -86,8 +94,8 @@ autoUpdater.on('update-downloaded', async (info) => {
     }
 
     const message = await dialog.showMessageBox(mainWindow, restartArgs)
-
     if (message.response === 0) {
+        updateReadyToInstall = false
         autoUpdater.quitAndInstall()
     } else if (message.response === 1) {
         mainWindow.webContents.send('db:update', {
