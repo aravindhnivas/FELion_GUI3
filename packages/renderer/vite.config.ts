@@ -8,7 +8,6 @@ const PACKAGE_ROOT = __dirname
 
 const config = {
     mode: process.env.MODE,
-
     root: PACKAGE_ROOT,
     resolve: {
         alias: {
@@ -17,7 +16,6 @@ const config = {
             $components: join(PACKAGE_ROOT, 'src/components'),
             $computeCode: join(PACKAGE_ROOT, 'src/Pages/computeCode'),
         },
-        dedupe: ['svelte'],
     },
     plugins: [svelte({ preprocess: autoPreprocess() })],
     base: '',
@@ -36,7 +34,6 @@ const config = {
                     interactjs: ['interactjs'],
                     yaml: ['yaml'],
                     'lodash-es': ['lodash-es'],
-                    // plotly: ['plotly.js/dist/plotly-basic'],
                     plotly: ['plotly.js-basic-dist'],
                 },
             },

@@ -1,7 +1,7 @@
 <script lang="ts">
     import Textfield from '@smui/textfield';
     import { onDestroy } from 'svelte';
-    
+   
     let CONFIGS = window.db.store()
     const unsubscribe = window.db.onDidAnyChange((newValue, oldValue) => {
         if(!newValue) return
@@ -18,6 +18,7 @@
     </div>
 
     <div class="config__div ">
+        
         {#each Object.keys(CONFIGS) as label}
             <div class="config_content">
                 <Textfield bind:value={CONFIGS[label]} {label} on:keyup={e => {
@@ -26,20 +27,20 @@
                         window.createToast('Saved', 'success')
                     }
                 }} />
-                <button
-                    class="button is-success"
-                    on:click={()=>{
+                <span class="material-symbols-outlined" on:click={()=>{
                         window.db.set(label, CONFIGS[label])
                         window.createToast('Saved', 'success')
-                    }}
-                        >Save</button>
-                <button
-                    class="button is-warning"
+                    }}>
+                    save_as
+                </span>
+                
+                <span
+                    class="material-symbols-outlined has-background-danger"
                     on:click={() => {
                         window.db.delete(label)
                         window.createToast(`${label} deleted`, 'danger')
                     }}
-                    >Clear</button>
+                    >close</span>
             </div>
             {:else}
             <h1>No data</h1>
@@ -74,7 +75,7 @@
                 display: grid;
                 grid-auto-flow: column;
                 grid-template-columns: 1fr auto;
-                align-items: baseline;
+                align-items: center;
                 gap: 1em;
             }
         }
