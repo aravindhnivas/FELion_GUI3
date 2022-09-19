@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v3.8.0-UNRELEASED
+## v3.8.0-RC
 
 - Added Features
   - Kinetics channels construction
