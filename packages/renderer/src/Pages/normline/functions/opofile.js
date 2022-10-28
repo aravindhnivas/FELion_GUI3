@@ -3,10 +3,9 @@ import { plot } from '../../../js/functions'
 import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
 
-export async function opofile_func({ dataFromPython, delta } = {}) {
+export async function opofile_func({ dataFromPython }) {
     try {
         await beforePlot({
-            delta,
             dataFromPython,
             graphDiv: 'opoRelPlot',
             baseGraphDiv: 'opoplot',

@@ -354,7 +354,7 @@ def main(args):
     print(f"felix: {args=}")
     
     felixfiles = args["felixfiles"]
-    delta = float(args["delta"])
+    delta = float(args["$deltaFELIX"])
     
     Normplot = normplot(felixfiles, delta)
     Normplot.begin_compute()

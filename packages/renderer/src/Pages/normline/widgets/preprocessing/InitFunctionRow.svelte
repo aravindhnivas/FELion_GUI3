@@ -2,6 +2,7 @@
     import {
         opoMode,
         showall,
+        deltaFELIX,
         toggleRow,
         normMethod,
         felixPeakTable,
@@ -35,9 +36,9 @@
     export let removeExtraFile
     ///////////////////////////////////////////////////////////////////////////
 
-    let delta = 1
+    // let delta = 1
     let active = false
-    let openShell = false
+    // let openShell = false
 
     let felixPlotWidgets = {
         text: [
@@ -59,9 +60,10 @@
 
     const fullData = {}
     let dataReady = false
+
     async function plotData({ e = null, filetype = 'felix', target = null } = {}) {
-        let pyfile = '',
-            args
+        let pyfile = ''
+        let args
 
         switch (filetype) {
             case 'felix':
@@ -79,7 +81,7 @@
                 dataReady = false
 
                 pyfile = 'normline.felix'
-                args = { felixfiles, delta }
+                args = { felixfiles, $deltaFELIX }
 
                 $felixPeakTable = []
                 $felixPlotAnnotations = []
@@ -100,7 +102,6 @@
 
                 fullData.data = dataFromPython
                 dataReady = true
-
                 break
 
             case 'baseline':
@@ -152,15 +153,16 @@
         }
     }
 
-    $: updateplot = dataReady && plotfile && $normMethod && fullData.data && !$opoMode
+    $: updateplot = !$opoMode && dataReady && plotfile && $normMethod && fullData.data
+
     $: if (updateplot && $showall) {
         if ($felixGraphPlotted) {
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
-
             const { layout } = $normMethodDatas[$normMethod]
             react('avgplot', currentData, layout)
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], 'bplot')
+
             subplot(
                 'Spectrum and Power Analyser',
                 'Wavelength set (cm-1)',
@@ -172,7 +174,7 @@
                 fullData.data['pow']
             )
         } else {
-            felix_func({ dataFromPython: fullData.data, delta })
+            felix_func({ dataFromPython: fullData.data })
             $felixGraphPlotted = true
         }
     } else if (updateplot) {
@@ -180,7 +182,6 @@
             fullData,
             plotfile,
             graphPlotted: $felixGraphPlotted,
-            delta,
         })
         $felixGraphPlotted = true
     }
@@ -204,7 +205,7 @@
         FELIX Plot
     </button>
 
-    <CustomTextSwitch style="width:7em" variant="outlined" bind:value={delta} label="Delta" step="0.5" />
+    <CustomTextSwitch style="width:7em" variant="outlined" bind:value={$deltaFELIX} label="Delta" step="0.5" />
     <button class="button is-link" on:click={() => (active = true)}> Open in Matplotlib</button>
     <button class="button is-link" on:click={() => ($toggleRow = !$toggleRow)}>Add Theory</button>
     <button

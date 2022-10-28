@@ -18,7 +18,7 @@ export const mapNormMethodKeys = {
     IntensityPerPhoton: 'average_per_photon',
 }
 
-export default function ({ fullData, plotfile, graphPlotted, delta }) {
+export default function ({ fullData, plotfile, graphPlotted }) {
     const data = fullData.data || null
     if (!data) return window.createToast('No data for ' + plotfile, 'danger')
     if (!data.average?.[plotfile]) return console.warn(plotfile, 'data is not available', data)
@@ -73,10 +73,9 @@ export default function ({ fullData, plotfile, graphPlotted, delta }) {
         const currentData = get_data(dataToPlot[currentKey])
         const { layout } = get(normMethodDatas)[get(normMethod)]
         react(get(graphDiv), currentData, layout)
-
     } else {
         const fn = get(opoMode) ? opofile_func : felix_func
-        fn({ dataFromPython: dataToPlot, delta })
+        fn({ dataFromPython: dataToPlot })
         graphPlotted = true
     }
 }

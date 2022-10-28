@@ -4,9 +4,8 @@ import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
 // import { relayout } from 'plotly.js-basic-dist'
 
-export async function felix_func({ dataFromPython, delta }: {dataFromPython: FELIXData, delta: number}) {
+export async function felix_func({ dataFromPython }: { dataFromPython: FELIXData }) {
     await beforePlot({
-        delta,
         dataFromPython,
         graphDiv: 'avgplot',
         baseGraphDiv: 'bplot',

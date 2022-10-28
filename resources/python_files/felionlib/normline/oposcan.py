@@ -111,7 +111,7 @@ def main(args):
     if tkplot == "run": tkplot = False
     else: tkplot = True
     
-    delta = args["deltaOPO"]
+    delta = args["$deltaOPO"]
     opoPower = float(args["opoPower"])
     calibFile = args["calibFile"]
     location = pt(opofiles[0]).parent / "../"

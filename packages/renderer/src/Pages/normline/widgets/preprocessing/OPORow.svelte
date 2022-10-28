@@ -1,7 +1,8 @@
 <script>
     import {
-        showall,
+        deltaOPO,
         opoMode,
+        showall,
         normMethod,
         baselineFile,
         OPOGraphPlotted,
@@ -33,7 +34,7 @@
     /////////////////////////////////////////////////////////////////////////
 
     let opoPower = 1
-    let deltaOPO = 0.3
+    // let deltaOPO = 0.3
     let calibFile = ''
     let showOPOFiles = false
     let OPOcalibFiles = []
@@ -54,7 +55,7 @@
 
         // const general = tkplot==="plot"
 
-        const args = { opofiles, tkplot, deltaOPO, calibFile, opoPower }
+        const args = { opofiles, tkplot, $deltaOPO, calibFile, opoPower }
         if (general)
             return computePy_func({
                 e,
@@ -83,7 +84,7 @@
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], 'opoplot')
             plot('OPO Calibration', 'Set Wavenumber (cm-1)', 'Measured Wavenumber (cm-1)', fullData.data['SA'], 'opoSA')
         } else {
-            opofile_func({ dataFromPython: fullData.data, delta: deltaOPO })
+            opofile_func({ dataFromPython: fullData.data })
             $OPOGraphPlotted = true
         }
     } else if (updateplot) {
@@ -91,7 +92,6 @@
             fullData,
             plotfile,
             graphPlotted: $OPOGraphPlotted,
-            delta: deltaOPO,
         })
         $OPOGraphPlotted = true
     }
@@ -121,7 +121,7 @@
             Browse File</button
         >
         <CustomSelect bind:value={calibFile} label="Calib. file" options={OPOcalibFiles} />
-        <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={deltaOPO} label="Delta OPO" />
+        <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={$deltaOPO} label="Delta OPO" />
         <CustomTextSwitch style="width:9em" step="0.1" variant="outlined" bind:value={opoPower} label="Power (mJ)" />
         <button class="button is-link" on:click={(e) => plotData({ e })}>Replot</button>
         <!-- <button class="button is-link" on:click={(e) => plotData({ e, tkplot: 'plot', general: true })}

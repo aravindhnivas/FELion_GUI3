@@ -23,15 +23,15 @@ export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode
 export const felixopoLocation = writable('')
 export const felixOpoDatLocation = derived([felixopoLocation], ([$felixopoLocation]) => {
     const data_location = window.path.resolve($felixopoLocation, '../EXPORT')
-    if(!window.fs.isDirectory(data_location)) return ''
+    if (!window.fs.isDirectory(data_location)) return ''
     return data_location
 })
 export const felixOpoDatfiles = derived([felixOpoDatLocation], ([$felixOpoDatLocation]) => {
-    if(!$felixOpoDatLocation) return []
+    if (!$felixOpoDatLocation) return []
     const datfiles = window.fs
-            .readdirSync($felixOpoDatLocation)
-            .filter((f) => f.endsWith('.dat'))
-            .map((f) => ({ name: f, id: window.getID() }))
+        .readdirSync($felixOpoDatLocation)
+        .filter((f) => f.endsWith('.dat'))
+        .map((f) => ({ name: f, id: window.getID() }))
     return datfiles
 })
 export const baselineFile = writable('')
@@ -68,3 +68,8 @@ export const showRawData = writable(true)
 export const showPowerData = writable(true)
 export const felixGraphPlotted = writable(false)
 export const OPOGraphPlotted = writable(false)
+export const deltaOPO = writable(0.3)
+export const deltaFELIX = writable(1)
+export const delta = derived([opoMode, deltaOPO, deltaFELIX], ([$opoMode, $deltaOPO, $deltaFELIX]) => {
+    return $opoMode ? $deltaOPO : $deltaFELIX
+})
