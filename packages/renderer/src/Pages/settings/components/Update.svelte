@@ -24,6 +24,8 @@
         }, 60 * 60 * 1000)
     })
 
+    let updateReadyToInstall = false
+
     unsubscribers[3] = window.db.onDidChange('update-status', (status) => {
         updateStatus.text = <string>status
 
@@ -40,6 +42,7 @@
                 break
 
             case 'update-downloaded':
+                updateReadyToInstall = true
                 updateStatus.type = 'success'
                 break
 
@@ -84,11 +87,17 @@
         <div class="align">
             <button
                 class="button is-link"
+                class:is-warning={updateReadyToInstall}
                 class:is-loading={updateStatus.text === 'checking-for-update'}
                 disabled={!window.isPackaged}
                 id="updateCheckBtn"
-                on:click={window.checkupdate}>Check update</button
+                on:click={() => {
+                    updateReadyToInstall ? window.quitAndInstall() : window.checkupdate()
+                }}
             >
+                {updateReadyToInstall ? 'Quit and Install' : 'Check update'}
+            </button>
+
             <button
                 class="button is-warning"
                 on:click={() => {
@@ -96,11 +105,11 @@
                 }}>What's New</button
             >
 
-            {#if updateStatus.text === 'update-downloaded'}
+            <!-- {#if updateReadyToInstall}
                 <button class="button is-warning ml-auto" on:click={window.quitAndInstall}
                     >Quit and Install update</button
                 >
-            {/if}
+            {/if} -->
         </div>
 
         {#if window.isPackaged}

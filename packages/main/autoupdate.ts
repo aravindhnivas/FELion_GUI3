@@ -4,7 +4,6 @@ import logger from 'electron-log'
 
 const mainWindow = BrowserWindow.getAllWindows()[0]
 autoUpdater.logger = logger
-// autoUpdater.logger.transports.file.level = 'info'
 
 if (app.isPackaged) {
     try {
@@ -22,7 +21,7 @@ ipcMain.handle('checkupdate', () => {
 })
 
 ipcMain.handle('quitAndInstall', () => {
-    if (!updateReadyToInstall) return console.warn('update not ready to install')
+    // if (!updateReadyToInstall) return updateLog('update not ready to install')
     autoUpdater.quitAndInstall()
 })
 
@@ -79,11 +78,11 @@ autoUpdater.on('download-progress', (progressObj) => {
     mainWindow.webContents.send('update-progress', progressObj)
 })
 
-let updateReadyToInstall = false
+// let updateReadyToInstall = false
 
 autoUpdater.on('update-downloaded', async (info) => {
     downloading = false
-    updateReadyToInstall = true
+    // updateReadyToInstall = true
     logger.info('update-downloaded' + info)
     mainWindow.webContents.send('db:update', {
         key: 'update-status',
@@ -99,7 +98,7 @@ autoUpdater.on('update-downloaded', async (info) => {
 
     const message = await dialog.showMessageBox(mainWindow, restartArgs)
     if (message.response === 0) {
-        updateReadyToInstall = false
+        // updateReadyToInstall = false
         autoUpdater.quitAndInstall()
     } else if (message.response === 1) {
         mainWindow.webContents.send('db:update', {
