@@ -46,9 +46,7 @@ export default async function beforePlot({
     }
     console.warn(get(delta))
     let set_title = (method: 'rel' | 'log' | 'hv') =>
-        `Normalised and Averaged Spectrum (delta=${get(delta)})<br>${
-            signal[method]
-        }; {C=Measured Count, B=Baseline Count}`
+        `Normalised and Averaged Spectrum<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
 
     let normMethod_datas = {
         Relative: {
@@ -88,9 +86,7 @@ export default async function beforePlot({
     if (!avgdataToPlot) return window.createToast('No data to plot', 'danger')
 
     plot(
-        `Normalised and Averaged Spectrum (delta=${get(
-            delta
-        )})<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
+        `Normalised and Averaged Spectrum<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
         'Calibrated Wavelength (cm-1)',
         ylabel,
         avgdataToPlot,
