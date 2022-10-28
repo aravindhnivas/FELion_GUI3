@@ -2,7 +2,6 @@ import { BrowserWindow, dialog, app, ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import logger from 'electron-log'
 
-
 const mainWindow = BrowserWindow.getAllWindows()[0]
 autoUpdater.logger = logger
 // autoUpdater.logger.transports.file.level = 'info'
@@ -18,11 +17,12 @@ if (app.isPackaged) {
 logger.info('App starting...')
 
 ipcMain.handle('checkupdate', () => {
+    if (downloading) return updateLog('Downloading update...')
     autoUpdater.checkForUpdates()
 })
 
 ipcMain.handle('quitAndInstall', () => {
-    if(!updateReadyToInstall) return console.warn('update not ready to install')
+    if (!updateReadyToInstall) return console.warn('update not ready to install')
     autoUpdater.quitAndInstall()
 })
 
@@ -56,6 +56,7 @@ autoUpdater.on('update-not-available', (info) => {
 })
 
 autoUpdater.on('error', (err) => {
+    downloading = false
     logger.error(err)
     mainWindow.webContents.send('db:update', {
         key: 'update-status',
@@ -67,7 +68,10 @@ autoUpdater.on('error', (err) => {
     })
 })
 
+let downloading = false
+
 autoUpdater.on('download-progress', (progressObj) => {
+    downloading = true
     let log_message = 'Download speed: ' + progressObj.bytesPerSecond
     log_message = log_message + ' - Downloaded ' + progressObj.percent + '%'
     log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')'
@@ -78,7 +82,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 let updateReadyToInstall = false
 
 autoUpdater.on('update-downloaded', async (info) => {
-
+    downloading = false
     updateReadyToInstall = true
     logger.info('update-downloaded' + info)
     mainWindow.webContents.send('db:update', {
