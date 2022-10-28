@@ -40,7 +40,5 @@ export const running_processes = writable<{
         style: string,
     }
 }[]>([])
-export const updateInterval = writable(<number>window.db.get('updateInterval'))
-if (!window.db.has('updateInterval')) {
-    window.db.set('updateInterval', 15)
-}
+
+export const updateInterval = writable(<number>window.db.get('updateInterval') || 15)

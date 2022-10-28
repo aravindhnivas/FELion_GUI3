@@ -14,11 +14,23 @@ ipcRenderer.on('update-progress', (_, progressObj) => {
     }
 })
 
+
 export function checkupdate(): void {
+    console.warn('checking for update')
+
     if(!isPackaged) return db.set('updateError', 'Cannot check for updates in dev mode')
     if (!navigator.onLine) return db.set('updateError', 'No internet connection')
+    
+    const updateCheckDiv = document.getElementById('update-check-status')
+    if(updateCheckDiv) {
+        updateCheckDiv.textContent = new Date().toLocaleString() 
+    }
+
     ipcRenderer.invoke('checkupdate', null)
     localStorage.setItem('update-error', '')
 }
-
+// checkupdate()
 exposeInMainWorld('checkupdate', checkupdate)
+exposeInMainWorld('quitAndInstall', () => {
+    ipcRenderer.invoke('quitAndInstall', null)
+})

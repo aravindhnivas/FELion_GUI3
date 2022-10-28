@@ -8,7 +8,7 @@
 
     const updateError = window.persistentDB('updateError', '')
     let updateIntervalCycle: NodeJS.Timer | null = null
-    let updating = false
+    // let updating = false
     let unsubscribers: Unsubscribe[] = []
 
     unsubscribers[0] = window.db.onDidChange('updateError', (err) => {
@@ -25,22 +25,22 @@
     })
 
     unsubscribers[3] = window.db.onDidChange('update-status', (status) => {
-        switch (<string>status) {
+        updateStatus.text = <string>status
+
+        switch (updateStatus.text) {
             case 'checking-for-update':
-                updating = true
                 break
 
             case 'update-not-available':
-                updating = false
                 break
 
             case 'download-error':
-                updating = false
+                updateStatus.type = 'danger'
                 updateError.set('Download error')
                 break
 
             case 'update-downloaded':
-                updating = false
+                updateStatus.type = 'success'
                 break
 
             default:
@@ -48,8 +48,21 @@
         }
     })
 
+    unsubscribers[4] = window.db.onDidChange('updateInterval', (interval) => {
+        console.log('updateInterval changed', interval)
+        $updateInterval = <number>interval
+        if (updateIntervalCycle) {
+            clearInterval(updateIntervalCycle)
+        }
+        updateIntervalCycle = setInterval(window.checkupdate, $updateInterval * 60 * 1000)
+    })
+
+    let lastUpdateCheck: string = 'Not checked yet'
+    const updateStatus = { text: '', type: 'info' }
+
     onMount(async () => {
         if (!window.isPackaged) return
+        window.checkupdate()
         updateIntervalCycle = setInterval(window.checkupdate, $updateInterval * 60 * 1000)
     })
 
@@ -63,7 +76,6 @@
 
 <div class="align animate__animated animate__fadeIn" class:hide={$currentTab !== 'Update'}>
     <h1>Update</h1>
-
     <div class="subtitle" style="width: 100%;">
         Current version: {window.appVersion}
     </div>
@@ -71,22 +83,32 @@
     <div class="align">
         <div class="align">
             <button
-                disabled={!window.isPackaged}
                 class="button is-link"
-                class:is-loading={updating}
+                class:is-loading={updateStatus.text === 'checking-for-update'}
+                disabled={!window.isPackaged}
                 id="updateCheckBtn"
                 on:click={window.checkupdate}>Check update</button
             >
-
             <button
                 class="button is-warning"
                 on:click={() => {
                     $activateChangelog = true
                 }}>What's New</button
             >
+
+            {#if updateStatus.text === 'update-downloaded'}
+                <button class="button is-warning ml-auto" on:click={window.quitAndInstall}
+                    >Quit and Install update</button
+                >
+            {/if}
         </div>
 
         {#if window.isPackaged}
+            <div class="updateCheck_status_div">
+                <span>Last checked</span>
+                <span class="tag is-warning" id="update-check-status">{lastUpdateCheck}</span>
+                <span class="tag is-{updateStatus.type}">{updateStatus.text}</span>
+            </div>
             <div id="update-progress-container">
                 <label for="file">Download progress:</label>
                 <progress id="update-progress" max="100" value="0"> 0%</progress>
@@ -97,6 +119,13 @@
 </div>
 
 <style lang="scss">
+    .updateCheck_status_div {
+        display: flex;
+        gap: 0.2em;
+        align-items: flex-end;
+        flex-direction: column;
+        margin-left: auto;
+    }
     #update-progress-container {
         progress {
             width: 100%;

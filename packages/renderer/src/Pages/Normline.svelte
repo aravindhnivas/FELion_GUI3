@@ -165,14 +165,12 @@
             <CustomSwitch bind:selected={showOPO} label="showOPO" />
             <CustomSwitch bind:selected={showTheory} label="showTheory" />
             <CustomSwitch bind:selected={$showall} label="showall" />
-
             <CustomSwitch bind:selected={$showRawData} label="showRawData" />
             <CustomSwitch bind:selected={$showPowerData} label="showPowerData" />
         </div>
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
-        <!-- <div class="graph__container" id="plot_container__div__{filetype}"> -->
         <div class="animate__animated animate__fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot" />
         <div id="felix_graphs" class:hide={!showFELIX}>
             <div id="bplot" class="graph__div" class:hide={!$showRawData} />
@@ -185,7 +183,6 @@
             <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoSA" />
             <div class="animate__animated animate__fadeIn graph__div" id="opoRelPlot" />
         </div>
-        <!-- </div> -->
     </svelte:fragment>
 
     <svelte:fragment slot="config">

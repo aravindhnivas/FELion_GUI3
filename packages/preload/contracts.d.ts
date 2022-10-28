@@ -23,6 +23,7 @@ interface Exposed {
     readonly isPackaged: Readonly<typeof import('./definedEnv').isPackaged>;
     readonly shell: Readonly<typeof import('./definedEnv').shellUtils>;
     readonly checkupdate: typeof import('./update-log').checkupdate;
+    readonly quitAndInstall: () => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

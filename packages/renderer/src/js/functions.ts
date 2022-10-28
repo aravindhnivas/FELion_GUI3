@@ -1,8 +1,8 @@
 import { mainPreModal } from '$src/sveltewritables'
 import { writable } from 'svelte/store'
 import { toast } from '@zerodevx/svelte-toast'
-import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
 import type { SvelteToastOptions } from '@zerodevx/svelte-toast'
+import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false)
 export const updateAvailable = writable(false)
@@ -28,6 +28,13 @@ const toastTheme:ToastThemeOpts  = <const>{
         '--toastBackground': '#FFB84D',
         '--toastBarBackground': '#C28B00',
     },
+}
+
+export const callback_toast = (message: string, theme: keyof ToastThemeOpts = 'info', options?: SvelteToastOptions) => {
+    toast.push(message, {
+        theme: toastTheme[theme],
+        ...options,
+    })
 }
 
 export const createToast = (

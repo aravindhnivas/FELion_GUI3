@@ -23,16 +23,16 @@
     const dispatch = createEventDispatcher()
 
     onMount(() => {
-        graphPlotted = false
+        // graphPlotted = true
         console.log(id, 'mounted')
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         $graph_detached[id] = false
     })
 
-    let graphDivContainer
-    let graphDivs = []
+    let graphDivContainer: HTMLElement
+    let graphDivs: Plotly.PlotlyHTMLElement[] = []
 
-    const lookForGraph = (node) => {
+    const lookForGraph = (node: HTMLElement) => {
         try {
             graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
         } catch (error) {
@@ -62,7 +62,6 @@
                 $graph_detached[id] = false
             },
         })
-
         graphWindow?.maximize(true)
         changeGraphDivWidth()
 
@@ -76,7 +75,7 @@
     const changeGraphDivWidth = async (event?: CustomEvent) => {
         await tick()
         graphDivs?.forEach((id) => {
-            if (!id?.data) return
+            if (!id?.on) return
             try {
                 relayout(id, { width: id.clientWidth })
             } catch (error) {
@@ -86,11 +85,11 @@
     }
 
     onDestroy(() => {
+        // graphPlotted = true
         graphWindow?.close()
         console.log(id, 'destroyed')
     })
     let location = (window.db.get(`${filetype}_location`) as string) || ''
-    $: console.log({ graphPlotted })
 </script>
 
 <section {id} style:display class="animate__animated animate__fadeIn">
@@ -123,6 +122,14 @@
                 {#if graphPlotted}
                     <button transition:fade class="button is-warning flex" on:click={openGraph}
                         ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
+                    >
+                    <button
+                        transition:fade
+                        class="button is-warning flex"
+                        on:click={() => {
+                            changeGraphDivWidth()
+                            window.createToast('Graphs resized')
+                        }}>Fix-width</button
                     >
                 {/if}
             </div>
