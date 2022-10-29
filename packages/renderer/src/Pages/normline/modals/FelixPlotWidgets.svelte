@@ -4,7 +4,7 @@
     import Textfield from '@smui/textfield'
     import CustomCheckList from '$components/CustomCheckList.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
-    import { onMount } from 'svelte'
+    // import { onMount } from 'svelte'
     export let felixPlotWidgets: {
         text: ValueLabel<string>[]
         boolean: ValueLabel<boolean>[]
@@ -69,11 +69,10 @@
         ]
         console.log(`files loaded`)
     }
-
-    $: if ($felixOpoDatLocation || theoryLocation) {
-        loadFiles()
-    }
-    onMount(loadFiles)
+    // $: if ($felixOpoDatLocation || theoryLocation) {
+    //     loadFiles()
+    // }
+    // onMount(loadFiles)
 </script>
 
 <div style="padding-bottom: 1em;">

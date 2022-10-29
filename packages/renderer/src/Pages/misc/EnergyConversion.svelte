@@ -82,7 +82,7 @@
             <Textfield
                 disabled
                 value={SpeedOfLight}
-                label="Speed of light in vaccum (cm/s)"
+                label="Speed of light in vaccum (m/s)"
             />
             <Textfield
                 disabled

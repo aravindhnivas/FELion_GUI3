@@ -96,16 +96,14 @@
         }
     }
 
-    let fullfiles = []
+    $: fullfiles = $opoMode
+        ? [...opofiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')]
+        : [...felixfiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')]
+
     let activateConfigModal = false
-
-    $: $opoMode
-        ? (fullfiles = [...opofiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')])
-        : (fullfiles = [...felixfiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')])
-
     let modalActivate = false
     let adjustPeakTrigger = false
-
+    // $: console.warn({ $opoMode })
     let plotfile = 'average'
     let showFELIX = true
     let showOPO = true

@@ -8,17 +8,17 @@
     export let footer = true
     export let currentLocation = ''
 
-    function browse_folder() {
-        const [result] = window.browse()
-        if (!result) return
-        currentLocation = result
-        window.createToast('Location updated')
-    }
+    // function browse_folder() {
+    //     const [result] = window.browse()
+    //     if (!result) return
+    //     currentLocation = result
+    //     window.createToast('Location updated')
+    // }
 </script>
 
 <div class="quickview" class:is-active={active} transition:fade>
     <header class="quickview-header">
-        <button class="button is-link" on:click={browse_folder}>Browse</button>
+        <!-- <button class="button is-link" on:click={browse_folder}>Browse</button> -->
         <div class="subtitle" style="margin:0;">{title}</div>
         <span class="delete is-pulled-right" data-dismiss="quickview" on:click={() => (active = false)} />
     </header>

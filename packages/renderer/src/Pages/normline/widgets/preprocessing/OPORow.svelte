@@ -22,6 +22,8 @@
     import { plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import { react } from 'plotly.js-basic-dist'
+    // import Textfield from '@smui/textfield'
+    import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -51,8 +53,8 @@
         removeExtraFile()
 
         if (opofiles.length < 1) return window.createToast('No files selected', 'danger')
-        ;($opoMode = true), ($felixPlotAnnotations = [])
-
+        // $opoMode = true
+        $felixPlotAnnotations = []
         // const general = tkplot==="plot"
 
         const args = { opofiles, tkplot, $deltaOPO, calibFile, opoPower }
@@ -69,7 +71,7 @@
         computePy_func({ e, pyfile: 'normline.oposcan', args, general }).then((dataFromPython) => {
             fullData.data = dataFromPython
             dataReady = true
-            $opoMode = true
+            // $opoMode = true
             showOPOFiles = false
         })
     }
@@ -110,22 +112,39 @@
 />
 
 {#if $opoMode}
-    <div class="align">
-        <span class="tag is-warning ">OPO Mode: </span>
-        <button
-            class="button is-link"
-            on:click={() => {
-                showOPOFiles = !showOPOFiles
-            }}
-        >
-            Browse File</button
-        >
-        <CustomSelect bind:value={calibFile} label="Calib. file" options={OPOcalibFiles} />
-        <CustomTextSwitch style="width:7em;" step="0.1" variant="outlined" bind:value={$deltaOPO} label="Delta OPO" />
-        <CustomTextSwitch style="width:9em" step="0.1" variant="outlined" bind:value={opoPower} label="Power (mJ)" />
-        <button class="button is-link" on:click={(e) => plotData({ e })}>Replot</button>
-        <!-- <button class="button is-link" on:click={(e) => plotData({ e, tkplot: 'plot', general: true })}
-            >Open in Matplotlib</button
-        > -->
-    </div>
+    <BrowseTextfield
+        class="two_col_browse box"
+        style="border: solid 1px;"
+        bind:value={OPOLocation}
+        label="OPO location"
+    />
+    {#if window.fs.isDirectory(OPOLocation)}
+        <div class="align">
+            <span class="tag is-warning ">OPO Mode: </span>
+            <button
+                class="button is-warning"
+                on:click={() => {
+                    showOPOFiles = !showOPOFiles
+                }}
+            >
+                Show files</button
+            >
+            <CustomSelect bind:value={calibFile} label="Calib. file" options={OPOcalibFiles} />
+            <CustomTextSwitch
+                style="width:7em;"
+                step="0.1"
+                variant="outlined"
+                bind:value={$deltaOPO}
+                label="Delta OPO"
+            />
+            <CustomTextSwitch
+                style="width:9em"
+                step="0.1"
+                variant="outlined"
+                bind:value={opoPower}
+                label="Power (mJ)"
+            />
+            <button class="button is-link" on:click={(e) => plotData({ e })}>Replot</button>
+        </div>
+    {/if}
 {/if}

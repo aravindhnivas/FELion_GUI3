@@ -11,6 +11,7 @@
     export let type: string = 'text'
     export let updateMode: boolean | null = null
 
+    export let style: string = ''
     let className: string = ''
     export { className as class }
 
@@ -21,7 +22,7 @@
     }
 </script>
 
-<div class={className}>
+<div class={className} {style}>
     {#if browseBtn}
         <button
             disabled={lock ?? false}

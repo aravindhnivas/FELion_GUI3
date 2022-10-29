@@ -117,20 +117,22 @@
                 <span class="material-symbols-outlined" on:click={() => (activateConfigModal = true)}>build</span>
             </BrowseTextfield>
 
-            <div class="button__div align" id="{filetype}-buttonContainer">
+            <div class="button__div pr-2 py-2" id="{filetype}-buttonContainer">
                 <slot name="buttonContainer" />
                 {#if graphPlotted}
-                    <button transition:fade class="button is-warning flex" on:click={openGraph}
-                        ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
-                    >
-                    <button
-                        transition:fade
-                        class="button is-warning flex"
-                        on:click={() => {
-                            changeGraphDivWidth()
-                            window.createToast('Graphs resized')
-                        }}>Fix-width</button
-                    >
+                    <div class="align">
+                        <button transition:fade class="button is-warning flex" on:click={openGraph}
+                            ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
+                        >
+                        <button
+                            transition:fade
+                            class="button is-warning flex"
+                            on:click={() => {
+                                changeGraphDivWidth()
+                                window.createToast('Graphs resized')
+                            }}>Fix-width</button
+                        >
+                    </div>
                 {/if}
             </div>
             <div
@@ -207,8 +209,6 @@
         .left_container__div,
         .right_container__div {
             overflow: hidden;
-            // max-height: calc(100vh - 6rem);
-            // height: 100%;
         }
 
         .right_container__div {
@@ -224,5 +224,12 @@
         overflow: auto;
         padding-right: 1em;
         padding-bottom: 12em;
+    }
+
+    .button__div {
+        display: grid;
+        gap: 1em;
+        overflow: auto;
+        min-height: 3rem;
     }
 </style>

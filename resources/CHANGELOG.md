@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v3.8.1
+
+- Browse locations added for OPO and theory rows (Normline)
+- Minor bug fixes (OPO mode)
+- Label corrections (cm/s -> m/s for speed of light)
+
 ## v3.8.0
 
 - Added Features
@@ -10,6 +16,8 @@
 - BUG FIX:
   - Kinetics scan keyFound error
   - Lots of bug fixes on kinetics and THz simulations
+
+---
 
 ## v3.7.0
 
