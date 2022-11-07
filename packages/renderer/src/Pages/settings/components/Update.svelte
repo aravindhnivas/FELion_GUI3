@@ -104,12 +104,6 @@
                     $activateChangelog = true
                 }}>What's New</button
             >
-
-            <!-- {#if updateReadyToInstall}
-                <button class="button is-warning ml-auto" on:click={window.quitAndInstall}
-                    >Quit and Install update</button
-                >
-            {/if} -->
         </div>
 
         {#if window.isPackaged}
@@ -118,8 +112,11 @@
                 <span class="tag is-warning" id="update-check-status">{lastUpdateCheck}</span>
                 <span class="tag is-{updateStatus.type}">{updateStatus.text}</span>
             </div>
-            <div id="update-progress-container">
-                <label for="file">Download progress:</label>
+            <div
+                id="update-progress-container"
+                style:display={updateStatus.text === 'update-available' ? 'block' : 'none'}
+            >
+                <label for="update-progress">Download progress:</label>
                 <progress id="update-progress" max="100" value="0"> 0%</progress>
             </div>
             <Notify bind:label={$updateError} type="danger" />
