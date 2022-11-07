@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.9.0-UNRELEASED
+
+- New features
+  - Toggle rows for toggling rows and full screen advantage
+  - Normline different mode distinction
+  
+---
+
 ## v3.8.1
 
 - Browse locations added for OPO and theory rows (Normline)
