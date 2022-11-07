@@ -4,9 +4,6 @@ dist
 **/*.pyo
 **/__pycache__/
 misc/*
-py3*/
-*.egg-info*/
 resources/**/*felionpy
-python3/
-**/nuitka*
 **/*.tmp
+resources/configs/autopy-config.json
