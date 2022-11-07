@@ -214,7 +214,7 @@
             $opoMode = !$opoMode
         }}>OPO</button
     >
-    {#if $opoMode}
+    <!-- {#if $opoMode}
         <span class="tag ml-auto" style="border: solid 1px; background-color: #ffa94d33;">OPO Mode</span>
-    {/if}
+    {/if} -->
 </div>

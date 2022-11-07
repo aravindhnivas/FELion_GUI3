@@ -145,6 +145,11 @@
     bind:activateConfigModal
     on:markedFile={(e) => ($baselineFile = e.detail.markedFile)}
 >
+    <svelte:fragment slot="toggle_row">
+        {#if $opoMode}
+            <span class="tag" style="border: solid 1px; background-color: #ffa94d33;">OPO Mode</span>
+        {/if}
+    </svelte:fragment>
     <svelte:fragment slot="buttonContainer">
         <InitFunctionRow
             {removeExtraFile}

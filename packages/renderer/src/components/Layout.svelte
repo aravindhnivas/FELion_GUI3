@@ -115,6 +115,7 @@
 
         <div class="right_container__div box background-body " id="{filetype}__mainContainer__div">
             <div class="align" style="justify-content: end;">
+                <div class="mr-auto"><slot name="toggle_row" /></div>
                 <div class="tag is-link">
                     <IconButton
                         on:click={() => {
@@ -160,8 +161,6 @@
                     class="material-symbols-outlined"
                     on:click={() => (activateConfigModal = true)}>build</span
                 >
-                <!-- </div> -->
-                <slot name="toggle_row" />
             </div>
 
             {#if browse_location_div_toggle}
