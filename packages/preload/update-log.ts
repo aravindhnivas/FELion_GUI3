@@ -6,7 +6,7 @@ import {isPackaged} from './definedEnv'
 ipcRenderer.on('update-log', (_, info) => console.warn(info))
 ipcRenderer.on('update-progress', (_, progressObj) => {
     const progressContainer = <HTMLElement>document.getElementById('update-progress-container')
-    progressContainer.style.display = 'grid'
+    progressContainer.style.display = 'block'
     const progressDiv = <HTMLProgressElement>document.getElementById('update-progress')
     if (progressObj.total > 0) {
         progressDiv.value = progressObj.percent

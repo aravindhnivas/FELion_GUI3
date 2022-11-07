@@ -112,10 +112,7 @@
                 <span class="tag is-warning" id="update-check-status">{lastUpdateCheck}</span>
                 <span class="tag is-{updateStatus.type}">{updateStatus.text}</span>
             </div>
-            <div
-                id="update-progress-container"
-                style:display={updateStatus.text === 'update-available' ? 'block' : 'none'}
-            >
+            <div id="update-progress-container" style="display:none;">
                 <label for="update-progress">Download progress:</label>
                 <progress id="update-progress" max="100" value="0"> 0%</progress>
             </div>
