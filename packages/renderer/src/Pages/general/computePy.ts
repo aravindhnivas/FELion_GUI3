@@ -11,6 +11,24 @@ interface Type {
     e?: Event;
 }
 
+const restartServer = async () => {
+    const restartPyServer = await window.dialogs.showMessageBox({
+        message: 'Restart Python server?',
+        title: 'Python server is not ready',
+        type: 'warning',
+        buttons: ['Ok', 'Cancel'],
+    })
+
+    if (restartPyServer.response == 1) return Promise.resolve(null)
+
+    const serverSpawned = await window.startServer()
+    if (!serverSpawned) {
+        window.handleError('Python server is not ready. Fix it in Settings --> Configuration')
+        return Promise.resolve(null)
+    }
+    window.createToast('Python server is ready')
+    return Promise.resolve(true)
+}
 export default async function ({ e, target, pyfile, args, general}: Type) {
     
     target ||= e?.target as HTMLButtonElement
@@ -24,22 +42,11 @@ export default async function ({ e, target, pyfile, args, general}: Type) {
         console.warn(`Running python in ${get(developerMode) ? 'developer' : 'production'} mode \n ${get(pyProgram)}`)
 
         if (!get(pyServerReady)) {
-            const restartPyServer = await window.dialogs.showMessageBox({
-                message: 'Restart Python server?',
-                title: 'Python server is not ready',
-                type: 'warning',
-                buttons: ['Ok', 'Cancel'],
-            })
-
-            if (restartPyServer.response == 1) return Promise.resolve(null)
-
-            const serverSpawned = await window.startServer()
-            if (!serverSpawned) {
-                window.handleError('Python server is not ready. Fix it in Settings --> Configuration')
-                return Promise.resolve(null)
+            await window.sleep(2000)
+            if (!get(pyServerReady)) {
+                const ready = await restartServer()
+                if (!ready) return Promise.resolve(null)
             }
-
-            window.createToast('Python server is ready')
         }
 
         console.warn({ pyfile, args, general })
