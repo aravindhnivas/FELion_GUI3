@@ -7,3 +7,5 @@ misc/*
 resources/**/*felionpy
 **/*.tmp
 resources/configs/autopy-config.json
+*py3*
+*.egg-info
