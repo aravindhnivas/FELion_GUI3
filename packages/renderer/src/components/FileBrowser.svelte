@@ -141,9 +141,10 @@
 
 <div class="filebrowser-header">
     <div class="align h-center">
-        <i class="material-symbols-outlined" on:click={() => changeDirectory('..')}>arrow_back</i>
+        <i role="presentation" class="material-symbols-outlined" on:click={() => changeDirectory('..')}>arrow_back</i>
 
         <i
+            role="presentation"
             class="material-symbols-outlined animate__animated animate__faster"
             on:animationend={({ target }) => target.classList.remove('animate__rotateIn')}
             on:click={({ target }) => {
@@ -201,8 +202,13 @@
         {#if otherfolders.length}
             <div class="folders">
                 {#each otherfolders as folder (folder.id)}
-                    <div class="align" on:click={() => changeDirectory(folder.name)} transition:slide|local>
-                        <i class="material-symbols-outlined">keyboard_arrow_right</i>
+                    <div
+                        role="presentation"
+                        class="align"
+                        on:click={() => changeDirectory(folder.name)}
+                        transition:slide|local
+                    >
+                        <i role="presentation" class="material-symbols-outlined">keyboard_arrow_right</i>
                         <div class="folder mdc-typography--subtitle1">{folder.name}</div>
                     </div>
                 {/each}

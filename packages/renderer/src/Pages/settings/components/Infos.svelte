@@ -10,8 +10,11 @@
             {@const value = window.appInfo[label]}
             <div class="info__item">
                 <Textfield {value} {label} disabled />
-                <i class="material-symbols-outlined" on:click={() => window.shell.showItemInFolder(value)}
-                    >open_in_new</i
+
+                <i
+                    role="presentation"
+                    class="material-symbols-outlined"
+                    on:click={() => window.shell.showItemInFolder(value)}>open_in_new</i
                 >
             </div>
         {/each}

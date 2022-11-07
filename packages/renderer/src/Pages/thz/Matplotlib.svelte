@@ -44,7 +44,7 @@
 <Modal bind:active title="THz plots">
     <svelte:fragment slot="body_header__div">
         <div class="align">
-            <span class="material-symbols-outlined" on:click={loadfiles}>refresh</span>
+            <span role="presentation" class="material-symbols-outlined" on:click={loadfiles}>refresh</span>
             <span class="tag is-{loadStatus.type}">{loadStatus.name}</span>
         </div>
     </svelte:fragment>

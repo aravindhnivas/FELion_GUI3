@@ -18,7 +18,12 @@
         <div class="box interact left_container__div">
             <div class="title__div">
                 {#each tabs as tab (tab)}
-                    <div class="hvr-glow" class:clicked={$currentTab === tab} on:click={() => ($currentTab = tab)}>
+                    <div
+                        role="presentation"
+                        class="hvr-glow"
+                        class:clicked={$currentTab === tab}
+                        on:click={() => ($currentTab = tab)}
+                    >
                         {tab}
                     </div>
                 {/each}

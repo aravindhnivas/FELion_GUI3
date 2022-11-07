@@ -14,7 +14,7 @@
 <div class="config_main__div box">
     <div class="two_col__div">
         <Textfield style="border: solid 1px #fff7;" value={window.db.path} label="CONFIGS location" disabled />
-        <i class="material-symbols-outlined" on:click={() => window.shell.showItemInFolder(window.db.path)}>open_in_new</i>
+        <i role="presentation" class="material-symbols-outlined" on:click={() => window.shell.showItemInFolder(window.db.path)}>open_in_new</i>
     </div>
 
     <div class="config__div ">
@@ -27,14 +27,14 @@
                         window.createToast('Saved', 'success')
                     }
                 }} />
-                <span class="material-symbols-outlined" on:click={()=>{
+                <span role="presentation" class="material-symbols-outlined" on:click={()=>{
                         window.db.set(label, CONFIGS[label])
                         window.createToast('Saved', 'success')
                     }}>
                     save_as
                 </span>
                 
-                <span
+                <span role="presentation" 
                     class="material-symbols-outlined has-background-danger"
                     on:click={() => {
                         window.db.delete(label)

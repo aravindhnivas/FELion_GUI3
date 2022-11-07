@@ -59,6 +59,7 @@
 
         {#if update}
             <i
+                role="presentation"
                 class="material-symbols-outlined animate__animated animate__faster"
                 on:animationend={({ currentTarget }) => currentTarget.classList.remove('animate__rotateIn')}
                 on:click={({ currentTarget }) => {

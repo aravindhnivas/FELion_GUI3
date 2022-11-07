@@ -229,7 +229,8 @@
 {#if toggleFindPeaksRow}
     <div class="align v-baseline">
         <div class="align">
-            <i class="material-symbols-outlined" on:click={() => (modalActivate = true)}>settings</i>
+            <i role="presentation" class="material-symbols-outlined" on:click={() => (modalActivate = true)}>settings</i
+            >
             <CustomSwitch bind:selected={boxSelected_peakfinder} label="limited range" />
             <CustomSwitch bind:selected={fitall} label="fit all methods" />
             <button

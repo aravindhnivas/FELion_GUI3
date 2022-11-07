@@ -147,14 +147,14 @@
         {mainTitle}
 
         <div
+            role="presentation"
             style="display: flex; font-size: large; font-weight: 400; padding-right: 1em;"
             on:click={() => (showReport = !showReport)}
         >
             {showReport ? 'hideReport' : 'showReport'}
         </div>
-
         {#if reportWindowClosed}
-            <i class="material-symbols-outlined" on:click={openReport}>zoom_out_map</i>
+            <i role="presentation" class="material-symbols-outlined" on:click={openReport}>zoom_out_map</i>
         {/if}
     </div>
 

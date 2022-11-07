@@ -29,7 +29,12 @@
                     <STable idKey="pid" rows={$running_processes} rowKeys={['pid', 'pyfile', 'close']} />
                     <!-- <RunningProcess /> -->
                 </MenuSurface>
-                <div class="navbar-item" style="cursor: pointer;" on:click={() => surface.setOpen(true)}>
+                <div
+                    role="presentation"
+                    class="navbar-item"
+                    style="cursor: pointer;"
+                    on:click={() => surface.setOpen(true)}
+                >
                     Running {$running_processes.length}
                     {$running_processes.length > 1 ? 'processes' : 'process'}
                 </div>

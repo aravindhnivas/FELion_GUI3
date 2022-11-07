@@ -135,7 +135,7 @@
     <div class="align h-center mb-5">
         {#if !rateConstantMode}
             <Textfield bind:value={maxGuess} label="max-guess-value" />
-            <i class="material-symbols-outlined" on:click={updateGuessMaxValues}>refresh</i>
+            <i role="presentation" class="material-symbols-outlined" on:click={updateGuessMaxValues}>refresh</i>
         {/if}
     </div>
 

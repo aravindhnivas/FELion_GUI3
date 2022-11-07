@@ -19,6 +19,7 @@
                     <LinearProgress {progress} buffer={0} />
                     <div class="progess_number__div">{Number(progress * 100).toFixed(0)}%</div>
                     <span
+                        role="presentation"
                         style="cursor: pointer;"
                         class="tag is-danger"
                         on:click={() => {

@@ -33,6 +33,7 @@
         <header class="modal-card-head">
             <p class="modal-card-title">{title}</p>
             <span
+                role="presentation"
                 class="delete is-pulled-right"
                 on:click={() => {
                     active = false

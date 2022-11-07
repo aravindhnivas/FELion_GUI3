@@ -53,7 +53,9 @@
     {/if}
 
     {#if addextraOption}
-        <i class="material-symbols-outlined" style="float: right; padding: 0.5em;" on:click={addRow}>add</i>
+        <i role="presentation" class="material-symbols-outlined" style="float: right; padding: 0.5em;" on:click={addRow}
+            >add</i
+        >
     {/if}
 
     <div class="mdc-data-table tableContainer">
@@ -74,9 +76,9 @@
                             role="columnheader"
                             scope="col"
                         >
-                            <div class="tableIcon" on:click={() => sortTable(keys[index])}>
+                            <div role="presentation" class="tableIcon" on:click={() => sortTable(keys[index])}>
                                 {#if sortOption}
-                                    <i class="material-symbols-outlined"
+                                    <i role="presentation" class="material-symbols-outlined"
                                         >{sortTypeAscending ? 'arrow_upward' : 'arrow_downward'}</i
                                     >
                                 {/if}
@@ -104,6 +106,7 @@
                         {#if closeOption}
                             <td class="mdc-data-table__cell" style="background: #f14668; cursor: pointer; width: 2em;">
                                 <i
+                                    role="presentation"
                                     id={row.id}
                                     class="material-symbols-outlined"
                                     on:click={(e) => {

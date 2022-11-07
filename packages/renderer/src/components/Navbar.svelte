@@ -26,6 +26,7 @@
 </script>
 
 <div
+    role="presentation"
     class="box animate__animated animate__fadeInDown"
     id="navbar"
     style="display:none; background: #5a419b;"

@@ -114,7 +114,11 @@
 
         <div class="right_container__div box background-body " id="{filetype}__mainContainer__div">
             <BrowseTextfield class="three_col_browse" bind:value={currentLocation} label="Current location">
-                <span class="material-symbols-outlined" on:click={() => (activateConfigModal = true)}>build</span>
+                <span
+                    role="presentation"
+                    class="material-symbols-outlined"
+                    on:click={() => (activateConfigModal = true)}>build</span
+                >
             </BrowseTextfield>
 
             <div class="button__div pr-2 py-2" id="{filetype}-buttonContainer">

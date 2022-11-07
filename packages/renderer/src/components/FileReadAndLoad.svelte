@@ -165,7 +165,7 @@
 </script>
 
 <div class="container mb-5">
-    <button class="button is-warning" on:click={load_data}>Load</button>
+    <button class="button is-warning" on:click={() => load_data()}>Load</button>
     <TextAndSelectOptsToggler
         bind:value={filename}
         label={`config file (*${options_filter})`}
@@ -184,7 +184,7 @@
             <Textfield bind:value={configDir} label="save location" />
         </div>
     </MenuSurface>
-    <span class="material-symbols-outlined" on:click={() => surface.setOpen(true)}> help </span>
+    <span role="presentation" class="material-symbols-outlined" on:click={() => surface.setOpen(true)}> help </span>
 </div>
 
 <style>
