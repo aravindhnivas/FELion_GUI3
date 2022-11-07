@@ -97,6 +97,10 @@
             {serverCurrentStatus.value}
         </div>
 
+        {#if $developerMode}
+            <div class="tag is-danger ml-auto">Dev Mode</div>
+        {/if}
+
         <div class="align">
             <button class="button is-link" on:click={() => ($developerMode = !$developerMode)}>
                 Developer mode: {$developerMode}
