@@ -40,7 +40,7 @@ export const filedetails = writable([])
 export const felixPlotAnnotations = writable([])
 export const plotlyEventCreatedFELIX = writable(false)
 export const plotlyEventCreatedOPO = writable(false)
-export const toggleRow = writable(false)
+export const theoryRow = writable(false)
 export const graphDiv = derived(opoMode, ($opoMode) => {
     return $opoMode ? 'opoRelPlot' : 'avgplot'
 })

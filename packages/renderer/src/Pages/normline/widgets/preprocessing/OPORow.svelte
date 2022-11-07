@@ -33,6 +33,8 @@
     export let removeExtraFile
     export let OPOfilesChecked
 
+    let className = ''
+    export { className as class }
     /////////////////////////////////////////////////////////////////////////
 
     let opoPower = 1
@@ -112,39 +114,35 @@
 />
 
 {#if $opoMode}
-    <BrowseTextfield
-        class="two_col_browse box"
-        style="border: solid 1px;"
-        bind:value={OPOLocation}
-        label="OPO location"
-    />
-    {#if window.fs.isDirectory(OPOLocation)}
-        <div class="align">
-            <span class="tag is-warning ">OPO Mode: </span>
-            <button
-                class="button is-warning"
-                on:click={() => {
-                    showOPOFiles = !showOPOFiles
-                }}
-            >
-                Show files</button
-            >
-            <CustomSelect bind:value={calibFile} label="Calib. file" options={OPOcalibFiles} />
-            <CustomTextSwitch
-                style="width:7em;"
-                step="0.1"
-                variant="outlined"
-                bind:value={$deltaOPO}
-                label="Delta OPO"
-            />
-            <CustomTextSwitch
-                style="width:9em"
-                step="0.1"
-                variant="outlined"
-                bind:value={opoPower}
-                label="Power (mJ)"
-            />
-            <button class="button is-link" on:click={(e) => plotData({ e })}>Replot</button>
-        </div>
-    {/if}
+    <div class="align box p-2 {className}" style="background-color: #ffa94d33;">
+        <BrowseTextfield class="p-2 two_col_browse" bind:value={OPOLocation} label="OPO location" />
+        {#if window.fs.isDirectory(OPOLocation)}
+            <div class="align">
+                <button
+                    class="button is-warning"
+                    on:click={() => {
+                        showOPOFiles = !showOPOFiles
+                    }}
+                >
+                    Show files</button
+                >
+                <CustomSelect bind:value={calibFile} label="Calib. file" options={OPOcalibFiles} />
+                <CustomTextSwitch
+                    style="width:7em;"
+                    step="0.1"
+                    variant="outlined"
+                    bind:value={$deltaOPO}
+                    label="Delta OPO"
+                />
+                <CustomTextSwitch
+                    style="width:9em"
+                    step="0.1"
+                    variant="outlined"
+                    bind:value={opoPower}
+                    label="Power (mJ)"
+                />
+                <button class="button is-link" on:click={(e) => plotData({ e })}>Replot</button>
+            </div>
+        {/if}
+    </div>
 {/if}

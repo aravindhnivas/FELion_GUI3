@@ -12,12 +12,6 @@
     const dispatch = createEventDispatcher()
 </script>
 
-<!-- <svelte:window
-    on:keydown={(e) => {
-        if (e.keyCode === 27) active = false
-    }}
-/> -->
-
 <QuickView bind:active bind:currentLocation {title}>
     <FileBrowser bind:currentLocation bind:fileChecked {filetype} on:markedFile />
     <div slot="footer" style="margin:auto">

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {
         showall,
         opoMode,
@@ -12,6 +12,7 @@
         felixopoLocation,
         OPOGraphPlotted,
         felixGraphPlotted,
+        theoryRow,
     } from './normline/functions/svelteWritables'
 
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte'
@@ -26,7 +27,7 @@
 
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    // import IconButton from '$components/IconButton.svelte'
+    import IconButton from '$components/IconButton.svelte'
     import Layout from '$components/Layout.svelte'
     import CustomRadio from '$components/CustomRadio.svelte'
     import { deleteTraces } from 'plotly.js-basic-dist'
@@ -47,7 +48,7 @@
     // Theory file
 
     let showTheory = true
-    let theoryLocation = window.db.get('theoryLocation') || currentLocation
+    let theoryLocation = (window.db.get('theoryLocation') as string) || currentLocation
 
     $: graphPlotted = $felixGraphPlotted || $OPOGraphPlotted
     $: console.log({ graphPlotted, $OPOGraphPlotted, $felixGraphPlotted })
@@ -67,7 +68,7 @@
     ]
 
     // OPO
-    let OPOLocation = window.db.get('ofelix_location') || currentLocation
+    let OPOLocation = (window.db.get('ofelix_location') as string) || currentLocation
     let opofiles = []
 
     $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
@@ -116,6 +117,9 @@
     })
 
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
+    let felix_toggle = true
+    let opo_toggle = true
+    let theory_toggle = true
 </script>
 
 <!-- Modals -->
@@ -142,10 +146,23 @@
     on:markedFile={(e) => ($baselineFile = e.detail.markedFile)}
 >
     <svelte:fragment slot="buttonContainer">
-        <InitFunctionRow {removeExtraFile} {felixfiles} {theoryLocation} {plotfile} />
-        <OPORow {removeExtraFile} bind:OPOLocation bind:OPOfilesChecked bind:opofiles {plotfile} />
-        <TheoryRow bind:theoryLocation />
-        <div class="align">
+        <InitFunctionRow
+            {removeExtraFile}
+            {felixfiles}
+            {theoryLocation}
+            {plotfile}
+            class={felix_toggle ? '' : 'hide'}
+        />
+        <OPORow
+            {removeExtraFile}
+            bind:OPOLocation
+            bind:OPOfilesChecked
+            bind:opofiles
+            {plotfile}
+            class={opo_toggle ? '' : 'hide'}
+        />
+        <TheoryRow bind:theoryLocation class={theory_toggle ? '' : 'hide'} />
+        <div class="align" class:hide={!felix_toggle}>
             <CustomRadio bind:value={$normMethod} options={normMethods} />
             <button
                 class="button is-link"
@@ -212,13 +229,12 @@
             }}
         />
     </svelte:fragment>
-
     <svelte:fragment slot="plotContainer_reports">
         <FrequencyTable bind:keepTable />
     </svelte:fragment>
 </Layout>
 
-<style>
+<style lang="scss">
     .graph__div {
         margin-bottom: 1em;
     }

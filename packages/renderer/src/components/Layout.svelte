@@ -7,9 +7,9 @@
     import Modal from '$components/Modal.svelte'
     import Editor from '$components/Editor.svelte'
     import BrowseTextfield from '$components/BrowseTextfield.svelte'
-
     import { graph_detached } from '$src/js/plot'
     import { resizableDiv } from '$src/js/resizableDiv.js'
+    import IconButton from './IconButton.svelte'
 
     export let id: string
     export let display = 'none'
@@ -23,15 +23,14 @@
     const dispatch = createEventDispatcher()
 
     onMount(() => {
-        // graphPlotted = true
         console.log(id, 'mounted')
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         $graph_detached[id] = false
+        // graphPlotted = false
     })
 
     let graphDivContainer: HTMLElement
     let graphDivs: Plotly.PlotlyHTMLElement[] = []
-
     const lookForGraph = (node: HTMLElement) => {
         try {
             graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
@@ -64,14 +63,12 @@
         })
         graphWindow?.maximize(true)
         changeGraphDivWidth()
-
         $graph_detached[id] = true
     }
 
     $: if (graphwindowClosed) {
         changeGraphDivWidth()
     }
-
     const changeGraphDivWidth = async (event?: CustomEvent) => {
         await tick()
         graphDivs?.forEach((id) => {
@@ -83,22 +80,26 @@
             }
         })
     }
-
     onDestroy(() => {
-        // graphPlotted = true
         graphWindow?.close()
-        console.log(id, 'destroyed')
     })
+
     let location = (window.db.get(`${filetype}_location`) as string) || ''
+    let browse_location_div_toggle = true
+    let files_div_toggle = true
+    let button_row_div_toggle = true
+    let fullscreen_toggle = false
+    let reports_div_toggle = false
 </script>
 
 <section {id} style:display class="animate__animated animate__fadeIn">
-    <div class="main__layout__div">
+    <div class="main__layout__div" style="grid-template-columns: {files_div_toggle ? 'auto 1fr' : '1fr'}; ">
         <div
             use:resizableDiv
-            on:resizeend={changeGraphDivWidth}
+            on:resizeend={() => changeGraphDivWidth()}
             style:touch-action="none"
             class="left_container__div box background-body"
+            class:hide={!files_div_toggle}
             transition:fly={{ x: -100, duration: 500 }}
         >
             <FileBrowser
@@ -113,31 +114,62 @@
         </div>
 
         <div class="right_container__div box background-body " id="{filetype}__mainContainer__div">
-            <BrowseTextfield class="three_col_browse" bind:value={currentLocation} label="Current location">
+            <div class="align" style="justify-content: end;">
+                <div class="tag is-link">
+                    <IconButton
+                        on:click={() => {
+                            files_div_toggle = fullscreen_toggle
+                            browse_location_div_toggle = fullscreen_toggle
+                            button_row_div_toggle = fullscreen_toggle
+                            changeGraphDivWidth()
+                        }}
+                        bind:value={fullscreen_toggle}
+                        icons={{ on: 'fullscreen_exit', off: 'fullscreen' }}
+                    />Full-Screen
+                </div>
+                <div role="presentation" class="tag is-link" on:click={() => changeGraphDivWidth()}>
+                    <span class="material-symbols-outlined">cached</span>
+                </div>
+                <div class="tag is-link">
+                    <IconButton
+                        on:change={changeGraphDivWidth}
+                        bind:value={files_div_toggle}
+                        icons={{ on: 'visibility', off: 'visibility_off' }}
+                    />Files
+                </div>
+                <div class="tag is-link">
+                    <IconButton
+                        bind:value={browse_location_div_toggle}
+                        icons={{ on: 'visibility', off: 'visibility_off' }}
+                    />Location
+                </div>
+                <div class="tag is-link">
+                    <IconButton
+                        bind:value={button_row_div_toggle}
+                        icons={{ on: 'visibility', off: 'visibility_off' }}
+                    />fx
+                </div>
+                <div class="tag is-link">
+                    <IconButton
+                        bind:value={reports_div_toggle}
+                        icons={{ on: 'visibility', off: 'visibility_off' }}
+                    />Reports
+                </div>
                 <span
                     role="presentation"
                     class="material-symbols-outlined"
                     on:click={() => (activateConfigModal = true)}>build</span
                 >
-            </BrowseTextfield>
+                <!-- </div> -->
+                <slot name="toggle_row" />
+            </div>
 
-            <div class="button__div pr-2 py-2" id="{filetype}-buttonContainer">
+            {#if browse_location_div_toggle}
+                <BrowseTextfield class="three_col_browse" bind:value={currentLocation} label="Current location" />
+            {/if}
+
+            <div class="button__div pr-2 py-2" class:hide={!button_row_div_toggle} id="{filetype}-buttonContainer">
                 <slot name="buttonContainer" />
-                {#if graphPlotted}
-                    <div class="align">
-                        <button transition:fade class="button is-warning flex" on:click={openGraph}
-                            ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
-                        >
-                        <button
-                            transition:fade
-                            class="button is-warning flex"
-                            on:click={() => {
-                                changeGraphDivWidth()
-                                window.createToast('Graphs resized')
-                            }}>Fix-width</button
-                        >
-                    </div>
-                {/if}
             </div>
             <div
                 class="plot__div"
@@ -151,7 +183,11 @@
                     <slot name="plotContainer_functions" />
                     <slot name="plotContainer_reports" />
                 {/if}
-                <div class="report-editor-div" id="{filetype}-plotContainer-report-editor-div">
+                <div
+                    class="report-editor-div"
+                    class:hide={!reports_div_toggle}
+                    id="{filetype}-plotContainer-report-editor-div"
+                >
                     <Editor
                         {location}
                         {filetype}
@@ -190,7 +226,6 @@
         height: 100%;
     }
     .box {
-        // background-image: url(/assets/css/intro.svg);
         border-radius: 0;
         margin: 0;
     }
@@ -198,9 +233,7 @@
         display: grid;
         grid-auto-flow: column;
         width: 100%;
-
         height: 100%;
-        grid-template-columns: auto 1fr;
         column-gap: 2em;
 
         .left_container__div {
@@ -218,7 +251,10 @@
         .right_container__div {
             display: grid;
             row-gap: 1em;
-            grid-template-rows: auto auto 1fr;
+            grid-template-rows: auto auto auto 1fr;
+            div:empty {
+                display: none;
+            }
         }
     }
     .plot__div {

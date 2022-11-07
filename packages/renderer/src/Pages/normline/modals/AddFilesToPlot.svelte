@@ -8,7 +8,7 @@
 
     export let active = false
     export let fileChecked = []
-    export let addedFileCol = 1
+    export let addedFileCol = '0, 1'
 
     export let addedFileScale = 1000
     export let addedfiles: string[] = []

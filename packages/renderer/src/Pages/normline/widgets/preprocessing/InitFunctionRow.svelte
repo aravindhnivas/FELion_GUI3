@@ -3,7 +3,7 @@
         opoMode,
         showall,
         deltaFELIX,
-        toggleRow,
+        theoryRow,
         normMethod,
         felixPeakTable,
         expfittedLines,
@@ -26,7 +26,6 @@
     import { subplot, plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import { react, relayout } from 'plotly.js-basic-dist'
-    // import Badge from '@smui-extra/badge'
     import ButtonBadge from '$components/ButtonBadge.svelte'
     ///////////////////////////////////////////////////////////////////////////
 
@@ -34,11 +33,12 @@
     export let felixfiles = []
     export let theoryLocation = ''
     export let removeExtraFile
+
+    let className = ''
+    export { className as class }
     ///////////////////////////////////////////////////////////////////////////
 
-    // let delta = 1
     let active = false
-    // let openShell = false
 
     let felixPlotWidgets = {
         text: [
@@ -194,7 +194,7 @@
     on:submit={(e) => plotData({ e: e.detail.event, filetype: 'matplotlib' })}
 />
 
-<div class="align">
+<div class="align {className}">
     <ButtonBadge
         id="create_baseline_btn"
         on:click={(e) => plotData({ e: e, filetype: 'baseline' })}
@@ -207,11 +207,14 @@
 
     <CustomTextSwitch style="width:7em" variant="outlined" bind:value={$deltaFELIX} label="Delta" step="0.5" />
     <button class="button is-link" on:click={() => (active = true)}> Open in Matplotlib</button>
-    <button class="button is-link" on:click={() => ($toggleRow = !$toggleRow)}>Add Theory</button>
+    <button class="button is-link" on:click={() => ($theoryRow = !$theoryRow)}>Add Theory</button>
     <button
         class="button is-link"
         on:click={() => {
             $opoMode = !$opoMode
         }}>OPO</button
     >
+    {#if $opoMode}
+        <span class="tag ml-auto" style="border: solid 1px; background-color: #ffa94d33;">OPO Mode</span>
+    {/if}
 </div>
