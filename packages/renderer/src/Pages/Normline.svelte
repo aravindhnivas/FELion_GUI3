@@ -206,7 +206,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="config">
-        <GetFileInfoTable {felixfiles} />
+        <GetFileInfoTable {felixfiles} {opofiles} />
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions">

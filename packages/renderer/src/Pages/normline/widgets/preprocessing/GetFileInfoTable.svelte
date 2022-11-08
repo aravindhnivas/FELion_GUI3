@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { filedetails, opoMode, normMethod } from '../../functions/svelteWritables'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import Table from '$components/Table.svelte'
@@ -7,8 +7,8 @@
     import { get_details_func } from '../../functions/get_details'
     import { onMount } from 'svelte'
 
-    export let felixfiles
-
+    export let felixfiles: string[]
+    export let opofiles: string[]
     let toggleFileDetailsTable = false
 
     async function plotData({ e = null } = {}) {
