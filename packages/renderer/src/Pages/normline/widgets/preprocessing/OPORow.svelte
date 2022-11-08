@@ -115,7 +115,7 @@
 
 {#if $opoMode}
     <div class="align box p-2 {className}" style="background-color: #ffa94d33;">
-        <BrowseTextfield class="p-2 two_col_browse" bind:value={OPOLocation} label="OPO location" />
+        <BrowseTextfield class="p-1 two_col_browse" bind:value={OPOLocation} label="OPO location" />
         {#if window.fs.isDirectory(OPOLocation)}
             <div class="align">
                 <button

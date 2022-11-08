@@ -62,7 +62,7 @@
 
 {#if $theoryRow}
     <div class="align box p-2 {className}" style="background-color: #77baf84d;">
-        <BrowseTextfield class="two_col_browse" bind:value={theoryLocation} label="Theory location" />
+        <BrowseTextfield class="two_col_browse p-1" bind:value={theoryLocation} label="Theory location" />
 
         {#if window.fs.isDirectory(theoryLocation)}
             <div class="align">

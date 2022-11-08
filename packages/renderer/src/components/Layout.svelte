@@ -113,10 +113,10 @@
             />
         </div>
 
-        <div class="right_container__div box background-body " id="{filetype}__mainContainer__div">
-            <div class="align" style="justify-content: end;">
+        <div class="right_container__div box background-body pt-1" id="{filetype}__mainContainer__div">
+            <div class="align" style="justify-content: end; gap: 0.2em;">
                 <div class="mr-auto"><slot name="toggle_row" /></div>
-                <div class="tag is-link">
+                <div class="tag is-link" aria-label="fullscreen" data-cooltipz-dir="bottom">
                     <IconButton
                         on:click={() => {
                             files_div_toggle = fullscreen_toggle
@@ -126,9 +126,15 @@
                         }}
                         bind:value={fullscreen_toggle}
                         icons={{ on: 'fullscreen_exit', off: 'fullscreen' }}
-                    />Full-Screen
+                    />
                 </div>
-                <div role="presentation" class="tag is-link" on:click={() => changeGraphDivWidth()}>
+                <div
+                    role="presentation"
+                    class="tag is-link"
+                    aria-label="update plot width"
+                    data-cooltipz-dir="bottom"
+                    on:click={() => changeGraphDivWidth()}
+                >
                     <span class="material-symbols-outlined">cached</span>
                 </div>
                 <div class="tag is-link">
@@ -249,7 +255,7 @@
 
         .right_container__div {
             display: grid;
-            row-gap: 1em;
+            row-gap: 0.5em;
             grid-template-rows: auto auto auto 1fr;
             div:empty {
                 display: none;
@@ -267,7 +273,7 @@
 
     .button__div {
         display: grid;
-        gap: 1em;
+        gap: 0.5em;
         overflow: auto;
         min-height: 3rem;
     }
