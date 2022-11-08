@@ -16,7 +16,7 @@ function updateVendors() {
     const nodeMajorVersion = electronRelease.node.split('.')[0]
     const chromeMajorVersion = electronRelease.v8.split('.')[0] + electronRelease.v8.split('.')[1]
     const browserslistrcPath = path.resolve(process.cwd(), '.browserslistrc')
-
+    console.log(`Node: ${nodeMajorVersion}, Chrome: ${chromeMajorVersion}\n`)
     return Promise.all([
         writeFile(
             './.electron-vendors.cache.json',

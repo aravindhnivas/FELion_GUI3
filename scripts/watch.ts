@@ -7,7 +7,7 @@ const mode = (process.env.MODE = process.env.MODE || 'development')
 
 const LOG_LEVEL: LogLevel = 'info'
 
-const sharedConfig: InlineConfig  = {
+const sharedConfig: InlineConfig = {
     mode,
     build: {
         watch: {},
@@ -28,8 +28,14 @@ const stderrFilterPatterns = [
  * @param {{name: string; configFile: string; writeBundle: import('rollup').OutputPlugin['writeBundle'] }} param0
  * @returns {import('rollup').RollupWatcher}
  */
-const getWatcher = ({ name, configFile, writeBundle }: {
-    name: string, configFile: string, writeBundle: import('rollup').OutputPlugin['writeBundle']
+const getWatcher = ({
+    name,
+    configFile,
+    writeBundle,
+}: {
+    name: string
+    configFile: string
+    writeBundle: import('rollup').OutputPlugin['writeBundle']
 }) => {
     return build({
         ...sharedConfig,
@@ -94,7 +100,7 @@ const setupPreloadPackageWatcher = (viteDevServer: ViteDevServer) => {
     try {
         const viteDevServer = await createServer({
             ...sharedConfig,
-            configFile: 'packages/renderer/vite.config.ts',
+            configFile: 'packages/renderer/vite.config.js',
         })
         await viteDevServer.listen()
 
