@@ -6,9 +6,12 @@
     export let item$style = ''
     export let items = []
     export let fileChecked = []
+
+    let className = ''
+    export { className as class }
 </script>
 
-<div {style}>
+<div class={className} {style}>
     <List checklist>
         {#each items as item (item.name)}
             <Item style="height:2.5em; {item$style}">

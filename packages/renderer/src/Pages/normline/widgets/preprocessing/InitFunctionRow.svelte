@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {
         opoMode,
         showall,
@@ -52,8 +52,8 @@
         ],
 
         number: [
-            { label: 'freqScale', value: 1, id: window.getID() },
-            { label: 'theorySigma', value: 5, id: window.getID() },
+            { label: 'freqScale', value: '1', id: window.getID() },
+            { label: 'theorySigma', value: '5', id: window.getID() },
         ],
         boolean: [{ label: 'Only_exp', value: true, id: window.getID() }],
     }
@@ -126,8 +126,8 @@
                 break
 
             case 'matplotlib':
-                const numberWidgets = {}
-                felixPlotWidgets.number.forEach((n) => (numberWidgets[n.label] = n.value))
+                const numberWidgets: { [name: string]: number } = {}
+                felixPlotWidgets.number.forEach((n) => (numberWidgets[n.label] = parseFloat(n.value)))
 
                 const textWidgets = {}
                 felixPlotWidgets.text.forEach((n) => (textWidgets[n.label] = n.value))

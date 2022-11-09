@@ -93,3 +93,15 @@ ul {
     gap: 1em;
     align-items: center;
 }
+
+.modal_checkboxes__div {
+    display: flex;
+    background: #5b3ea2;
+    border-radius: 20px;
+    border: solid 1px;
+    height: 300px;
+    overflow: auto;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    width: 300px;
+}

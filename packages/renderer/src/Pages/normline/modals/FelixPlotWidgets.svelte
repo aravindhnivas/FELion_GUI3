@@ -8,7 +8,7 @@
     export let felixPlotWidgets: {
         text: ValueLabel<string>[]
         boolean: ValueLabel<boolean>[]
-        number: ValueLabel<number>[]
+        number: ValueLabel<string>[]
     }
 
     async function loadFiles() {
@@ -54,44 +54,32 @@
 </script>
 
 <div style="padding-bottom: 1em;">
-    <div>
-        <BrowseTextfield class="two_col_browse mb-5" bind:value={$theoryLocation} label="Theory location" />
-        <button class="button is-link" on:click={loadFiles}>reload files</button>
-        <div class="files__div">
-            {#each $felixPlotCheckboxes as { label, options, value, id } (id)}
-                <div class="felix_tkplot_filelist_div" transition:fade>
-                    <div class="subtitle felix_tkplot_filelist_header">
-                        {label}
-                    </div>
-                    <CustomCheckList
-                        style="background: #836ac05c; border-radius: 20px; margin:1em 0;  height:20em; overflow:auto;"
-                        bind:fileChecked={value}
-                        bind:items={options}
-                    />
+    <div class="align mb-2">
+        <BrowseTextfield class="two_col_browse" bind:value={$theoryLocation} label="Theory location" />
+        <button class="button is-link ml-auto" on:click={loadFiles}>reload files</button>
+    </div>
+    <div class="align" style="justify-content: center;">
+        {#each $felixPlotCheckboxes as { label, options, value, id } (id)}
+            <div style="margin-bottom: 1em;" transition:fade>
+                <div class="checkboxes_header">
+                    {label}
                 </div>
-            {/each}
-        </div>
+                <CustomCheckList class="modal_checkboxes__div" bind:fileChecked={value} bind:items={options} />
+            </div>
+        {/each}
     </div>
 
     <div class="felix_plotting_div">
-        <!-- <h1 class="subtitle">Text Widgets</h1> -->
         <div class="widgets">
             {#each felixPlotWidgets.text as { label, value, id } (id)}
-                <Textfield variant="outlined" type="text" bind:value {label} />
+                <Textfield type="text" bind:value {label} />
             {/each}
         </div>
-    </div>
-    <div class="felix_plotting_div">
-        <!-- <h1 class="subtitle">Number Widgets</h1> -->
         <div class="widgets">
-            {#each felixPlotWidgets.number as { label, value, step, id } (id)}
-                <Textfield type="number" {step} bind:value {label} />
+            {#each felixPlotWidgets.number as { label, value, id } (id)}
+                <Textfield type="text" bind:value {label} />
             {/each}
         </div>
-    </div>
-
-    <div class="felix_plotting_div">
-        <!-- <h1 class="subtitle">Boolean Widgets</h1> -->
         <div class="widgets">
             {#each felixPlotWidgets.boolean as { label, value, id } (id)}
                 <CustomCheckbox bind:value {label} />
@@ -101,7 +89,7 @@
 </div>
 
 <style>
-    .felix_tkplot_filelist_header {
+    .checkboxes_header {
         border: solid 1px white;
         width: 10em;
         padding: 0.2em;
@@ -110,33 +98,20 @@
         border-radius: 20px;
         margin: auto;
     }
-    .felix_tkplot_filelist_div {
-        margin-bottom: 1em;
-    }
-
     .felix_plotting_div {
-        border: solid 1px rgb(209, 209, 209);
+        border: solid 1px white;
         border-radius: 20px;
-        padding: 1em;
         display: flex;
         flex-wrap: wrap;
         flex-direction: column;
         align-items: center;
-        margin: 1em 0;
     }
 
     .widgets {
         display: flex;
         flex-wrap: wrap;
-        gap: 1em;
-        margin-bottom: 1em;
-        margin-top: 1em;
+        gap: 0.5em;
+        margin-bottom: 0.5em;
         justify-content: center;
-    }
-    .files__div {
-        display: flex;
-        gap: 1em;
-        margin: 1em;
-        flex-wrap: wrap;
     }
 </style>

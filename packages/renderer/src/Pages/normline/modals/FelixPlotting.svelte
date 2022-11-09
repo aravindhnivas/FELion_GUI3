@@ -8,7 +8,7 @@
     export let felixPlotWidgets: {
         text: ValueLabel<string>[]
         boolean: ValueLabel<boolean>[]
-        number: ValueLabel<number>[]
+        number: ValueLabel<string>[]
     }
 
     const dispatch = createEventDispatcher()
