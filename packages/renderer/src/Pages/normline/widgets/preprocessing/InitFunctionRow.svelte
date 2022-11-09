@@ -15,6 +15,7 @@
         felixPlotCheckboxes,
         felixPlotAnnotations,
         expfittedLinesCollectedData,
+        theoryLocation,
     } from '../../functions/svelteWritables'
     import FelixPlotting from '../../modals/FelixPlotting.svelte'
     import { felix_func } from '../../functions/felix'
@@ -31,7 +32,6 @@
 
     export let plotfile = 'average'
     export let felixfiles = []
-    export let theoryLocation = ''
     export let removeExtraFile
 
     let className = ''
@@ -52,8 +52,8 @@
         ],
 
         number: [
-            { label: 'freqScale', value: 1, step: 0.01, id: window.getID() },
-            { label: 'theorySigma', value: 5, step: 1, id: window.getID() },
+            { label: 'freqScale', value: 1, id: window.getID() },
+            { label: 'theorySigma', value: 5, id: window.getID() },
         ],
         boolean: [{ label: 'Only_exp', value: true, id: window.getID() }],
     }
@@ -144,7 +144,7 @@
                     selectedWidgets,
                     location: $felixopoLocation,
                     normMethod: $normMethod,
-                    theoryLocation,
+                    theoryLocation: $theoryLocation,
                 }
 
                 computePy_func({ e, pyfile, args, general: true })
@@ -190,7 +190,6 @@
 <FelixPlotting
     bind:active
     bind:felixPlotWidgets
-    {theoryLocation}
     on:submit={(e) => plotData({ e: e.detail.event, filetype: 'matplotlib' })}
 />
 

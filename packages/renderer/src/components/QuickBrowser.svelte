@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
     import QuickView from './QuickView.svelte'
     import FileBrowser from './FileBrowser.svelte'
     import { createEventDispatcher } from 'svelte'
 
-    export let active = false,
-        currentLocation,
-        fileChecked,
-        filetype = '',
-        title = ''
+    export let active = false
+    export let currentLocation: string
+    export let fileChecked: string[]
+    export let filetype = ''
+    export let title = ''
 
     const dispatch = createEventDispatcher()
 </script>

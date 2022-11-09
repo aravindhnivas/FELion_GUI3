@@ -20,20 +20,33 @@ export const felixData = writable({})
 export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode, $felixData, $opoData]) => {
     return $opoMode ? $opoData : $felixData
 })
+
 export const felixopoLocation = writable('')
+
+export const theoryLocation = window.persistentDB('theoryLocation', '')
+
+export const theoryfiles = derived([theoryLocation], ([$theoryLocation]) => {
+    if (!window.fs.isDirectory($theoryLocation)) return [{ name: '', id: window.getID() }]
+    return window.fs
+        .readdirSync($theoryLocation)
+        .filter((f) => f.endsWith('.txt'))
+        .map((f) => ({ name: f, id: window.getID() }))
+})
+
 export const felixOpoDatLocation = derived([felixopoLocation], ([$felixopoLocation]) => {
     const data_location = window.path.resolve($felixopoLocation, '../EXPORT')
     if (!window.fs.isDirectory(data_location)) return ''
     return data_location
 })
+
 export const felixOpoDatfiles = derived([felixOpoDatLocation], ([$felixOpoDatLocation]) => {
     if (!$felixOpoDatLocation) return []
-    const datfiles = window.fs
+    return window.fs
         .readdirSync($felixOpoDatLocation)
         .filter((f) => f.endsWith('.dat'))
         .map((f) => ({ name: f, id: window.getID() }))
-    return datfiles
 })
+
 export const baselineFile = writable('')
 
 export const filedetails = writable([])
@@ -61,7 +74,38 @@ export const normMethod = writable('Relative')
 
 export const frequencyDatas = writable([])
 
-export const felixPlotCheckboxes = writable([])
+export const felixPlotCheckboxes = writable([
+    {
+        label: 'DAT_file',
+        options: [],
+        value: [],
+        id: window.getID(),
+    },
+    {
+        label: 'Fundamentals',
+        options: [],
+        value: [],
+        id: window.getID(),
+    },
+    {
+        label: 'Others',
+        options: [],
+        value: [],
+        id: window.getID(),
+    },
+    {
+        label: 'Overtones',
+        options: [],
+        value: [],
+        id: window.getID(),
+    },
+    {
+        label: 'Combinations',
+        options: [],
+        value: [],
+        id: window.getID(),
+    },
+])
 export const showall = writable(true)
 export const showRawData = writable(true)
 

@@ -1,5 +1,5 @@
-<script>
-    import { theoryRow, felixopoLocation, normMethod } from '../../functions/svelteWritables'
+<script lang="ts">
+    import { theoryRow, felixopoLocation, normMethod, theoryLocation } from '../../functions/svelteWritables'
     import { theory_func } from '../../functions/theory'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import QuickBrowser from '$components/QuickBrowser.svelte'
@@ -7,7 +7,6 @@
     import computePy_func from '$src/Pages/general/computePy'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
 
-    export let theoryLocation
     let className = ''
     export { className as class }
 
@@ -18,8 +17,8 @@
     let showTheoryFiles = false
     let theoryfilesChecked = []
 
-    $: if (window.fs.isDirectory(theoryLocation)) {
-        theoryfiles = theoryfilesChecked.map((file) => window.path.resolve(theoryLocation, file))
+    $: if (window.fs.isDirectory($theoryLocation)) {
+        theoryfiles = theoryfilesChecked.map((file) => window.path.resolve($theoryLocation, file))
     }
 
     async function plotData(e = null) {
@@ -40,20 +39,17 @@
         const dataFromPython = await computePy_func({ e, pyfile, args })
         if (!dataFromPython) return
         theory_func({ dataFromPython, normMethod })
-        // window.createToast("Graph Plotted", "success")
         showTheoryFiles = false
     }
 
     let onlyExpRange = false
-    $: if (theoryLocation) {
-        window.db.set('theoryLocation', theoryLocation)
-    }
 </script>
 
 <QuickBrowser
     title="Theory files"
+    filetype="txt"
     bind:active={showTheoryFiles}
-    bind:currentLocation={theoryLocation}
+    bind:currentLocation={$theoryLocation}
     bind:fileChecked={theoryfilesChecked}
     on:submit={(e) => {
         plotData(e.detail.event)
@@ -62,9 +58,9 @@
 
 {#if $theoryRow}
     <div class="align box p-2 {className}" style="background-color: #77baf84d;">
-        <BrowseTextfield class="two_col_browse p-1" bind:value={theoryLocation} label="Theory location" />
+        <BrowseTextfield class="two_col_browse p-1" bind:value={$theoryLocation} label="Theory location" />
 
-        {#if window.fs.isDirectory(theoryLocation)}
+        {#if window.fs.isDirectory($theoryLocation)}
             <div class="align">
                 <button
                     class="button is-warning"

@@ -1,68 +1,46 @@
 <script lang="ts">
-    import { felixOpoDatLocation, felixPlotCheckboxes } from '../functions/svelteWritables'
+    import { felixPlotCheckboxes, theoryfiles, felixOpoDatfiles, theoryLocation } from '../functions/svelteWritables'
     import { fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import CustomCheckList from '$components/CustomCheckList.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
-    // import { onMount } from 'svelte'
+    import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     export let felixPlotWidgets: {
         text: ValueLabel<string>[]
         boolean: ValueLabel<boolean>[]
         number: ValueLabel<number>[]
     }
 
-    export let theoryLocation: string
-
-    let felixOpoDatfiles: { name: string; id: string }[] = []
-
     async function loadFiles() {
-        let calcfiles: { name: string; id: string }[] = []
-
-        if (window.fs.isDirectory(theoryLocation)) {
-            window.fs.readdirSync(theoryLocation).forEach((file) => {
-                if (window.fs.isFile(window.path.join(theoryLocation, file))) {
-                    calcfiles = [...calcfiles, { name: file, id: window.getID() }]
-                }
-            })
-        } else {
-            calcfiles = [{ name: '', id: window.getID() }]
-        }
-        console.log({ $felixOpoDatLocation })
-        if (window.fs.isDirectory($felixOpoDatLocation)) {
-            felixOpoDatfiles = window.fs
-                .readdirSync($felixOpoDatLocation)
-                .filter((f) => f.endsWith('.dat'))
-                .map((f) => ({ name: f, id: window.getID() }))
-        }
-
+        console.log($theoryfiles)
         $felixPlotCheckboxes = [
             {
                 label: 'DAT_file',
-                options: felixOpoDatfiles,
+                options: $felixOpoDatfiles,
                 value: [],
                 id: window.getID(),
             },
             {
                 label: 'Fundamentals',
-                options: calcfiles,
+                options: $theoryfiles,
                 value: [],
                 id: window.getID(),
             },
             {
                 label: 'Others',
-                options: calcfiles,
+                options: $theoryfiles,
                 value: [],
                 id: window.getID(),
             },
             {
                 label: 'Overtones',
-                options: calcfiles,
+                options: $theoryfiles,
                 value: [],
                 id: window.getID(),
             },
             {
                 label: 'Combinations',
-                options: calcfiles,
+                options: $theoryfiles,
                 value: [],
                 id: window.getID(),
             },
@@ -77,9 +55,8 @@
 
 <div style="padding-bottom: 1em;">
     <div>
+        <BrowseTextfield class="two_col_browse mb-5" bind:value={$theoryLocation} label="Theory location" />
         <button class="button is-link" on:click={loadFiles}>reload files</button>
-
-        <!-- {#key reload} -->
         <div class="files__div">
             {#each $felixPlotCheckboxes as { label, options, value, id } (id)}
                 <div class="felix_tkplot_filelist_div" transition:fade>
@@ -94,12 +71,10 @@
                 </div>
             {/each}
         </div>
-        <!-- {/key} -->
     </div>
 
     <div class="felix_plotting_div">
-        <h1 class="subtitle">Text Widgets</h1>
-
+        <!-- <h1 class="subtitle">Text Widgets</h1> -->
         <div class="widgets">
             {#each felixPlotWidgets.text as { label, value, id } (id)}
                 <Textfield variant="outlined" type="text" bind:value {label} />
@@ -107,7 +82,7 @@
         </div>
     </div>
     <div class="felix_plotting_div">
-        <h1 class="subtitle">Number Widgets</h1>
+        <!-- <h1 class="subtitle">Number Widgets</h1> -->
         <div class="widgets">
             {#each felixPlotWidgets.number as { label, value, step, id } (id)}
                 <Textfield type="number" {step} bind:value {label} />
@@ -116,7 +91,7 @@
     </div>
 
     <div class="felix_plotting_div">
-        <h1 class="subtitle">Boolean Widgets</h1>
+        <!-- <h1 class="subtitle">Boolean Widgets</h1> -->
         <div class="widgets">
             {#each felixPlotWidgets.boolean as { label, value, id } (id)}
                 <CustomCheckbox bind:value {label} />
@@ -129,7 +104,6 @@
     .felix_tkplot_filelist_header {
         border: solid 1px white;
         width: 10em;
-
         padding: 0.2em;
         display: flex;
         justify-content: center;
@@ -141,7 +115,7 @@
     }
 
     .felix_plotting_div {
-        border: solid 1px white;
+        border: solid 1px rgb(209, 209, 209);
         border-radius: 20px;
         padding: 1em;
         display: flex;

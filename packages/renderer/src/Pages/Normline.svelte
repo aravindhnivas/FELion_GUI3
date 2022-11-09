@@ -45,11 +45,7 @@
     $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
-    // Theory file
-
     let showTheory = true
-    let theoryLocation = (window.db.get('theoryLocation') as string) || currentLocation
-
     $: graphPlotted = $felixGraphPlotted || $OPOGraphPlotted
     $: console.log({ graphPlotted, $OPOGraphPlotted, $felixGraphPlotted })
     let overwrite_expfit = true
@@ -151,13 +147,7 @@
         {/if}
     </svelte:fragment>
     <svelte:fragment slot="buttonContainer">
-        <InitFunctionRow
-            {removeExtraFile}
-            {felixfiles}
-            {theoryLocation}
-            {plotfile}
-            class={felix_toggle ? '' : 'hide'}
-        />
+        <InitFunctionRow {removeExtraFile} {felixfiles} {plotfile} class={felix_toggle ? '' : 'hide'} />
         <OPORow
             {removeExtraFile}
             bind:OPOLocation
@@ -166,7 +156,7 @@
             {plotfile}
             class={opo_toggle ? '' : 'hide'}
         />
-        <TheoryRow bind:theoryLocation class={theory_toggle ? '' : 'hide'} />
+        <TheoryRow class={theory_toggle ? '' : 'hide'} />
         <div class="align" class:hide={!felix_toggle}>
             <CustomRadio bind:value={$normMethod} options={normMethods} />
             <button
