@@ -12,7 +12,6 @@
         felixopoLocation,
         OPOGraphPlotted,
         felixGraphPlotted,
-        theoryRow,
     } from './normline/functions/svelteWritables'
 
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte'
@@ -24,14 +23,11 @@
     import GetFileInfoTable from './normline/widgets/preprocessing/GetFileInfoTable.svelte'
     import WriteFunctionContents from './normline/widgets/postprocessing/WriteFunctionContents.svelte'
     import ExecuteFunctionContents from './normline/widgets/postprocessing/ExecuteFunctionContents.svelte'
-
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
-    import IconButton from '$components/IconButton.svelte'
     import Layout from '$components/Layout.svelte'
     import CustomRadio from '$components/CustomRadio.svelte'
     import { deleteTraces } from 'plotly.js-basic-dist'
-    import { onDestroy } from 'svelte'
     ///////////////////////////////////////////////////////////////////////
 
     const filetype = 'felix'
@@ -107,7 +103,11 @@
     let showMoreOptions = false
     $: plotfileOptions = $opoMode ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
+    onMount(() => {
+        console.warn('Normline mounted')
+    })
     onDestroy(() => {
+        console.warn('Normline destroyed')
         $felixGraphPlotted = false
         $OPOGraphPlotted = false
     })

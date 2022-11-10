@@ -3,7 +3,8 @@ import { join } from 'path'
 import { builtinModules } from 'module'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import autoPreprocess from 'svelte-preprocess'
-
+import Inspect from 'vite-plugin-inspect'
+import AutoImport from 'unplugin-auto-import/vite'
 const PACKAGE_ROOT = __dirname
 
 const config = {
@@ -17,7 +18,14 @@ const config = {
             $computeCode: join(PACKAGE_ROOT, 'src/Pages/computeCode'),
         },
     },
-    plugins: [svelte({ preprocess: autoPreprocess() })],
+    plugins: [
+        svelte({ preprocess: autoPreprocess() }),
+        Inspect(),
+        AutoImport({
+            imports: ['svelte', 'svelte/store', 'svelte/transition'],
+            dts: './src/auto-imports.d.ts',
+        }),
+    ],
     base: '',
     build: {
         reportCompressedSize: false,

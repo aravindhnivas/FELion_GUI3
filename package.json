@@ -49,7 +49,9 @@
     "svelte-sortable-list": "^1.1.0",
     "ts-try": "^0.2.0",
     "tsx": "^3.11.0",
+    "unplugin-auto-import": "^0.11.4",
     "vite": "^3.2.3",
+    "vite-plugin-inspect": "^0.7.7",
     "winbox": "^0.2.6",
     "yaml": "^2.1.3"
   },

@@ -5,12 +5,13 @@ import beforePlot from './beforePlot'
 // import { relayout } from 'plotly.js-basic-dist'
 
 export async function felix_func({ dataFromPython }: { dataFromPython: FELIXData }) {
-    await beforePlot({
+    const status = await beforePlot({
         dataFromPython,
         graphDiv: 'avgplot',
         baseGraphDiv: 'bplot',
     })
 
+    if (!status) return console.warn('No data to plot')
     if (dataFromPython['SA'] && dataFromPython['pow']) {
         subplot(
             'Spectrum and Power Analyser',
