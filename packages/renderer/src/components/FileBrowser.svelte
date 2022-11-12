@@ -188,7 +188,6 @@
     {:then value}
         {#if fullfiles.length && mounted}
             <VirtualCheckList
-                class="files"
                 on:fileselect
                 bind:fileChecked
                 {fileSelected}
