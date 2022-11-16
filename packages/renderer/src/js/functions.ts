@@ -3,6 +3,7 @@ import { writable } from 'svelte/store'
 import { toast } from '@zerodevx/svelte-toast'
 import type { SvelteToastOptions } from '@zerodevx/svelte-toast'
 import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
+// import './chrome-tabs'
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false)
 export const updateAvailable = writable(false)
@@ -10,11 +11,10 @@ export const newVersion = writable('')
 export const updating = writable(false)
 export { plot, subplot, plotlyClick, plotlyEventsInfo } from './plot'
 
-
 type ToastThemeOpts = {
-    [key in 'info' | 'success' | 'warning' | 'danger']: { [key: string]: string} 
+    [key in 'info' | 'success' | 'warning' | 'danger']: { [key: string]: string }
 }
-const toastTheme:ToastThemeOpts  = <const>{
+const toastTheme: ToastThemeOpts = <const>{
     info: {},
     success: {
         '--toastBackground': '#48BB78',
@@ -37,13 +37,8 @@ export const callback_toast = (message: string, theme: keyof ToastThemeOpts = 'i
     })
 }
 
-export const createToast = (
-    description: string, 
-    type?: keyof ToastThemeOpts, 
-    opts: SvelteToastOptions = {}
-) => {
-    
-    if(!type) type = 'info'
+export const createToast = (description: string, type?: keyof ToastThemeOpts, opts: SvelteToastOptions = {}) => {
+    if (!type) type = 'info'
     toast.push(description, {
         theme: toastTheme[type],
         pausable: true,
@@ -54,7 +49,7 @@ export const createToast = (
 export const handleError = (error: unknown) => {
     window.error = error
     console.error(error)
-    if(typeof error === 'string') {
+    if (typeof error === 'string') {
         mainPreModal.error(error)
     } else {
         mainPreModal.error(error)
@@ -66,13 +61,10 @@ window.handleError = handleError
 
 window.sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-
-
 window.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed')
     windowLoaded.set(true)
     bulmaQuickview.attach()
-
 })
 
 window.getID = () => Math.random().toString(32).substring(2)
@@ -82,7 +74,7 @@ window.clickOutside = (node) => {
 
     const handleClick = (event: ButtonClickEvent) => {
         if (node && !node.contains(event.target) && !event.defaultPrevented) {
-            node.dispatchEvent(new CustomEvent('click_outside', {detail: event}))
+            node.dispatchEvent(new CustomEvent('click_outside', { detail: event }))
         }
     }
 

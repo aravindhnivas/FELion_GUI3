@@ -52,7 +52,8 @@
             on:click={(e) => {
                 selectRange(e, item.name)
             }}
-            style="border-radius: 1em; border: {highlight ? 'solid 1px #ffc107' : ''};"
+            class="mr-3"
+            style="border-radius: 1em; border: {highlight ? 'solid 1px #ffc107' : ''}; height: 40px;"
         >
             <Label class={highlight ? 'marked-file' : ''}>{item.name}</Label>
             <Meta
