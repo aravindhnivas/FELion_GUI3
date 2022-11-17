@@ -25,6 +25,7 @@
 <style lang="scss" global>
     .chrome-tabs {
         background: var(--color-primary-light);
+        border-radius: 0;
         .chrome-tab {
             .chrome-tab-title {
                 color: white;
