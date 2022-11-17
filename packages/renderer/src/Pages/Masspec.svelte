@@ -30,6 +30,13 @@
     const plotID = `${uniqueID}-mplot`
     const btnID = `${uniqueID}-masspec-plot-btn`
 
+    $: massfiles = window.fs.isDirectory(currentLocation)
+        ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
+        : []
+    $: if (massfiles.length > 0) {
+        plotData()
+    }
+
     let selected_file = ''
 
     async function plotData({
@@ -48,7 +55,12 @@
                 callback: (response: string) => {
                     if (!response) return console.warn('response: ', response)
                     console.log(response)
-                    if (response?.toLowerCase() === 'cancel') return
+                    if (response?.toLowerCase() === 'cancel') {
+                        fileChecked = []
+                        // fileChecked = fullfileslist.slice(0, $configs['max_files_to_plot'].value)
+                        // console.log(fullfileslist)
+                        return
+                    }
                     plotData({
                         e,
                         filetype,
@@ -70,9 +82,9 @@
             if (selected_file === '') return window.createToast('No files selected', 'danger')
         }
 
-        const massfiles = window.fs.isDirectory(currentLocation)
-            ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
-            : []
+        // const massfiles = window.fs.isDirectory(currentLocation)
+        //     ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
+        //     : []
         const pyfileInfo: { [name: string]: { pyfile: string; args: Object } } = {
             mass: { pyfile: 'mass', args: { massfiles, tkplot: 'run' } },
             general: { pyfile: 'mass', args: { massfiles, tkplot: 'plot' } },
