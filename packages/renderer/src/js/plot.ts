@@ -26,16 +26,19 @@ export function plot(
     logScale: boolean = false,
     createPlotlyClickEvent = false
 ) {
-    // const graph_div = document.getElementById(graphDiv)
-    const current_graph_detached = get(graph_detached)[get(activePage)]
+    const graph_div = document.getElementById(graphDiv)
+    // const current_graph_detached = get(graph_detached)[get(activePage)]
 
-    const graph_container = document.querySelector(
-        current_graph_detached ? `#${graphDiv}` : `#${get(activePage)} .plot__div`
-    ) as HTMLDivElement
+    // const graph_container = document.querySelector(
+    //     current_graph_detached ? `#${graphDiv}` : `#${get(activePage)} .plot__div`
+    // ) as HTMLDivElement
 
-    const pad = graphPlottedLists[get(activePage)] ? 16 : 32
-    const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
-
+    // const pad = graphPlottedLists[get(activePage)] ? 16 : 32
+    // const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
+    const parentElement = graph_div.parentElement
+    const width = parentElement.clientWidth - (parentElement.children.length > 1 ? 16 : 0)
+    // const width = parentElement.clientWidth
+    console.log(`Plotting ${graphDiv} in ${parentElement?.id} with width ${width}`)
     const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { title: xtitle },
@@ -43,7 +46,7 @@ export function plot(
         hovermode: 'closest',
         autosize: true,
         height: 450,
-        // width: width,
+        width: width,
     }
 
     const dataPlot: PlotData[] = []
