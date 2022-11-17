@@ -19,6 +19,7 @@
     export let currentLocation = ''
     export let graphPlotted = false
     export let activateConfigModal = false
+    export let saveLocationToDB = true
 
     const dispatch = createEventDispatcher()
 
@@ -29,6 +30,8 @@
         // graphPlotted = false
     })
 
+    setContext('uniqueID', '')
+    setContext('saveLocationToDB', saveLocationToDB)
     let graphDivContainer: HTMLElement
     let graphDivs: Plotly.PlotlyHTMLElement[] = []
     const lookForGraph = (node: HTMLElement) => {
