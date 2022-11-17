@@ -36,7 +36,6 @@
             }
 
             .chrome-tab-close {
-                // background-image: url(/assets/svgs/close.svg);
                 &:hover {
                     background-color: var(--color-danger);
                 }
