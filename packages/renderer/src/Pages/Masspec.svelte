@@ -16,16 +16,8 @@
 
     let fileChecked: string[] = []
     let currentLocation = ''
-
-    // $: massfiles = window.fs.isDirectory(currentLocation)
-    //     ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
-    //     : []
-    // $: if (massfiles.length > 0) plotData()
-
-    let graphPlotted = false
-    let logScale = true
+    let currentLogScale = {}
     let selected_file = ''
-    // let keepAnnotaions = true
 
     async function plotData({
         e = undefined,
@@ -82,14 +74,15 @@
             const dataFromPython = await readMassFile(massfiles, `${activePlotID}-${btnID}`)
             if (dataFromPython === null) return
             console.log({ dataFromPython })
+            const logScale = currentLogScale[activeTabID]
             plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, activePlotID, logScale, true)
-            graphPlotted = true
+            // graphPlotted = true
             return
         }
     }
 
     const linearlogCheck = () => {
-        console.log('logScale: ', logScale)
+        const logScale = currentLogScale[activeTabID]
         const layout: Partial<Plotly.Layout> = {
             yaxis: { title: 'Counts', type: logScale ? 'log' : undefined },
         }
@@ -108,12 +101,11 @@
     $: activePlotID = `${plotID}-${activeTabID}`
 
     let attributes = []
-    // $: console.warn(attributes)
     $: currentActiveInd_Attributes = findIndex(attributes, (o) => o.id === activeTabID)
-
     $: if (activePlotID && attributes.length > 0) {
         ;({ fileChecked, currentLocation, fullfileslist } = attributes[currentActiveInd_Attributes])
     }
+    // $: console.warn(currentLogScale)
 </script>
 
 <Layout
@@ -123,7 +115,8 @@
     {id}
     on:activeTabChange={({ detail: { id } }) => {
         activeTabID = id
-        console.warn('mass activeTabChange', id)
+        currentLogScale[activeTabID] ??= true
+        // console.warn('mass activeTabChange', id)
     }}
 >
     <svelte:fragment slot="buttonContainer" let:id>
@@ -133,7 +126,14 @@
             >
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
             <ButtonBadge on:click={(e) => plotData({ e, filetype: 'general' })} label="Open in Matplotlib" />
-            <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log" />
+            {#if currentLogScale[activeTabID] !== undefined}
+                <CustomSwitch
+                    style="margin: 0 1em;"
+                    on:change={linearlogCheck}
+                    bind:selected={currentLogScale[activeTabID]}
+                    label="Log"
+                />
+            {/if}
         </div>
     </svelte:fragment>
 
