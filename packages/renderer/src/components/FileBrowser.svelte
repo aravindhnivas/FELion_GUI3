@@ -17,10 +17,10 @@
     let selectAll = false
     let otherfolders = []
     let original_files = []
-
+    const uniqueID = getContext('uniqueID')
     $: locationStatus = window.fs.isDirectory(currentLocation)
     $: parentFolder = locationStatus ? window.path.basename(currentLocation) : 'Undefined'
-
+    const saveLocationToDB = getContext('saveLocationToDB')
     let searchKey = ''
     const searchfile = () => {
         console.log(searchKey)
@@ -78,7 +78,7 @@
                     fullfileslist,
                 })
 
-                if (filetype.length > 2) {
+                if (saveLocationToDB && filetype.length > 2) {
                     window.db.set(`${filetype}_location`, currentLocation)
                 }
                 filesLoaded = true
@@ -181,7 +181,7 @@
 
 <div
     class="main__container"
-    id="{filetype}_filebrowser"
+    id="{filetype}{uniqueID}_filebrowser"
     style:grid-template-rows={fullfiles.length
         ? otherfolders.length
             ? 'auto 6fr 1fr'

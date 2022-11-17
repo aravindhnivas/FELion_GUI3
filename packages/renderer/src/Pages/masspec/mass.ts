@@ -1,14 +1,13 @@
 import get_files_settings_values from '$src/js/get_files_settings_values'
 
-export async function readMassFile(massfiles: string[]) {
-    const loadbtn = document.getElementById('masspec-plot-btn')
+export async function readMassFile(massfiles: string[], btnID: string = '') {
+    const loadbtn = document.getElementById(btnID)
     try {
-        
         if (loadbtn?.classList.contains('is-loading')) {
             console.warn('Mass spec plot is already loading')
             return null
         }
-        
+
         loadbtn?.classList.toggle('is-loading')
 
         const dataToSend: DataFromPython = {}
@@ -19,9 +18,9 @@ export async function readMassFile(massfiles: string[]) {
                 // return Promise.resolve(null)
                 continue
             }
-            
+
             const fileContents = await window.fs.readFile(filename)
-            if(window.fs.isError(fileContents)){
+            if (window.fs.isError(fileContents)) {
                 window.createToast(`${filename} file content is empty`, 'danger')
                 // return Promise.resolve(null)
                 continue
@@ -59,12 +58,9 @@ export async function readMassFile(massfiles: string[]) {
         console.info('File read completed')
         console.info(dataToSend)
         return Promise.resolve(dataToSend)
-
     } catch (error) {
-        
         window.handleError(error)
         return Promise.resolve(null)
-
     } finally {
         loadbtn?.classList.toggle('is-loading')
     }

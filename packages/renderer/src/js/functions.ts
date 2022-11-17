@@ -3,7 +3,7 @@ import { writable } from 'svelte/store'
 import { toast } from '@zerodevx/svelte-toast'
 import type { SvelteToastOptions } from '@zerodevx/svelte-toast'
 import bulmaQuickview from 'bulma-extensions/bulma-quickview/src/js/index.js'
-// import './chrome-tabs'
+import './chrome-tabs'
 export const activateChangelog = writable(false)
 export const windowLoaded = writable(false)
 export const updateAvailable = writable(false)

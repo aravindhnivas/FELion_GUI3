@@ -1,14 +1,14 @@
 <script lang="ts">
+    import { findIndex } from 'lodash-es'
+    import { relayout } from 'plotly.js-basic-dist'
     import { showConfirm } from '$src/components/alert/store'
-    import Layout from '$components/Layout.svelte'
+    import Layout from '$components/Layout_new.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import GetLabviewSettings from '$components/GetLabviewSettings.svelte'
     import Configs, { configs } from '$src/Pages/masspec/configs/Configs.svelte'
-    import { relayout } from 'plotly.js-basic-dist'
-    import { plot, plotlyEventsInfo } from '$src/js/functions'
+    import { plot } from '$src/js/functions'
     import { readMassFile } from './masspec/mass'
     import computePy_func from '$src/Pages/general/computePy'
-    import { onDestroy } from 'svelte'
     import ButtonBadge from '$components/ButtonBadge.svelte'
 
     const filetype = 'mass'
@@ -17,15 +17,15 @@
     let fileChecked: string[] = []
     let currentLocation = ''
 
-    $: massfiles = window.fs.isDirectory(currentLocation)
-        ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
-        : []
-    $: if (massfiles.length > 0) plotData()
+    // $: massfiles = window.fs.isDirectory(currentLocation)
+    //     ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
+    //     : []
+    // $: if (massfiles.length > 0) plotData()
 
     let graphPlotted = false
     let logScale = true
     let selected_file = ''
-    let keepAnnotaions = true
+    // let keepAnnotaions = true
 
     async function plotData({
         e = undefined,
@@ -65,6 +65,9 @@
             if (selected_file === '') return window.createToast('No files selected', 'danger')
         }
 
+        const massfiles = window.fs.isDirectory(currentLocation)
+            ? fileChecked.map((file) => window.path.resolve(currentLocation, file))
+            : []
         const pyfileInfo: { [name: string]: { pyfile: string; args: Object } } = {
             mass: { pyfile: 'mass', args: { massfiles, tkplot: 'run' } },
             general: { pyfile: 'mass', args: { massfiles, tkplot: 'plot' } },
@@ -76,47 +79,56 @@
         }
 
         if (filetype == 'mass' && massfiles) {
-            const dataFromPython = await readMassFile(massfiles)
+            const dataFromPython = await readMassFile(massfiles, `${activePlotID}-${btnID}`)
             if (dataFromPython === null) return
             console.log({ dataFromPython })
-            if (!keepAnnotaions) {
-                $plotlyEventsInfo['mplot'].annotations = []
-            }
-            console.log({ dataFromPython })
-            plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, 'mplot', logScale, true)
-            if (keepAnnotaions) {
-                relayout('mplot', {
-                    annotations: $plotlyEventsInfo['mplot'].annotations,
-                })
-            }
-
+            plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, activePlotID, logScale, true)
             graphPlotted = true
             return
         }
     }
 
     const linearlogCheck = () => {
+        console.log('logScale: ', logScale)
         const layout: Partial<Plotly.Layout> = {
             yaxis: { title: 'Counts', type: logScale ? 'log' : undefined },
         }
-        if (graphPlotted) relayout('mplot', layout)
+        const plotHTML = document.getElementById(activePlotID)
+        if (plotHTML?.data) relayout(activePlotID, layout)
     }
 
     let fullfileslist: string[] = []
 
-    onDestroy(() => {
-        if ($plotlyEventsInfo.mplot) {
-            $plotlyEventsInfo.mplot.eventCreated = false
-            $plotlyEventsInfo.mplot.annotations = []
-        }
-    })
+    const plotID = 'mplot'
+    let btnID = 'masspec-plot-btn'
+
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
+
+    let activeTabID = ''
+    $: activePlotID = `${plotID}-${activeTabID}`
+
+    let attributes = []
+    // $: console.warn(attributes)
+    $: currentActiveInd_Attributes = findIndex(attributes, (o) => o.id === activeTabID)
+
+    $: if (activePlotID && attributes.length > 0) {
+        ;({ fileChecked, currentLocation, fullfileslist } = attributes[currentActiveInd_Attributes])
+    }
 </script>
 
-<Layout {filetype} {display} bind:fullfileslist {id} bind:currentLocation {graphPlotted} bind:fileChecked>
-    <svelte:fragment slot="buttonContainer">
+<Layout
+    bind:attributes
+    {display}
+    {filetype}
+    {id}
+    on:activeTabChange={({ detail: { id } }) => {
+        activeTabID = id
+        console.warn('mass activeTabChange', id)
+    }}
+>
+    <svelte:fragment slot="buttonContainer" let:id>
         <div class="align " style="align-items: center;">
-            <button class="button is-link" id="masspec-plot-btn" on:click={(e) => plotData({ e: e })}>
+            <button class="button is-link" id={`${plotID}-${id}-${btnID}`} on:click={(e) => plotData({ e: e })}>
                 Masspec Plot</button
             >
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
@@ -124,23 +136,11 @@
             <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log" />
         </div>
     </svelte:fragment>
-    <svelte:fragment slot="plotContainer">
-        <div id="mplot" class="graph__div" />
-        <!-- <DygraphComponent id="dygraph-mplot" /> -->
+
+    <svelte:fragment slot="plotContainer" let:id>
+        <div id={`${plotID}-${id}`} class="graph__div" />
     </svelte:fragment>
 
-    <svelte:fragment slot="plotContainer_functions">
-        <div class="align" style="justify-content: flex-end;">
-            <CustomSwitch style="margin: 0 1em;" bind:selected={keepAnnotaions} label="Keep Annotaions" />
-            <button
-                class="button is-danger"
-                on:click={() => {
-                    $plotlyEventsInfo['mplot'].annotations = []
-                    relayout('mplot', { annotations: [] })
-                }}>Clear</button
-            >
-        </div>
-    </svelte:fragment>
     <svelte:fragment slot="config">
         <div class="align">
             <Configs />

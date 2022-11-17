@@ -204,7 +204,9 @@
 
             tabProperties = Object.assign({}, defaultTapProperties, tabProperties)
             this.tabContentEl.appendChild(tabEl)
-            this.setTabCloseEventListener(tabEl)
+            if (this.tabCount > 1) {
+                this.setTabCloseEventListener(tabEl)
+            }
             this.updateTab(tabEl, tabProperties)
             this.emit('tabAdd', { tabEl })
             if (!background) this.setCurrentTab(tabEl)

@@ -5,57 +5,110 @@
     export let id: string
     export let display = 'none'
     export let filetype = 'felix'
-    export let fileChecked: string[] = []
-    export let fullfileslist: string[] = []
-    export let currentLocation = ''
-    export let graphPlotted = false
-    export let activateConfigModal = false
+    // export let fileChecked: string[] = []
+    // export let fullfileslist: string[] = []
+    // export let currentLocation = ''
+    // export let graphPlotted = false
+    // export let activateConfigModal = false
 
+    const defaultAttribute = {
+        fileChecked: [],
+        currentLocation: '',
+        fullfileslist: [],
+        activateConfigModal: false,
+        display: 'grid',
+        id: '',
+    }
+
+    export let attributes: typeof defaultAttribute[] = [defaultAttribute]
+    // export let attributes = {}
+    console.warn(attributes)
     setContext('filetype', filetype)
-    let tabsDisplay = 'none'
+    const dispatch = createEventDispatcher()
+
+    const default_location = (window.db.get(`${filetype}_location`) as string) || ''
     onMount(() => {
         console.log(id, 'mounted')
-        currentLocation = <string>window.db.get(`${filetype}_location`) || ''
+        // attributes[0].currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         $graph_detached[id] = false
-        tabsDisplay = 'grid'
     })
+    let tabs: { id: string; display: string }[] = []
 </script>
 
 <section {id} style:display class="animate__animated animate__fadeIn">
     <div class="layout" style="overflow: hidden;">
         <ChromeTabs
+            on:tabAdd={({ detail }) => {
+                const id = detail.tabEl.id
+                // tabs = [...tabs.map((f) => ({ ...f, display: 'none' })), { id, display: 'grid' }]
+                attributes = [
+                    ...attributes.map((f) => ({ ...f, display: 'none' })),
+                    {
+                        ...defaultAttribute,
+                        currentLocation: default_location,
+                        id,
+                        display: 'grid',
+                    },
+                ]
+                // console.log(tabs)
+                // console.log(detail)
+            }}
             on:tabRemove={({ detail }) => {
-                console.log(detail)
+                const id = detail.tabEl.id
+                attributes = attributes.filter((tab) => tab.id !== id)
+                // console.log(tabs)
+                // console.log(detail)
+            }}
+            on:activeTabChange={({ detail }) => {
+                const id = detail.tabEl.id
+                dispatch('activeTabChange', { id })
+                attributes = attributes.map((attribute) => {
+                    if (attribute.id === id) {
+                        return { ...attribute, display: 'grid' }
+                    } else {
+                        return { ...attribute, display: 'none' }
+                    }
+                })
+                // console.log(tabs)
+                // console.log(detail)
             }}
         />
-        <MainLayout
-            on:configsaved
-            {filetype}
-            bind:fileChecked
-            bind:fullfileslist
-            bind:currentLocation
-            bind:graphPlotted
-            bind:activateConfigModal
-        >
-            <svelte:fragment slot="toggle_row">
-                <slot name="toggle_row" />
-            </svelte:fragment>
-            <svelte:fragment slot="buttonContainer">
-                <slot name="buttonContainer" />
-            </svelte:fragment>
-            <svelte:fragment slot="plotContainer">
-                <slot name="plotContainer" />
-            </svelte:fragment>
-            <svelte:fragment slot="plotContainer_functions">
-                <slot name="plotContainer_functions" />
-            </svelte:fragment>
-            <svelte:fragment slot="plotContainer_reports">
-                <slot name="plotContainer_reports" />
-            </svelte:fragment>
-            <svelte:fragment slot="config">
-                <slot name="config" />
-            </svelte:fragment>
-        </MainLayout>
+        <!-- {#each tabs as { id, display }, index (id)} -->
+        {#each attributes as attribute, index (attribute.id)}
+            {@const uniqueID = `-${attribute.id}`}
+            {@const id = `${attribute.id}`}
+            <svelte:component
+                this={MainLayout}
+                saveLocationToDB={index === 0}
+                display={attribute.display}
+                {uniqueID}
+                on:configsaved
+                {filetype}
+                bind:fileChecked={attribute.fileChecked}
+                bind:fullfileslist={attribute.fullfileslist}
+                bind:currentLocation={attribute.currentLocation}
+                bind:activateConfigModal={attribute.activateConfigModal}
+            >
+                <svelte:fragment slot="toggle_row">
+                    <slot name="toggle_row" />
+                </svelte:fragment>
+                <svelte:fragment slot="buttonContainer">
+                    <slot name="buttonContainer" {id} />
+                </svelte:fragment>
+                <svelte:fragment slot="plotContainer">
+                    <slot name="plotContainer" {id} />
+                </svelte:fragment>
+                <svelte:fragment slot="plotContainer_functions">
+                    <slot name="plotContainer_functions" />
+                </svelte:fragment>
+                <svelte:fragment slot="plotContainer_reports">
+                    <slot name="plotContainer_reports" />
+                </svelte:fragment>
+                <svelte:fragment slot="config">
+                    <slot name="config" />
+                </svelte:fragment>
+            </svelte:component>
+        {/each}
     </div>
 </section>
 

@@ -15,27 +15,24 @@ export const graphPlottedLists: {
     [key: string]: boolean
 } = {}
 
-export const plotlyEventsInfo= writable<PlotlyEventsInfo>({})
+export const plotlyEventsInfo = writable<PlotlyEventsInfo>({})
 
 export function plot(
-    mainTitle: string, 
-    xtitle: string, 
+    mainTitle: string,
+    xtitle: string,
     ytitle: string,
-    data: DataFromPython, 
+    data: DataFromPython,
     graphDiv: string,
-    logScale: boolean = false, 
+    logScale: boolean = false,
     createPlotlyClickEvent = false
 ) {
-    
     // const graph_div = document.getElementById(graphDiv)
     const current_graph_detached = get(graph_detached)[get(activePage)]
 
     const graph_container = document.querySelector(
-        current_graph_detached 
-            ? `#${graphDiv}` 
-            : `#${get(activePage)} .plot__div`
+        current_graph_detached ? `#${graphDiv}` : `#${get(activePage)} .plot__div`
     ) as HTMLDivElement
-    
+
     const pad = graphPlottedLists[get(activePage)] ? 16 : 32
     const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
 
@@ -46,11 +43,11 @@ export function plot(
         hovermode: 'closest',
         autosize: true,
         height: 450,
-        width: width,
+        // width: width,
     }
 
     const dataPlot: PlotData[] = []
-    
+
     for (const x in data) {
         dataPlot.push(data[x])
     }
@@ -60,11 +57,11 @@ export function plot(
         if (!get(plotlyEventsInfo)[graphDiv]) {
             get(plotlyEventsInfo)[graphDiv] = {
                 eventCreated: false,
-                annotations: []
+                annotations: [],
             }
         }
         console.log(graphDiv, ': plotted', get(plotlyEventsInfo)[graphDiv].eventCreated)
-        
+
         if (!get(plotlyEventsInfo)[graphDiv].eventCreated && createPlotlyClickEvent) {
             console.log('Creating plotly event for ', graphDiv)
             plotlyClick(graphDiv)
@@ -72,7 +69,6 @@ export function plot(
         if (graphPlottedLists[get(activePage)]) return
 
         graphPlottedLists[get(activePage)] = true
-
     } catch (error) {
         console.error('Error occured while plotting\n', error)
         window.handleError(error)
@@ -80,28 +76,25 @@ export function plot(
 }
 
 export function subplot(
-    mainTitle: string, 
-    xtitle: string, 
-    ytitle: string, 
-    data: DataFromPython, 
-    graphDiv: string, 
-    x2: string, 
-    y2: string, 
+    mainTitle: string,
+    xtitle: string,
+    ytitle: string,
+    data: DataFromPython,
+    graphDiv: string,
+    x2: string,
+    y2: string,
     data2: DataFromPython
 ) {
-
     const current_graph_detached = get(graph_detached)[get(activePage)]
 
     const graph_container = document.querySelector(
-        current_graph_detached 
-            ? `#${graphDiv}` 
-            : `#${get(activePage)} .plot__div`
+        current_graph_detached ? `#${graphDiv}` : `#${get(activePage)} .plot__div`
     ) as HTMLDivElement
-    
+
     const pad = graphPlottedLists[get(activePage)] ? 16 : 32
     const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
 
-    const dataLayout: Partial<Plotly.Layout>  = {
+    const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { domain: [0, 0.4], title: xtitle },
         yaxis: { title: ytitle },
@@ -116,7 +109,7 @@ export function subplot(
         },
         autosize: true,
         height: 450,
-        width: width
+        width: width,
     }
 
     const dataPlot1: PlotData[] = []
@@ -133,8 +126,7 @@ export function subplot(
 }
 
 export function plotlyClick(graphDiv: string): boolean {
-
-    const graph = document.getElementById(graphDiv) as Plotly.PlotlyHTMLElement & {layout: Plotly.Layout}
+    const graph = document.getElementById(graphDiv) as Plotly.PlotlyHTMLElement & { layout: Plotly.Layout }
     plotlyEventsInfo.update((info) => {
         const contents = info[graphDiv]
         contents.annotations = []
@@ -147,8 +139,8 @@ export function plotlyClick(graphDiv: string): boolean {
 
             const currentDataPoint = points[0]
             console.log(currentDataPoint)
-            
-            const { x: mass, y: counts } = currentDataPoint as {x: number, y: number }
+
+            const { x: mass, y: counts } = currentDataPoint as { x: number; y: number }
 
             if (data.event.shiftKey) {
                 const annotate = find(get(plotlyEventsInfo)[graphDiv].annotations, (m) => {
@@ -163,11 +155,9 @@ export function plotlyClick(graphDiv: string): boolean {
                 })
 
                 console.log(get(plotlyEventsInfo)[graphDiv].annotations, annotate)
-
             } else {
-                
                 const logScale = graph?.layout.yaxis.type === 'log'
-                
+
                 // @ts-ignore
                 const { color } = currentDataPoint.fullData.line || currentDataPoint.fullData.marker || ''
 
