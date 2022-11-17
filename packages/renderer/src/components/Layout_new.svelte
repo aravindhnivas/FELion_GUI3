@@ -5,11 +5,6 @@
     export let id: string
     export let display = 'none'
     export let filetype = 'felix'
-    // export let fileChecked: string[] = []
-    // export let fullfileslist: string[] = []
-    // export let currentLocation = ''
-    // export let graphPlotted = false
-    // export let activateConfigModal = false
 
     const defaultAttribute = {
         fileChecked: [],
@@ -21,7 +16,6 @@
     }
 
     export let attributes: typeof defaultAttribute[] = [defaultAttribute]
-    // export let attributes = {}
     console.warn(attributes)
     setContext('filetype', filetype)
     const dispatch = createEventDispatcher()
@@ -29,10 +23,8 @@
     const default_location = (window.db.get(`${filetype}_location`) as string) || ''
     onMount(() => {
         console.log(id, 'mounted')
-        // attributes[0].currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         $graph_detached[id] = false
     })
-    let tabs: { id: string; display: string }[] = []
 </script>
 
 <section {id} style:display class="animate__animated animate__fadeIn">
@@ -40,7 +32,6 @@
         <ChromeTabs
             on:tabAdd={({ detail }) => {
                 const id = detail.tabEl.id
-                // tabs = [...tabs.map((f) => ({ ...f, display: 'none' })), { id, display: 'grid' }]
                 attributes = [
                     ...attributes.map((f) => ({ ...f, display: 'none' })),
                     {
@@ -50,14 +41,10 @@
                         display: 'grid',
                     },
                 ]
-                // console.log(tabs)
-                // console.log(detail)
             }}
             on:tabRemove={({ detail }) => {
                 const id = detail.tabEl.id
                 attributes = attributes.filter((tab) => tab.id !== id)
-                // console.log(tabs)
-                // console.log(detail)
             }}
             on:activeTabChange={({ detail }) => {
                 const id = detail.tabEl.id
@@ -69,11 +56,8 @@
                         return { ...attribute, display: 'none' }
                     }
                 })
-                // console.log(tabs)
-                // console.log(detail)
             }}
         />
-        <!-- {#each tabs as { id, display }, index (id)} -->
         {#each attributes as attribute, index (attribute.id)}
             {@const uniqueID = `-${attribute.id}`}
             {@const id = `${attribute.id}`}
