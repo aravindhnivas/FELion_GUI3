@@ -43,13 +43,13 @@
         <Masspec />
         <Timescan />
         <THz />
-        {#if import.meta.env.MODE === 'development'}
-            <Test />
-        {/if}
         <Kinetics />
         <Powerfile />
         <Misc />
         <Settings />
+        {#if import.meta.env.MODE === 'development'}
+            <Test />
+        {/if}
     </div>
     <Footer />
 </div>
