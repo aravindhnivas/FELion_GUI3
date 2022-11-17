@@ -4,19 +4,18 @@
     import { onMount } from 'svelte'
     import { activePage } from '$src/sveltewritables'
 
-    export let navItems
-
+    export let navItems: string[] = []
     let active = <string>window.db.get('active_tab') || 'Home'
     $: $activePage = active
     $: console.log(`Current page: ${$activePage}`)
     $: window.db.set('active_tab', $activePage)
 
     const navigate = () => {
-        navItems.forEach((item) =>
+        navItems.forEach((item, i) => {
             item == active
-                ? (document.getElementById(item).style.display = 'block')
+                ? (document.getElementById(item).style.display = 'grid')
                 : (document.getElementById(item).style.display = 'none')
-        )
+        })
     }
 
     onMount(() => {

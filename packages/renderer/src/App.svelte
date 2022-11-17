@@ -15,8 +15,17 @@
     import Misc from './Pages/Misc.svelte'
     import Settings from './Pages/Settings.svelte'
     import Test from './Pages/Test.svelte'
+    import PageLayout from '$components/main/PageLayout.svelte'
 
-    const navItems = ['Home', 'Normline', 'Masspec', 'Timescan', 'THz', 'Kinetics', 'Powerfile', 'Misc', 'Settings']
+    const pageIDs = ['Normline', 'Masspec', 'Timescan', 'THz']
+    const navItems = ['Home', ...pageIDs, 'Kinetics', 'Powerfile', 'Misc', 'Settings']
+    const PageComponents = {
+        Normline,
+        Masspec,
+        Timescan,
+        THz,
+    }
+
     if (import.meta.env.MODE === 'development') {
         navItems.push('Test')
     }
@@ -39,14 +48,14 @@
     <Navbar {navItems} />
     <div id="pageContainer" style="overflow: hidden;">
         <Home />
-        <Normline />
-        <Masspec />
-        <Timescan />
-        <THz />
+        {#each pageIDs as id}
+            <PageLayout component={PageComponents[id]} {id} />
+        {/each}
         <Kinetics />
         <Powerfile />
         <Misc />
         <Settings />
+
         {#if import.meta.env.MODE === 'development'}
             <Test />
         {/if}

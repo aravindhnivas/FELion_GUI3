@@ -39,6 +39,8 @@
 
     let opoPower = 1
     // let deltaOPO = 0.3
+
+    const uniqueID = getContext('uniqueID')
     let calibFile = ''
     let showOPOFiles = false
     let OPOcalibFiles = []
@@ -84,11 +86,17 @@
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
             const { layout } = $normMethodDatas[$normMethod]
-            react('opoRelPlot', currentData, layout)
-            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], 'opoplot')
-            plot('OPO Calibration', 'Set Wavenumber (cm-1)', 'Measured Wavenumber (cm-1)', fullData.data['SA'], 'opoSA')
+            react(`${uniqueID}-opoRelPlot`, currentData, layout)
+            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-opoplot`)
+            plot(
+                'OPO Calibration',
+                'Set Wavenumber (cm-1)',
+                'Measured Wavenumber (cm-1)',
+                fullData.data['SA'],
+                `${uniqueID}-opoSA`
+            )
         } else {
-            opofile_func({ dataFromPython: fullData.data })
+            opofile_func({ dataFromPython: fullData.data, uniqueID })
             $OPOGraphPlotted = true
         }
     } else if (updateplot) {
@@ -96,6 +104,7 @@
             fullData,
             plotfile,
             graphPlotted: $OPOGraphPlotted,
+            uniqueID,
         })
         $OPOGraphPlotted = true
     }

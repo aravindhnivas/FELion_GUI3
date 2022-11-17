@@ -1,6 +1,7 @@
+// import { getContext } from 'svelte'
 import { writable, derived } from 'svelte/store'
 import { get } from 'svelte/store'
-
+// const uniqueID = getContext('uniqueID')
 export { get }
 
 export const felixIndex = writable([])
@@ -54,13 +55,7 @@ export const felixPlotAnnotations = writable([])
 export const plotlyEventCreatedFELIX = writable(false)
 export const plotlyEventCreatedOPO = writable(false)
 export const theoryRow = writable(false)
-export const graphDiv = derived(opoMode, ($opoMode) => {
-    return $opoMode ? 'opoRelPlot' : 'avgplot'
-})
 
-export const baseGraphDiv = derived(opoMode, ($opoMode) => {
-    return $opoMode ? 'opoplot' : 'bplot'
-})
 export const expfittedLines = writable([])
 export const expfittedLinesCollectedData = writable([])
 export const collectData = writable(false)

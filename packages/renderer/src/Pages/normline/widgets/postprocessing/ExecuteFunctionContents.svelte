@@ -3,7 +3,7 @@
         showall,
         felixIndex,
         normMethod,
-        graphDiv,
+        opoMode,
         dataTable,
         expfittedLines,
         felixPeakTable,
@@ -34,17 +34,19 @@
     export let adjustPeakTrigger = false
 
     // //////////////////////////////////////////////////////////////////////
-
+    const uniqueID = getContext('uniqueID')
     let NGauss_fit_args = {}
     let savePeakfilename = 'peakTable'
     let toggleFindPeaksRow = false
     let boxSelected_peakfinder = false
     let fitall = true
 
-    const clearAllPeak = () => {
-        const graphElement = document.getElementById($graphDiv)
+    $: currentGraph = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
 
-        relayout($graphDiv, { annotations: [], shapes: [], line: [] })
+    const clearAllPeak = () => {
+        const graphElement = document.getElementById(currentGraph)
+
+        relayout(currentGraph, { annotations: [], shapes: [], line: [] })
 
         const defaultLength = $showall ? fullfiles.length : 1
         const noOfFittedData = graphElement.data?.length - defaultLength
@@ -59,14 +61,14 @@
         $expfittedLines = []
         $felixPlotAnnotations = []
         $expfittedLinesCollectedData = []
-        relayout($graphDiv, { annotations: [], shapes: [] })
+        relayout(currentGraph, { annotations: [], shapes: [] })
         for (let i = 0; i < noOfFittedData; i++) {
-            deleteTraces($graphDiv, [-1])
+            deleteTraces(currentGraph, [-1])
         }
     }
 
     const clearLastPeak = () => {
-        const graphElement = document.getElementById($graphDiv)
+        const graphElement = document.getElementById(currentGraph)
         const defaultLength = $showall ? fullfiles.length : 1
         const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {
@@ -77,12 +79,12 @@
 
         $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
         $expfittedLinesCollectedData = dropRight($expfittedLinesCollectedData, 1)
-        relayout($graphDiv, {
+        relayout(currentGraph, {
             annotations: $felixPlotAnnotations,
             shapes: $expfittedLines,
         })
 
-        deleteTraces($graphDiv, [-1])
+        deleteTraces(currentGraph, [-1])
         window.createToast('Last fitted peak removed', 'warning')
     }
 
@@ -118,7 +120,7 @@
         })
 
         modalActivate = false
-        relayout($graphDiv, { annotations: $felixPlotAnnotations })
+        relayout(currentGraph, { annotations: $felixPlotAnnotations })
         adjustPeakTrigger = false
     }
 
@@ -152,7 +154,7 @@
                     pyfile: 'normline.exp_gauss_fit',
                     args: expfit_args,
                 }).then((dataFromPython) => {
-                    exp_fit_func({ dataFromPython })
+                    exp_fit_func({ dataFromPython, uniqueID })
                     // window.createToast("Line fitted with gaussian function", "success")
                 })
                 break
@@ -199,7 +201,7 @@
                     pyfile: 'normline.multiGauss',
                     args: NGauss_fit_args,
                 }).then((dataFromPython) => {
-                    NGauss_fit_func({ dataFromPython })
+                    NGauss_fit_func({ dataFromPython, uniqueID })
                     if (dataFromPython[$normMethod]) {
                         console.log('Line fitted')
                         window.createToast(
@@ -259,7 +261,7 @@
                     $felixPlotAnnotations = []
                     $felixPeakTable = []
                     NGauss_fit_args = {}
-                    relayout($graphDiv, { annotations: [] })
+                    relayout(currentGraph, { annotations: [] })
                     window.createToast('Cleared', 'warning')
                 }}
             >

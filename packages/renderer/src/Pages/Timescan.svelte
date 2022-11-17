@@ -17,8 +17,18 @@
     let surface: MenuSurfaceComponentDev
 
     // Initialisation
+    // const filetype = 'scan'
+    // const id = 'Timescan'
+
+    export let id = 'Timescan'
+    export let display = 'grid'
+    export let saveLocationToDB = true
+
     const filetype = 'scan'
-    const id = 'Timescan'
+    const uniqueID = `${id}-${window.getID()}`
+
+    setContext('uniqueID', uniqueID)
+    setContext('saveLocationToDB', saveLocationToDB)
 
     let fileChecked: string[] = []
     let currentLocation = ''
@@ -128,7 +138,7 @@
                         'Time (in ms)',
                         'Counts',
                         timescanData[file],
-                        `${file}_tplot`,
+                        `${uniqueID}-${file}_tplot`,
                         logScale ? 'log' : null
                     )
                 })
@@ -147,7 +157,7 @@
         }
         if (graphPlotted) {
             fileChecked.forEach((file) => {
-                let tplot = file + '_tplot'
+                let tplot = `${uniqueID}-${file}_tplot`
                 const id = document.getElementById(tplot)
                 if (id?.data) {
                     relayout(id, layout)
@@ -167,14 +177,14 @@
                 'Time (in ms)',
                 'Counts',
                 kineticData[file],
-                `${file}_tplot`,
+                `${uniqueID}-${file}_tplot`,
                 logScale ? 'log' : null
             )
         })
     }
 
     let saveOutputDepletion = true
-    let display = window.db.get('active_tab') === id ? 'block' : 'none'
+    // let display = window.db.get('active_tab') === id ? 'block' : 'none'
 
     const depletionplot_figure_kwargs = persistentWritable('depletionplot_figure_kwargs', { rows_cols: '1, 2' })
 </script>
@@ -234,7 +244,7 @@
 
     <svelte:fragment slot="plotContainer" let:lookForGraph>
         {#each fileChecked as scanfile}
-            <div id="{scanfile}_tplot" class="graph__div" use:lookForGraph />
+            <div id="{uniqueID}-{scanfile}_tplot" class="graph__div" use:lookForGraph />
         {/each}
     </svelte:fragment>
 </Layout>

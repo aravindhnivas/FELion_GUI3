@@ -64,11 +64,13 @@
         padding: 1em;
         overflow: hidden;
         height: calc(100vh - 7rem);
+
         .misc_main__div {
             display: grid;
             gap: 1em;
             height: 100%;
             grid-template-rows: auto 1fr;
+            overflow: hidden;
             .misc_container {
                 display: grid;
                 overflow: hidden;

@@ -13,8 +13,18 @@
 
     import Textfield from '@smui/textfield'
 
+    // const filetype = 'thz'
+    // const id = 'THz'
+
+    export let id = 'THz'
+    export let display = 'grid'
+    export let saveLocationToDB = true
+
     const filetype = 'thz'
-    const id = 'THz'
+    const uniqueID = `${id}-${window.getID()}`
+
+    setContext('uniqueID', uniqueID)
+    setContext('saveLocationToDB', saveLocationToDB)
 
     let fileChecked = []
     let currentLocation = ''
@@ -74,7 +84,7 @@
             if (fitPlot) {
                 const { averaged, individual } = dataFromPython['thz']
                 const fitDataProcessed = { ...individual, ...averaged }
-                addTraces('thzPlot', fitDataProcessed[fitfile + '_fit'])
+                addTraces(`${uniqueID}-thzPlot`, fitDataProcessed[fitfile + '_fit'])
                 numOfFittedLines++
                 const receivedPramsTable = dataFromPython?.fittedParamsTable || []
                 fittedParamsTable = [...fittedParamsTable, ...receivedPramsTable].map((row) => ({
@@ -96,7 +106,7 @@
 
     let fitfile = 'averaged'
     let fitMethod = 'lorentz'
-    const graphIDs = ['thzPlot', 'resOnOffPlot']
+    const graphIDs = [`${uniqueID}-thzPlot`, `${uniqueID}-resOnOffPlot`]
 
     onDestroy(() => {
         graphIDs.forEach((graphID) => {
@@ -111,25 +121,25 @@
     const [title, xlabel, ylabel] = ['THz Scan: Depletion (%)', 'Frequency (GHz)', 'Depletion (%)']
 
     $: if (showall && dataProcessed) {
-        plot(title, xlabel, ylabel, dataProcessed, 'thzPlot', null, true)
+        plot(title, xlabel, ylabel, dataProcessed, `${uniqueID}-thzPlot`, null, true)
         if (!plotlySelectCreated) {
             makePlotlySelect()
         }
     } else if (plotfile && dataProcessed?.[plotfile] && graphPlotted) {
         const dataToPlot = { data: dataProcessed[plotfile] }
-        plot(title, xlabel, ylabel, dataToPlot, 'thzPlot', null, true)
+        plot(title, xlabel, ylabel, dataToPlot, `${uniqueID}-thzPlot`, null, true)
         if (!plotlySelectCreated) {
             makePlotlySelect()
         }
     }
 
     $: if (showall && rawDataProcessed?.data) {
-        plot('THz Scan', 'Frequency (GHz)', 'Counts', rawDataProcessed.data, 'resOnOffPlot')
+        plot('THz Scan', 'Frequency (GHz)', 'Counts', rawDataProcessed.data, `${uniqueID}-resOnOffPlot`)
     } else if (plotfile !== 'averaged' && rawDataProcessed?.data) {
         const dataToPlot = {}
         dataToPlot[`${plotfile}_On`] = rawDataProcessed.data[`${plotfile}_On`]
         dataToPlot[`${plotfile}_Off`] = rawDataProcessed.data[`${plotfile}_Off`]
-        plot('THz Scan', 'Frequency (GHz)', 'Counts', dataToPlot, 'resOnOffPlot')
+        plot('THz Scan', 'Frequency (GHz)', 'Counts', dataToPlot, `${uniqueID}-resOnOffPlot`)
     }
 
     let plotfile = 'averaged'
@@ -138,7 +148,7 @@
     let plotlySelectCreated = false
 
     const makePlotlySelect = () => {
-        const graphDIV = document.getElementById('thzPlot')
+        const graphDIV = document.getElementById(`${uniqueID}-thzPlot`)
         graphDIV.on('plotly_selected', (data) => {
             try {
                 if (!data) return
@@ -155,7 +165,7 @@
         plotlySelectCreated = true
     }
 
-    let display = window.db.get('active_tab') === id ? 'block' : 'none'
+    // let display = window.db.get('active_tab') === id ? 'block' : 'none'
 
     let toggle_options = false
     let fit_options_div = false
@@ -215,8 +225,8 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
-        <div id="resOnOffPlot" class="graph__div" class:hide={!showRawData} />
-        <div id="thzPlot" class="graph__div" />
+        <div id="{uniqueID}-resOnOffPlot" class="graph__div" class:hide={!showRawData} />
+        <div id="{uniqueID}-thzPlot" class="graph__div" />
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions">
@@ -226,7 +236,7 @@
                 on:click={() => {
                     try {
                         if (numOfFittedLines > 0) {
-                            deleteTraces('thzPlot', -1)
+                            deleteTraces(`${uniqueID}-thzPlot`, -1)
                             numOfFittedLines--
                         }
                     } catch (error) {
@@ -239,8 +249,8 @@
             <button
                 class="button is-warning"
                 on:click={() => {
-                    $plotlyEventsInfo['thzPlot'].annotations = []
-                    relayout('thzPlot', { annotations: [] })
+                    $plotlyEventsInfo[`${uniqueID}-thzPlot`].annotations = []
+                    relayout(`${uniqueID}-thzPlot`, { annotations: [] })
                 }}
             >
                 Clear Annotations

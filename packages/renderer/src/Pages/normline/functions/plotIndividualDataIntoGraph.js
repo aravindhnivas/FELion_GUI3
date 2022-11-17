@@ -1,9 +1,10 @@
-import { graphDiv, normMethod, normMethodDatas, opoMode, get } from './svelteWritables'
+// import { getContext } from 'svelte'
+import { normMethod, normMethodDatas, opoMode, get } from './svelteWritables'
 import { subplot, plot } from '$src/js/functions'
 import { react } from 'plotly.js-basic-dist'
 import { felix_func } from './felix'
 import { opofile_func } from './opofile'
-
+// const uniqueID = getContext('uniqueID')
 export const get_data = (data) => {
     let dataPlot = []
     for (const x in data) {
@@ -18,7 +19,7 @@ export const mapNormMethodKeys = {
     IntensityPerPhoton: 'average_per_photon',
 }
 
-export default function ({ fullData, plotfile, graphPlotted }) {
+export default function ({ fullData, plotfile, graphPlotted, uniqueID }) {
     const data = fullData.data || null
     if (!data) return window.createToast('No data for ' + plotfile, 'danger')
     if (!data.average?.[plotfile]) return console.warn(plotfile, 'data is not available', data)
@@ -31,7 +32,7 @@ export default function ({ fullData, plotfile, graphPlotted }) {
         base[plotfile + '_base'] = data['base'][plotfile + '_base']
         base[plotfile + '_line'] = data['base'][plotfile + '_line']
 
-        const baseGraphDiv = get(opoMode) ? 'opoplot' : 'bplot'
+        const baseGraphDiv = get(opoMode) ? `${uniqueID}-opoplot` : `${uniqueID}-bplot`
         plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', base, baseGraphDiv)
 
         if (get(opoMode)) {
@@ -40,7 +41,7 @@ export default function ({ fullData, plotfile, graphPlotted }) {
                 SA['Calibration'] = data['SA']['Calibration']
                 SA['Calibration_fit'] = data['SA']['Calibration_fit']
 
-                plot('OPO Calibration', 'Set Wavenumber (cm-1)', 'Measured Wavenumber (cm-1)', SA, 'opoSA')
+                plot('OPO Calibration', 'Set Wavenumber (cm-1)', 'Measured Wavenumber (cm-1)', SA, `${uniqueID}-opoSA`)
             }
         } else {
             console.log('Updating FELIX plots')
@@ -48,13 +49,12 @@ export default function ({ fullData, plotfile, graphPlotted }) {
             SA[plotfile + '_fit'] = data['SA'][plotfile + '_fit']
 
             pow[plotfile] = data['pow'][`${plotfile.split('.')[0]}.pow`]
-
             subplot(
                 'Spectrum and Power Analyser',
                 'Wavelength set (cm-1)',
                 'SA (cm-1)',
                 SA,
-                'saPlot',
+                `${uniqueID}-saPlot`,
                 'Wavelength (cm-1)',
                 `Total Power (mJ)`,
                 pow
@@ -68,14 +68,18 @@ export default function ({ fullData, plotfile, graphPlotted }) {
         addData[plotfile] = { ...data[key][plotfile], showlegend: true }
         dataToPlot[key] = addData
     }
+
     if (graphPlotted) {
         const currentKey = mapNormMethodKeys[get(normMethod)]
         const currentData = get_data(dataToPlot[currentKey])
+
         const { layout } = get(normMethodDatas)[get(normMethod)]
-        react(get(graphDiv), currentData, layout)
+
+        const currentGraph = get(opoMode) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+        react(currentGraph, currentData, layout)
     } else {
         const fn = get(opoMode) ? opofile_func : felix_func
-        fn({ dataFromPython: dataToPlot })
+        fn({ dataFromPython: dataToPlot, uniqueID })
         graphPlotted = true
     }
 }

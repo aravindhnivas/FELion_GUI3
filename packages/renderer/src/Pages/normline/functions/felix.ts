@@ -3,12 +3,12 @@ import { subplot } from '../../../js/functions'
 import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
 // import { relayout } from 'plotly.js-basic-dist'
-
-export async function felix_func({ dataFromPython }: { dataFromPython: FELIXData }) {
+// const uniqueID = getContext('uniqueID')
+export async function felix_func({ dataFromPython, uniqueID }: { dataFromPython: FELIXData; uniqueID: string }) {
     const status = await beforePlot({
         dataFromPython,
-        graphDiv: 'avgplot',
-        baseGraphDiv: 'bplot',
+        graphDiv: `${uniqueID}-avgplot`,
+        baseGraphDiv: `${uniqueID}-bplot`,
     })
 
     if (!status) return console.warn('No data to plot')
@@ -18,14 +18,14 @@ export async function felix_func({ dataFromPython }: { dataFromPython: FELIXData
             'Wavelength set (cm-1)',
             'SA (cm-1)',
             dataFromPython['SA'],
-            'saPlot',
+            `${uniqueID}-saPlot`,
             'Wavelength (cm-1)',
             'Total Power (mJ)',
             dataFromPython['pow']
         )
     }
     if (!get(plotlyEventCreatedFELIX)) {
-        const plot = { graphDiv: 'avgplot', mode: 'felix' }
+        const plot = { graphDiv: `${uniqueID}-avgplot`, mode: 'felix' }
         plotlySelection(plot), plotlyClick(plot)
         plotlyEventCreatedFELIX.set(true)
     }

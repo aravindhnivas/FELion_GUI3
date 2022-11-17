@@ -2,7 +2,6 @@
     import {
         showall,
         opoMode,
-        graphDiv,
         normMethod,
         normMethods,
         showRawData,
@@ -28,10 +27,20 @@
     import Layout from '$components/Layout.svelte'
     import CustomRadio from '$components/CustomRadio.svelte'
     import { deleteTraces } from 'plotly.js-basic-dist'
+
     ///////////////////////////////////////////////////////////////////////
 
+    export let id = 'Normline'
+    export let display = 'grid'
+    export let saveLocationToDB = true
+
     const filetype = 'felix'
-    const id = 'Normline'
+    const uniqueID = `${id}-${window.getID()}`
+
+    setContext('uniqueID', uniqueID)
+    setContext('saveLocationToDB', saveLocationToDB)
+
+    // let display = window.db.get('active_tab') === id ? 'block' : 'none'
 
     let fileChecked = []
     // let toggleBrowser = false;
@@ -43,7 +52,7 @@
     ///////////////////////////////////////////////////////////////////////
     let showTheory = true
     $: graphPlotted = $felixGraphPlotted || $OPOGraphPlotted
-    $: console.log({ graphPlotted, $OPOGraphPlotted, $felixGraphPlotted })
+    $: console.warn({ graphPlotted, $OPOGraphPlotted, $felixGraphPlotted })
     let overwrite_expfit = true
     let writeFile = true
     let OPOfilesChecked = []
@@ -76,10 +85,11 @@
 
     $: console.log(`Extrafile added: ${extrafileAdded}`)
 
+    $: currentGraph = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     function removeExtraFile() {
         for (let i = 0; i < extrafileAdded + 1; i++) {
             try {
-                deleteTraces($graphDiv, [-1])
+                deleteTraces(currentGraph, [-1])
 
                 extrafileAdded--
                 addedfiles = addedfiles.slice(0, addedfiles.length - 1)
@@ -112,7 +122,7 @@
         $OPOGraphPlotted = false
     })
 
-    let display = window.db.get('active_tab') === id ? 'block' : 'none'
+    // let display = window.db.get('active_tab') === id ? 'block' : 'none'
     let felix_toggle = true
     let opo_toggle = true
     let theory_toggle = true
@@ -181,17 +191,29 @@
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer">
-        <div class="animate__animated animate__fadeIn graph__div" class:hide={!showTheory} id="exp-theory-plot" />
-        <div id="felix_graphs" class:hide={!showFELIX}>
-            <div id="bplot" class="graph__div" class:hide={!$showRawData} />
-            <div id="saPlot" class="graph__div" class:hide={!$showPowerData} />
-            <div id="avgplot" class="graph__div" />
+        <div
+            class="animate__animated animate__fadeIn graph__div"
+            class:hide={!showTheory}
+            id="{uniqueID}-exp-theory-plot"
+        />
+        <div id="{uniqueID}-felix_graphs" class:hide={!showFELIX}>
+            <div id="{uniqueID}-bplot" class="graph__div" class:hide={!$showRawData} />
+            <div id="{uniqueID}-saPlot" class="graph__div" class:hide={!$showPowerData} />
+            <div id="{uniqueID}-avgplot" class="graph__div" />
         </div>
 
-        <div id="opo_graphs" class:hide={!showOPO}>
-            <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoplot" />
-            <div class="animate__animated animate__fadeIn graph__div" class:hide={!$showRawData} id="opoSA" />
-            <div class="animate__animated animate__fadeIn graph__div" id="opoRelPlot" />
+        <div id="{uniqueID}-opo_graphs" class:hide={!showOPO}>
+            <div
+                class="animate__animated animate__fadeIn graph__div"
+                class:hide={!$showRawData}
+                id="{uniqueID}-opoplot"
+            />
+            <div
+                class="animate__animated animate__fadeIn graph__div"
+                class:hide={!$showRawData}
+                id="{uniqueID}-opoSA"
+            />
+            <div class="animate__animated animate__fadeIn graph__div" id="{uniqueID}-opoRelPlot" />
         </div>
     </svelte:fragment>
 

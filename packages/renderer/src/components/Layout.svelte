@@ -19,7 +19,10 @@
     export let currentLocation = ''
     export let graphPlotted = false
     export let activateConfigModal = false
-    export let saveLocationToDB = true
+    // export let saveLocationToDB = true
+
+    const uniqueID = getContext('uniqueID')
+    // const saveLocationToDB = getContext('saveLocationToDB')
 
     const dispatch = createEventDispatcher()
 
@@ -30,13 +33,14 @@
         // graphPlotted = false
     })
 
-    setContext('uniqueID', '')
-    setContext('saveLocationToDB', saveLocationToDB)
+    // setContext('uniqueID', '')
+    // setContext('saveLocationToDB', saveLocationToDB)
+
     let graphDivContainer: HTMLElement
     let graphDivs: Plotly.PlotlyHTMLElement[] = []
     const lookForGraph = (node: HTMLElement) => {
         try {
-            graphDivs = Array.from(document.querySelectorAll(`#${filetype}-plotContainer .graph__div`))
+            graphDivs = Array.from(document.querySelectorAll(`#${uniqueID}-plotContainer .graph__div`))
         } catch (error) {
             console.log(error)
         }
@@ -95,7 +99,7 @@
     let reports_div_toggle = false
 </script>
 
-<section {id} style:display class="animate__animated animate__fadeIn">
+<section {id} style:display>
     <div class="main__layout__div" style="grid-template-columns: {files_div_toggle ? 'auto 1fr' : '1fr'}; ">
         <div
             use:resizableDiv
@@ -116,7 +120,7 @@
             />
         </div>
 
-        <div class="right_container__div box background-body pt-1" id="{filetype}__mainContainer__div">
+        <div class="right_container__div box background-body pt-1" id="{uniqueID}__mainContainer__div">
             <div class="align" style="justify-content: end; gap: 0.2em;">
                 <div class="mr-auto"><slot name="toggle_row" /></div>
                 <div class="tag is-link" aria-label="fullscreen" data-cooltipz-dir="bottom">
@@ -176,12 +180,12 @@
                 <BrowseTextfield class="three_col_browse" bind:value={currentLocation} label="Current location" />
             {/if}
 
-            <div class="button__div pr-2 py-2" class:hide={!button_row_div_toggle} id="{filetype}-buttonContainer">
+            <div class="button__div pr-2 py-2" class:hide={!button_row_div_toggle} id="{uniqueID}-buttonContainer">
                 <slot name="buttonContainer" />
             </div>
             <div
                 class="plot__div"
-                id="{filetype}-plotContainer"
+                id="{uniqueID}-plotContainer"
                 transition:fade
                 use:lookForGraph
                 bind:this={graphDivContainer}
@@ -194,13 +198,13 @@
                 <div
                     class="report-editor-div"
                     class:hide={!reports_div_toggle}
-                    id="{filetype}-plotContainer-report-editor-div"
+                    id="{uniqueID}-plotContainer-report-editor-div"
                 >
                     <Editor
                         {location}
                         {filetype}
-                        id="{filetype}-report-editor"
-                        mount="#{filetype}-plotContainer-report-editor-div"
+                        id="{uniqueID}-report-editor"
+                        mount="#{uniqueID}-plotContainer-report-editor-div"
                     />
                 </div>
             </div>
@@ -232,6 +236,7 @@
 <style lang="scss">
     section {
         height: 100%;
+        overflow: hidden;
     }
     .box {
         border-radius: 0;

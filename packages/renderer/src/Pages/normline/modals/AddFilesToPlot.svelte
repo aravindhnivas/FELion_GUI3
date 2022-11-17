@@ -2,18 +2,19 @@
     import { addTraces } from 'plotly.js-basic-dist'
     import Textfield from '@smui/textfield'
     import Modal from '$components/Modal.svelte'
-    // import { browse } from '$components/Layout.svelte'
-    import { graphDiv } from '../functions/svelteWritables'
+    import { opoMode } from '../functions/svelteWritables'
     import computePy_func from '$src/Pages/general/computePy'
 
     export let active = false
     export let fileChecked = []
     export let addedFileCol = '0, 1'
-
     export let addedFileScale = 1000
     export let addedfiles: string[] = []
+
     export let addedFile = {}
     export let extrafileAdded = 0
+
+    const uniqueID = getContext('uniqueID')
 
     function addFileSelection() {
         const result = window.browse({ dir: false, multiple: true })
@@ -33,7 +34,8 @@
         args = addedFile
 
         computePy_func({ e, pyfile, args }).then((dataFromPython) => {
-            addTraces($graphDiv, dataFromPython)
+            const currentGraph = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+            addTraces(currentGraph, dataFromPython)
             window.createToast('Graph Plotted', 'success')
             active = false
         })

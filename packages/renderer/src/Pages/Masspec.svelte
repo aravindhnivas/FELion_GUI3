@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { findIndex } from 'lodash-es'
+    // import { findIndex } from 'lodash-es'
     import { relayout } from 'plotly.js-basic-dist'
     import { showConfirm } from '$src/components/alert/store'
-    import Layout from '$components/Layout_new.svelte'
+    import Layout from '$components/Layout.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import GetLabviewSettings from '$components/GetLabviewSettings.svelte'
     import Configs, { configs } from '$src/Pages/masspec/configs/Configs.svelte'
@@ -11,12 +11,25 @@
     import computePy_func from '$src/Pages/general/computePy'
     import ButtonBadge from '$components/ButtonBadge.svelte'
 
+    // const filetype = 'mass'
+    // const id = 'Masspec'
+
+    export let id = 'Masspec'
+    export let display = 'grid'
+    export let saveLocationToDB = true
+
     const filetype = 'mass'
-    const id = 'Masspec'
+    const uniqueID = `${id}-${window.getID()}`
+
+    setContext('uniqueID', uniqueID)
+    setContext('saveLocationToDB', saveLocationToDB)
 
     let fileChecked: string[] = []
     let currentLocation = ''
-    let currentLogScale = {}
+
+    const plotID = `${uniqueID}-mplot`
+    const btnID = `${uniqueID}-masspec-plot-btn`
+
     let selected_file = ''
 
     async function plotData({
@@ -71,74 +84,41 @@
         }
 
         if (filetype == 'mass' && massfiles) {
-            const dataFromPython = await readMassFile(massfiles, `${activePlotID}-${btnID}`)
+            const dataFromPython = await readMassFile(massfiles, btnID)
             if (dataFromPython === null) return
             console.log({ dataFromPython })
-            const logScale = currentLogScale[activeTabID]
-            plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, activePlotID, logScale, true)
+            plot('Mass spectrum', 'Mass [u]', 'Counts', dataFromPython, plotID, logScale, true)
             // graphPlotted = true
             return
         }
     }
 
     const linearlogCheck = () => {
-        const logScale = currentLogScale[activeTabID]
         const layout: Partial<Plotly.Layout> = {
             yaxis: { title: 'Counts', type: logScale ? 'log' : undefined },
         }
-        const plotHTML = document.getElementById(activePlotID)
-        if (plotHTML?.data) relayout(activePlotID, layout)
+        const plotHTML = document.getElementById(plotID)
+        if (plotHTML?.data) relayout(plotID, layout)
     }
 
     let fullfileslist: string[] = []
-
-    const plotID = 'mplot'
-    let btnID = 'masspec-plot-btn'
-
-    let display = window.db.get('active_tab') === id ? 'block' : 'none'
-
-    let activeTabID = ''
-    $: activePlotID = `${plotID}-${activeTabID}`
-
-    let attributes = []
-    $: currentActiveInd_Attributes = findIndex(attributes, (o) => o.id === activeTabID)
-    $: if (activePlotID && attributes.length > 0) {
-        ;({ fileChecked, currentLocation, fullfileslist } = attributes[currentActiveInd_Attributes])
-    }
-    // $: console.warn(currentLogScale)
+    let logScale = true
 </script>
 
-<Layout
-    bind:attributes
-    {display}
-    {filetype}
-    {id}
-    on:activeTabChange={({ detail: { id } }) => {
-        activeTabID = id
-        currentLogScale[activeTabID] ??= true
-        // console.warn('mass activeTabChange', id)
-    }}
->
-    <svelte:fragment slot="buttonContainer" let:id>
+<Layout {display} {filetype} {id} bind:currentLocation bind:fileChecked bind:fullfileslist>
+    <svelte:fragment slot="buttonContainer">
         <div class="align " style="align-items: center;">
-            <button class="button is-link" id={`${plotID}-${id}-${btnID}`} on:click={(e) => plotData({ e: e })}>
-                Masspec Plot</button
-            >
+            <button class="button is-link" id={btnID} on:click={(e) => plotData({ e: e })}> Masspec Plot</button>
             <GetLabviewSettings {currentLocation} {fullfileslist} {fileChecked} />
             <ButtonBadge on:click={(e) => plotData({ e, filetype: 'general' })} label="Open in Matplotlib" />
-            {#if currentLogScale[activeTabID] !== undefined}
-                <CustomSwitch
-                    style="margin: 0 1em;"
-                    on:change={linearlogCheck}
-                    bind:selected={currentLogScale[activeTabID]}
-                    label="Log"
-                />
-            {/if}
+            <!-- {#if currentLogScale[activeTabID] !== undefined} -->
+            <CustomSwitch style="margin: 0 1em;" on:change={linearlogCheck} bind:selected={logScale} label="Log" />
+            <!-- {/if} -->
         </div>
     </svelte:fragment>
 
-    <svelte:fragment slot="plotContainer" let:id>
-        <div id={`${plotID}-${id}`} class="graph__div" />
+    <svelte:fragment slot="plotContainer">
+        <div id={plotID} class="graph__div" />
     </svelte:fragment>
 
     <svelte:fragment slot="config">

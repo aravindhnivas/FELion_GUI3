@@ -2,19 +2,20 @@ import {
     felixPeakTable,
     Ngauss_sigma,
     felixPlotAnnotations,
-    graphDiv,
+    opoMode,
     felixAnnotationColor,
     get,
 } from './svelteWritables'
 import { relayout } from 'plotly.js-basic-dist'
-export function find_peaks_func({ dataFromPython } = {}) {
+export function find_peaks_func({ dataFromPython, uniqueID }) {
     const annotations = dataFromPython[2]['annotations']
 
     felixPlotAnnotations.set(annotations)
 
     const color = annotations['arrowcolor']
     felixAnnotationColor.set(color)
-    relayout(get(graphDiv), { annotations })
+    const currentGraph = get(opoMode) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+    relayout(currentGraph, { annotations })
 
     const [peakX, peakY] = [dataFromPython[0]['data'].x, dataFromPython[0]['data'].y]
     for (let index = 0; index < peakX.length; index++) {

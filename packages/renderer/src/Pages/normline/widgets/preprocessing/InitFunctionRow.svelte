@@ -38,6 +38,8 @@
     export { className as class }
     ///////////////////////////////////////////////////////////////////////////
 
+    const uniqueID = getContext('uniqueID')
+
     let active = false
 
     let felixPlotWidgets = {
@@ -71,8 +73,8 @@
 
                 removeExtraFile()
 
-                if (document.getElementById('avgplot')?.data) {
-                    relayout('avgplot', {
+                if (document.getElementById(`${uniqueID}-avgplot`)?.data) {
+                    relayout(`${uniqueID}-avgplot`, {
                         annotations: [],
                         shapes: [],
                         line: [],
@@ -160,21 +162,21 @@
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
             const { layout } = $normMethodDatas[$normMethod]
-            react('avgplot', currentData, layout)
-            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], 'bplot')
+            react(`${uniqueID}-avgplot`, currentData, layout)
+            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-bplot`)
 
             subplot(
                 'Spectrum and Power Analyser',
                 'Wavelength set (cm-1)',
                 'SA (cm-1)',
                 fullData.data['SA'],
-                'saPlot',
+                `${uniqueID}-saPlot`,
                 'Wavelength (cm-1)',
                 `Total Power (mJ)`,
                 fullData.data['pow']
             )
         } else {
-            felix_func({ dataFromPython: fullData.data })
+            felix_func({ dataFromPython: fullData.data, uniqueID })
             $felixGraphPlotted = true
         }
     } else if (updateplot) {
@@ -182,6 +184,7 @@
             fullData,
             plotfile,
             graphPlotted: $felixGraphPlotted,
+            uniqueID,
         })
         $felixGraphPlotted = true
     }
