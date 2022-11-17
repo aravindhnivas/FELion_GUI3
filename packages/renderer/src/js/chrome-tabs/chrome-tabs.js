@@ -1,20 +1,12 @@
 ;((window, factory) => {
-    if (typeof define == 'function' && define.amd) {
-        define(['draggabilly'], (Draggabilly) => factory(window, Draggabilly))
-    } else if (typeof module == 'object' && module.exports) {
-        module.exports = factory(window, require('draggabilly'))
-    } else {
-        window.ChromeTabs = factory(window, window.Draggabilly)
-    }
+    window.ChromeTabs = factory(window, window.Draggabilly)
 })(window, (window, Draggabilly) => {
     const TAB_CONTENT_MARGIN = 9
     const TAB_CONTENT_OVERLAP_DISTANCE = 1
-
-    const TAB_OVERLAP_DISTANCE = TAB_CONTENT_MARGIN * 2 + TAB_CONTENT_OVERLAP_DISTANCE
+    // const TAB_OVERLAP_DISTANCE = TAB_CONTENT_MARGIN * 2 + TAB_CONTENT_OVERLAP_DISTANCE
 
     const TAB_CONTENT_MIN_WIDTH = 24
     const TAB_CONTENT_MAX_WIDTH = 240
-
     const TAB_SIZE_SMALL = 84
     const TAB_SIZE_SMALLER = 60
     const TAB_SIZE_MINI = 48
