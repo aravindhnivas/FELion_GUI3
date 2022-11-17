@@ -10,7 +10,6 @@ const dispatchInteractEvent = (element: HTMLElement, eventName: string, detail: 
     element.dispatchEvent(event)
 }
 
-
 export function resizableDiv(
     target: HTMLElement,
     params = {
@@ -18,9 +17,8 @@ export function resizableDiv(
         edges: { left: false, right: true, bottom: false, top: false },
     }
 ) {
-   
     const { change, edges } = params
-    console.log('resizableDiv', target, params)
+    // console.log('resizableDiv', target, params)
     interact(target)
         .resizable({
             edges,

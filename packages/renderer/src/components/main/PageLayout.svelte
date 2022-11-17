@@ -5,7 +5,7 @@
     export let id = window.getID()
     // let component_id = window.getID()
     let tabs = []
-    $: console.log(tabs)
+    // $: console.log(tabs)
 </script>
 
 <main {id}>

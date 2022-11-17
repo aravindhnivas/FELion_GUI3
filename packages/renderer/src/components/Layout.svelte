@@ -27,7 +27,7 @@
     const dispatch = createEventDispatcher()
 
     onMount(() => {
-        console.log(id, 'mounted')
+        // console.log(id, 'mounted')
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         $graph_detached[id] = false
         // graphPlotted = false

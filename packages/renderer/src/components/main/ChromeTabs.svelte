@@ -6,7 +6,7 @@
         const el = document.getElementById(`${id}-chrome-tabs`)
         const chromeTabs = new ChromeTabs()
         chromeTabs.init(el)
-        console.warn(chromeTabs)
+        // console.warn(chromeTabs)
         chromeTabs.addTab()
     })
 </script>
