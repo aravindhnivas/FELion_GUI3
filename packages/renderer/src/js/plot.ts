@@ -27,17 +27,9 @@ export function plot(
     createPlotlyClickEvent = false
 ) {
     const graph_div = document.getElementById(graphDiv)
-    // const current_graph_detached = get(graph_detached)[get(activePage)]
-
-    // const graph_container = document.querySelector(
-    //     current_graph_detached ? `#${graphDiv}` : `#${get(activePage)} .plot__div`
-    // ) as HTMLDivElement
-
-    // const pad = graphPlottedLists[get(activePage)] ? 16 : 32
-    // const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
     const parentElement = graph_div.parentElement
-    const width = parentElement.clientWidth - (parentElement.children.length > 1 ? 16 : 0)
-    // const width = parentElement.clientWidth
+    const width = parentElement.clientWidth
+
     console.log(`Plotting ${graphDiv} in ${parentElement?.id} with width ${width}`)
     const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
@@ -88,15 +80,10 @@ export function subplot(
     y2: string,
     data2: DataFromPython
 ) {
-    const current_graph_detached = get(graph_detached)[get(activePage)]
-
-    const graph_container = document.querySelector(
-        current_graph_detached ? `#${graphDiv}` : `#${get(activePage)} .plot__div`
-    ) as HTMLDivElement
-
-    const pad = graphPlottedLists[get(activePage)] ? 16 : 32
-    const width = graph_container?.clientWidth - (current_graph_detached ? 0 : pad)
-
+    const graph_div = document.getElementById(graphDiv)
+    const parentElement = graph_div.parentElement
+    const width = parentElement.clientWidth
+    console.log(`Plotting ${graphDiv} in ${parentElement?.id} with width ${width}`)
     const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { domain: [0, 0.4], title: xtitle },
