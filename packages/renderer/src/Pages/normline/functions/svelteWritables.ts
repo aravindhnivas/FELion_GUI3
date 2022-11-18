@@ -1,7 +1,5 @@
-// import { getContext } from 'svelte'
 import { writable, derived } from 'svelte/store'
 import { get } from 'svelte/store'
-// const uniqueID = getContext('uniqueID')
 export { get }
 
 export const felixIndex = writable([])
