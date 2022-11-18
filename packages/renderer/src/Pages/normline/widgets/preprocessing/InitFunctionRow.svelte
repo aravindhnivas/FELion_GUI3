@@ -1,7 +1,6 @@
 <script lang="ts">
     import {
         opoMode,
-        theoryRow,
         normMethod,
         felixPeakTable,
         expfittedLines,
@@ -31,6 +30,7 @@
     export let felixfiles = []
     export let removeExtraFile
     export let showall = true
+    export let theoryRow = false
 
     let className = ''
     export { className as class }
@@ -209,14 +209,11 @@
 
     <CustomTextSwitch style="width:7em" variant="outlined" bind:value={deltaFELIX} label="Delta" step="0.5" />
     <button class="button is-link" on:click={() => (active = true)}> Open in Matplotlib</button>
-    <button class="button is-link" on:click={() => ($theoryRow = !$theoryRow)}>Add Theory</button>
+    <button class="button is-link" on:click={() => (theoryRow = !theoryRow)}>Add Theory</button>
     <button
         class="button is-link"
         on:click={() => {
             $opoMode = !$opoMode
         }}>OPO</button
     >
-    <!-- {#if $opoMode}
-        <span class="tag ml-auto" style="border: solid 1px; background-color: #ffa94d33;">OPO Mode</span>
-    {/if} -->
 </div>

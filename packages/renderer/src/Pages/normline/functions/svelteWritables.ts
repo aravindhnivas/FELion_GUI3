@@ -46,13 +46,10 @@ export const felixOpoDatfiles = derived([felixOpoDatLocation], ([$felixOpoDatLoc
         .map((f) => ({ name: f, id: window.getID() }))
 })
 
-export const baselineFile = writable('')
-
-export const filedetails = writable([])
 export const felixPlotAnnotations = writable([])
 export const plotlyEventCreatedFELIX = writable(false)
 export const plotlyEventCreatedOPO = writable(false)
-export const theoryRow = writable(false)
+// export const theoryRow = writable(false)
 
 export const expfittedLines = writable([])
 export const expfittedLinesCollectedData = writable([])
@@ -99,12 +96,3 @@ export const felixPlotCheckboxes = writable([
         id: window.getID(),
     },
 ])
-export const showall = writable(true)
-export const showRawData = writable(true)
-
-export const showPowerData = writable(true)
-export const deltaOPO = writable(0.3)
-export const deltaFELIX = writable(1)
-export const delta = derived([opoMode, deltaOPO, deltaFELIX], ([$opoMode, $deltaOPO, $deltaFELIX]) => {
-    return $opoMode ? $deltaOPO : $deltaFELIX
-})

@@ -1,5 +1,3 @@
-import { filedetails } from './svelteWritables'
-
 export function get_details_func({ dataFromPython } = {}) {
     const info = dataFromPython.files.map((data) => {
         const { filename, trap, res, b0, range } = data
@@ -17,5 +15,5 @@ export function get_details_func({ dataFromPython } = {}) {
             id: window.getID(),
         }
     })
-    filedetails.set(info)
+    return info
 }

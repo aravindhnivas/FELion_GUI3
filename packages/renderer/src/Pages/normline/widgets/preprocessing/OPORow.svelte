@@ -1,13 +1,5 @@
 <script lang="ts">
-    import {
-        deltaOPO,
-        opoMode,
-        showall,
-        normMethod,
-        baselineFile,
-        normMethodDatas,
-        felixPlotAnnotations,
-    } from '../../functions/svelteWritables'
+    import { opoMode, normMethod, normMethodDatas, felixPlotAnnotations } from '../../functions/svelteWritables'
     import { felix_opo_func } from '../../functions/felix_opo_func'
 
     import plotIndividualDataIntoGraph, {
@@ -30,13 +22,14 @@
     export let OPOLocation
     export let removeExtraFile
     export let OPOfilesChecked
+    export let showall = true
 
     let className = ''
     export { className as class }
     /////////////////////////////////////////////////////////////////////////
 
     let opoPower = 1
-    // let deltaOPO = 0.3
+    let deltaOPO = 0.3
 
     const uniqueID = getContext('uniqueID')
     let calibFile = ''
@@ -59,7 +52,7 @@
         $felixPlotAnnotations = []
         // const general = tkplot==="plot"
 
-        const args = { opofiles, tkplot, $deltaOPO, calibFile, opoPower }
+        const args = { opofiles, tkplot, $deltaOPO: deltaOPO, calibFile, opoPower }
         if (general)
             return computePy_func({
                 e,
@@ -79,7 +72,7 @@
     }
 
     $: updateplot = dataReady && plotfile && $normMethod && fullData.data && $opoMode
-    $: if (updateplot && $showall) {
+    $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
@@ -120,7 +113,6 @@
     on:submit={(e) => {
         plotData({ e: e.detail.event })
     }}
-    on:markedFile={(e) => ($baselineFile = e.detail.markedFile)}
 />
 
 {#if $opoMode}
@@ -141,7 +133,7 @@
                     style="width:7em;"
                     step="0.1"
                     variant="outlined"
-                    bind:value={$deltaOPO}
+                    bind:value={deltaOPO}
                     label="Delta OPO"
                 />
                 <CustomTextSwitch

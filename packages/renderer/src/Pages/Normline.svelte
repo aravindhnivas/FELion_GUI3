@@ -1,13 +1,9 @@
 <script lang="ts">
     import {
-        showall,
         opoMode,
         normMethod,
         normMethods,
-        showRawData,
-        baselineFile,
         Ngauss_sigma,
-        showPowerData,
         felixopoLocation,
     } from './normline/functions/svelteWritables'
 
@@ -112,22 +108,22 @@
 
     $: plotfileOptions = $opoMode ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
-    // let currentGraph
-    // $: if (currentGraph?.hasAttribute('data-plotted')) {
-    //     console.warn('Graph has been plotted')
-    // }
     onMount(() => {
         console.warn('Normline mounted')
-        // currentGraph = document.getElementById(currentGraphID)
     })
     onDestroy(() => {
         console.warn('Normline destroyed')
     })
 
-    // let display = window.db.get('active_tab') === id ? 'block' : 'none'
     let felix_toggle = true
     let opo_toggle = true
     let theory_toggle = true
+
+    let showall = true
+    let showRawData = true
+    let showPowerData = true
+
+    let theoryRow = false
 </script>
 
 <!-- Modals -->
@@ -143,24 +139,23 @@
 
 <AdjustInitialGuess bind:active={modalActivate} on:save={() => (adjustPeakTrigger = true)} />
 
-<Layout
-    {id}
-    {display}
-    {filetype}
-    {graphPlotted}
-    bind:fileChecked
-    bind:currentLocation
-    bind:activateConfigModal
-    on:markedFile={(e) => ($baselineFile = e.detail.markedFile)}
->
+<Layout {id} {display} {filetype} {graphPlotted} bind:fileChecked bind:currentLocation bind:activateConfigModal>
     <svelte:fragment slot="toggle_row">
         {#if $opoMode}
             <span class="tag" style="border: solid 1px; background-color: #ffa94d33;">OPO Mode</span>
         {/if}
     </svelte:fragment>
     <svelte:fragment slot="buttonContainer">
-        <InitFunctionRow {removeExtraFile} {felixfiles} {plotfile} class={felix_toggle ? '' : 'hide'} />
+        <InitFunctionRow
+            bind:theoryRow
+            {removeExtraFile}
+            {felixfiles}
+            {plotfile}
+            class={felix_toggle ? '' : 'hide'}
+            {showall}
+        />
         <OPORow
+            {showall}
             {removeExtraFile}
             bind:OPOLocation
             bind:OPOfilesChecked
@@ -168,7 +163,7 @@
             {plotfile}
             class={opo_toggle ? '' : 'hide'}
         />
-        <TheoryRow class={theory_toggle ? '' : 'hide'} />
+        <TheoryRow class={theory_toggle ? '' : 'hide'} {theoryRow} />
         <div class="align" class:hide={!felix_toggle}>
             <CustomRadio bind:value={$normMethod} options={normMethods} />
             <button
@@ -186,9 +181,9 @@
             <CustomSwitch bind:selected={showFELIX} label="showFELIX" />
             <CustomSwitch bind:selected={showOPO} label="showOPO" />
             <CustomSwitch bind:selected={showTheory} label="showTheory" />
-            <CustomSwitch bind:selected={$showall} label="showall" />
-            <CustomSwitch bind:selected={$showRawData} label="showRawData" />
-            <CustomSwitch bind:selected={$showPowerData} label="showPowerData" />
+            <CustomSwitch bind:selected={showall} label="showall" />
+            <CustomSwitch bind:selected={showRawData} label="showRawData" />
+            <CustomSwitch bind:selected={showPowerData} label="showPowerData" />
         </div>
     </svelte:fragment>
 
@@ -199,8 +194,8 @@
             id="{uniqueID}-exp-theory-plot"
         />
         <div id="{uniqueID}-felix_graphs" class:hide={!showFELIX}>
-            <div id="{uniqueID}-bplot" class="graph__div" class:hide={!$showRawData} />
-            <div id="{uniqueID}-saPlot" class="graph__div" class:hide={!$showPowerData} />
+            <div id="{uniqueID}-bplot" class="graph__div" class:hide={!showRawData} />
+            <div id="{uniqueID}-saPlot" class="graph__div" class:hide={!showPowerData} />
             <div
                 id="{uniqueID}-avgplot"
                 class="graph__div"
@@ -215,14 +210,10 @@
         <div id="{uniqueID}-opo_graphs" class:hide={!showOPO}>
             <div
                 class="animate__animated animate__fadeIn graph__div"
-                class:hide={!$showRawData}
+                class:hide={!showRawData}
                 id="{uniqueID}-opoplot"
             />
-            <div
-                class="animate__animated animate__fadeIn graph__div"
-                class:hide={!$showRawData}
-                id="{uniqueID}-opoSA"
-            />
+            <div class="animate__animated animate__fadeIn graph__div" class:hide={!showRawData} id="{uniqueID}-opoSA" />
             <div
                 class="animate__animated animate__fadeIn graph__div"
                 id="{uniqueID}-opoRelPlot"
@@ -252,6 +243,7 @@
         />
 
         <ExecuteFunctionContents
+            {showall}
             bind:modalActivate
             bind:adjustPeakTrigger
             {...{

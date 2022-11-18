@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { theoryRow, felixopoLocation, normMethod, theoryLocation } from '../../functions/svelteWritables'
+    import { felixopoLocation, normMethod, theoryLocation } from '../../functions/svelteWritables'
     import { theory_func } from '../../functions/theory'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import QuickBrowser from '$components/QuickBrowser.svelte'
@@ -9,6 +9,7 @@
 
     let className = ''
     export { className as class }
+    export let theoryRow = false
 
     let sigma = 7
     let scale = 1
@@ -56,7 +57,7 @@
     }}
 />
 
-{#if $theoryRow}
+{#if theoryRow}
     <div class="align box p-2 {className}" style="background-color: #77baf84d;">
         <BrowseTextfield class="two_col_browse p-1" bind:value={$theoryLocation} label="Theory location" />
 

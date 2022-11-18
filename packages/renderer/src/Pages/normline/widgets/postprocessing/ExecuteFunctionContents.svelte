@@ -1,6 +1,5 @@
 <script>
     import {
-        showall,
         felixIndex,
         normMethod,
         opoMode,
@@ -25,6 +24,7 @@
     // //////////////////////////////////////////////////////////////////////
 
     export let writeFile
+    export let showall = true
     export let fullfiles
     export let addedFileCol
     export let writeFileName
@@ -48,7 +48,7 @@
 
         relayout(currentGraph, { annotations: [], shapes: [], line: [] })
 
-        const defaultLength = $showall ? fullfiles.length : 1
+        const defaultLength = showall ? fullfiles.length : 1
         const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {
             return window.createToast('No fitted lines found', 'danger')
@@ -69,7 +69,7 @@
 
     const clearLastPeak = () => {
         const graphElement = document.getElementById(currentGraph)
-        const defaultLength = $showall ? fullfiles.length : 1
+        const defaultLength = showall ? fullfiles.length : 1
         const noOfFittedData = graphElement.data?.length - defaultLength
         if (noOfFittedData === 0) {
             return window.createToast('No fitted lines found', 'danger')

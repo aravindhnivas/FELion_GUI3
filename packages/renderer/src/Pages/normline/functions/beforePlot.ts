@@ -1,4 +1,4 @@
-import { felixIndex, felixOutputName, normMethod, opoMode, felixData, opoData, get, delta } from './svelteWritables'
+import { felixIndex, felixOutputName, normMethod, opoMode, felixData, opoData, get } from './svelteWritables'
 import { plot } from '../../../js/functions'
 
 const get_data = (data: DataFromPython) => {
@@ -45,7 +45,6 @@ export default async function beforePlot({
             signal_formula = 'Signal = -ln(C/B)/#Photons'
             ylabel = 'Normalised Intensity per photon'
         }
-        // console.warn(get(delta))
         const set_title = (method: 'rel' | 'log' | 'hv') =>
             `Normalised and Averaged Spectrum<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { filedetails, opoMode, normMethod } from '../../functions/svelteWritables'
+    import { opoMode, normMethod } from '../../functions/svelteWritables'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import Table from '$components/Table.svelte'
     import { savefile, loadfile } from '../../functions/misc'
@@ -9,7 +9,9 @@
 
     export let felixfiles: string[]
     export let opofiles: string[]
+
     let toggleFileDetailsTable = false
+    let filedetails = []
 
     async function plotData({ e = null } = {}) {
         if (felixfiles.length < 1) return window.createToast('No files selected', 'danger')
@@ -21,17 +23,15 @@
         const dataFromPython = await computePy_func({ e, pyfile, args })
         if (!dataFromPython) return
 
-        get_details_func({ dataFromPython })
+        filedetails = get_details_func({ dataFromPython })
         toggleFileDetailsTable = true
-        console.log({ $filedetails })
     }
 
     function loadfiledetails() {
         const loadedfile = loadfile('filedetails')
         if (loadedfile.length < 1) return
         toggleFileDetailsTable = true
-        $filedetails = loadedfile
-        console.log({ loadedfile, $filedetails })
+        filedetails = loadedfile
     }
     onMount(() => {
         loadfiledetails()
@@ -41,13 +41,13 @@
 <div class="align">
     <button class="button is-link" on:click={(e) => plotData({ e: e })}>Get details</button>
     <CustomIconSwitch bind:toggler={toggleFileDetailsTable} icons={['arrow_drop_down', 'arrow_drop_up']} />
-    <button class="button is-link" on:click={() => savefile({ file: $filedetails, name: 'filedetails' })}>Save</button>
+    <button class="button is-link" on:click={() => savefile({ file: filedetails, name: 'filedetails' })}>Save</button>
     <button class="button is-link" on:click={loadfiledetails}>Load</button>
 
     {#if toggleFileDetailsTable}
         <Table
             id="felix_filedetails_table"
-            bind:rows={$filedetails}
+            bind:rows={filedetails}
             closeOption={false}
             sortOption={true}
             animateRow={false}
