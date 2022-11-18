@@ -1,6 +1,6 @@
 import { writable, derived } from 'svelte/store'
 import { get } from 'svelte/store'
-import { getfiles, customStore, customStoreForArray } from './stores/func'
+import { getfiles, customStoreForArray } from './stores/func'
 export { get }
 
 export const felixIndex = writable([])
@@ -44,7 +44,6 @@ export const avgfittedLineCount = writable(0)
 export const fittedTraceCount = writable(0)
 
 export const felixAnnotationColor = writable('black')
-
 export const normMethods = ['Log', 'Relative', 'IntensityPerPhoton']
 export const normMethod = writable('Relative')
 
