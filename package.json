@@ -46,7 +46,6 @@
     "svelte-markdown": "^0.2.3",
     "svelte-material-ui": "^6.2.0",
     "svelte-preprocess": "^4.10.7",
-    "svelte-sortable-list": "^1.1.0",
     "ts-try": "^0.2.0",
     "tsx": "^3.12.1",
     "unplugin-auto-import": "^0.11.4",

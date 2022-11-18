@@ -1,20 +1,16 @@
 <script>
-    import ChromeTabs from './ChromeTabs.svelte'
+    import DynamicTabs from '$src/components/DynamicTabs.svelte'
 
     export let component = null
     export let id = window.getID()
-    // let component_id = window.getID()
     let tabs = []
-    // $: console.log(tabs)
 </script>
 
 <main {id}>
-    <!-- <ChromeTabs /> -->
-
-    <ChromeTabs
-        {id}
-        on:tabAdd={({ detail }) => {
-            const id = detail.tabEl.id
+    <DynamicTabs
+        prefixId={id}
+        on:tabAdd={({ detail: { id } }) => {
+            // const id = detail.tabEl.id
             tabs = [
                 ...tabs.map((f) => ({ ...f, display: 'none' })),
                 {
@@ -23,12 +19,12 @@
                 },
             ]
         }}
-        on:tabRemove={({ detail }) => {
-            const id = detail.tabEl.id
+        on:tabRemove={({ detail: { id } }) => {
+            // const id = detail.tabEl.id
             tabs = tabs.filter((tab) => tab.id !== id)
         }}
-        on:activeTabChange={({ detail }) => {
-            const id = detail.tabEl.id
+        on:activeTabChange={({ detail: { id } }) => {
+            // const id = detail.tabEl.id
             tabs = tabs.map((tab) => {
                 if (tab.id === id) {
                     return { ...tab, display: 'grid' }
