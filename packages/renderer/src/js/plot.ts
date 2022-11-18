@@ -30,7 +30,7 @@ export function plot(
     const parentElement = graph_div.parentElement
     const width = parentElement.clientWidth
 
-    console.log(`Plotting ${graphDiv} in ${parentElement?.id} with width ${width}`)
+    console.log(`Plotting ${graphDiv} with width ${width}`)
     const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { title: xtitle },
@@ -55,8 +55,8 @@ export function plot(
                 annotations: [],
             }
         }
-        console.log(graphDiv, ': plotted', get(plotlyEventsInfo)[graphDiv].eventCreated)
 
+        // console.log(graphDiv, ': plotted', get(plotlyEventsInfo)[graphDiv].eventCreated)
         if (!get(plotlyEventsInfo)[graphDiv].eventCreated && createPlotlyClickEvent) {
             console.log('Creating plotly event for ', graphDiv)
             plotlyClick(graphDiv)
@@ -82,8 +82,10 @@ export function subplot(
 ) {
     const graph_div = document.getElementById(graphDiv)
     const parentElement = graph_div.parentElement
+
     const width = parentElement.clientWidth
-    console.log(`Plotting ${graphDiv} in ${parentElement?.id} with width ${width}`)
+    console.log(`Plotting ${graphDiv} with width ${width}`)
+
     const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { domain: [0, 0.4], title: xtitle },

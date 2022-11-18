@@ -2,8 +2,7 @@ import { plotlyEventCreatedFELIX, felixGraphPlotted, get } from './svelteWritabl
 import { subplot } from '../../../js/functions'
 import { plotlySelection, plotlyClick } from './misc'
 import beforePlot from './beforePlot'
-// import { relayout } from 'plotly.js-basic-dist'
-// const uniqueID = getContext('uniqueID')
+
 export async function felix_func({ dataFromPython, uniqueID }: { dataFromPython: FELIXData; uniqueID: string }) {
     const status = await beforePlot({
         dataFromPython,

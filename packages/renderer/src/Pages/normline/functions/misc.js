@@ -44,11 +44,11 @@ export function loadfile(name) {
     return loadedfile
 }
 
-export function plotlySelection({ graphDiv = 'avgplot', mode = 'felix' } = {}) {
-    const avgplot = document.getElementById(graphDiv)
-    console.log('Creating plotly selection events for, ', avgplot)
+export function plotlySelection({ graphDiv, mode }) {
+    const graph = document.getElementById(graphDiv)
+    console.log('Creating plotly selection events for, ', graph)
 
-    avgplot.on('plotly_selected', (data) => {
+    graph.on('plotly_selected', (data) => {
         try {
             console.log(data)
             mode === 'felix' ? opoMode.set(false) : opoMode.set(true)
@@ -66,11 +66,11 @@ export function plotlySelection({ graphDiv = 'avgplot', mode = 'felix' } = {}) {
     })
 }
 
-export function plotlyClick({ graphDiv = 'avgplot', mode = 'felix' } = {}) {
-    const avgplot = document.getElementById(graphDiv)
-    console.log('Creating plotly click events for, ', avgplot)
+export function plotlyClick({ graphDiv, mode }) {
+    const graph = document.getElementById(graphDiv)
+    console.log('Creating plotly click events for, ', graph)
 
-    avgplot.on('plotly_click', (data) => {
+    graph.on('plotly_click', (data) => {
         console.log('Graph clicked: ', data)
 
         if (data.event.ctrlKey) {

@@ -162,9 +162,9 @@
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
             const { layout } = $normMethodDatas[$normMethod]
-            react(`${uniqueID}-avgplot`, currentData, layout)
-            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-bplot`)
+            console.warn('plotting', currentData, layout)
 
+            plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-bplot`)
             subplot(
                 'Spectrum and Power Analyser',
                 'Wavelength set (cm-1)',
@@ -175,6 +175,10 @@
                 `Total Power (mJ)`,
                 fullData.data['pow']
             )
+            const currentGraph = document.getElementById(`${uniqueID}-avgplot`)
+            const baseGraph = document.getElementById(`${uniqueID}-bplot`)
+            const graphWidth = baseGraph?.offsetWidth
+            react(currentGraph, currentData, { ...layout, width: graphWidth })
         } else {
             felix_func({ dataFromPython: fullData.data, uniqueID })
             $felixGraphPlotted = true
