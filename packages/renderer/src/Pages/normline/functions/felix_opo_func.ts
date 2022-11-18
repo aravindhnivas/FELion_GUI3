@@ -62,7 +62,7 @@ export async function felix_opo_func({
 
     if (currentGraphDiv.hasAttribute('data-plotly-event-created')) return
 
-    const plotDetails = { graphDiv, mode }
+    const plotDetails = { graphDiv, mode, uniqueID }
     currentGraphDiv.setAttribute('data-plotly-event-created', 'true')
 
     plotlySelection(plotDetails)

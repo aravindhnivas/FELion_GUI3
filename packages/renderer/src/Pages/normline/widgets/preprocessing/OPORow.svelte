@@ -31,7 +31,7 @@
     let opoPower = 1
     let deltaOPO = 0.3
 
-    const uniqueID = getContext('uniqueID')
+    const uniqueID = getContext<string>('uniqueID')
     let calibFile = ''
     let showOPOFiles = false
     let OPOcalibFiles = []
@@ -49,7 +49,8 @@
 
         if (opofiles.length < 1) return window.createToast('No files selected', 'danger')
         // $opoMode = true
-        $felixPlotAnnotations = []
+        // $felixPlotAnnotations = []
+        $felixPlotAnnotations[uniqueID] = []
         // const general = tkplot==="plot"
 
         const args = { opofiles, tkplot, $deltaOPO: deltaOPO, calibFile, opoPower }

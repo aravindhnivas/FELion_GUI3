@@ -8,7 +8,6 @@ import {
     Ngauss_sigma,
     get,
 } from './svelteWritables'
-
 import { relayout } from 'plotly.js-basic-dist'
 import { uniqBy } from 'lodash-es'
 
@@ -64,8 +63,7 @@ export function plotlySelection({ graphDiv, mode }) {
         }
     })
 }
-
-export function plotlyClick({ graphDiv, mode }) {
+export function plotlyClick({ graphDiv, mode, uniqueID }) {
     const graph = document.getElementById(graphDiv)
     console.warn('Creating plotly click events for, ', graphDiv)
 
@@ -95,9 +93,12 @@ export function plotlyClick({ graphDiv, mode }) {
                         arrowcolor: color,
                     }
 
-                    felixPlotAnnotations.update((annotate) => uniqBy([...annotate, annotation], 'text'))
+                    // felixPlotAnnotations.update((annotate) => uniqBy([...annotate, annotation], 'text'))
+                    felixPlotAnnotations.update(uniqueID, annotation, 'text')
+                    console.warn(get(felixPlotAnnotations))
                     relayout(graphDiv, {
-                        annotations: get(felixPlotAnnotations),
+                        // annotations: get(felixPlotAnnotations),
+                        annotations: get(felixPlotAnnotations)[uniqueID],
                     })
 
                     felixPeakTable.update((table) => [

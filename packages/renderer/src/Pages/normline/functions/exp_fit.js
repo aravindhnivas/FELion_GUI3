@@ -25,9 +25,10 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
 
     let annotations = dataFromPython['annotations']
 
-    felixPlotAnnotations.update((annotate) => [...annotate, annotations])
-
-    relayout(currentGraph, { annotations: get(felixPlotAnnotations) })
+    // felixPlotAnnotations.update((annotate) => [...annotate, annotations])
+    felixPlotAnnotations.update(uniqueID, annotations)
+    // relayout(currentGraph, { annotations: get(felixPlotAnnotations) })
+    relayout(currentGraph, { annotations: get(felixPlotAnnotations)[uniqueID] })
 
     let [freq, amp, fwhm, sig] = dataFromPython['table'].split(', ')
 

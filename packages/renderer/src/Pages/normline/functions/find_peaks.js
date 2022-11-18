@@ -7,6 +7,7 @@ import {
     get,
 } from './svelteWritables'
 import { relayout } from 'plotly.js-basic-dist'
+
 export function find_peaks_func({ dataFromPython, uniqueID }) {
     const annotations = dataFromPython[2]['annotations']
 

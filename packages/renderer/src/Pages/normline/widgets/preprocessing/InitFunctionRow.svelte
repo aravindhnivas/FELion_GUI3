@@ -84,7 +84,8 @@
                 args = { felixfiles, $deltaFELIX: deltaFELIX }
 
                 $felixPeakTable = []
-                $felixPlotAnnotations = []
+                // $felixPlotAnnotations = []
+                $felixPlotAnnotations[uniqueID] = []
                 $felixOutputName = 'averaged'
 
                 const dataFromPython = await computePy_func({
@@ -97,7 +98,8 @@
 
                 $expfittedLines = []
                 $fittedTraceCount = 0
-                $felixPlotAnnotations = []
+                // $felixPlotAnnotations = []
+                $felixPlotAnnotations[uniqueID] = []
                 $expfittedLinesCollectedData = []
 
                 fullData.data = dataFromPython

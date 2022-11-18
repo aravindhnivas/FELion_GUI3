@@ -1,5 +1,6 @@
 import { writable, derived } from 'svelte/store'
 import { get } from 'svelte/store'
+import { getfiles, customStore, customStoreForArray } from './stores/func'
 export { get }
 
 export const felixIndex = writable([])
@@ -9,11 +10,9 @@ export const felixOutputName = writable('')
 export const opoMode = writable(false)
 export const Ngauss_sigma = writable(5)
 export const dataTable = writable([])
-
 export const dataTable_avg = writable([])
 
 export const opoData = writable({})
-
 export const felixData = writable({})
 
 export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode, $felixData, $opoData]) => {
@@ -24,13 +23,7 @@ export const felixopoLocation = writable('')
 
 export const theoryLocation = window.persistentDB('theoryLocation', '')
 
-export const theoryfiles = derived([theoryLocation], ([$theoryLocation]) => {
-    if (!window.fs.isDirectory($theoryLocation)) return [{ name: '', id: window.getID() }]
-    return window.fs
-        .readdirSync($theoryLocation)
-        .filter((f) => f.endsWith('.txt'))
-        .map((f) => ({ name: f, id: window.getID() }))
-})
+export const theoryfiles = derived([theoryLocation], ([$theoryLocation]) => getfiles($theoryLocation, '.txt'))
 
 export const felixOpoDatLocation = derived([felixopoLocation], ([$felixopoLocation]) => {
     const data_location = window.path.resolve($felixopoLocation, '../EXPORT')
@@ -39,17 +32,10 @@ export const felixOpoDatLocation = derived([felixopoLocation], ([$felixopoLocati
 })
 
 export const felixOpoDatfiles = derived([felixOpoDatLocation], ([$felixOpoDatLocation]) => {
-    if (!$felixOpoDatLocation) return []
-    return window.fs
-        .readdirSync($felixOpoDatLocation)
-        .filter((f) => f.endsWith('.dat'))
-        .map((f) => ({ name: f, id: window.getID() }))
+    return getfiles($felixOpoDatLocation, '.dat')
 })
 
-export const felixPlotAnnotations = writable([])
-export const plotlyEventCreatedFELIX = writable(false)
-export const plotlyEventCreatedOPO = writable(false)
-// export const theoryRow = writable(false)
+export const felixPlotAnnotations = customStoreForArray<{ x: number; y: number; text: string }>()
 
 export const expfittedLines = writable([])
 export const expfittedLinesCollectedData = writable([])

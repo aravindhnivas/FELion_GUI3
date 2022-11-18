@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import {
         felixIndex,
         normMethod,
@@ -34,7 +34,7 @@
     export let adjustPeakTrigger = false
 
     // //////////////////////////////////////////////////////////////////////
-    const uniqueID = getContext('uniqueID')
+    const uniqueID = getContext<string>('uniqueID')
     let NGauss_fit_args = {}
     let savePeakfilename = 'peakTable'
     let toggleFindPeaksRow = false
@@ -59,9 +59,12 @@
 
         $felixIndex = []
         $expfittedLines = []
-        $felixPlotAnnotations = []
+        // $felixPlotAnnotations = []
+        $felixPlotAnnotations[uniqueID] = []
+        console.warn($felixPlotAnnotations)
         $expfittedLinesCollectedData = []
         relayout(currentGraph, { annotations: [], shapes: [] })
+
         for (let i = 0; i < noOfFittedData; i++) {
             deleteTraces(currentGraph, [-1])
         }
@@ -77,10 +80,12 @@
         $dataTable = dropRight($dataTable, 1)
         $expfittedLines = dropRight($expfittedLines, 2)
 
-        $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
+        // $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
+        $felixPlotAnnotations[uniqueID] = dropRight($felixPlotAnnotations[uniqueID], 1)
         $expfittedLinesCollectedData = dropRight($expfittedLinesCollectedData, 1)
         relayout(currentGraph, {
-            annotations: $felixPlotAnnotations,
+            // annotations: $felixPlotAnnotations,
+            annotations: $felixPlotAnnotations[uniqueID],
             shapes: $expfittedLines,
         })
 
@@ -107,7 +112,8 @@
             arrowcolor: $felixAnnotationColor,
         }
 
-        $felixPlotAnnotations = $felixPeakTable.map((f) => {
+        // $felixPlotAnnotations = $felixPeakTable.map((f) => {
+        $felixPlotAnnotations[uniqueID] = $felixPeakTable.map((f) => {
             const { freq, amp } = f
             const x = parseFloat(freq)
             const y = parseFloat(amp)
@@ -120,7 +126,8 @@
         })
 
         modalActivate = false
-        relayout(currentGraph, { annotations: $felixPlotAnnotations })
+        // relayout(currentGraph, { annotations: $felixPlotAnnotations })
+        relayout(currentGraph, { annotations: $felixPlotAnnotations[uniqueID] })
         adjustPeakTrigger = false
     }
 
@@ -219,6 +226,10 @@
     }
 
     $: if (adjustPeakTrigger) adjustPeak()
+
+    onDestroy(() => {
+        felixPlotAnnotations.del(uniqueID)
+    })
 </script>
 
 <div class="align">
@@ -258,7 +269,8 @@
             <button
                 class="button is-danger"
                 on:click={() => {
-                    $felixPlotAnnotations = []
+                    // $felixPlotAnnotations = []
+                    $felixPlotAnnotations[uniqueID] = []
                     $felixPeakTable = []
                     NGauss_fit_args = {}
                     relayout(currentGraph, { annotations: [] })
