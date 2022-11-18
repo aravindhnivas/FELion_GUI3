@@ -1,15 +1,14 @@
-<script>
+<script lang="ts">
     import {
         deltaOPO,
         opoMode,
         showall,
         normMethod,
         baselineFile,
-        OPOGraphPlotted,
         normMethodDatas,
         felixPlotAnnotations,
     } from '../../functions/svelteWritables'
-    import { opofile_func } from '../../functions/opofile'
+    import { felix_opo_func } from '../../functions/felix_opo_func'
 
     import plotIndividualDataIntoGraph, {
         get_data,
@@ -22,7 +21,6 @@
     import { plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
     import { react } from 'plotly.js-basic-dist'
-    // import Textfield from '@smui/textfield'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
 
     /////////////////////////////////////////////////////////////////////////
@@ -82,7 +80,7 @@
 
     $: updateplot = dataReady && plotfile && $normMethod && fullData.data && $opoMode
     $: if (updateplot && $showall) {
-        if ($OPOGraphPlotted) {
+        if (currentGraph.hasAttribute('data-plotted')) {
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
             const { layout } = $normMethodDatas[$normMethod]
@@ -96,18 +94,21 @@
                 `${uniqueID}-opoSA`
             )
         } else {
-            opofile_func({ dataFromPython: fullData.data, uniqueID })
-            $OPOGraphPlotted = true
+            felix_opo_func({ dataFromPython: fullData.data, uniqueID, mode: 'opo' })
         }
     } else if (updateplot) {
         plotIndividualDataIntoGraph({
             fullData,
             plotfile,
-            graphPlotted: $OPOGraphPlotted,
             uniqueID,
         })
-        $OPOGraphPlotted = true
     }
+
+    let currentGraph: HTMLElement
+
+    onMount(() => {
+        currentGraph = document.getElementById(`${uniqueID}-opoRelPlot`)
+    })
 </script>
 
 <QuickBrowser

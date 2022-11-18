@@ -38,7 +38,6 @@ export function loadfile(name) {
     }
 
     const loadedfile = getdata?.file?.map((arr) => ({ ...arr, id: window.getID() })) || []
-    // console.log({ loadedfile })
     window.createToast(`${name}.json has been loaded.`, 'success')
 
     return loadedfile
@@ -46,7 +45,7 @@ export function loadfile(name) {
 
 export function plotlySelection({ graphDiv, mode }) {
     const graph = document.getElementById(graphDiv)
-    console.log('Creating plotly selection events for, ', graph)
+    console.warn('Creating plotly selection events for, ', graphDiv)
 
     graph.on('plotly_selected', (data) => {
         try {
@@ -68,7 +67,7 @@ export function plotlySelection({ graphDiv, mode }) {
 
 export function plotlyClick({ graphDiv, mode }) {
     const graph = document.getElementById(graphDiv)
-    console.log('Creating plotly click events for, ', graph)
+    console.warn('Creating plotly click events for, ', graphDiv)
 
     graph.on('plotly_click', (data) => {
         console.log('Graph clicked: ', data)

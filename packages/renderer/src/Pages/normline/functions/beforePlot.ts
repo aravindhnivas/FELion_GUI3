@@ -46,10 +46,10 @@ export default async function beforePlot({
             ylabel = 'Normalised Intensity per photon'
         }
         console.warn(get(delta))
-        let set_title = (method: 'rel' | 'log' | 'hv') =>
+        const set_title = (method: 'rel' | 'log' | 'hv') =>
             `Normalised and Averaged Spectrum<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
 
-        let normMethod_datas = {
+        const normMethod_datas = {
             Relative: {
                 data: get_data(dataFromPython['average_rel']),
                 layout: {

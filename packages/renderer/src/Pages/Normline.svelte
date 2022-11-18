@@ -115,13 +115,9 @@
 
     onMount(() => {
         console.warn('Normline mounted')
-        $felixGraphPlotted = false
-        $OPOGraphPlotted = false
     })
     onDestroy(() => {
         console.warn('Normline destroyed')
-        // $felixGraphPlotted = false
-        // $OPOGraphPlotted = false
     })
 
     // let display = window.db.get('active_tab') === id ? 'block' : 'none'

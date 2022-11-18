@@ -11,14 +11,13 @@
         felixOutputName,
         fittedTraceCount,
         felixopoLocation,
-        felixGraphPlotted,
         felixPlotCheckboxes,
         felixPlotAnnotations,
         expfittedLinesCollectedData,
         theoryLocation,
     } from '../../functions/svelteWritables'
     import FelixPlotting from '../../modals/FelixPlotting.svelte'
-    import { felix_func } from '../../functions/felix'
+    import { felix_opo_func } from '../../functions/felix_opo_func'
     import plotIndividualDataIntoGraph, {
         get_data,
         mapNormMethodKeys,
@@ -38,7 +37,7 @@
     export { className as class }
     ///////////////////////////////////////////////////////////////////////////
 
-    const uniqueID = getContext('uniqueID')
+    const uniqueID = getContext<string>('uniqueID')
 
     let active = false
 
@@ -158,7 +157,7 @@
     $: updateplot = !$opoMode && dataReady && plotfile && $normMethod && fullData.data
 
     $: if (updateplot && $showall) {
-        if ($felixGraphPlotted) {
+        if (currentGraph.hasAttribute('data-plotted')) {
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
             const { layout } = $normMethodDatas[$normMethod]
@@ -175,22 +174,22 @@
                 `Total Power (mJ)`,
                 fullData.data['pow']
             )
-            const baseGraph = document.getElementById(`${uniqueID}-bplot`)
-            const graphWidth = baseGraph?.offsetWidth
-            react(`${uniqueID}-avgplot`, currentData, { ...layout, width: graphWidth })
+            react(`${uniqueID}-avgplot`, currentData, layout)
         } else {
-            felix_func({ dataFromPython: fullData.data, uniqueID })
-            $felixGraphPlotted = true
+            felix_opo_func({ dataFromPython: fullData.data, uniqueID, mode: 'felix' })
         }
     } else if (updateplot) {
         plotIndividualDataIntoGraph({
             fullData,
             plotfile,
-            graphPlotted: $felixGraphPlotted,
             uniqueID,
         })
-        $felixGraphPlotted = true
     }
+
+    let currentGraph: HTMLElement
+    onMount(() => {
+        currentGraph = document.getElementById(`${uniqueID}-avgplot`)
+    })
 </script>
 
 <FelixPlotting

@@ -49,6 +49,11 @@ export function plot(
 
     try {
         react(graphDiv, dataPlot, dataLayout, { editable: true })
+
+        if (!graph_div.hasAttribute('data-plotted')) {
+            graph_div.setAttribute('data-plotted', 'true')
+        }
+
         if (!get(plotlyEventsInfo)[graphDiv]) {
             get(plotlyEventsInfo)[graphDiv] = {
                 eventCreated: false,
