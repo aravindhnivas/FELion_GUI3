@@ -3,14 +3,18 @@
 
     export let component = null
     export let id = window.getID()
+
     let tabs = []
+    onDestroy(() => {
+        console.warn('Main PageLayout destroyed')
+        tabs = []
+    })
 </script>
 
 <main {id}>
     <DynamicTabs
         prefixId={id}
         on:tabAdd={({ detail: { id } }) => {
-            // const id = detail.tabEl.id
             tabs = [
                 ...tabs.map((f) => ({ ...f, display: 'none' })),
                 {
@@ -20,11 +24,9 @@
             ]
         }}
         on:tabRemove={({ detail: { id } }) => {
-            // const id = detail.tabEl.id
             tabs = tabs.filter((tab) => tab.id !== id)
         }}
         on:activeTabChange={({ detail: { id } }) => {
-            // const id = detail.tabEl.id
             tabs = tabs.map((tab) => {
                 if (tab.id === id) {
                     return { ...tab, display: 'grid' }

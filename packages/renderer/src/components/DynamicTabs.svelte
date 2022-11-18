@@ -61,14 +61,12 @@
                             }}
                         />
                     {/if}
-                    <!-- <span class="divider ml-2" class:hide={name === activeTab} /> -->
                 </a>
             </li>
         {/each}
         <li>
             <button class="button is-link ml-2" style="border: none;" on:click={addTab}>
                 <span class="material-symbols-outlined"> add </span>
-                <!-- <span>Add</span> -->
             </button>
         </li>
     </ul>
@@ -82,7 +80,6 @@
             &:not(:last-child, :first-child, :only-child, .is-active) {
                 border-left: solid 1px darkgrey;
             }
-            // border-left: solid 1px darkgrey;
             &.is-active .tab {
                 border-bottom: solid 1px;
             }
