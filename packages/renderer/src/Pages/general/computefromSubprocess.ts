@@ -3,22 +3,22 @@ import { running_processes } from '$src/sveltewritables'
 
 export const dispatchEvent = (target: HTMLButtonElement | null | undefined, detail: Object, eventName: string) => {
     if (!target) return
-    const pyEventClosed = new CustomEvent(eventName, { bubbles: false, detail })
-    target.dispatchEvent(pyEventClosed)
+    const event = new CustomEvent(eventName, { bubbles: false, detail })
+    target.dispatchEvent(event)
     console.info(eventName + ' dispatched')
 }
 
 interface Type {
-    pyfile: string;
-    args: Object;
+    pyfile: string
+    args: Object
 
-    target?: HTMLButtonElement | null;
-    general?: boolean;
-    e?: Event;
-    button?: HTMLButtonElement | null;
-    computepyfile?: string;
-    shell?: boolean;
-    detached?: boolean;
+    target?: HTMLButtonElement | null
+    general?: boolean
+    e?: Event
+    button?: HTMLButtonElement | null
+    computepyfile?: string
+    shell?: boolean
+    detached?: boolean
 }
 
 export default async function ({
@@ -32,11 +32,9 @@ export default async function ({
     shell = false,
     detached = false,
 }: Type): Promise<DataFromPython | undefined | string> {
-
     return new Promise((resolve) => {
-        
         let outputFile: string
-        target ||= button || e?.target as HTMLButtonElement
+        target ||= button || (e?.target as HTMLButtonElement)
 
         if (pyfile === 'server') {
             pyServerReady.set(false)
@@ -51,7 +49,7 @@ export default async function ({
             }
             target?.classList.toggle('is-loading')
         }
-        
+
         pyVersion.set(<string>window.db.get('pyVersion'))
         if (!get(pyVersion)) {
             window.handleError('Python is not valid. Fix it in Settings --> Configuration')
@@ -67,7 +65,7 @@ export default async function ({
         const finalProgram = get(pyProgram).split(' ')
         const pyArgs = get(developerMode) ? [mainPyFile, ...sendArgs] : sendArgs
 
-        const finalArgs = [...finalProgram.slice(1, ), ...pyArgs]
+        const finalArgs = [...finalProgram.slice(1), ...pyArgs]
         console.warn(finalProgram[0], { finalArgs })
 
         const opts = { detached, shell }
@@ -77,13 +75,13 @@ export default async function ({
                 ...p,
                 {
                     pid: py.pid,
-                    pyfile, 
+                    pyfile,
                     close: {
-                        name: 'X', 
+                        name: 'X',
                         cb: () => py.kill(),
                         style: 'background: var(--color-danger); cursor: pointer; color: var(--color-white);',
-                    } 
-                }
+                    },
+                },
             ])
         }
 
@@ -136,7 +134,7 @@ export default async function ({
             }
 
             const dataFromPython: DataFromPython = window.fs.readJsonSync(outputFile)
-            if(window.fs.isError(dataFromPython)) {
+            if (window.fs.isError(dataFromPython)) {
                 resolve(undefined)
                 return window.handleError(dataFromPython)
             }

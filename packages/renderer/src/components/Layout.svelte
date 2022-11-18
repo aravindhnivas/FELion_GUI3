@@ -40,7 +40,7 @@
     }
 
     const changeGraphDivWidth = async (event?: CustomEvent) => {
-        console.warn('changeGraphDivWidth', id)
+        // console.warn('changeGraphDivWidth', id)
         await tick()
         graphDivs?.forEach((id) => {
             if (!id?.on) return

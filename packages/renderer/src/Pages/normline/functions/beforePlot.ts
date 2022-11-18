@@ -45,7 +45,7 @@ export default async function beforePlot({
             signal_formula = 'Signal = -ln(C/B)/#Photons'
             ylabel = 'Normalised Intensity per photon'
         }
-        console.warn(get(delta))
+        // console.warn(get(delta))
         const set_title = (method: 'rel' | 'log' | 'hv') =>
             `Normalised and Averaged Spectrum<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
 

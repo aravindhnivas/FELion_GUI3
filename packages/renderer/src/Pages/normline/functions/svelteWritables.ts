@@ -103,8 +103,6 @@ export const showall = writable(true)
 export const showRawData = writable(true)
 
 export const showPowerData = writable(true)
-export const felixGraphPlotted = writable(false)
-export const OPOGraphPlotted = writable(false)
 export const deltaOPO = writable(0.3)
 export const deltaFELIX = writable(1)
 export const delta = derived([opoMode, deltaOPO, deltaFELIX], ([$opoMode, $deltaOPO, $deltaFELIX]) => {

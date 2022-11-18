@@ -9,8 +9,6 @@
         Ngauss_sigma,
         showPowerData,
         felixopoLocation,
-        OPOGraphPlotted,
-        felixGraphPlotted,
     } from './normline/functions/svelteWritables'
 
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte'
@@ -47,12 +45,11 @@
     let currentLocation = ''
 
     $: felixfiles = fileChecked.map((file) => window.path.resolve(currentLocation, file))
-    $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
+    // $: console.log(`${filetype} currentlocation: \n${currentLocation}`)
 
     ///////////////////////////////////////////////////////////////////////
     let showTheory = true
-    $: graphPlotted = $felixGraphPlotted || $OPOGraphPlotted
-    $: console.warn({ graphPlotted, $OPOGraphPlotted, $felixGraphPlotted })
+    let graphPlotted = false
     let overwrite_expfit = true
     let writeFile = true
     let OPOfilesChecked = []
@@ -85,11 +82,11 @@
 
     $: console.log(`Extrafile added: ${extrafileAdded}`)
 
-    $: currentGraph = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+    $: currentGraphID = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     function removeExtraFile() {
         for (let i = 0; i < extrafileAdded + 1; i++) {
             try {
-                deleteTraces(currentGraph, [-1])
+                deleteTraces(currentGraphID, [-1])
 
                 extrafileAdded--
                 addedfiles = addedfiles.slice(0, addedfiles.length - 1)
@@ -106,15 +103,22 @@
     let activateConfigModal = false
     let modalActivate = false
     let adjustPeakTrigger = false
-    // $: console.warn({ $opoMode })
+
     let plotfile = 'average'
+
     let showFELIX = true
     let showOPO = true
     let showMoreOptions = false
+
     $: plotfileOptions = $opoMode ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
+    // let currentGraph
+    // $: if (currentGraph?.hasAttribute('data-plotted')) {
+    //     console.warn('Graph has been plotted')
+    // }
     onMount(() => {
         console.warn('Normline mounted')
+        // currentGraph = document.getElementById(currentGraphID)
     })
     onDestroy(() => {
         console.warn('Normline destroyed')
@@ -197,7 +201,15 @@
         <div id="{uniqueID}-felix_graphs" class:hide={!showFELIX}>
             <div id="{uniqueID}-bplot" class="graph__div" class:hide={!$showRawData} />
             <div id="{uniqueID}-saPlot" class="graph__div" class:hide={!$showPowerData} />
-            <div id="{uniqueID}-avgplot" class="graph__div" />
+            <div
+                id="{uniqueID}-avgplot"
+                class="graph__div"
+                on:plotted={(e) => {
+                    if (e.detail.graphDiv === `${uniqueID}-avgplot`) {
+                        graphPlotted = true
+                    }
+                }}
+            />
         </div>
 
         <div id="{uniqueID}-opo_graphs" class:hide={!showOPO}>
@@ -211,7 +223,15 @@
                 class:hide={!$showRawData}
                 id="{uniqueID}-opoSA"
             />
-            <div class="animate__animated animate__fadeIn graph__div" id="{uniqueID}-opoRelPlot" />
+            <div
+                class="animate__animated animate__fadeIn graph__div"
+                id="{uniqueID}-opoRelPlot"
+                on:plotted={(e) => {
+                    if (e.detail.graphDiv === `${uniqueID}-opoRelPlot`) {
+                        graphPlotted = true
+                    }
+                }}
+            />
         </div>
     </svelte:fragment>
 
