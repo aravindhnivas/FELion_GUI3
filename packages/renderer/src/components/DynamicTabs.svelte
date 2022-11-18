@@ -61,7 +61,7 @@
                             }}
                         />
                     {/if}
-                    <span class="divider ml-2" class:hide={name === activeTab} />
+                    <!-- <span class="divider ml-2" class:hide={name === activeTab} /> -->
                 </a>
             </li>
         {/each}
@@ -79,9 +79,10 @@
         background-color: var(--color-primary-light);
 
         li {
-            &::after {
-                border: solid 1px gray;
+            &:not(:last-child, :first-child, :only-child, .is-active) {
+                border-left: solid 1px darkgrey;
             }
+            // border-left: solid 1px darkgrey;
             &.is-active .tab {
                 border-bottom: solid 1px;
             }
@@ -90,7 +91,7 @@
                 border: none;
                 min-width: 150px;
                 display: grid;
-                grid-template-columns: 1fr auto auto;
+                grid-template-columns: 1fr auto;
                 gap: 0.5rem;
                 .delete {
                     background-color: white;
