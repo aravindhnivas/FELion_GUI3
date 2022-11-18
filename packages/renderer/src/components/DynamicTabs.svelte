@@ -96,10 +96,6 @@
                         background-color: var(--color-danger);
                     }
                 }
-                .divider {
-                    border-left: solid 1px gray;
-                    height: 1.5rem;
-                }
             }
         }
     }

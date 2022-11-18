@@ -5,7 +5,7 @@
 </script>
 
 {#if label}
-    <div class="align block mt-5" style="align-items: baseline;">
+    <div class="align block mt-5" style="align-items: baseline; {style}">
         <span class="notification is-{type}" style="width: 100%;">
             {label}
             <button
