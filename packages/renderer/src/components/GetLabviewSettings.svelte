@@ -3,6 +3,7 @@
     import Textfield from '@smui/textfield'
     import CustomSelect from './CustomSelect.svelte'
     import CustomSwitch from './CustomSwitch.svelte'
+    import Notify from './Notify.svelte'
     import settings_key_value_infos from '$src/settings_key_value_infos.json'
     import get_files_settings_values from '$src/js/get_files_settings_values'
 
@@ -57,9 +58,11 @@
                     {/each}
                 </div>
             {:catch error}
-                <div class="info-box error" style:background="#f14668">
-                    {error}
-                </div>
+                {#if displayFiles.length > 0 && !selected_file}
+                    <Notify label="Select filename to show detail" type="warning" />
+                {:else}
+                    <Notify label={error} type="danger" />
+                {/if}
             {/await}
         </svelte:fragment>
     </Modal>
@@ -69,7 +72,6 @@
     .info-box {
         display: flex;
         margin-top: 1em;
-
         padding: 1em;
         justify-content: center;
     }
