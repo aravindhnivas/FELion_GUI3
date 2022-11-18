@@ -53,7 +53,7 @@
 
     const changeGraphDivWidth = async (ms = 0) => {
         await tick()
-        if (ms > 0) await sleep(ms)
+        if (ms > 0) await window.sleep(ms)
         graphDivs.forEach((id) => {
             if (id.data) {
                 relayout(id, { width: id.clientWidth })

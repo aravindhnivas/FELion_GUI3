@@ -65,10 +65,6 @@
     <div class="main__layout__div" style="grid-template-columns: {files_div_toggle ? 'auto 1fr' : '1fr'}; ">
         <div
             use:resizableDiv
-            on:resizeend={() => {
-                // console.warn('resizeend')
-                changeGraphDivWidth()
-            }}
             style:touch-action="none"
             class="left_container__div box background-body"
             class:hide={!files_div_toggle}
