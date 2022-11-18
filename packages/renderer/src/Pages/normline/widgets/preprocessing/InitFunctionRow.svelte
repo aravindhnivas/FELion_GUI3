@@ -175,10 +175,9 @@
                 `Total Power (mJ)`,
                 fullData.data['pow']
             )
-            const currentGraph = document.getElementById(`${uniqueID}-avgplot`)
             const baseGraph = document.getElementById(`${uniqueID}-bplot`)
             const graphWidth = baseGraph?.offsetWidth
-            react(currentGraph, currentData, { ...layout, width: graphWidth })
+            react(`${uniqueID}-avgplot`, currentData, { ...layout, width: graphWidth })
         } else {
             felix_func({ dataFromPython: fullData.data, uniqueID })
             $felixGraphPlotted = true
