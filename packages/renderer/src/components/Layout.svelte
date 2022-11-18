@@ -2,7 +2,7 @@
     import { onMount, createEventDispatcher, tick, onDestroy } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import { relayout } from 'plotly.js-basic-dist'
-    import WinBox from 'winbox/src/js/winbox.js'
+    // import WinBox from 'winbox/src/js/winbox.js'
     import FileBrowser from '$components/FileBrowser.svelte'
     import Modal from '$components/Modal.svelte'
     import Editor from '$components/Editor.svelte'
@@ -19,22 +19,15 @@
     export let currentLocation = ''
     export let graphPlotted = false
     export let activateConfigModal = false
-    // export let saveLocationToDB = true
 
     const uniqueID = getContext('uniqueID')
-    // const saveLocationToDB = getContext('saveLocationToDB')
 
     const dispatch = createEventDispatcher()
 
     onMount(() => {
-        // console.log(id, 'mounted')
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         $graph_detached[id] = false
-        // graphPlotted = false
     })
-
-    // setContext('uniqueID', '')
-    // setContext('saveLocationToDB', saveLocationToDB)
 
     let graphDivContainer: HTMLElement
     let graphDivs: Plotly.PlotlyHTMLElement[] = []
@@ -46,37 +39,8 @@
         }
     }
 
-    let graphWindow
-    let graphwindowClosed = false
-
-    function openGraph() {
-        graphwindowClosed = false
-        graphWindow = new WinBox({
-            class: ['no-full'],
-            root: document.getElementById('pageContainer'),
-            mount: graphDivContainer,
-            title: `Modal: ${filetype}`,
-            x: 'center',
-            y: 'center',
-            width: '70%',
-            height: '70%',
-            background: '#634e96',
-            top: 50,
-            bottom: 50,
-            onclose: () => {
-                graphwindowClosed = true
-                $graph_detached[id] = false
-            },
-        })
-        graphWindow?.maximize(true)
-        changeGraphDivWidth()
-        $graph_detached[id] = true
-    }
-
-    $: if (graphwindowClosed) {
-        changeGraphDivWidth()
-    }
     const changeGraphDivWidth = async (event?: CustomEvent) => {
+        console.warn('changeGraphDivWidth', id)
         await tick()
         graphDivs?.forEach((id) => {
             if (!id?.on) return
@@ -87,11 +51,9 @@
             }
         })
     }
-    onDestroy(() => {
-        graphWindow?.close()
-    })
 
     let location = (window.db.get(`${filetype}_location`) as string) || ''
+
     let browse_location_div_toggle = true
     let files_div_toggle = true
     let button_row_div_toggle = true
@@ -103,7 +65,10 @@
     <div class="main__layout__div" style="grid-template-columns: {files_div_toggle ? 'auto 1fr' : '1fr'}; ">
         <div
             use:resizableDiv
-            on:resizeend={() => changeGraphDivWidth()}
+            on:resizeend={() => {
+                // console.warn('resizeend')
+                changeGraphDivWidth()
+            }}
             style:touch-action="none"
             class="left_container__div box background-body"
             class:hide={!files_div_toggle}
