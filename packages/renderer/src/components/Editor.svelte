@@ -18,7 +18,7 @@
     export let reportRead = false
     export let savefilename = 'report'
     export let reportSaved = false
-    export let showReport = false
+    export let showReport = true
     export let enable_location_browser = true
     export let filenameOpts: string[] = []
     export let filenameUpdate = () => {}
