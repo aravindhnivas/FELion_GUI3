@@ -181,7 +181,7 @@
 
 <div
     class="main__container"
-    id="{uniqueID}_filebrowser"
+    id="{uniqueID}-{filetype}_filebrowser"
     style:grid-template-rows={fullfiles.length
         ? otherfolders.length
             ? 'auto 6fr 1fr'

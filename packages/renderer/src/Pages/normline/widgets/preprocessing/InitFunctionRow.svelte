@@ -1,8 +1,6 @@
 <script lang="ts">
     import {
         opoMode,
-        showall,
-        deltaFELIX,
         theoryRow,
         normMethod,
         felixPeakTable,
@@ -32,6 +30,7 @@
     export let plotfile = 'average'
     export let felixfiles = []
     export let removeExtraFile
+    export let showall = true
 
     let className = ''
     export { className as class }
@@ -40,7 +39,7 @@
     const uniqueID = getContext<string>('uniqueID')
 
     let active = false
-
+    let deltaFELIX = 1
     let felixPlotWidgets = {
         text: [
             {
@@ -82,7 +81,7 @@
                 dataReady = false
 
                 pyfile = 'normline.felix'
-                args = { felixfiles, $deltaFELIX }
+                args = { felixfiles, $deltaFELIX: deltaFELIX }
 
                 $felixPeakTable = []
                 $felixPlotAnnotations = []
@@ -106,10 +105,9 @@
                 break
 
             case 'baseline':
-                const baseline_markedfile = document.querySelector(
-                    `#${$opoMode ? 'o' : ''}felix_filebrowser .marked-file`
-                )?.textContent
-
+                const filebrowserID = `#${uniqueID}-${$opoMode ? 'o' : ''}felix_filebrowser`
+                const baseline_markedfile = document.querySelector(`${filebrowserID} .marked-file`)?.textContent
+                console.log(baseline_markedfile)
                 if (!baseline_markedfile) {
                     return window.createToast(
                         `No ${
@@ -156,7 +154,7 @@
 
     $: updateplot = !$opoMode && dataReady && plotfile && $normMethod && fullData.data
 
-    $: if (updateplot && $showall) {
+    $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
             const currentKey = mapNormMethodKeys[$normMethod]
             const currentData = get_data(fullData.data[currentKey])
@@ -209,7 +207,7 @@
         FELIX Plot
     </button>
 
-    <CustomTextSwitch style="width:7em" variant="outlined" bind:value={$deltaFELIX} label="Delta" step="0.5" />
+    <CustomTextSwitch style="width:7em" variant="outlined" bind:value={deltaFELIX} label="Delta" step="0.5" />
     <button class="button is-link" on:click={() => (active = true)}> Open in Matplotlib</button>
     <button class="button is-link" on:click={() => ($theoryRow = !$theoryRow)}>Add Theory</button>
     <button
