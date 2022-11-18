@@ -1,11 +1,12 @@
 <script lang="ts">
     export let label: string
     export let type: string = 'info'
+    export let style: string = ''
 </script>
 
 {#if label}
-    <div class="align block mt-5">
-        <span class="notification is-{type}">
+    <div class="align block mt-5" style="align-items: baseline;">
+        <span class="notification is-{type}" style="width: 100%;">
             {label}
             <button
                 class="delete is-danger"
