@@ -31,6 +31,7 @@ export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode
 })
 
 export const felixopoLocation = writable('')
+// export const felixopoLocation = customStore('')
 
 export const theoryLocation = window.persistentDB('theoryLocation', '')
 

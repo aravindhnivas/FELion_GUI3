@@ -94,7 +94,7 @@
     }
 
     function loadpeakTable() {
-        const loadedfile = loadfile(savePeakfilename)
+        const loadedfile = loadfile(savePeakfilename, $felixopoLocation)
         if (loadedfile.length < 1) return
         $felixPeakTable[uniqueID] = sortBy(loadedfile, [(o) => o['freq']])
         adjustPeak()
@@ -275,7 +275,8 @@
 
             <button
                 class="button is-link"
-                on:click={() => savefile({ file: $felixPeakTable[uniqueID], name: savePeakfilename })}
+                on:click={() =>
+                    savefile({ file: $felixPeakTable[uniqueID], name: savePeakfilename, location: $felixopoLocation })}
             >
                 Save peaks
             </button>

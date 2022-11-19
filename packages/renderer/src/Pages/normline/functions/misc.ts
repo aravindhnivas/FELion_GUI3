@@ -13,7 +13,7 @@ import { uniqBy } from 'lodash-es'
 
 export function savefile({ file = {}, name = '', location = '' } = {}) {
     const filestem = name.endsWith('.json') ? name : `${name}.json`
-    const filename = window.path.join(location || get(felixopoLocation), filestem)
+    const filename = window.path.join(location, filestem)
     const result = window.fs.outputJsonSync(filename, { file })
     if (window.fs.isError(result)) {
         return window.handleError(result)
@@ -21,10 +21,9 @@ export function savefile({ file = {}, name = '', location = '' } = {}) {
     window.createToast(`${name}.json has been saved.`, 'success')
 }
 
-export function loadfile(name) {
+export function loadfile(name, location) {
     const filestem = name.endsWith('.json') ? name : `${name}.json`
-    const filename = window.path.join(get(felixopoLocation), filestem)
-    // const filename = window.path.join(get(felixopoLocation), `${name}.json`)
+    const filename = window.path.join(location, filestem)
     if (!window.fs.isFile(filename)) {
         window.createToast(`Invalid file: ${name}.json .`, 'danger')
         return []

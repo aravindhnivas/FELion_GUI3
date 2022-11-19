@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { opoMode } from '../../functions/svelteWritables'
+    import { opoMode, felixopoLocation } from '../../functions/svelteWritables'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import Table from '$components/Table.svelte'
     import { savefile, loadfile } from '../../functions/misc'
@@ -29,7 +29,7 @@
     }
 
     function loadfiledetails() {
-        const loadedfile = loadfile('filedetails')
+        const loadedfile = loadfile('filedetails', $felixopoLocation)
         if (loadedfile.length < 1) return
         toggleFileDetailsTable = true
         filedetails = loadedfile
@@ -42,7 +42,10 @@
 <div class="align">
     <button class="button is-link" on:click={(e) => plotData({ e: e })}>Get details</button>
     <CustomIconSwitch bind:toggler={toggleFileDetailsTable} icons={['arrow_drop_down', 'arrow_drop_up']} />
-    <button class="button is-link" on:click={() => savefile({ file: filedetails, name: 'filedetails' })}>Save</button>
+    <button
+        class="button is-link"
+        on:click={() => savefile({ file: filedetails, name: 'filedetails', location: $felixopoLocation })}>Save</button
+    >
     <button class="button is-link" on:click={loadfiledetails}>Load</button>
 
     {#if toggleFileDetailsTable}
