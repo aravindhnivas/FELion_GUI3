@@ -83,10 +83,9 @@
                 pyfile = 'normline.felix'
                 args = { felixfiles, $deltaFELIX: deltaFELIX }
 
-                $felixPeakTable = []
-                // $felixPlotAnnotations = []
+                $felixPeakTable[uniqueID] = []
                 $felixPlotAnnotations[uniqueID] = []
-                $felixOutputName = 'averaged'
+                $felixOutputName[uniqueID] = 'averaged'
 
                 const dataFromPython = await computePy_func({
                     e,
@@ -98,7 +97,6 @@
 
                 $expfittedLines = []
                 $fittedTraceCount = 0
-                // $felixPlotAnnotations = []
                 $felixPlotAnnotations[uniqueID] = []
                 $expfittedLinesCollectedData = []
 

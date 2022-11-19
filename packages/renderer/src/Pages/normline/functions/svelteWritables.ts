@@ -1,12 +1,12 @@
 import { writable, derived } from 'svelte/store'
 import { get } from 'svelte/store'
-import { getfiles, customStoreForArray } from './stores/func'
+import { getfiles, customStore } from './stores/func'
 export { get }
 
-export const felixIndex = writable([])
-export const felixPeakTable = writable([])
-
-export const felixOutputName = writable('')
+export const felixIndex = customStore([])
+// export const felixPeakTable = writable([])
+export const felixPeakTable = customStore<{ freq: number; amp: number; sig: number; id: string }[]>([])
+export const felixOutputName = customStore('')
 export const opoMode = writable(false)
 export const Ngauss_sigma = writable(5)
 export const dataTable = writable([])
@@ -35,7 +35,9 @@ export const felixOpoDatfiles = derived([felixOpoDatLocation], ([$felixOpoDatLoc
     return getfiles($felixOpoDatLocation, '.dat')
 })
 
-export const felixPlotAnnotations = customStoreForArray<{ x: number; y: number; text: string }>()
+export const felixPlotAnnotations = customStore<
+    { x: number; y: number; text: string; font?: { color: string }; arrowcolor?: string }[]
+>([])
 
 export const expfittedLines = writable([])
 export const expfittedLinesCollectedData = writable([])

@@ -22,7 +22,8 @@ export function find_peaks_func({ dataFromPython, uniqueID }) {
     for (let index = 0; index < peakX.length; index++) {
         let [freq, amp, sig] = [peakX[index], peakY[index], get(Ngauss_sigma)]
 
-        felixPeakTable.update((table) => [...table, { freq, amp, sig, id: window.getID() }])
+        // felixPeakTable.update((table) => [...table, { freq, amp, sig, id: window.getID() }])
+        felixPeakTable.update(uniqueID, { freq, amp, sig, id: window.getID() }, 'freq')
     }
     console.log(`Found peaks:\nX: ${peakX}\nY: ${peakY}`)
     console.log('Peaks found')

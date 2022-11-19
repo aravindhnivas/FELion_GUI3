@@ -1,45 +1,49 @@
-import { writable } from 'svelte/store'
+import { writable, get } from 'svelte/store'
 import { uniqBy } from 'lodash-es'
 
-export const customStore = <T>() => {
+export const customStore = <T>(defaultValue: T) => {
     const store = writable<{ [key: string]: T }>({})
     const { subscribe, set, update } = store
-    return {
-        subscribe,
-        set,
-        update: (key: string, value: T) => {
-            update((data) => {
-                data[key] = value
-                return data
-            })
-        },
-        del: (key: string) => {
-            const { [key]: group, ...userWithoutKey } = get(store)
-            store.set(userWithoutKey)
-        },
-    }
-}
 
-export const customStoreForArray = <T>() => {
-    const store = writable<{ [key: string]: T[] }>({})
-    const { subscribe, set, update } = store
     return {
         subscribe,
         set,
+        get: (key: string) => {
+            return get(store)[key]
+        },
         update: (key: string, value: T, uniq: string = '') => {
             update((data) => {
-                const oldValue = data[key] ?? []
-                let newValue = [...oldValue, value]
-                if (uniq) {
-                    newValue = uniqBy(newValue, uniq)
+                const oldValue = data[key]
+                let newValue
+                if (Array.isArray(oldValue)) {
+                    newValue = [...oldValue, value]
+                    if (uniq) {
+                        newValue = uniqBy(newValue, uniq)
+                    }
+                } else {
+                    newValue = value
                 }
                 data[key] = newValue
                 return data
             })
         },
-        del: (key: string) => {
-            const { [key]: group, ...userWithoutKey } = get(store)
-            store.set(userWithoutKey)
+        setValue: (key: string, value: T) => {
+            update((data) => {
+                data[key] = value
+                return data
+            })
+        },
+        init: (key: string) => {
+            update((data) => {
+                data[key] = defaultValue
+                return data
+            })
+        },
+        remove: (key: string) => {
+            update((data) => {
+                delete data[key]
+                return data
+            })
         },
     }
 }

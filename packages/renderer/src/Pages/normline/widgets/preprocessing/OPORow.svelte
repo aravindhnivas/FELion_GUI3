@@ -48,10 +48,7 @@
         removeExtraFile()
 
         if (opofiles.length < 1) return window.createToast('No files selected', 'danger')
-        // $opoMode = true
-        // $felixPlotAnnotations = []
         $felixPlotAnnotations[uniqueID] = []
-        // const general = tkplot==="plot"
 
         const args = { opofiles, tkplot, $deltaOPO: deltaOPO, calibFile, opoPower }
         if (general)

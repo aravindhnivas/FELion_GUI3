@@ -35,7 +35,10 @@
 
     // //////////////////////////////////////////////////////////////////////
     const uniqueID = getContext<string>('uniqueID')
-    let NGauss_fit_args = {}
+    let NGauss_fit_args: { fitNGauss_arguments: { [name: string]: number }; index: [] } = {
+        fitNGauss_arguments: {},
+        index: [],
+    }
     let savePeakfilename = 'peakTable'
     let toggleFindPeaksRow = false
     let boxSelected_peakfinder = false
@@ -57,11 +60,9 @@
         console.log('Removing all found peak values')
         console.log({ noOfFittedData }, fullfiles.length, graphElement.data?.length)
 
-        $felixIndex = []
-        $expfittedLines = []
-        // $felixPlotAnnotations = []
+        $felixIndex[uniqueID] = []
         $felixPlotAnnotations[uniqueID] = []
-        console.warn($felixPlotAnnotations)
+        $expfittedLines = []
         $expfittedLinesCollectedData = []
         relayout(currentGraph, { annotations: [], shapes: [] })
 
@@ -80,11 +81,9 @@
         $dataTable = dropRight($dataTable, 1)
         $expfittedLines = dropRight($expfittedLines, 2)
 
-        // $felixPlotAnnotations = dropRight($felixPlotAnnotations, 1)
         $felixPlotAnnotations[uniqueID] = dropRight($felixPlotAnnotations[uniqueID], 1)
         $expfittedLinesCollectedData = dropRight($expfittedLinesCollectedData, 1)
         relayout(currentGraph, {
-            // annotations: $felixPlotAnnotations,
             annotations: $felixPlotAnnotations[uniqueID],
             shapes: $expfittedLines,
         })
@@ -96,7 +95,7 @@
     function loadpeakTable() {
         const loadedfile = loadfile(savePeakfilename)
         if (loadedfile.length < 1) return
-        $felixPeakTable = sortBy(loadedfile, [(o) => o['freq']])
+        $felixPeakTable[uniqueID] = sortBy(loadedfile, [(o) => o['freq']])
         adjustPeak()
     }
 
@@ -112,21 +111,19 @@
             arrowcolor: $felixAnnotationColor,
         }
 
-        // $felixPlotAnnotations = $felixPeakTable.map((f) => {
-        $felixPlotAnnotations[uniqueID] = $felixPeakTable.map((f) => {
+        $felixPlotAnnotations[uniqueID] = $felixPeakTable[uniqueID].map((f) => {
             const { freq, amp } = f
-            const x = parseFloat(freq)
-            const y = parseFloat(amp)
+            // const x = parseFloat(freq)
+            // const y = parseFloat(amp)
             const annotate = {
-                x,
-                y,
-                text: `(${x.toFixed(2)}, ${y.toFixed(2)})`,
+                x: freq,
+                y: amp,
+                text: `(${freq.toFixed(2)}, ${amp.toFixed(2)})`,
             }
             return { ...annotationDefaults, ...annotate }
         })
 
         modalActivate = false
-        // relayout(currentGraph, { annotations: $felixPlotAnnotations })
         relayout(currentGraph, { annotations: $felixPlotAnnotations[uniqueID] })
         adjustPeakTrigger = false
     }
@@ -140,7 +137,7 @@
 
         switch (filetype) {
             case 'exp_fit':
-                if ($felixIndex.length < 2) {
+                if ($felixIndex[uniqueID].length < 2) {
                     return window.createToast('Range not found!!. Select a range using Box-select', 'danger')
                 }
 
@@ -152,9 +149,9 @@
                     addedFileScale,
                     overwrite_expfit,
                     normMethod: $normMethod,
-                    index: $felixIndex,
+                    index: $felixIndex[uniqueID],
                     location: $felixopoLocation,
-                    output_name: $felixOutputName,
+                    output_name: $felixOutputName[uniqueID],
                 }
                 computePy_func({
                     e,
@@ -168,26 +165,26 @@
 
             case 'NGauss_fit':
                 if (boxSelected_peakfinder) {
-                    if ($felixIndex.length < 2) {
+                    if ($felixIndex[uniqueID].length < 2) {
                         window.createToast('Box selection is turned ON so please select a wn. range to fit', 'danger')
                         return
                     }
 
-                    NGauss_fit_args.index = $felixIndex
+                    NGauss_fit_args.index = $felixIndex[uniqueID]
                 } else {
                     NGauss_fit_args.index = []
                 }
 
-                if ($felixPeakTable.length === 0) {
+                if ($felixPeakTable[uniqueID].length === 0) {
                     return window.createToast('No arguments initialised yet.', 'danger')
                 }
 
                 NGauss_fit_args.fitNGauss_arguments = {}
 
-                $felixPeakTable.forEach((f, index) => {
-                    NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = parseFloat(f.freq)
-                    NGauss_fit_args.fitNGauss_arguments[`A${index}`] = parseFloat(f.amp)
-                    NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = parseFloat(f.sig)
+                $felixPeakTable[uniqueID].forEach((f, index) => {
+                    NGauss_fit_args.fitNGauss_arguments[`cen${index}`] = f.freq
+                    NGauss_fit_args.fitNGauss_arguments[`A${index}`] = f.amp
+                    NGauss_fit_args.fitNGauss_arguments[`sigma${index}`] = f.sig
                 })
                 NGauss_fit_args = {
                     ...NGauss_fit_args,
@@ -197,7 +194,7 @@
                     overwrite_expfit,
                     writeFile,
                     writeFileName,
-                    output_name: $felixOutputName,
+                    output_name: $felixOutputName[uniqueID],
                     fullfiles,
                     fitall,
                     normMethod: $normMethod,
@@ -227,8 +224,17 @@
 
     $: if (adjustPeakTrigger) adjustPeak()
 
-    onDestroy(() => {
-        felixPlotAnnotations.del(uniqueID)
+    onMount(() => {
+        felixPeakTable.init(uniqueID)
+        felixIndex.init(uniqueID)
+        felixOutputName.init(uniqueID)
+        felixPlotAnnotations.init(uniqueID)
+        return () => {
+            felixPeakTable.remove(uniqueID)
+            felixIndex.remove(uniqueID)
+            felixOutputName.remove(uniqueID)
+            felixPlotAnnotations.remove(uniqueID)
+        }
     })
 </script>
 
@@ -262,17 +268,19 @@
                 auto_init={true}
             />
 
-            <button class="button is-link" on:click={() => savefile({ file: $felixPeakTable, name: savePeakfilename })}>
+            <button
+                class="button is-link"
+                on:click={() => savefile({ file: $felixPeakTable[uniqueID], name: savePeakfilename })}
+            >
                 Save peaks
             </button>
             <button class="button is-link" on:click={loadpeakTable}>Load peaks</button>
             <button
                 class="button is-danger"
                 on:click={() => {
-                    // $felixPlotAnnotations = []
                     $felixPlotAnnotations[uniqueID] = []
-                    $felixPeakTable = []
-                    NGauss_fit_args = {}
+                    $felixPeakTable[uniqueID] = []
+                    NGauss_fit_args = { fitNGauss_arguments: {}, index: [] }
                     relayout(currentGraph, { annotations: [] })
                     window.createToast('Cleared', 'warning')
                 }}

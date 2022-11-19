@@ -26,6 +26,7 @@ export async function felix_opo_func({
         dataFromPython,
         graphDiv,
         baseGraphDiv,
+        uniqueID,
     })
 
     if (!status) return console.warn('No data to plot')

@@ -42,7 +42,7 @@ export function loadfile(name) {
     return loadedfile
 }
 
-export function plotlySelection({ graphDiv, mode }) {
+export function plotlySelection({ graphDiv, mode, uniqueID }) {
     const graph = document.getElementById(graphDiv)
     console.warn('Creating plotly selection events for, ', graphDiv)
 
@@ -52,12 +52,13 @@ export function plotlySelection({ graphDiv, mode }) {
             mode === 'felix' ? opoMode.set(false) : opoMode.set(true)
 
             const { range } = data
-            felixIndex.set(range.x)
+            felixIndex.setValue(uniqueID, range.x)
+            console.warn('felixIndex', get(felixIndex))
 
             let outputName = data.points[0]?.data?.name
             outputName = outputName.split('(')[0].split('.')[0]
-            console.log({ outputName })
-            felixOutputName.set(outputName)
+            felixOutputName.update(uniqueID, outputName)
+            // console.log('felixOutputName', felixOutputName.get(uniqueID))
         } catch (error) {
             console.log('No data available to fit')
         }
@@ -80,7 +81,7 @@ export function plotlyClick({ graphDiv, mode, uniqueID }) {
                 let name = d.data.name
                 mode === 'felix' ? opoMode.set(false) : opoMode.set(true)
 
-                const outputName = get(felixOutputName)
+                const outputName = felixOutputName.get(uniqueID)
 
                 if (name.includes(outputName)) {
                     const { color } = d.data?.line
@@ -101,11 +102,13 @@ export function plotlyClick({ graphDiv, mode, uniqueID }) {
                         annotations: get(felixPlotAnnotations)[uniqueID],
                     })
 
-                    felixPeakTable.update((table) => [
-                        ...table,
-                        { freq, amp, sig: get(Ngauss_sigma), id: window.getID() },
-                    ])
-                    felixPeakTable.update((table) => uniqBy(table, 'freq'))
+                    const currentPeaks = { freq, amp, sig: get(Ngauss_sigma), id: window.getID() }
+                    felixPeakTable.update(uniqueID, currentPeaks, 'freq')
+                    // felixPeakTable.update((table) => [
+                    //     ...table,
+                    //     { freq, amp, sig: get(Ngauss_sigma), id: window.getID() },
+                    // ])
+                    // felixPeakTable.update((table) => uniqBy(table, 'freq'))
                 }
             }
         }

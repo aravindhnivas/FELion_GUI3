@@ -27,7 +27,7 @@ export function NGauss_fit_func({ dataFromPython, uniqueID }) {
     const currentGraph = get(opoMode) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     addTraces(currentGraph, dataFromPython[get(normMethod)]['fitted_data'])
     fittedTraceCount.update((n) => n + 1)
-    const output_name = get(felixOutputName)
+    const output_name = felixOutputName.get(uniqueID)
     const color = output_name === 'averaged' ? '#836ac05c' : '#fafafa'
 
     fitted_data.set({})
@@ -45,23 +45,4 @@ export function NGauss_fit_func({ dataFromPython, uniqueID }) {
             [method]: table,
         }))
     })
-
-    // // dataTable_avg
-    // if (output_name === 'averaged') {
-    //     let newTable = dataFromPython[get(normMethod)]['fitted_parameter'].map((data, index) => {
-    //         let { freq, amp, fwhm, sig } = data
-
-    //         return {
-    //             name: `Line #${index}`,
-    //             id: window.getID(),
-    //             freq: freq,
-    //             amp: amp,
-    //             fwhm: fwhm,
-    //             sig: sig,
-    //             color: color,
-    //         }
-    //     })
-    //     dataTable_avg.set(uniqBy(newTable, 'freq'))
-    //     avgfittedLineCount.set(get(dataTable_avg).length)
-    // }
 }

@@ -26,7 +26,7 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
     let annotations = dataFromPython['annotations']
 
     // felixPlotAnnotations.update((annotate) => [...annotate, annotations])
-    felixPlotAnnotations.update(uniqueID, annotations)
+    felixPlotAnnotations.update(uniqueID, annotations, 'text')
     // relayout(currentGraph, { annotations: get(felixPlotAnnotations) })
     relayout(currentGraph, { annotations: get(felixPlotAnnotations)[uniqueID] })
 
@@ -34,7 +34,7 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
 
     let color = '#fafafa'
 
-    const output_name = get(felixOutputName)
+    const output_name = felixOutputName.get(uniqueID)
     if (output_name === 'averaged') {
         color = '#836ac05c'
         dataTable_avg.update((table) => [

@@ -1,18 +1,22 @@
-<script>
+<script lang="ts">
     import { felixOutputName, felixopoLocation } from '../../functions/svelteWritables'
     import CustomSelect from '$components/CustomSelect.svelte'
     import CustomSwitch from '$components/CustomSwitch.svelte'
     import { createEventDispatcher } from 'svelte'
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
-    export let writeFile
+
+    export let writeFile: boolean = false
     export let writeFileName = 'average_normline.dat'
-    export let output_namelists
-    export let overwrite_expfit
+    export let output_namelists: string[] = []
+    export let overwrite_expfit: boolean = true
+
     const dispatch = createEventDispatcher()
+    const uniqueID = getContext<string>('uniqueID')
+    // $: console.warn($felixOutputName)
 </script>
 
 <div class="align">
-    <CustomSelect bind:value={$felixOutputName} label="Output filename" options={output_namelists} />
+    <CustomSelect bind:value={$felixOutputName[uniqueID]} label="Output filename" options={output_namelists} />
     <TextAndSelectOptsToggler
         toggle={false}
         bind:value={writeFileName}

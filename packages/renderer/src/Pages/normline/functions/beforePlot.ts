@@ -19,14 +19,16 @@ export default async function beforePlot({
     dataFromPython,
     graphDiv,
     baseGraphDiv,
+    uniqueID,
 }: {
     dataFromPython: FELIXData
     graphDiv: string
     baseGraphDiv: string
+    uniqueID: string
 }) {
     try {
-        felixOutputName.set('averaged')
-        felixIndex.set([])
+        felixOutputName.update(uniqueID, 'averaged')
+        felixIndex.setValue(uniqueID, [])
 
         let avgdataToPlot: DataFromPython | undefined
         let signal_formula: string = ''
