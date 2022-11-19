@@ -47,7 +47,7 @@ export function plotlySelection({ graphDiv, mode, uniqueID }) {
     graph.on('plotly_selected', (data) => {
         try {
             console.log(data)
-            mode === 'felix' ? opoMode.set(false) : opoMode.set(true)
+            mode === 'felix' ? opoMode.setValue(uniqueID, false) : opoMode.setValue(uniqueID, true)
 
             const { range } = data
             felixIndex.setValue(uniqueID, range.x)
@@ -77,13 +77,9 @@ export function plotlyClick({ graphDiv, mode, uniqueID }: { graphDiv: string; mo
 
                 let d = data.points[i]
                 let name = d.data.name
-                mode === 'felix' ? opoMode.set(false) : opoMode.set(true)
+                mode === 'felix' ? opoMode.setValue(uniqueID, false) : opoMode.setValue(uniqueID, true)
 
                 const outputName = felixOutputName.get(uniqueID)
-                // let outputName = data.points[0]?.data?.name
-                // outputName = outputName.split('(')[0].split('.')[0]
-                // felixOutputName.setValue(uniqueID, outputName)
-
                 console.log('felixOutputName', outputName)
                 console.log(name, outputName)
                 if (!name.includes(outputName)) {
@@ -104,7 +100,6 @@ export function plotlyClick({ graphDiv, mode, uniqueID }: { graphDiv: string; mo
                     data[uniqueID] = uniqBy([...data[uniqueID], annotation], 'text')
                     return data
                 })
-                console.log(felixPlotAnnotations.get(), felixPlotAnnotations.get(uniqueID))
                 relayout(graphDiv, {
                     annotations: felixPlotAnnotations.get(uniqueID),
                 })

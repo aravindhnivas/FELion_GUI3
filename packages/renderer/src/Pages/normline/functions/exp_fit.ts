@@ -9,12 +9,12 @@ import {
     fittedTraceCount,
     avgfittedLineCount,
     felixPlotAnnotations,
-    expfittedLinesCollectedData,
 } from './svelteWritables'
+
 import { relayout, addTraces } from 'plotly.js-basic-dist'
 import { uniqBy } from 'lodash-es'
 
-export function exp_fit_func({ dataFromPython, uniqueID }) {
+export function exp_fit_func({ dataFromPython, uniqueID }: { dataFromPython: any; uniqueID: string }) {
     const currentGraph = opoMode.get(uniqueID) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     addTraces(currentGraph, dataFromPython['fit'])
     fittedTraceCount.update((n) => n + 1)
@@ -28,7 +28,7 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
         data[uniqueID] = uniqBy([...data[uniqueID], annotations], 'text')
         return data
     })
-    relayout(currentGraph, { annotations: get(felixPlotAnnotations)[uniqueID] })
+    relayout(currentGraph, { annotations: felixPlotAnnotations.get(uniqueID) })
 
     let [freq, amp, fwhm, sig] = dataFromPython['table'].split(', ')
 
@@ -63,17 +63,13 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
         color,
     }
 
-    // dataTable.update((table) => uniqBy([...table, newTable], 'freq'))
-    // console.warn(dataTable.get())
     dataTable.update((data) => {
         data[uniqueID] = uniqBy([...data[uniqueID], newTable], 'freq')
         return data
     })
-    console.warn(frequencyDatas.get())
     frequencyDatas.update((data) => {
         data[uniqueID] = uniqBy([...data[uniqueID], newTable], 'freq')
         return data
     })
-    // frequencyDatas.update((table) => uniqBy([...table, newTable], 'freq'))
     console.log('Line fitted', get(frequencyDatas))
 }
