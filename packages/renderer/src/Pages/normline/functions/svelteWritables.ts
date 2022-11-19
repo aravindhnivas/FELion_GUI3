@@ -5,12 +5,24 @@ export { get }
 
 export const felixIndex = customStore([])
 export const felixPeakTable = customStore<{ freq: number; amp: number; sig: number; id: string }[]>([])
-export const felixOutputName = customStore('')
+export const felixOutputName = customStore('averaged')
 export const opoMode = writable(false)
 export const Ngauss_sigma = writable(5)
-export const dataTable = writable([])
-export const dataTable_avg = writable([])
 
+export interface DataTable {
+    id: string
+    name: string
+    freq: number
+    amp: number
+    fwhm: number
+    sig: number
+    color: string
+}
+
+export const dataTable = customStore<DataTable[]>([])
+export const dataTable_avg = customStore<DataTable[]>([])
+export const frequencyDatas = customStore<DataTable[]>([])
+export const fitted_data = customStore<{ [name: string]: DataTable[] }>({})
 export const opoData = writable({})
 export const felixData = writable({})
 
@@ -35,7 +47,13 @@ export const felixOpoDatfiles = derived([felixOpoDatLocation], ([$felixOpoDatLoc
 })
 
 export const felixPlotAnnotations = customStore<
-    { x: number; y: number; text: string; font?: { color: string }; arrowcolor?: string }[]
+    {
+        x: number
+        y: number
+        text: string
+        font?: { color: string }
+        arrowcolor?: string
+    }[]
 >([])
 
 export const expfittedLines = writable([])
@@ -47,8 +65,6 @@ export const fittedTraceCount = writable(0)
 export const felixAnnotationColor = writable('black')
 export const normMethods = ['Log', 'Relative', 'IntensityPerPhoton']
 export const normMethod = writable('Relative')
-
-export const frequencyDatas = writable([])
 
 export const felixPlotCheckboxes = writable([
     {

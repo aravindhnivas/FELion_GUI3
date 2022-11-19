@@ -6,7 +6,7 @@
     import FileReadAndLoad from '$components/FileReadAndLoad.svelte'
     export let idKey: string = 'id'
     export let rowKeys: string[]
-    export let rows: Record<string, Object | string>[] = []
+    export let rows = []
     export let headKeys: string[]
     export let closeableRows = false
     export let includeIndex = true

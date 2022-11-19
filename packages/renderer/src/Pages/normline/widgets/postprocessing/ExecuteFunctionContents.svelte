@@ -1,7 +1,7 @@
 <script lang="ts">
     import {
         felixIndex,
-        normMethod,
+        // normMethod,
         opoMode,
         dataTable,
         expfittedLines,
@@ -23,7 +23,8 @@
     import TextAndSelectOptsToggler from '$components/TextAndSelectOptsToggler.svelte'
     // //////////////////////////////////////////////////////////////////////
 
-    export let writeFile
+    export let writeFile: boolean = false
+    export let normMethod: string
     export let showall = true
     export let fullfiles
     export let addedFileCol
@@ -42,7 +43,7 @@
     let savePeakfilename = 'peakTable'
     let toggleFindPeaksRow = false
     let boxSelected_peakfinder = false
-    let fitall = true
+    let fitall = false
 
     $: currentGraph = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
 
@@ -78,7 +79,7 @@
         if (noOfFittedData === 0) {
             return window.createToast('No fitted lines found', 'danger')
         }
-        $dataTable = dropRight($dataTable, 1)
+        $dataTable[uniqueID] = dropRight($dataTable[uniqueID], 1)
         $expfittedLines = dropRight($expfittedLines, 2)
 
         $felixPlotAnnotations[uniqueID] = dropRight($felixPlotAnnotations[uniqueID], 1)
@@ -137,6 +138,9 @@
 
         switch (filetype) {
             case 'exp_fit':
+                if (!$felixOutputName[uniqueID]) {
+                    return window.createToast('Output name not found!!. Please select output filename', 'danger')
+                }
                 if ($felixIndex[uniqueID].length < 2) {
                     return window.createToast('Range not found!!. Select a range using Box-select', 'danger')
                 }
@@ -148,7 +152,7 @@
                     writeFileName,
                     addedFileScale,
                     overwrite_expfit,
-                    normMethod: $normMethod,
+                    normMethod,
                     index: $felixIndex[uniqueID],
                     location: $felixopoLocation,
                     output_name: $felixOutputName[uniqueID],
@@ -164,6 +168,9 @@
                 break
 
             case 'NGauss_fit':
+                if (!$felixOutputName[uniqueID]) {
+                    return window.createToast('Output name not found!!. Please select output filename', 'danger')
+                }
                 if (boxSelected_peakfinder) {
                     if ($felixIndex[uniqueID].length < 2) {
                         window.createToast('Box selection is turned ON so please select a wn. range to fit', 'danger')
@@ -197,7 +204,7 @@
                     output_name: $felixOutputName[uniqueID],
                     fullfiles,
                     fitall,
-                    normMethod: $normMethod,
+                    normMethod,
                 }
 
                 computePy_func({
@@ -206,10 +213,10 @@
                     args: NGauss_fit_args,
                 }).then((dataFromPython) => {
                     NGauss_fit_func({ dataFromPython, uniqueID })
-                    if (dataFromPython[$normMethod]) {
+                    if (dataFromPython[normMethod]) {
                         console.log('Line fitted')
                         window.createToast(
-                            `Line fitted with ${dataFromPython[$normMethod]['fitted_parameter'].length} gaussian function`,
+                            `Line fitted with ${dataFromPython[normMethod]['fitted_parameter'].length} gaussian function`,
                             'success'
                         )
                     }
@@ -221,17 +228,15 @@
                 break
         }
     }
-
     $: if (adjustPeakTrigger) adjustPeak()
-
     onMount(() => {
-        felixPeakTable.init(uniqueID)
         felixIndex.init(uniqueID)
+        felixPeakTable.init(uniqueID)
         felixOutputName.init(uniqueID)
         felixPlotAnnotations.init(uniqueID)
         return () => {
-            felixPeakTable.remove(uniqueID)
             felixIndex.remove(uniqueID)
+            felixPeakTable.remove(uniqueID)
             felixOutputName.remove(uniqueID)
             felixPlotAnnotations.remove(uniqueID)
         }

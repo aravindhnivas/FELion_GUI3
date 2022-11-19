@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { felixopoLocation, normMethod, theoryLocation } from '../../functions/svelteWritables'
+    import { felixopoLocation, theoryLocation } from '../../functions/svelteWritables'
     import { theory_func } from '../../functions/theory'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import QuickBrowser from '$components/QuickBrowser.svelte'
@@ -11,6 +11,8 @@
     export { className as class }
     export let theoryRow = false
 
+    export let normMethod: string
+
     let sigma = 7
     let scale = 1
     let tkplot = false
@@ -18,6 +20,7 @@
     let showTheoryFiles = false
     let theoryfilesChecked = []
 
+    const uniqueID = getContext<string>('uniqueID')
     $: if (window.fs.isDirectory($theoryLocation)) {
         theoryfiles = theoryfilesChecked.map((file) => window.path.resolve($theoryLocation, file))
     }
@@ -29,7 +32,7 @@
 
         const args = {
             theoryfiles,
-            normMethod: $normMethod,
+            normMethod,
             sigma,
             scale,
             currentLocation: $felixopoLocation,
@@ -39,7 +42,7 @@
 
         const dataFromPython = await computePy_func({ e, pyfile, args })
         if (!dataFromPython) return
-        theory_func({ dataFromPython, normMethod })
+        theory_func({ dataFromPython, normMethod, uniqueID })
         showTheoryFiles = false
     }
 

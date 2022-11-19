@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { opoMode, normMethod } from '../../functions/svelteWritables'
+    import { opoMode } from '../../functions/svelteWritables'
     import CustomIconSwitch from '$components/CustomIconSwitch.svelte'
     import Table from '$components/Table.svelte'
     import { savefile, loadfile } from '../../functions/misc'
@@ -9,6 +9,7 @@
 
     export let felixfiles: string[]
     export let opofiles: string[]
+    export let normMethod: string
 
     let toggleFileDetailsTable = false
     let filedetails = []
@@ -18,7 +19,7 @@
 
         const pyfile = 'normline.getfile_details'
         const files = $opoMode ? opofiles : felixfiles
-        const args = { files, normMethod: $normMethod }
+        const args = { files, normMethod }
 
         const dataFromPython = await computePy_func({ e, pyfile, args })
         if (!dataFromPython) return

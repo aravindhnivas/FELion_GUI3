@@ -1,7 +1,6 @@
 <script lang="ts">
     import {
         opoMode,
-        normMethod,
         felixPeakTable,
         expfittedLines,
         normMethodDatas,
@@ -31,6 +30,7 @@
     export let removeExtraFile
     export let showall = true
     export let theoryRow = false
+    export let normMethod: string
 
     let className = ''
     export { className as class }
@@ -116,7 +116,6 @@
                         'danger'
                     )
                 }
-
                 pyfile = 'normline.baseline'
                 args = {
                     filename: window.path.join($felixopoLocation, baseline_markedfile),
@@ -142,23 +141,22 @@
                     booleanWidgets,
                     selectedWidgets,
                     location: $felixopoLocation,
-                    normMethod: $normMethod,
+                    normMethod,
                     theoryLocation: $theoryLocation,
                 }
-
                 computePy_func({ e, pyfile, args, general: true })
             default:
                 break
         }
     }
 
-    $: updateplot = !$opoMode && dataReady && plotfile && $normMethod && fullData.data
-
+    $: updateplot = !$opoMode && dataReady && plotfile && normMethod && fullData.data
     $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
-            const currentKey = mapNormMethodKeys[$normMethod]
+            const currentKey = mapNormMethodKeys[normMethod]
+
             const currentData = get_data(fullData.data[currentKey])
-            const { layout } = $normMethodDatas[$normMethod]
+            const { layout } = $normMethodDatas[normMethod]
             console.warn('plotting', currentData, layout)
 
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-bplot`)

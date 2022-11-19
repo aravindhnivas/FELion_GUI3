@@ -1,6 +1,6 @@
 import { plot } from '../../../js/functions'
 
-export function theory_func({ dataFromPython, normMethod } = {}) {
+export function theory_func({ dataFromPython, normMethod, uniqueID }) {
     let ylabel
     if (normMethod === 'Log') {
         ylabel = 'Normalised Intensity per J'
@@ -20,7 +20,7 @@ export function theory_func({ dataFromPython, normMethod } = {}) {
         'Calibrated Wavelength (cm-1)',
         ylabel,
         [dataFromPython['averaged'], ...theoryData],
-        'exp-theory-plot'
+        `${uniqueID}-exp-theory-plot`
     )
 
     console.log('Graph Plotted')

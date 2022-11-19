@@ -1,7 +1,7 @@
 <script lang="ts">
     import {
         opoMode,
-        normMethod,
+        // normMethod,
         normMethods,
         Ngauss_sigma,
         felixopoLocation,
@@ -122,7 +122,7 @@
     let showall = true
     let showRawData = true
     let showPowerData = true
-
+    let normMethod: string = normMethods[1]
     let theoryRow = false
 </script>
 
@@ -147,6 +147,7 @@
     </svelte:fragment>
     <svelte:fragment slot="buttonContainer">
         <InitFunctionRow
+            {normMethod}
             bind:theoryRow
             {removeExtraFile}
             {felixfiles}
@@ -155,6 +156,7 @@
             {showall}
         />
         <OPORow
+            {normMethod}
             {showall}
             {removeExtraFile}
             bind:OPOLocation
@@ -163,9 +165,9 @@
             {plotfile}
             class={opo_toggle ? '' : 'hide'}
         />
-        <TheoryRow class={theory_toggle ? '' : 'hide'} {theoryRow} />
+        <TheoryRow {normMethod} class={theory_toggle ? '' : 'hide'} {theoryRow} />
         <div class="align" class:hide={!felix_toggle}>
-            <CustomRadio bind:value={$normMethod} options={normMethods} />
+            <CustomRadio bind:value={normMethod} options={normMethods} />
             <button
                 class="button is-link"
                 style="margin-left: auto;"
@@ -227,7 +229,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="config">
-        <GetFileInfoTable {felixfiles} {opofiles} />
+        <GetFileInfoTable {felixfiles} {opofiles} {normMethod} />
     </svelte:fragment>
 
     <svelte:fragment slot="plotContainer_functions">
@@ -243,6 +245,7 @@
         />
 
         <ExecuteFunctionContents
+            {normMethod}
             {showall}
             bind:modalActivate
             bind:adjustPeakTrigger

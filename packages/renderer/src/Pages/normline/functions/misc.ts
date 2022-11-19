@@ -64,7 +64,7 @@ export function plotlySelection({ graphDiv, mode, uniqueID }) {
         }
     })
 }
-export function plotlyClick({ graphDiv, mode, uniqueID }) {
+export function plotlyClick({ graphDiv, mode, uniqueID }: { graphDiv: string; mode: string; uniqueID: string }) {
     const graph = document.getElementById(graphDiv)
     console.warn('Creating plotly click events for, ', graphDiv)
 
@@ -82,33 +82,40 @@ export function plotlyClick({ graphDiv, mode, uniqueID }) {
                 mode === 'felix' ? opoMode.set(false) : opoMode.set(true)
 
                 const outputName = felixOutputName.get(uniqueID)
+                // let outputName = data.points[0]?.data?.name
+                // outputName = outputName.split('(')[0].split('.')[0]
+                // felixOutputName.setValue(uniqueID, outputName)
 
-                if (name.includes(outputName)) {
-                    const { color } = d.data?.line
-                    const [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
-                    const annotation = {
-                        text: `(${freq}, ${amp})`,
-                        x: freq,
-                        y: amp,
-                        font: { color },
-                        arrowcolor: color,
-                    }
-
-                    felixPlotAnnotations.update((data) => {
-                        data[uniqueID] = uniqBy([...data[uniqueID], annotation], 'text')
-                        return data
-                    })
-                    console.log(felixPlotAnnotations.get(), felixPlotAnnotations.get(uniqueID))
-                    relayout(graphDiv, {
-                        annotations: felixPlotAnnotations.get(uniqueID),
-                    })
-
-                    const currentPeaks = { freq, amp, sig: get(Ngauss_sigma), id: window.getID() }
-                    felixPeakTable.update((data) => {
-                        data[uniqueID] = uniqBy([...data[uniqueID], currentPeaks], 'freq')
-                        return data
-                    })
+                console.log('felixOutputName', outputName)
+                console.log(name, outputName)
+                if (!name.includes(outputName)) {
+                    return window.createToast('Change output filename.', 'danger')
                 }
+
+                const { color } = d.data?.line
+                const [freq, amp] = [parseFloat(d.x.toFixed(2)), parseFloat(d.y.toFixed(2))]
+                const annotation = {
+                    text: `(${freq}, ${amp})`,
+                    x: freq,
+                    y: amp,
+                    font: { color },
+                    arrowcolor: color,
+                }
+
+                felixPlotAnnotations.update((data) => {
+                    data[uniqueID] = uniqBy([...data[uniqueID], annotation], 'text')
+                    return data
+                })
+                console.log(felixPlotAnnotations.get(), felixPlotAnnotations.get(uniqueID))
+                relayout(graphDiv, {
+                    annotations: felixPlotAnnotations.get(uniqueID),
+                })
+
+                const currentPeaks = { freq, amp, sig: get(Ngauss_sigma), id: window.getID() }
+                felixPeakTable.update((data) => {
+                    data[uniqueID] = uniqBy([...data[uniqueID], currentPeaks], 'freq')
+                    return data
+                })
             }
         }
     })

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { opoMode, normMethod, normMethodDatas, felixPlotAnnotations } from '../../functions/svelteWritables'
+    import { opoMode, normMethodDatas, felixPlotAnnotations } from '../../functions/svelteWritables'
     import { felix_opo_func } from '../../functions/felix_opo_func'
 
     import plotIndividualDataIntoGraph, {
@@ -23,6 +23,7 @@
     export let removeExtraFile
     export let OPOfilesChecked
     export let showall = true
+    export let normMethod: string
 
     let className = ''
     export { className as class }
@@ -69,12 +70,12 @@
         })
     }
 
-    $: updateplot = dataReady && plotfile && $normMethod && fullData.data && $opoMode
+    $: updateplot = dataReady && plotfile && normMethod && fullData.data && $opoMode
     $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
-            const currentKey = mapNormMethodKeys[$normMethod]
+            const currentKey = mapNormMethodKeys[normMethod]
             const currentData = get_data(fullData.data[currentKey])
-            const { layout } = $normMethodDatas[$normMethod]
+            const { layout } = $normMethodDatas[normMethod]
             react(`${uniqueID}-opoRelPlot`, currentData, layout)
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-opoplot`)
             plot(

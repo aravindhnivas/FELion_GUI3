@@ -1,10 +1,19 @@
-import { dataTable, opoMode, felixOutputName, fittedTraceCount, normMethod, normMethods, get } from './svelteWritables'
+import {
+    dataTable,
+    opoMode,
+    felixOutputName,
+    fittedTraceCount,
+    normMethod,
+    normMethods,
+    fitted_data,
+    get,
+} from './svelteWritables'
+import type { DataTable } from './svelteWritables'
 import { addTraces } from 'plotly.js-basic-dist'
 import { uniqBy } from 'lodash-es'
-import { writable } from 'svelte/store'
 
 function getTable(data, name, color) {
-    const table = data.map((d) => {
+    const table: DataTable[] = data.map((d) => {
         const { freq, amp, fwhm, sig } = d
         return {
             id: window.getID(),
@@ -16,10 +25,9 @@ function getTable(data, name, color) {
             color,
         }
     })
-    return uniqBy(table, 'freq')
+    // table = uniqBy(table, 'freq')
+    return table
 }
-
-export const fitted_data = writable({})
 
 export function NGauss_fit_func({ dataFromPython, uniqueID }) {
     console.log({ dataFromPython })
@@ -30,19 +38,25 @@ export function NGauss_fit_func({ dataFromPython, uniqueID }) {
     const output_name = felixOutputName.get(uniqueID)
     const color = output_name === 'averaged' ? '#836ac05c' : '#fafafa'
 
-    fitted_data.set({})
+    fitted_data.setValue(uniqueID, {})
 
     normMethods.forEach((method) => {
         const methodData = dataFromPython[method]
         if (!methodData) return
         const data = methodData['fitted_parameter']
-        const table = getTable(data, output_name, color)
+        const table = uniqBy(getTable(data, output_name, color), 'freq')
         if (method === get(normMethod)) {
-            dataTable.set(table)
+            // dataTable.set(table)
+            dataTable.setValue(uniqueID, table)
         }
-        fitted_data.update((d) => ({
-            ...d,
-            [method]: table,
-        }))
+        // fitted_data.update((d) => ({
+        //     ...d,
+        //     [method]: table,
+        // }))
+        fitted_data.update((data) => {
+            // data[uniqueID] = { ...data[uniqueID], [method]: table }
+            data[uniqueID][method] = table
+            return data
+        })
     })
 }

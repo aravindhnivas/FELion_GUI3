@@ -1,6 +1,6 @@
-import { dataTable, dataTable_avg } from './svelteWritables'
+import { dataTable, dataTable_avg } from '../svelteWritables'
 
-export function get_err_func({ dataFromPython } = {}) {
+export function get_err_func({ dataFromPython, uniqueID }) {
     let { freq, amp, fwhm, sig } = dataFromPython
     let data1 = {
         name: 'unweighted_mean',
@@ -22,7 +22,11 @@ export function get_err_func({ dataFromPython } = {}) {
         color: '#2098d1',
     }
 
-    dataTable.update((table) => [...table, data1, data2])
+    // dataTable.update((table) => [...table, data1, data2])
+    dataTable.update((data) => {
+        data[uniqueID] = [...data[uniqueID], data1, data2]
+        return data
+    })
     dataTable_avg.update((table) => [...table, data1, data2])
 
     console.log('Weighted fit.')

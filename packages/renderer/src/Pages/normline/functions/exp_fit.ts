@@ -23,7 +23,7 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
     expfittedLines.update((lines) => [...lines, ...dataFromPython['line']])
     relayout(currentGraph, { shapes: get(expfittedLines) })
 
-    let annotations = dataFromPython['annotations']
+    const annotations = dataFromPython['annotations']
 
     felixPlotAnnotations.update((data) => {
         data[uniqueID] = uniqBy([...data[uniqueID], annotations], 'text')
@@ -35,22 +35,23 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
 
     let color = '#fafafa'
 
-    const output_name = felixOutputName.get(uniqueID)
+    const output_name = felixOutputName.get(uniqueID) as string
     if (output_name === 'averaged') {
         color = '#836ac05c'
-        dataTable_avg.update((table) => [
-            ...table,
-            {
-                name: `Line #${get(avgfittedLineCount)}`,
-                id: window.getID(),
-                freq,
-                amp,
-                fwhm,
-                sig,
-                color,
-            },
-        ])
-        dataTable_avg.update((table) => uniqBy(table, 'freq'))
+
+        const newTable = {
+            name: `Line #${get(avgfittedLineCount)}`,
+            id: window.getID(),
+            freq,
+            amp,
+            fwhm,
+            sig,
+            color,
+        }
+        dataTable_avg.update((data) => {
+            data[uniqueID] = uniqBy([...data[uniqueID], newTable], 'freq')
+            return data
+        })
         avgfittedLineCount.update((n) => n + 1)
     } else {
         if (get(collectData)) {
@@ -68,7 +69,17 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
         color,
     }
 
-    dataTable.update((table) => uniqBy([...table, newTable], 'freq'))
-    frequencyDatas.update((table) => uniqBy([...table, newTable], 'freq'))
+    // dataTable.update((table) => uniqBy([...table, newTable], 'freq'))
+    // console.warn(dataTable.get())
+    dataTable.update((data) => {
+        data[uniqueID] = uniqBy([...data[uniqueID], newTable], 'freq')
+        return data
+    })
+    console.warn(frequencyDatas.get())
+    frequencyDatas.update((data) => {
+        data[uniqueID] = uniqBy([...data[uniqueID], newTable], 'freq')
+        return data
+    })
+    // frequencyDatas.update((table) => uniqBy([...table, newTable], 'freq'))
     console.log('Line fitted', get(frequencyDatas))
 }
