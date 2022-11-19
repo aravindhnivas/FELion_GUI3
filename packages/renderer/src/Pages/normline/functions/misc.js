@@ -57,7 +57,7 @@ export function plotlySelection({ graphDiv, mode, uniqueID }) {
 
             let outputName = data.points[0]?.data?.name
             outputName = outputName.split('(')[0].split('.')[0]
-            felixOutputName.update(uniqueID, outputName)
+            felixOutputName.setValue(uniqueID, outputName)
             // console.log('felixOutputName', felixOutputName.get(uniqueID))
         } catch (error) {
             console.log('No data available to fit')
@@ -94,21 +94,20 @@ export function plotlyClick({ graphDiv, mode, uniqueID }) {
                         arrowcolor: color,
                     }
 
-                    // felixPlotAnnotations.update((annotate) => uniqBy([...annotate, annotation], 'text'))
-                    felixPlotAnnotations.update(uniqueID, annotation, 'text')
+                    felixPlotAnnotations.update((data) => {
+                        data[uniqueID] = uniqBy([...data[uniqueID], annotation], 'text')
+                        return data
+                    })
                     console.warn(get(felixPlotAnnotations))
                     relayout(graphDiv, {
-                        // annotations: get(felixPlotAnnotations),
-                        annotations: get(felixPlotAnnotations)[uniqueID],
+                        annotations: felixPlotAnnotations.get(uniqueID),
                     })
 
                     const currentPeaks = { freq, amp, sig: get(Ngauss_sigma), id: window.getID() }
-                    felixPeakTable.update(uniqueID, currentPeaks, 'freq')
-                    // felixPeakTable.update((table) => [
-                    //     ...table,
-                    //     { freq, amp, sig: get(Ngauss_sigma), id: window.getID() },
-                    // ])
-                    // felixPeakTable.update((table) => uniqBy(table, 'freq'))
+                    felixPeakTable.update((data) => {
+                        data[uniqueID] = uniqBy([...data[uniqueID], currentPeaks], 'freq')
+                        return data
+                    })
                 }
             }
         }

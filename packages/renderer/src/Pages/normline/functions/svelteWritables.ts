@@ -4,7 +4,6 @@ import { getfiles, customStore } from './stores/func'
 export { get }
 
 export const felixIndex = customStore([])
-// export const felixPeakTable = writable([])
 export const felixPeakTable = customStore<{ freq: number; amp: number; sig: number; id: string }[]>([])
 export const felixOutputName = customStore('')
 export const opoMode = writable(false)

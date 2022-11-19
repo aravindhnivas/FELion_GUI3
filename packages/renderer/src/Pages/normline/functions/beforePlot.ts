@@ -27,7 +27,7 @@ export default async function beforePlot({
     uniqueID: string
 }) {
     try {
-        felixOutputName.update(uniqueID, 'averaged')
+        felixOutputName.setValue(uniqueID, 'averaged')
         felixIndex.setValue(uniqueID, [])
 
         let avgdataToPlot: DataFromPython | undefined

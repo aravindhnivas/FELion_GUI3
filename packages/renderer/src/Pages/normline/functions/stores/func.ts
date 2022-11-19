@@ -1,32 +1,15 @@
 import { writable, get } from 'svelte/store'
-import { uniqBy } from 'lodash-es'
 
 export const customStore = <T>(defaultValue: T) => {
     const store = writable<{ [key: string]: T }>({})
     const { subscribe, set, update } = store
-
     return {
         subscribe,
         set,
         get: (key: string) => {
             return get(store)[key]
         },
-        update: (key: string, value: T, uniq: string = '') => {
-            update((data) => {
-                const oldValue = data[key]
-                let newValue
-                if (Array.isArray(oldValue)) {
-                    newValue = [...oldValue, value]
-                    if (uniq) {
-                        newValue = uniqBy(newValue, uniq)
-                    }
-                } else {
-                    newValue = value
-                }
-                data[key] = newValue
-                return data
-            })
-        },
+        update,
         setValue: (key: string, value: T) => {
             update((data) => {
                 data[key] = value
