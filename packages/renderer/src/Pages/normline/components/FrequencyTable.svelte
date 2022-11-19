@@ -7,7 +7,7 @@
         fitted_data,
         avgfittedLineCount,
         expfittedLinesCollectedData,
-        felixOpoDatLocation,
+        felixopoLocation,
     } from '../functions/svelteWritables'
     import STable from '$components/STable.svelte'
 
@@ -27,6 +27,7 @@
     const rowKeys = ['name', 'freq', 'amp', 'fwhm', 'sig']
     const headKeys = ['Filename', 'Frequency', 'Intensity', 'FWHM', 'Sigma']
 
+    $: felixOpoDatLocation = window.path.resolve($felixopoLocation[uniqueID], '../EXPORT')
     onMount(() => {
         frequencyDatas.init(uniqueID)
         fitted_data.init(uniqueID)
@@ -49,6 +50,6 @@
     closeableRows={true}
     on:tableCleared={tableCleanup}
     sortable={true}
-    configDir={$felixOpoDatLocation}
+    configDir={felixOpoDatLocation}
     options_filter=".felix.table.json"
 />

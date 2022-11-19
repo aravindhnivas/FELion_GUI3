@@ -2,7 +2,6 @@ import {
     get,
     opoMode,
     dataTable,
-    collectData,
     dataTable_avg,
     frequencyDatas,
     expfittedLines,
@@ -53,11 +52,6 @@ export function exp_fit_func({ dataFromPython, uniqueID }) {
             return data
         })
         avgfittedLineCount.update((n) => n + 1)
-    } else {
-        if (get(collectData)) {
-            console.log('Collecting lines')
-            expfittedLinesCollectedData.update((data) => [...data, dataFromPython['for_weighted_error']])
-        }
     }
     let newTable = {
         name: output_name,

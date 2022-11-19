@@ -1,22 +1,30 @@
 <script lang="ts">
-    import { felixPlotCheckboxes, theoryfiles, felixOpoDatfiles, theoryLocation } from '../functions/svelteWritables'
+    import { theoryfiles, felixopoLocation, theoryLocation } from '../functions/svelteWritables'
+    import { getfiles } from '../functions/stores/func'
     import { fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import CustomCheckList from '$components/CustomCheckList.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
+
+    export let felixPlotCheckboxes = []
     export let felixPlotWidgets: {
         text: ValueLabel<string>[]
         boolean: ValueLabel<boolean>[]
         number: ValueLabel<string>[]
     }
 
+    const uniqueID = getContext<string>('uniqueID')
+
     async function loadFiles() {
+        const felixOpoDatLocation = window.path.resolve($felixopoLocation[uniqueID], '../EXPORT')
+        const felixOpoDatfiles = getfiles(felixOpoDatLocation, '.dat')
+
         console.log($theoryfiles)
-        $felixPlotCheckboxes = [
+        felixPlotCheckboxes = [
             {
                 label: 'DAT_file',
-                options: $felixOpoDatfiles,
+                options: felixOpoDatfiles,
                 value: [],
                 id: window.getID(),
             },
@@ -55,7 +63,7 @@
         <button class="button is-link ml-auto" on:click={loadFiles}>reload files</button>
     </div>
     <div class="align" style="justify-content: center;">
-        {#each $felixPlotCheckboxes as { label, options, value, id } (id)}
+        {#each felixPlotCheckboxes as { label, options, value, id } (id)}
             <div style="margin-bottom: 1em;" transition:fade>
                 <div class="checkboxes_header">
                     {label}

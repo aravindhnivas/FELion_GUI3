@@ -1,5 +1,4 @@
 import {
-    felixopoLocation,
     felixPeakTable,
     felixIndex,
     felixOutputName,

@@ -13,7 +13,7 @@
 
     let toggleFileDetailsTable = false
     let filedetails = []
-
+    const uniqueID = getContext<string>('uniqueID')
     async function plotData({ e = null } = {}) {
         if (felixfiles.length < 1) return window.createToast('No files selected', 'danger')
 
@@ -29,7 +29,7 @@
     }
 
     function loadfiledetails() {
-        const loadedfile = loadfile('filedetails', $felixopoLocation)
+        const loadedfile = loadfile('filedetails', $felixopoLocation[uniqueID])
         if (loadedfile.length < 1) return
         toggleFileDetailsTable = true
         filedetails = loadedfile
@@ -44,7 +44,8 @@
     <CustomIconSwitch bind:toggler={toggleFileDetailsTable} icons={['arrow_drop_down', 'arrow_drop_up']} />
     <button
         class="button is-link"
-        on:click={() => savefile({ file: filedetails, name: 'filedetails', location: $felixopoLocation })}>Save</button
+        on:click={() => savefile({ file: filedetails, name: 'filedetails', location: $felixopoLocation[uniqueID] })}
+        >Save</button
     >
     <button class="button is-link" on:click={loadfiledetails}>Load</button>
 

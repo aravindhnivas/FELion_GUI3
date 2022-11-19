@@ -35,7 +35,7 @@
             normMethod,
             sigma,
             scale,
-            currentLocation: $felixopoLocation,
+            currentLocation: $felixopoLocation[uniqueID],
             tkplot,
             onlyExpRange,
         }

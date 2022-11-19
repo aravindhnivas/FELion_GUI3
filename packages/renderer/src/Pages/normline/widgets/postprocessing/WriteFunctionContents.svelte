@@ -21,7 +21,7 @@
         toggle={false}
         bind:value={writeFileName}
         label="writeFileName"
-        lookIn={window.path.resolve($felixopoLocation, '../EXPORT')}
+        lookIn={window.path.resolve($felixopoLocation[uniqueID], '../EXPORT')}
         lookFor=".dat"
         auto_init={true}
     />

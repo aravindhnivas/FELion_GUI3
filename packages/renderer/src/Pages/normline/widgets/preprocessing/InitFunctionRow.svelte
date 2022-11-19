@@ -7,7 +7,7 @@
         felixOutputName,
         fittedTraceCount,
         felixopoLocation,
-        felixPlotCheckboxes,
+        // felixPlotCheckboxes,
         felixPlotAnnotations,
         expfittedLinesCollectedData,
         theoryLocation,
@@ -118,7 +118,7 @@
                 }
                 pyfile = 'normline.baseline'
                 args = {
-                    filename: window.path.join($felixopoLocation, baseline_markedfile),
+                    filename: window.path.join($felixopoLocation[uniqueID], baseline_markedfile),
                 }
                 computePy_func({ e, pyfile, args, general: true })
                 break
@@ -132,7 +132,7 @@
                 const booleanWidgets = {}
                 felixPlotWidgets.boolean.forEach((n) => (booleanWidgets[n.label] = n.value))
                 const selectedWidgets = {}
-                $felixPlotCheckboxes.forEach((n) => (selectedWidgets[n.label] = n.value))
+                felixPlotCheckboxes.forEach((n) => (selectedWidgets[n.label] = n.value))
 
                 pyfile = 'normline.felix_tkplot'
                 args = {
@@ -140,7 +140,7 @@
                     textWidgets,
                     booleanWidgets,
                     selectedWidgets,
-                    location: $felixopoLocation,
+                    location: $felixopoLocation[uniqueID],
                     normMethod,
                     theoryLocation: $theoryLocation,
                 }
@@ -183,6 +183,39 @@
     }
 
     let currentGraph: HTMLElement
+
+    let felixPlotCheckboxes = [
+        {
+            label: 'DAT_file',
+            options: [],
+            value: [],
+            id: window.getID(),
+        },
+        {
+            label: 'Fundamentals',
+            options: [],
+            value: [],
+            id: window.getID(),
+        },
+        {
+            label: 'Others',
+            options: [],
+            value: [],
+            id: window.getID(),
+        },
+        {
+            label: 'Overtones',
+            options: [],
+            value: [],
+            id: window.getID(),
+        },
+        {
+            label: 'Combinations',
+            options: [],
+            value: [],
+            id: window.getID(),
+        },
+    ]
     onMount(() => {
         currentGraph = document.getElementById(`${uniqueID}-avgplot`)
     })
@@ -190,6 +223,7 @@
 
 <FelixPlotting
     bind:active
+    bind:felixPlotCheckboxes
     bind:felixPlotWidgets
     on:submit={(e) => plotData({ e: e.detail.event, filetype: 'matplotlib' })}
 />

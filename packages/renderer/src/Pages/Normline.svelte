@@ -65,7 +65,7 @@
     let OPOLocation = (window.db.get('ofelix_location') as string) || currentLocation
     let opofiles = []
 
-    $: $felixopoLocation = $opoMode ? OPOLocation : currentLocation
+    $: $felixopoLocation[uniqueID] = $opoMode ? OPOLocation : currentLocation
     // $: $opoMode ? window.createToast("OPO MODE") : window.createToast("FELIX MODE")
     $: $Ngauss_sigma = $opoMode ? 2 : 5
 
@@ -109,9 +109,11 @@
     $: plotfileOptions = $opoMode ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
     onMount(() => {
+        felixopoLocation.init(uniqueID)
         console.warn('Normline mounted')
     })
     onDestroy(() => {
+        felixopoLocation.remove(uniqueID)
         console.warn('Normline destroyed')
     })
 

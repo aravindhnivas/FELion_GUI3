@@ -5,6 +5,7 @@
     // import FelixPlotExtraWidgets from './FelixPlotExtraWidgets.svelte'
 
     export let active = false
+    export let felixPlotCheckboxes = []
     export let felixPlotWidgets: {
         text: ValueLabel<string>[]
         boolean: ValueLabel<boolean>[]
@@ -18,7 +19,7 @@
 
 <Modal bind:active title="FELIX PLOTTING">
     <svelte:fragment slot="content">
-        <FelixPlotWidgets bind:felixPlotWidgets />
+        <FelixPlotWidgets bind:felixPlotWidgets bind:felixPlotCheckboxes />
     </svelte:fragment>
     <button
         slot="footerbtn"

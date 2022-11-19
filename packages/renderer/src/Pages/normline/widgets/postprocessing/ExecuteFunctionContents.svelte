@@ -1,7 +1,6 @@
 <script lang="ts">
     import {
         felixIndex,
-        // normMethod,
         opoMode,
         dataTable,
         expfittedLines,
@@ -9,7 +8,6 @@
         felixOutputName,
         felixopoLocation,
         felixPlotAnnotations,
-        felixAnnotationColor,
         expfittedLinesCollectedData,
     } from '../../functions/svelteWritables'
     // import Textfield from '@smui/textfield'
@@ -94,7 +92,7 @@
     }
 
     function loadpeakTable() {
-        const loadedfile = loadfile(savePeakfilename, $felixopoLocation)
+        const loadedfile = loadfile(savePeakfilename, $felixopoLocation[uniqueID])
         if (loadedfile.length < 1) return
         $felixPeakTable[uniqueID] = sortBy(loadedfile, [(o) => o['freq']])
         adjustPeak()
@@ -108,8 +106,8 @@
             arrowhead: 2,
             ax: -25,
             ay: -40,
-            font: { color: $felixAnnotationColor },
-            arrowcolor: $felixAnnotationColor,
+            font: { color: 'black' },
+            arrowcolor: 'black',
         }
 
         $felixPlotAnnotations[uniqueID] = $felixPeakTable[uniqueID].map((f) => {
@@ -154,7 +152,7 @@
                     overwrite_expfit,
                     normMethod,
                     index: $felixIndex[uniqueID],
-                    location: $felixopoLocation,
+                    location: $felixopoLocation[uniqueID],
                     output_name: $felixOutputName[uniqueID],
                 }
                 computePy_func({
@@ -195,7 +193,7 @@
                 })
                 NGauss_fit_args = {
                     ...NGauss_fit_args,
-                    location: $felixopoLocation,
+                    location: $felixopoLocation[uniqueID],
                     addedFileScale,
                     addedFileCol,
                     overwrite_expfit,
@@ -268,7 +266,7 @@
             <TextAndSelectOptsToggler
                 bind:value={savePeakfilename}
                 label="savefile"
-                lookIn={$felixopoLocation}
+                lookIn={$felixopoLocation[uniqueID]}
                 lookFor=".json"
                 auto_init={true}
             />
@@ -276,7 +274,11 @@
             <button
                 class="button is-link"
                 on:click={() =>
-                    savefile({ file: $felixPeakTable[uniqueID], name: savePeakfilename, location: $felixopoLocation })}
+                    savefile({
+                        file: $felixPeakTable[uniqueID],
+                        name: savePeakfilename,
+                        location: $felixopoLocation[uniqueID],
+                    })}
             >
                 Save peaks
             </button>
