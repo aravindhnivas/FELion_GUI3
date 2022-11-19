@@ -47,10 +47,6 @@
         ]
         console.log(`files loaded`)
     }
-    // $: if ($felixOpoDatLocation || theoryLocation) {
-    //     loadFiles()
-    // }
-    // onMount(loadFiles)
 </script>
 
 <div style="padding-bottom: 1em;">
