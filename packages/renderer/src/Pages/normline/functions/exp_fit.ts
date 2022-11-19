@@ -16,6 +16,8 @@ import { uniqBy } from 'lodash-es'
 
 export function exp_fit_func({ dataFromPython, uniqueID }: { dataFromPython: any; uniqueID: string }) {
     const currentGraph = opoMode.get(uniqueID) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+
+    if (!dataFromPython?.['fit']) return window.createToast('No data available to fit', 'danger')
     addTraces(currentGraph, dataFromPython['fit'])
     fittedTraceCount.update((n) => n + 1)
 
