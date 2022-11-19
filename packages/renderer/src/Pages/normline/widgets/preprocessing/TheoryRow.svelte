@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { felixopoLocation, theoryLocation } from '../../functions/svelteWritables'
+    import { felixopoLocation } from '../../functions/svelteWritables'
     import { theory_func } from '../../functions/theory'
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import QuickBrowser from '$components/QuickBrowser.svelte'
@@ -12,6 +12,7 @@
     export let theoryRow = false
 
     export let normMethod: string
+    export let theoryLocation: string
 
     let sigma = 7
     let scale = 1
@@ -21,8 +22,8 @@
     let theoryfilesChecked = []
 
     const uniqueID = getContext<string>('uniqueID')
-    $: if (window.fs.isDirectory($theoryLocation)) {
-        theoryfiles = theoryfilesChecked.map((file) => window.path.resolve($theoryLocation, file))
+    $: if (window.fs.isDirectory(theoryLocation)) {
+        theoryfiles = theoryfilesChecked.map((file) => window.path.resolve(theoryLocation, file))
     }
 
     async function plotData(e = null) {
@@ -53,7 +54,7 @@
     title="Theory files"
     filetype="txt"
     bind:active={showTheoryFiles}
-    bind:currentLocation={$theoryLocation}
+    bind:currentLocation={theoryLocation}
     bind:fileChecked={theoryfilesChecked}
     on:submit={(e) => {
         plotData(e.detail.event)
@@ -62,9 +63,9 @@
 
 {#if theoryRow}
     <div class="align box p-2 {className}" style="background-color: #77baf84d;">
-        <BrowseTextfield class="two_col_browse p-1" bind:value={$theoryLocation} label="Theory location" />
+        <BrowseTextfield class="two_col_browse p-1" bind:value={theoryLocation} label="Theory location" />
 
-        {#if window.fs.isDirectory($theoryLocation)}
+        {#if window.fs.isDirectory(theoryLocation)}
             <div class="align">
                 <button
                     class="button is-warning"

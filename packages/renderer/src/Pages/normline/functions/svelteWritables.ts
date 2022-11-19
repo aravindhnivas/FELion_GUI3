@@ -25,8 +25,6 @@ export const frequencyDatas = customStore<DataTable[]>([])
 export const fitted_data = customStore<{ [name: string]: DataTable[] }>({})
 
 export const felixopoLocation = customStore('')
-export const theoryLocation = window.persistentDB('theoryLocation', '')
-export const theoryfiles = derived([theoryLocation], ([$theoryLocation]) => getfiles($theoryLocation, '.txt'))
 export const felixPlotAnnotations = customStore<Partial<Plotly.Annotations>[]>([])
 export const expfittedLines = customStore<Plotly.Shape[]>([])
 export const fittedTraceCount = customStore(0)

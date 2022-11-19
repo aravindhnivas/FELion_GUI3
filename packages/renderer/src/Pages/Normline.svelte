@@ -44,7 +44,6 @@
     let writeFile = true
     let OPOfilesChecked = []
     let writeFileName = 'average_normline.dat'
-    let keepTable = true
 
     $: plottedFiles = $opoMode[uniqueID]
         ? OPOfilesChecked.map((file) => file.split('.')[0]) || []
@@ -59,6 +58,8 @@
     let OPOLocation = (window.db.get('ofelix_location') as string) || currentLocation
     let opofiles = []
 
+    let theoryLocation = (window.db.get('theoryLocation') as string) || currentLocation
+
     $: $felixopoLocation[uniqueID] = $opoMode[uniqueID] ? OPOLocation : currentLocation
     $: $Ngauss_sigma[uniqueID] = $opoMode[uniqueID] ? 2 : 5
 
@@ -70,7 +71,6 @@
     let extrafileAdded = 0
 
     $: console.log(`Extrafile added: ${extrafileAdded}`)
-
     $: currentGraphID = $opoMode[uniqueID] ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     function removeExtraFile() {
         for (let i = 0; i < extrafileAdded + 1; i++) {
@@ -146,6 +146,7 @@
     </svelte:fragment>
     <svelte:fragment slot="buttonContainer">
         <InitFunctionRow
+            {theoryLocation}
             {normMethod}
             bind:theoryRow
             {removeExtraFile}
@@ -164,7 +165,7 @@
             {plotfile}
             class={opo_toggle ? '' : 'hide'}
         />
-        <TheoryRow {normMethod} class={theory_toggle ? '' : 'hide'} {theoryRow} />
+        <TheoryRow bind:theoryLocation {normMethod} class={theory_toggle ? '' : 'hide'} {theoryRow} />
         <div class="align" class:hide={!felix_toggle}>
             <CustomRadio bind:value={normMethod} options={normMethods} />
             <button

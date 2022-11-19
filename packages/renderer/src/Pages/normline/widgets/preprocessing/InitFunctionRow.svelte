@@ -7,7 +7,7 @@
         fittedTraceCount,
         felixopoLocation,
         felixPlotAnnotations,
-        theoryLocation,
+        // theoryLocation,
     } from '../../functions/svelteWritables'
     import FelixPlotting from '../../modals/FelixPlotting.svelte'
     import { felix_opo_func } from '../../functions/felix_opo_func'
@@ -29,6 +29,7 @@
     export let showall = true
     export let theoryRow = false
     export let normMethod: string
+    export let theoryLocation: string
 
     let className = ''
     export { className as class }
@@ -139,7 +140,7 @@
                     selectedWidgets,
                     location: $felixopoLocation[uniqueID],
                     normMethod,
-                    theoryLocation: $theoryLocation,
+                    theoryLocation,
                 }
                 computePy_func({ e, pyfile, args, general: true })
             default:
@@ -228,6 +229,7 @@
     bind:active
     bind:felixPlotCheckboxes
     bind:felixPlotWidgets
+    {theoryLocation}
     on:submit={(e) => plotData({ e: e.detail.event, filetype: 'matplotlib' })}
 />
 

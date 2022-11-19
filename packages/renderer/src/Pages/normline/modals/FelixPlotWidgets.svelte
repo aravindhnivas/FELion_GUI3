@@ -1,13 +1,14 @@
 <script lang="ts">
-    import { theoryfiles, felixopoLocation, theoryLocation } from '../functions/svelteWritables'
+    import { felixopoLocation } from '../functions/svelteWritables'
     import { getfiles } from '../functions/stores/func'
     import { fade } from 'svelte/transition'
     import Textfield from '@smui/textfield'
     import CustomCheckList from '$components/CustomCheckList.svelte'
     import CustomCheckbox from '$components/CustomCheckbox.svelte'
-    import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
+    // import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
 
     export let felixPlotCheckboxes = []
+    export let theoryLocation: string
     export let felixPlotWidgets: {
         text: ValueLabel<string>[]
         boolean: ValueLabel<boolean>[]
@@ -20,7 +21,7 @@
         const felixOpoDatLocation = window.path.resolve($felixopoLocation[uniqueID], '../EXPORT')
         const felixOpoDatfiles = getfiles(felixOpoDatLocation, '.dat')
 
-        console.log($theoryfiles)
+        const theoryfiles = getfiles(theoryLocation, '.txt')
         felixPlotCheckboxes = [
             {
                 label: 'DAT_file',
@@ -30,25 +31,25 @@
             },
             {
                 label: 'Fundamentals',
-                options: $theoryfiles,
+                options: theoryfiles,
                 value: [],
                 id: window.getID(),
             },
             {
                 label: 'Others',
-                options: $theoryfiles,
+                options: theoryfiles,
                 value: [],
                 id: window.getID(),
             },
             {
                 label: 'Overtones',
-                options: $theoryfiles,
+                options: theoryfiles,
                 value: [],
                 id: window.getID(),
             },
             {
                 label: 'Combinations',
-                options: $theoryfiles,
+                options: theoryfiles,
                 value: [],
                 id: window.getID(),
             },
@@ -59,7 +60,6 @@
 
 <div style="padding-bottom: 1em;">
     <div class="align mb-2">
-        <BrowseTextfield class="two_col_browse" bind:value={$theoryLocation} label="Theory location" />
         <button class="button is-link ml-auto" on:click={loadFiles}>reload files</button>
     </div>
     <div class="align" style="justify-content: center;">
