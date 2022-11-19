@@ -3,12 +3,11 @@ import { writable, get } from 'svelte/store'
 export const customStore = <T>(defaultValue: T) => {
     const store = writable<{ [key: string]: T }>({})
     const { subscribe, set, update } = store
+
     return {
         subscribe,
         set,
-        get: (key: string) => {
-            return get(store)[key]
-        },
+        get: (key: string = null) => (key ? get(store)[key] : get(store)),
         update,
         setValue: (key: string, value: T) => {
             update((data) => {
@@ -24,7 +23,7 @@ export const customStore = <T>(defaultValue: T) => {
         },
         remove: (key: string) => {
             update((data) => {
-                delete data[key]
+                if (data[key]) delete data[key]
                 return data
             })
         },

@@ -98,7 +98,7 @@ export function plotlyClick({ graphDiv, mode, uniqueID }) {
                         data[uniqueID] = uniqBy([...data[uniqueID], annotation], 'text')
                         return data
                     })
-                    console.warn(get(felixPlotAnnotations))
+                    console.log(felixPlotAnnotations.get(), felixPlotAnnotations.get(uniqueID))
                     relayout(graphDiv, {
                         annotations: felixPlotAnnotations.get(uniqueID),
                     })
