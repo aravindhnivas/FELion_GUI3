@@ -52,7 +52,7 @@
     let writeFileName = 'average_normline.dat'
     let keepTable = true
 
-    $: plottedFiles = $opoMode
+    $: plottedFiles = $opoMode[uniqueID]
         ? OPOfilesChecked.map((file) => file.split('.')[0]) || []
         : fileChecked.map((file) => file.split('.')[0]) || []
     $: output_namelists = [
@@ -65,9 +65,9 @@
     let OPOLocation = (window.db.get('ofelix_location') as string) || currentLocation
     let opofiles = []
 
-    $: $felixopoLocation[uniqueID] = $opoMode ? OPOLocation : currentLocation
+    $: $felixopoLocation[uniqueID] = $opoMode[uniqueID] ? OPOLocation : currentLocation
     // $: $opoMode ? window.createToast("OPO MODE") : window.createToast("FELIX MODE")
-    $: $Ngauss_sigma = $opoMode ? 2 : 5
+    $: $Ngauss_sigma = $opoMode[uniqueID] ? 2 : 5
 
     let addFileModal = false
     let addedFile = {}
@@ -78,7 +78,7 @@
 
     $: console.log(`Extrafile added: ${extrafileAdded}`)
 
-    $: currentGraphID = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+    $: currentGraphID = $opoMode[uniqueID] ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     function removeExtraFile() {
         for (let i = 0; i < extrafileAdded + 1; i++) {
             try {
@@ -92,7 +92,7 @@
         }
     }
 
-    $: fullfiles = $opoMode
+    $: fullfiles = $opoMode[uniqueID]
         ? [...opofiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')]
         : [...felixfiles, ...addedfiles, window.path.resolve(currentLocation, 'averaged.felix')]
 
@@ -106,7 +106,7 @@
     let showOPO = true
     let showMoreOptions = false
 
-    $: plotfileOptions = $opoMode ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
+    $: plotfileOptions = $opoMode[uniqueID] ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
     onMount(() => {
         felixopoLocation.init(uniqueID)
@@ -143,7 +143,7 @@
 
 <Layout {id} {display} {filetype} {graphPlotted} bind:fileChecked bind:currentLocation bind:activateConfigModal>
     <svelte:fragment slot="toggle_row">
-        {#if $opoMode}
+        {#if $opoMode[uniqueID]}
             <span class="tag" style="border: solid 1px; background-color: #ffa94d33;">OPO Mode</span>
         {/if}
     </svelte:fragment>
@@ -262,7 +262,7 @@
         />
     </svelte:fragment>
     <svelte:fragment slot="plotContainer_reports">
-        <FrequencyTable bind:keepTable />
+        <FrequencyTable {normMethod} />
     </svelte:fragment>
 </Layout>
 

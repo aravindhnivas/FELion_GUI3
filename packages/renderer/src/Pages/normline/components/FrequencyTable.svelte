@@ -1,7 +1,6 @@
 <script lang="ts">
     import {
         dataTable,
-        normMethod,
         dataTable_avg,
         frequencyDatas,
         fitted_data,
@@ -10,9 +9,10 @@
         felixopoLocation,
     } from '../functions/svelteWritables'
     import STable from '$components/STable.svelte'
+    export let normMethod: string
 
-    $: if ($fitted_data?.[uniqueID]?.[$normMethod]) {
-        $frequencyDatas[uniqueID] = $fitted_data[uniqueID][$normMethod]
+    $: if ($fitted_data?.[uniqueID]?.[normMethod]) {
+        $frequencyDatas[uniqueID] = $fitted_data[uniqueID][normMethod]
     }
 
     const uniqueID = getContext<string>('uniqueID')

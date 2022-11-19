@@ -43,7 +43,7 @@
     let boxSelected_peakfinder = false
     let fitall = false
 
-    $: currentGraph = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+    $: currentGraph = $opoMode[uniqueID] ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
 
     const clearAllPeak = () => {
         const graphElement = document.getElementById(currentGraph)
@@ -210,7 +210,7 @@
                     pyfile: 'normline.multiGauss',
                     args: NGauss_fit_args,
                 }).then((dataFromPython) => {
-                    NGauss_fit_func({ dataFromPython, uniqueID })
+                    NGauss_fit_func({ dataFromPython, uniqueID, normMethod })
                     if (dataFromPython[normMethod]) {
                         console.log('Line fitted')
                         window.createToast(

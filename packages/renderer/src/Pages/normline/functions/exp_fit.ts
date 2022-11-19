@@ -15,7 +15,7 @@ import { relayout, addTraces } from 'plotly.js-basic-dist'
 import { uniqBy } from 'lodash-es'
 
 export function exp_fit_func({ dataFromPython, uniqueID }) {
-    const currentGraph = get(opoMode) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+    const currentGraph = opoMode.get(uniqueID) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     addTraces(currentGraph, dataFromPython['fit'])
     fittedTraceCount.update((n) => n + 1)
 

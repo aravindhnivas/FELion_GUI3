@@ -23,6 +23,7 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { react, relayout } from 'plotly.js-basic-dist'
     import ButtonBadge from '$components/ButtonBadge.svelte'
+    import { plotlayout } from '../../functions/plot_labels'
     ///////////////////////////////////////////////////////////////////////////
 
     export let plotfile = 'average'
@@ -105,13 +106,13 @@
                 break
 
             case 'baseline':
-                const filebrowserID = `#${uniqueID}-${$opoMode ? 'o' : ''}felix_filebrowser`
+                const filebrowserID = `#${uniqueID}-${$opoMode[uniqueID] ? 'o' : ''}felix_filebrowser`
                 const baseline_markedfile = document.querySelector(`${filebrowserID} .marked-file`)?.textContent
                 console.log(baseline_markedfile)
                 if (!baseline_markedfile) {
                     return window.createToast(
                         `No ${
-                            $opoMode ? 'OPO' : 'FELIX'
+                            $opoMode[uniqueID] ? 'OPO' : 'FELIX'
                         } files: ctrl + left-click to select file for baseline correction`,
                         'danger'
                     )
@@ -150,14 +151,13 @@
         }
     }
 
-    $: updateplot = !$opoMode && dataReady && plotfile && normMethod && fullData.data
+    $: updateplot = !$opoMode[uniqueID] && dataReady && plotfile && normMethod && fullData.data
     $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
             const currentKey = mapNormMethodKeys[normMethod]
 
             const currentData = get_data(fullData.data[currentKey])
-            const { layout } = $normMethodDatas[normMethod]
-            console.warn('plotting', currentData, layout)
+            console.warn('plotting', currentData, plotlayout[normMethod])
 
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-bplot`)
             subplot(
@@ -170,15 +170,16 @@
                 `Total Power (mJ)`,
                 fullData.data['pow']
             )
-            react(`${uniqueID}-avgplot`, currentData, layout)
+            react(`${uniqueID}-avgplot`, currentData, plotlayout[normMethod])
         } else {
-            felix_opo_func({ dataFromPython: fullData.data, uniqueID, mode: 'felix' })
+            felix_opo_func({ dataFromPython: fullData.data, uniqueID, mode: 'felix', normMethod })
         }
     } else if (updateplot) {
         plotIndividualDataIntoGraph({
             fullData,
             plotfile,
             uniqueID,
+            normMethod,
         })
     }
 
@@ -245,7 +246,7 @@
     <button
         class="button is-link"
         on:click={() => {
-            $opoMode = !$opoMode
+            $opoMode[uniqueID] = !$opoMode[uniqueID]
         }}>OPO</button
     >
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { opoMode, normMethodDatas, felixPlotAnnotations } from '../../functions/svelteWritables'
+    import { opoMode, felixPlotAnnotations } from '../../functions/svelteWritables'
     import { felix_opo_func } from '../../functions/felix_opo_func'
 
     import plotIndividualDataIntoGraph, {
@@ -14,6 +14,7 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { react } from 'plotly.js-basic-dist'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
+    import { plotlayout } from '../../functions/plot_labels'
 
     /////////////////////////////////////////////////////////////////////////
 
@@ -65,18 +66,17 @@
         computePy_func({ e, pyfile: 'normline.oposcan', args, general }).then((dataFromPython) => {
             fullData.data = dataFromPython
             dataReady = true
-            // $opoMode = true
+            // $opoMode[uniqueID] = true
             showOPOFiles = false
         })
     }
 
-    $: updateplot = dataReady && plotfile && normMethod && fullData.data && $opoMode
+    $: updateplot = dataReady && plotfile && normMethod && fullData.data && $opoMode[uniqueID]
     $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
             const currentKey = mapNormMethodKeys[normMethod]
             const currentData = get_data(fullData.data[currentKey])
-            const { layout } = $normMethodDatas[normMethod]
-            react(`${uniqueID}-opoRelPlot`, currentData, layout)
+            react(`${uniqueID}-opoRelPlot`, currentData, plotlayout[normMethod])
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-opoplot`)
             plot(
                 'OPO Calibration',
@@ -86,13 +86,14 @@
                 `${uniqueID}-opoSA`
             )
         } else {
-            felix_opo_func({ dataFromPython: fullData.data, uniqueID, mode: 'opo' })
+            felix_opo_func({ dataFromPython: fullData.data, uniqueID, mode: 'opo', normMethod })
         }
     } else if (updateplot) {
         plotIndividualDataIntoGraph({
             fullData,
             plotfile,
             uniqueID,
+            normMethod,
         })
     }
 
@@ -114,7 +115,7 @@
     }}
 />
 
-{#if $opoMode}
+{#if $opoMode[uniqueID]}
     <div class="align box p-2 {className}" style="background-color: #ffa94d33;">
         <BrowseTextfield class="p-1 two_col_browse" bind:value={OPOLocation} label="OPO location" />
         {#if window.fs.isDirectory(OPOLocation)}

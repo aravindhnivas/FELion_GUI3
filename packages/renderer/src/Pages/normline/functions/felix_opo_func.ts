@@ -6,10 +6,12 @@ export async function felix_opo_func({
     dataFromPython,
     uniqueID,
     mode,
+    normMethod,
 }: {
     dataFromPython: FELIXData
     uniqueID: string
     mode: 'felix' | 'opo'
+    normMethod: string
 }) {
     let baseGraphDiv: string
     let graphDiv: string
@@ -21,12 +23,13 @@ export async function felix_opo_func({
         graphDiv = `${uniqueID}-opoRelPlot`
         baseGraphDiv = `${uniqueID}-opoplot`
     }
-
+    // console.log(normMethod)
     const status = await beforePlot({
         dataFromPython,
         graphDiv,
         baseGraphDiv,
         uniqueID,
+        normMethod,
     })
 
     if (!status) return console.warn('No data to plot')

@@ -1,4 +1,5 @@
-import { normMethod, normMethodDatas, opoMode, get } from './svelteWritables'
+import { opoMode } from './svelteWritables'
+import { plotlayout } from './plot_labels'
 import { subplot, plot } from '$src/js/functions'
 import { react } from 'plotly.js-basic-dist'
 import { felix_opo_func } from './felix_opo_func'
@@ -17,7 +18,7 @@ export const mapNormMethodKeys = {
     IntensityPerPhoton: 'average_per_photon',
 }
 
-export default function ({ fullData, plotfile, uniqueID }) {
+export default function ({ fullData, plotfile, uniqueID, normMethod }) {
     const data = fullData.data || null
     if (!data) return window.createToast('No data for ' + plotfile, 'danger')
     if (!data.average?.[plotfile]) return console.warn(plotfile, 'data is not available', data)
@@ -30,10 +31,10 @@ export default function ({ fullData, plotfile, uniqueID }) {
         base[plotfile + '_base'] = data['base'][plotfile + '_base']
         base[plotfile + '_line'] = data['base'][plotfile + '_line']
 
-        const baseGraphDiv = get(opoMode) ? `${uniqueID}-opoplot` : `${uniqueID}-bplot`
+        const baseGraphDiv = opoMode.get(uniqueID) ? `${uniqueID}-opoplot` : `${uniqueID}-bplot`
         plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', base, baseGraphDiv)
 
-        if (get(opoMode)) {
+        if (opoMode.get(uniqueID)) {
             console.log('Updating OPO plots')
             if (data['SA']?.['Calibration']) {
                 SA['Calibration'] = data['SA']['Calibration']
@@ -66,16 +67,14 @@ export default function ({ fullData, plotfile, uniqueID }) {
         dataToPlot[key] = addData
     }
 
-    const currentGraphID = get(opoMode) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+    const currentGraphID = opoMode.get(uniqueID) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     const currentGraph = document.getElementById(currentGraphID)
-
     if (currentGraph.hasAttribute('data-plotted')) {
-        const currentKey = mapNormMethodKeys[get(normMethod)]
+        const currentKey = mapNormMethodKeys[normMethod]
         const currentData = get_data(dataToPlot[currentKey])
-        const { layout } = get(normMethodDatas)[get(normMethod)]
-        react(currentGraph, currentData, layout)
+        react(currentGraph, currentData, plotlayout[normMethod])
     } else {
-        const mode = get(opoMode) ? 'opo' : 'felix'
-        felix_opo_func({ dataFromPython: dataToPlot, uniqueID, mode })
+        const mode = opoMode.get(uniqueID) ? 'opo' : 'felix'
+        felix_opo_func({ dataFromPython: dataToPlot, uniqueID, mode, normMethod })
     }
 }

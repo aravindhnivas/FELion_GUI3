@@ -1,4 +1,4 @@
-import { felixIndex, felixOutputName, normMethod, opoMode, felixData, opoData, get } from './svelteWritables'
+import { felixIndex, felixOutputName } from './svelteWritables'
 import { plot } from '../../../js/functions'
 
 const get_data = (data: DataFromPython) => {
@@ -9,82 +9,41 @@ const get_data = (data: DataFromPython) => {
     return dataPlot
 }
 
-const signal = {
-    rel: 'Signal = (1-C/B)*100',
-    log: 'Signal = -ln(C/B)/Power(in J)',
-    hv: 'Signal = -ln(C/B)/#Photons',
-}
-
 export default async function beforePlot({
     dataFromPython,
     graphDiv,
     baseGraphDiv,
     uniqueID,
+    normMethod,
 }: {
     dataFromPython: FELIXData
     graphDiv: string
     baseGraphDiv: string
     uniqueID: string
+    normMethod: string
 }) {
     try {
         felixOutputName.setValue(uniqueID, 'averaged')
         felixIndex.setValue(uniqueID, [])
 
-        let avgdataToPlot: DataFromPython | undefined
+        let avgdataToPlot: DataFromPython
         let signal_formula: string = ''
         let ylabel: string = ''
 
-        if (get(normMethod) === 'Log') {
+        if (normMethod === 'Log') {
             avgdataToPlot = dataFromPython['average']
-            signal_formula = 'Signal = -ln(C/B)/Power(in J)'
             ylabel = 'Normalised Intensity per J'
-        } else if (get(normMethod) == 'Relative') {
+        } else if (normMethod == 'Relative') {
             avgdataToPlot = dataFromPython['average_rel']
-            signal_formula = 'Signal = (1-C/B)*100'
             ylabel = 'Relative Depletion (%)'
-        } else if (get(normMethod) == 'IntensityPerPhoton') {
+        } else if (normMethod == 'IntensityPerPhoton') {
             avgdataToPlot = dataFromPython['average_per_photon']
-            signal_formula = 'Signal = -ln(C/B)/#Photons'
             ylabel = 'Normalised Intensity per photon'
-        }
-        const set_title = (method: 'rel' | 'log' | 'hv') =>
-            `Normalised and Averaged Spectrum<br>${signal[method]}; {C=Measured Count, B=Baseline Count}`
-
-        const normMethod_datas = {
-            Relative: {
-                data: get_data(dataFromPython['average_rel']),
-                layout: {
-                    title: set_title('rel'),
-                    yaxis: { title: 'Relative Depletion (%)' },
-                    xaxis: { title: 'Calibrated Wavelength (cm-1)' },
-                },
-            },
-            Log: {
-                data: get_data(dataFromPython['average']),
-                layout: {
-                    title: set_title('log'),
-                    yaxis: { title: 'Normalised Intensity per J' },
-                    xaxis: { title: 'Calibrated Wavelength (cm-1)' },
-                },
-            },
-            IntensityPerPhoton: {
-                data: get_data(dataFromPython['average_per_photon']),
-                layout: {
-                    title: set_title('hv'),
-                    yaxis: { title: 'Normalised Intensity per photon' },
-                    xaxis: { title: 'Calibrated Wavelength (cm-1)' },
-                },
-            },
-        }
-
-        if (get(opoMode)) {
-            opoData.set(normMethod_datas)
-        } else {
-            felixData.set(normMethod_datas)
         }
 
         plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', dataFromPython['base'], baseGraphDiv)
 
+        // console.warn(normMethod, avgdataToPlot)
         if (!avgdataToPlot) return window.createToast('No data to plot', 'danger')
 
         plot(

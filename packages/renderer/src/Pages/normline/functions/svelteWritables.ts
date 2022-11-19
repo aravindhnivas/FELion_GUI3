@@ -6,7 +6,7 @@ export { get }
 export const felixIndex = customStore([])
 export const felixPeakTable = customStore<{ freq: number; amp: number; sig: number; id: string }[]>([])
 export const felixOutputName = customStore('averaged')
-export const opoMode = writable(false)
+export const opoMode = customStore(false)
 export const Ngauss_sigma = writable(5)
 
 export interface DataTable {
@@ -23,14 +23,7 @@ export const dataTable = customStore<DataTable[]>([])
 export const dataTable_avg = customStore<DataTable[]>([])
 export const frequencyDatas = customStore<DataTable[]>([])
 export const fitted_data = customStore<{ [name: string]: DataTable[] }>({})
-export const opoData = writable({})
-export const felixData = writable({})
 
-export const normMethodDatas = derived([opoMode, felixData, opoData], ([$opoMode, $felixData, $opoData]) => {
-    return $opoMode ? $opoData : $felixData
-})
-
-// export const felixopoLocation = writable('')
 export const felixopoLocation = customStore('')
 export const theoryLocation = window.persistentDB('theoryLocation', '')
 export const theoryfiles = derived([theoryLocation], ([$theoryLocation]) => getfiles($theoryLocation, '.txt'))
@@ -49,4 +42,3 @@ export const expfittedLinesCollectedData = writable([])
 export const avgfittedLineCount = writable(0)
 export const fittedTraceCount = writable(0)
 export const normMethods = ['Log', 'Relative', 'IntensityPerPhoton']
-export const normMethod = writable('Relative')

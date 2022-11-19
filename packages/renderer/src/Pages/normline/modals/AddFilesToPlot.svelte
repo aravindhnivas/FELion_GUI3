@@ -34,7 +34,7 @@
         args = addedFile
 
         computePy_func({ e, pyfile, args }).then((dataFromPython) => {
-            const currentGraph = $opoMode ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+            const currentGraph = $opoMode[uniqueID] ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
             addTraces(currentGraph, dataFromPython)
             window.createToast('Graph Plotted', 'success')
             active = false

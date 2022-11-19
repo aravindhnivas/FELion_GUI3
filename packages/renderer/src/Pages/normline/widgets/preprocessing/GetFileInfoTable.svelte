@@ -18,7 +18,7 @@
         if (felixfiles.length < 1) return window.createToast('No files selected', 'danger')
 
         const pyfile = 'normline.getfile_details'
-        const files = $opoMode ? opofiles : felixfiles
+        const files = $opoMode[uniqueID] ? opofiles : felixfiles
         const args = { files, normMethod }
 
         const dataFromPython = await computePy_func({ e, pyfile, args })
