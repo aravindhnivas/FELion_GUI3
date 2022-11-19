@@ -7,7 +7,7 @@ export const felixIndex = customStore([])
 export const felixPeakTable = customStore<{ freq: number; amp: number; sig: number; id: string }[]>([])
 export const felixOutputName = customStore('averaged')
 export const opoMode = customStore(false)
-export const Ngauss_sigma = writable(5)
+export const Ngauss_sigma = customStore(5)
 
 export interface DataTable {
     id: string
@@ -28,9 +28,6 @@ export const felixopoLocation = customStore('')
 export const theoryLocation = window.persistentDB('theoryLocation', '')
 export const theoryfiles = derived([theoryLocation], ([$theoryLocation]) => getfiles($theoryLocation, '.txt'))
 export const felixPlotAnnotations = customStore<Partial<Plotly.Annotations>[]>([])
-
-export const expfittedLines = writable([])
-export const expfittedLinesCollectedData = writable([])
-export const avgfittedLineCount = writable(0)
-export const fittedTraceCount = writable(0)
+export const expfittedLines = customStore<Plotly.Shape[]>([])
+export const fittedTraceCount = customStore(0)
 export const normMethods = ['Log', 'Relative', 'IntensityPerPhoton']

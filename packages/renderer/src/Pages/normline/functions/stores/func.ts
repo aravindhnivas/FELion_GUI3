@@ -8,6 +8,7 @@ export const customStore = <T>(defaultValue: T) => {
         subscribe,
         set,
         get: (key: string) => get(store)[key],
+        getStore: () => get(store),
         update,
         setValue: (key: string, value: T) => {
             update((data) => {

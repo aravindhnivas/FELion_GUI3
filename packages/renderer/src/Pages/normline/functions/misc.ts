@@ -3,7 +3,7 @@ import {
     felixIndex,
     felixOutputName,
     felixPlotAnnotations,
-    opoMode,
+    // opoMode,
     Ngauss_sigma,
     get,
 } from './svelteWritables'
@@ -104,7 +104,7 @@ export function plotlyClick({ graphDiv, mode, uniqueID }: { graphDiv: string; mo
                     annotations: felixPlotAnnotations.get(uniqueID),
                 })
 
-                const currentPeaks = { freq, amp, sig: get(Ngauss_sigma), id: window.getID() }
+                const currentPeaks = { freq, amp, sig: Ngauss_sigma.get(uniqueID), id: window.getID() }
                 felixPeakTable.update((data) => {
                     data[uniqueID] = uniqBy([...data[uniqueID], currentPeaks], 'freq')
                     return data

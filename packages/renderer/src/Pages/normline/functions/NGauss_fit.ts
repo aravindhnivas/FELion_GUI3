@@ -25,7 +25,10 @@ export function NGauss_fit_func({ dataFromPython, uniqueID, normMethod }) {
 
     const currentGraph = opoMode.get(uniqueID) ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
     addTraces(currentGraph, dataFromPython[normMethod]['fitted_data'])
-    fittedTraceCount.update((n) => n + 1)
+    fittedTraceCount.update((n) => {
+        n[uniqueID] += 1
+        return n
+    })
     const output_name = felixOutputName.get(uniqueID)
     const color = output_name === 'averaged' ? '#836ac05c' : '#fafafa'
 

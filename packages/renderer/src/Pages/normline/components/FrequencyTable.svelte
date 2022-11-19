@@ -4,8 +4,6 @@
         dataTable_avg,
         frequencyDatas,
         fitted_data,
-        avgfittedLineCount,
-        expfittedLinesCollectedData,
         felixopoLocation,
     } from '../functions/svelteWritables'
     import STable from '$components/STable.svelte'
@@ -21,8 +19,6 @@
         $frequencyDatas[uniqueID] = []
         $dataTable[uniqueID] = []
         $dataTable_avg[uniqueID] = []
-        $avgfittedLineCount = 0
-        $expfittedLinesCollectedData = []
     }
     const rowKeys = ['name', 'freq', 'amp', 'fwhm', 'sig']
     const headKeys = ['Filename', 'Frequency', 'Intensity', 'FWHM', 'Sigma']
@@ -37,7 +33,7 @@
             frequencyDatas.remove(uniqueID)
             fitted_data.remove(uniqueID)
             dataTable.remove(uniqueID)
-            dataTable_avg.init(uniqueID)
+            dataTable_avg.remove(uniqueID)
         }
     })
 </script>

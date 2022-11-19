@@ -3,13 +3,10 @@
         opoMode,
         felixPeakTable,
         expfittedLines,
-        normMethodDatas,
         felixOutputName,
         fittedTraceCount,
         felixopoLocation,
-        // felixPlotCheckboxes,
         felixPlotAnnotations,
-        expfittedLinesCollectedData,
         theoryLocation,
     } from '../../functions/svelteWritables'
     import FelixPlotting from '../../modals/FelixPlotting.svelte'
@@ -96,10 +93,9 @@
                 })
                 if (!dataFromPython) return
 
-                $expfittedLines = []
-                $fittedTraceCount = 0
+                $expfittedLines[uniqueID] = []
+                $fittedTraceCount[uniqueID] = 0
                 $felixPlotAnnotations[uniqueID] = []
-                $expfittedLinesCollectedData = []
 
                 fullData.data = dataFromPython
                 dataReady = true
@@ -219,6 +215,12 @@
     ]
     onMount(() => {
         currentGraph = document.getElementById(`${uniqueID}-avgplot`)
+        fittedTraceCount.init(uniqueID)
+        expfittedLines.init(uniqueID)
+        return () => {
+            expfittedLines.remove(uniqueID)
+            fittedTraceCount.remove(uniqueID)
+        }
     })
 </script>
 

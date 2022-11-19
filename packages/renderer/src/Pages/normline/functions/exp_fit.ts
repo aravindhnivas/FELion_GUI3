@@ -7,7 +7,6 @@ import {
     expfittedLines,
     felixOutputName,
     fittedTraceCount,
-    avgfittedLineCount,
     felixPlotAnnotations,
 } from './svelteWritables'
 
@@ -19,10 +18,17 @@ export function exp_fit_func({ dataFromPython, uniqueID }: { dataFromPython: any
 
     if (!dataFromPython?.['fit']) return window.createToast('No data available to fit', 'danger')
     addTraces(currentGraph, dataFromPython['fit'])
-    fittedTraceCount.update((n) => n + 1)
+    fittedTraceCount.update((n) => {
+        n[uniqueID] += 1
+        return n
+    })
 
-    expfittedLines.update((lines) => [...lines, ...dataFromPython['line']])
-    relayout(currentGraph, { shapes: get(expfittedLines) })
+    console.log(dataFromPython)
+    expfittedLines.update((lines) => {
+        lines[uniqueID] = [...lines[uniqueID], dataFromPython['line']]
+        return lines
+    })
+    relayout(currentGraph, { shapes: expfittedLines.get(uniqueID) })
 
     const annotations = dataFromPython['annotations']
 
@@ -39,9 +45,9 @@ export function exp_fit_func({ dataFromPython, uniqueID }: { dataFromPython: any
     const output_name = felixOutputName.get(uniqueID) as string
     if (output_name === 'averaged') {
         color = '#836ac05c'
-
+        const total_lines = dataTable_avg.get(uniqueID).length
         const newTable = {
-            name: `Line #${get(avgfittedLineCount)}`,
+            name: `Line #${total_lines}`,
             id: window.getID(),
             freq,
             amp,
@@ -53,7 +59,6 @@ export function exp_fit_func({ dataFromPython, uniqueID }: { dataFromPython: any
             data[uniqueID] = uniqBy([...data[uniqueID], newTable], 'freq')
             return data
         })
-        avgfittedLineCount.update((n) => n + 1)
     }
     let newTable = {
         name: output_name,

@@ -8,9 +8,7 @@
         felixOutputName,
         felixopoLocation,
         felixPlotAnnotations,
-        expfittedLinesCollectedData,
     } from '../../functions/svelteWritables'
-    // import Textfield from '@smui/textfield'
     import { savefile, loadfile } from '../../functions/misc'
     import { NGauss_fit_func } from '../../functions/NGauss_fit'
     import { exp_fit_func } from '../../functions/exp_fit'
@@ -34,7 +32,7 @@
 
     // //////////////////////////////////////////////////////////////////////
     const uniqueID = getContext<string>('uniqueID')
-    let NGauss_fit_args: { fitNGauss_arguments: { [name: string]: number }; index: [] } = {
+    let NGauss_fit_args: { fitNGauss_arguments: { [name: string]: number }; index: number[] } = {
         fitNGauss_arguments: {},
         index: [],
     }
@@ -61,8 +59,7 @@
 
         $felixIndex[uniqueID] = []
         $felixPlotAnnotations[uniqueID] = []
-        $expfittedLines = []
-        $expfittedLinesCollectedData = []
+        $expfittedLines[uniqueID] = []
         relayout(currentGraph, { annotations: [], shapes: [] })
 
         for (let i = 0; i < noOfFittedData; i++) {
@@ -78,13 +75,12 @@
             return window.createToast('No fitted lines found', 'danger')
         }
         $dataTable[uniqueID] = dropRight($dataTable[uniqueID], 1)
-        $expfittedLines = dropRight($expfittedLines, 2)
+        $expfittedLines[uniqueID] = dropRight($expfittedLines[uniqueID], 2)
 
         $felixPlotAnnotations[uniqueID] = dropRight($felixPlotAnnotations[uniqueID], 1)
-        $expfittedLinesCollectedData = dropRight($expfittedLinesCollectedData, 1)
         relayout(currentGraph, {
             annotations: $felixPlotAnnotations[uniqueID],
-            shapes: $expfittedLines,
+            shapes: $expfittedLines[uniqueID],
         })
 
         deleteTraces(currentGraph, [-1])
@@ -100,7 +96,7 @@
 
     function adjustPeak() {
         const annotationDefaults = {
-            xref: 'x',
+            // xref: 'x',
             y: 'y',
             showarrow: true,
             arrowhead: 2,
@@ -112,8 +108,6 @@
 
         $felixPlotAnnotations[uniqueID] = $felixPeakTable[uniqueID].map((f) => {
             const { freq, amp } = f
-            // const x = parseFloat(freq)
-            // const y = parseFloat(amp)
             const annotate = {
                 x: freq,
                 y: amp,
@@ -161,7 +155,6 @@
                     args: expfit_args,
                 }).then((dataFromPython) => {
                     exp_fit_func({ dataFromPython, uniqueID })
-                    // window.createToast("Line fitted with gaussian function", "success")
                 })
                 break
 

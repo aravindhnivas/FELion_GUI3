@@ -1,11 +1,5 @@
 <script lang="ts">
-    import {
-        opoMode,
-        // normMethod,
-        normMethods,
-        Ngauss_sigma,
-        felixopoLocation,
-    } from './normline/functions/svelteWritables'
+    import { opoMode, normMethods, Ngauss_sigma, felixopoLocation } from './normline/functions/svelteWritables'
 
     import AddFilesToPlot from './normline/modals/AddFilesToPlot.svelte'
     import FrequencyTable from './normline/components/FrequencyTable.svelte'
@@ -66,8 +60,7 @@
     let opofiles = []
 
     $: $felixopoLocation[uniqueID] = $opoMode[uniqueID] ? OPOLocation : currentLocation
-    // $: $opoMode ? window.createToast("OPO MODE") : window.createToast("FELIX MODE")
-    $: $Ngauss_sigma = $opoMode[uniqueID] ? 2 : 5
+    $: $Ngauss_sigma[uniqueID] = $opoMode[uniqueID] ? 2 : 5
 
     let addFileModal = false
     let addedFile = {}
@@ -109,10 +102,14 @@
     $: plotfileOptions = $opoMode[uniqueID] ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
     onMount(() => {
+        opoMode.init(uniqueID)
+        Ngauss_sigma.init(uniqueID)
         felixopoLocation.init(uniqueID)
         console.warn('Normline mounted')
     })
     onDestroy(() => {
+        opoMode.remove(uniqueID)
+        Ngauss_sigma.remove(uniqueID)
         felixopoLocation.remove(uniqueID)
         console.warn('Normline destroyed')
     })
