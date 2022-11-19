@@ -3,15 +3,15 @@ function validate_line(line: string): boolean {
     return valid
 }
 
-export default function (loadfile: string): Promise<{[name: string]: number}> {
+export default function (filename: string): Promise<{ [name: string]: number }> {
     return new Promise(async (resolve, reject) => {
-        if (!window.fs.isFile(loadfile)) return reject('Invalid file')
-        if (!window.fs.isFile(loadfile)) return reject(`${loadfile} does not exist`)
+        if (!window.fs.isFile(filename)) return reject('Invalid file')
+        if (!window.fs.isFile(filename)) return reject(`${filename} does not exist`)
 
-        const fileContents = await window.fs.readFile(loadfile)
+        const fileContents = await window.fs.readFile(filename)
         if (window.fs.isError(fileContents)) return reject(fileContents)
 
-        const variableValues: {[name: string]: number} = {}
+        const variableValues: { [name: string]: number } = {}
         for (const line of fileContents.split('\n')) {
             if (!validate_line(line)) continue
             const keyValuesLine = line.split(' ')
