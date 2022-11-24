@@ -87,7 +87,7 @@
             <Textfield
                 disabled
                 value={boltzmanConstant}
-                label="Boltzman constant (J/K)"
+                label="Boltzmann constant (J/K)"
             />
             <Textfield
                 disabled

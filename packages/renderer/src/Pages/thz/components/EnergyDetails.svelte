@@ -71,7 +71,7 @@
             type={'number'}
             label="numberOfLevels (J levels)"
         />
-        <CustomSelect options={['MHz', 'cm-1']} bind:value={$energyUnit} label="$energyUnit" />
+        <CustomSelect options={['MHz', 'cm-1']} bind:value={$energyUnit} label="unit" />
         <button
             class="button is-link"
             on:click={() => {
@@ -79,7 +79,7 @@
                 setTimeout(() => boltzmanWindow?.focus(), 100)
             }}
         >
-            Show Boltzman distribution
+            Show Boltzmann distribution
         </button>
         <IconButton bind:value={lock_energylevels} icons={{ on: 'lock', off: 'lock_open' }} />
     </div>

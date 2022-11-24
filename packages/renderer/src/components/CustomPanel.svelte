@@ -12,7 +12,7 @@
 </script>
 
 <Panel bind:open style="background: var(--color-primary-light);">
-    <Header style="padding: 0.3rem;">
+    <Header>
         <div class="align">
             <IconButton pressed={loaded}>
                 <Icon class="material-symbols-outlined">sync_problem</Icon>

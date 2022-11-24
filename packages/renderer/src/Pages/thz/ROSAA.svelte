@@ -133,7 +133,7 @@
             gaussian,
             lorrentz,
             includeSpontaneousEmission,
-            writefile,
+            writefile: $writefile,
             savefilename,
             currentLocation: $currentLocation,
             deexcitation,
@@ -174,7 +174,7 @@
         window.createToast('Config file cleared', 'warning')
     }
 
-    let writefile = true
+    const writefile = persistentWritable('writefile', false)
 
     let includeCollision = true
     let includeAttachmentRate = true
@@ -319,7 +319,6 @@
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
     let simulationMethod = 'Normal'
     const figure = { dpi: 100, size: '10, 6', show: true }
-
     let toggle_modal = false
     let progress = 0
     let showProgress = false
@@ -328,7 +327,7 @@
 <LayoutDiv id="ROSAA__modal" {progress} bind:showProgress>
     <svelte:fragment slot="header_content__slot">
         <BrowseTextfield
-            class="two_col_browse box"
+            class="two_col_browse box p-2 v-center"
             dir={false}
             filetype="yml"
             bind:value={$configFile}
@@ -442,7 +441,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="left_footer_content__slot">
-        <CustomCheckbox bind:value={writefile} label="writefile" />
+        <CustomCheckbox bind:value={$writefile} label="writefile" />
         <Textfield bind:value={savefilename} label="savefilename" />
         <CustomCheckbox bind:value={figure.show} label="show figure" />
         <Textfield style="width: 5em;" bind:value={figure.dpi} label="DPI" type="number" input$step={10} />

@@ -38,12 +38,12 @@
         max-height: 100%;
         grid-template-rows: auto 1fr auto;
         height: 100%;
-        gap: 1em;
+        gap: 0.5em;
         padding: 0;
         overflow-y: auto;
         .header_content {
             display: grid;
-            grid-row-gap: 1em;
+            grid-row-gap: 0.5em;
         }
 
         .main_content {
@@ -70,7 +70,7 @@
                 }
             }
             display: flex;
-            gap: 1em;
+            gap: 0.5em;
             justify-content: flex-end;
             align-items: center;
             border-top: solid 1px;

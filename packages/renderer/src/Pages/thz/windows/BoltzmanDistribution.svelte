@@ -14,7 +14,7 @@
     export let active = false
     export let graphWindow: WinBox | null = null
 
-    const title = 'Boltzman Distribution'
+    const title = 'Boltzmann Distribution'
     const plotID = 'boltzmanDistributionPlot'
 
     let windowReady = false
@@ -77,7 +77,7 @@
         const args = {
             figArgs: {
                 figXlabel: 'J',
-                figYlabel: 'Population ratio',
+                figYlabel: 'Relative population',
                 location: figsDir,
                 x_type: 'string',
                 y_type: 'float',

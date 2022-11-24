@@ -420,7 +420,7 @@ class ROSAA:
             widget = felionQtWindow(
                 figDPI=figure["dpi"],
                 figXlabel="Time [ms]",
-                figYlabel="Population ratio",
+                figYlabel="Relative population",
                 location=self.figs_location,
                 savefilename=f"{savefilename}_{self.duration}s_population_ratio",
             )
@@ -478,16 +478,16 @@ class ROSAA:
         widget = felionQtWindow(
             figDPI=figure["dpi"],
             figXlabel="Energy Levels",
-            figYlabel="Population ratio",
+            figYlabel="Relative population",
             location=self.figs_location,
             savefilename=f"{savefilename}_{self.duration}s_boltzman_comparision",
         )
         widget.showMaximized()
         dataToSend = {"boltzmann": self.boltzmanDistributionCold}
 
-        # Boltzman distribution
-        (self.legend_handler_for_extra_plots[f"Boltzman distribution"],) = widget.ax.plot(
-            self.energyKeys, self.boltzmanDistributionCold, "k-", label=f"Boltzman distribution", zorder=2, alpha=0.5
+        # Boltzmann distribution
+        (self.legend_handler_for_extra_plots[f"Boltzmann distribution"],) = widget.ax.plot(
+            self.energyKeys, self.boltzmanDistributionCold, "k-", label=f"Boltzmann distribution", zorder=2, alpha=0.5
         )
 
         # Only collision
@@ -931,7 +931,7 @@ def functionOfVariable(
         ylabel = f"${ylabel.split('-')[1]}$ / ${ylabel.split('-')[0]}$"
 
         widget = felionQtWindow(
-            title=f"Population ratio",
+            title=f"Relative population",
             figDPI=figure["dpi"],
             figXlabel=xlabel,
             figYlabel=ylabel,

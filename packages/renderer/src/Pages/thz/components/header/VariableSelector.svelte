@@ -10,9 +10,9 @@
 
 {#if variable == 'time'}
     <div class="align">
-        <CustomCheckbox label="Population ratio simulation plot" bind:value={plots_to_include.main} />
+        <CustomCheckbox label="Relative population" bind:value={plots_to_include.main} />
         <CustomCheckbox label="Signal plot" bind:value={plots_to_include.signal} />
-        <CustomCheckbox label="population stability plot" bind:value={plots_to_include.population_stability} />
+        <CustomCheckbox label="population stability" bind:value={plots_to_include.population_stability} />
         <Textfield bind:value={$plot_colors} label="plots_colors (index)" />
     </div>
 {:else}

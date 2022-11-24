@@ -5,19 +5,13 @@
     import { activePage } from '$src/sveltewritables'
 
     export let navItems: string[] = []
-    let active = <string>window.db.get('active_tab') || 'Home'
-    $: $activePage = active
-    $: console.log(`Current page: ${$activePage}`)
-    $: window.db.set('active_tab', $activePage)
-
     const navigate = () => {
-        navItems.forEach((item, i) => {
-            item == active
+        navItems.forEach((item) => {
+            item === $activePage
                 ? (document.getElementById(item).style.display = 'grid')
                 : (document.getElementById(item).style.display = 'none')
         })
     }
-
     onMount(() => {
         document.getElementById('navbar').style.display = 'block'
         navigate()
@@ -31,7 +25,7 @@
     style="display:none; background: #5a419b;"
     on:click={navigate}
 >
-    <TabBar tabs={navItems} let:tab bind:active>
+    <TabBar tabs={navItems} let:tab bind:active={$activePage}>
         <Tab {tab}><Label>{tab}</Label></Tab>
     </TabBar>
 </div>
