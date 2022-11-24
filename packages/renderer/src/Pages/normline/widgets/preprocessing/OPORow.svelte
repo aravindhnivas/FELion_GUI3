@@ -12,7 +12,7 @@
     import CustomTextSwitch from '$components/CustomTextSwitch.svelte'
     import { plot } from '$src/js/functions'
     import computePy_func from '$src/Pages/general/computePy'
-    import { react } from 'plotly.js-basic-dist'
+    // import { react } from 'plotly.js-basic-dist'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
     import { plotlayout } from '../../functions/plot_labels'
 
@@ -74,9 +74,11 @@
     $: updateplot = dataReady && plotfile && normMethod && fullData.data && $opoMode[uniqueID]
     $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
-            const currentKey = mapNormMethodKeys[normMethod]
-            const currentData = get_data(fullData.data[currentKey])
-            react(`${uniqueID}-opoRelPlot`, currentData, plotlayout[normMethod])
+            // const currentKey = mapNormMethodKeys[normMethod]
+            // const currentData = get_data(fullData.data[currentKey])
+            // react(`${uniqueID}-opoRelPlot`, currentData, plotlayout[normMethod])
+            const { yaxis, xaxis, title, key } = plotlayout[normMethod]
+            plot(title, xaxis.title, yaxis.title, fullData.data[key], `${uniqueID}-opoRelPlot`)
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-opoplot`)
             plot(
                 'OPO Calibration',

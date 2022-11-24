@@ -1,13 +1,6 @@
 import { felixIndex, felixOutputName } from './svelteWritables'
 import { plot } from '../../../js/functions'
-
-const get_data = (data: DataFromPython) => {
-    let dataPlot = []
-    for (const x in data) {
-        dataPlot.push(data[x])
-    }
-    return dataPlot
-}
+import { plotlayout } from './plot_labels'
 
 export default async function beforePlot({
     dataFromPython,
@@ -46,13 +39,15 @@ export default async function beforePlot({
         // console.warn(normMethod, avgdataToPlot)
         if (!avgdataToPlot) return window.createToast('No data to plot', 'danger')
 
-        plot(
-            `Normalised and Averaged Spectrum<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
-            'Calibrated Wavelength (cm-1)',
-            ylabel,
-            avgdataToPlot,
-            graphDiv
-        )
+        const { yaxis, xaxis, title } = plotlayout[normMethod]
+        plot(title, xaxis.title, yaxis.title, avgdataToPlot, graphDiv)
+        // plot(
+        //     `Normalised and Averaged Spectrum<br>${signal_formula}; {C=Measured Count, B=Baseline Count}`,
+        //     'Calibrated Wavelength (cm-1)',
+        //     ylabel,
+        //     avgdataToPlot,
+        //     graphDiv
+        // )
         return Promise.resolve(true)
     } catch (error) {
         window.handleError(error)

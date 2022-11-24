@@ -42,18 +42,22 @@
             onfocus: function () {
                 windowReady = true
             },
-            onresize: function () {
-                if (!graphMode) return
-                changeGraphDivWidth()
-            },
+            // onresize: function () {
+            //     changeGraphDivWidth()
+            // },
+            // onrestore: function () {
+            //     changeGraphDivWidth()
+            // },
         })
         graphWindow.maximize(maximize)
     }
     $: if (active) openGraph()
 
     const changeGraphDivWidth = async (ms = 0) => {
+        if (!graphMode) return
         await tick()
         if (ms > 0) await window.sleep(ms)
+        // console.log('changeGraphDivWidth', graphDivs)
         graphDivs.forEach((id) => {
             if (id.data) {
                 relayout(id, { width: id.clientWidth })
@@ -62,15 +66,20 @@
     }
 
     let graphDivs = []
-    function lookForGraph(node) {
+    function lookForGraph(node = null) {
         if (!graphMode) return
         try {
             graphDivs = Array.from(document.querySelectorAll(`#${id} .graph__div`))
+            console.log('lookForGraph', graphDivs)
         } catch (error) {
             console.log('No graph in this window')
         }
     }
 
+    onMount(() => {
+        lookForGraph()
+        // changeGraphDivWidth(1000)
+    })
     onDestroy(() => {
         try {
             if (active && graphWindow) {
@@ -85,8 +94,8 @@
 
 <div {id} class="main_content__div" class:hide={autoHide && !active}>
     <div class="header_content"><slot name="header_content__slot" /></div>
-    <div class="main_content" style={mainContent$style} use:lookForGraph>
-        <slot name="main_content__slot" />
+    <div class="main_content" style={mainContent$style}>
+        <slot name="main_content__slot" {changeGraphDivWidth} />
     </div>
     {#if autoHide && !$$slots.footer_content__slot}
         <div class="footer_content">

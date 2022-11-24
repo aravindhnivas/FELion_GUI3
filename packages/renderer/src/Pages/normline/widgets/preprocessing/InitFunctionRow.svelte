@@ -151,10 +151,9 @@
     $: updateplot = !$opoMode[uniqueID] && dataReady && plotfile && normMethod && fullData.data
     $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
-            const currentKey = mapNormMethodKeys[normMethod]
-
-            const currentData = get_data(fullData.data[currentKey])
-            console.warn('plotting', currentData, plotlayout[normMethod])
+            // const currentKey = mapNormMethodKeys[normMethod]
+            // const currentData = get_data(fullData.data[currentKey])
+            // console.warn('plotting', currentData, plotlayout[normMethod])
 
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-bplot`)
             subplot(
@@ -167,7 +166,9 @@
                 `Total Power (mJ)`,
                 fullData.data['pow']
             )
-            react(`${uniqueID}-avgplot`, currentData, plotlayout[normMethod])
+            // react(`${uniqueID}-avgplot`, currentData, plotlayout[normMethod])
+            const { yaxis, xaxis, title, key } = plotlayout[normMethod]
+            plot(title, xaxis.title, yaxis.title, fullData.data[key], `${uniqueID}-avgplot`)
         } else {
             felix_opo_func({ dataFromPython: fullData.data, uniqueID, mode: 'felix', normMethod })
         }
