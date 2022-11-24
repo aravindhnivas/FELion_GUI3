@@ -418,7 +418,8 @@ class ROSAA:
 
             counter += 1
 
-        widget.ax.plot(time, self.lightOFF_distribution.sum(axis=0), f"{ls}k")
+        if conditions["includeSUM"]:
+            widget.ax.plot(time, self.lightOFF_distribution.sum(axis=0), f"{ls}k")
         if includeLegend:
             return legend_handler
 
@@ -460,14 +461,15 @@ class ROSAA:
 
             if includeRadiation:
                 legend_handler = self.plot_distributions(widget, sim_time_in_ms, self.lightON_distribution, ls="-")
-                widget.ax.hlines(
-                    1,
-                    0,
-                    sim_time_in_ms[-1] + sim_time_in_ms[-1] * 0.2,
-                    colors="k",
-                    linestyles="dashdot",
-                )
                 widget.ax.legend(title="- ON -- OFF")
+                if conditions["includeSUM"]:
+                    widget.ax.hlines(
+                        1,
+                        0,
+                        sim_time_in_ms[-1] + sim_time_in_ms[-1] * 0.2,
+                        colors="k",
+                        linestyles="dashdot",
+                    )
 
             if legend_handler:
                 widget.makeLegendToggler(legend_handler, edit_legend=True)

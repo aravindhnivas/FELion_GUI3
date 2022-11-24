@@ -127,6 +127,7 @@
             variable,
             $plot_style,
             plots_to_include,
+            includeSUM,
             $variableRange,
             $plot_colors,
             numberOfLevels: $numberOfLevels,
@@ -184,7 +185,7 @@
     let includeSpontaneousEmission = true
     let variable = 'time'
     let plots_to_include = { signal: true, main: true, population_stability: false }
-
+    let includeSUM = true
     const variableRange: VariableOptions = persistentWritable('THz_simulation_variables_range', {
         power: '1e-7, 1e-2, 50',
         numberDensity: '1e12, 1e16, 50',
@@ -361,7 +362,7 @@
                     ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
                 >
             </div>
-            <VariableSelector {variable} {variableRange} bind:plots_to_include />
+            <VariableSelector {variable} {variableRange} bind:plots_to_include bind:includeSUM />
         </div>
     </svelte:fragment>
 

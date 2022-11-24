@@ -6,7 +6,7 @@
     // import { plt_styles } from '$src/js/constants'
 
     export let variable: string
-    // export let plot_style: string = 'seaborn'
+    export let includeSUM: boolean = true
     export let variableRange: VariableOptions
     export let plots_to_include = { signal: true, main: true, population_stability: false }
 </script>
@@ -17,6 +17,7 @@
         <CustomCheckbox label="Signal plot" bind:value={plots_to_include.signal} />
         <CustomCheckbox label="population stability" bind:value={plots_to_include.population_stability} />
         <Textfield class="ml-5" bind:value={$plot_colors} label="plots_colors (index)" />
+        <CustomCheckbox label="includeSUM" bind:value={includeSUM} />
     </div>
 {:else}
     <div class="variable__div">
