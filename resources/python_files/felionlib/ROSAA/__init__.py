@@ -11,11 +11,8 @@ from felionlib.utils.FELion_constants import pltColors
 from felionlib.utils.felionQt import felionQtWindow
 from scipy.constants import speed_of_light
 
-from .plot import main as ROSAA3D_plot
-import matplotlib as mpl
-
-mpl.style.use("seaborn")
-
+# from .plot import main as ROSAA3D_plot
+# mpl.style.use("seaborn")
 speedOfLightIn_cm = speed_of_light * 100
 qapp = None
 
@@ -48,6 +45,7 @@ class ROSAA:
         self.collisionalRateConstants = {key: float(value) for key, value in conditions["collisional_rates"].items()}
         self.includeSpontaneousEmission = conditions["includeSpontaneousEmission"]
         self.includeCollision = conditions["includeCollision"]
+        # self.includeRadiation = conditions["includeRadiation"]
 
         if self.includeSpontaneousEmission:
             self.einsteinA_Rates = {key: float(value) for key, value in conditions["einstein_coefficient"]["A"].items()}
@@ -318,7 +316,6 @@ class ROSAA:
         # self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
         self.rateConstants = self.attachment_rate_coefficients["rateConstants"]
         self.k3 = [float(_) for _ in self.rateConstants["k3"]]
-        # self.k3_branch = float(self.attachment_rate_coefficients["a(k31)"])
 
         self.k31_excited = self.k3_branch * self.k3[0]
         self.kCID = [float(_) for _ in self.rateConstants["kCID"]]
@@ -404,6 +401,27 @@ class ROSAA:
         if self.verbose:
             logger(f"Total simulation time {(end_time - self.start_time):.2f} s")
 
+    def plot_distributions(self, widget: felionQtWindow, time, distribution: np.ndarray, ls="-", includeLegend=True):
+
+        counter = 0
+        legend_handler = {}
+
+        for dist in distribution:
+
+            color = self.colors[counter]
+            if includeLegend:
+                lg = f"{self.legends[counter]}"
+                (_plot,) = widget.ax.plot(time, dist, ls=ls, c=color, label=lg)
+                legend_handler[lg] = _plot
+            else:
+                (_plot,) = widget.ax.plot(time, dist, ls=ls, c=color)
+
+            counter += 1
+
+        widget.ax.plot(time, self.lightOFF_distribution.sum(axis=0), f"{ls}k")
+        if includeLegend:
+            return legend_handler
+
     def Plot(self, plots_to_include: dict[str, bool]):
 
         global qapp
@@ -430,41 +448,33 @@ class ROSAA:
             if qapp is None:
                 qapp = widget.qapp
 
-            plotSimulationTime_milliSecond: np.ndarray = self.simulateTime * 1e3
-            counter = 0
-            legend_handler = {}
+            sim_time_in_ms: np.ndarray = self.simulateTime * 1e3
 
-            for on, off in zip(self.lightON_distribution, self.lightOFF_distribution):
-
-                lg = f"{self.legends[counter]}"
-
-                color = self.colors[counter]
-                logger(f"{color=}")
-                (_on_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, on, ls="-", c=color, label=lg)
-                (_off_plot,) = widget.ax.plot(plotSimulationTime_milliSecond, off, ls="--", c=color)
-
-                legend_handler[lg] = _on_plot
-                # legend_handler[lg] = [_on_plot, _off_plot]
-
-                counter += 1
-
-            widget.ax.plot(plotSimulationTime_milliSecond, self.lightON_distribution.sum(axis=0), "-k", alpha=0.5)
-            widget.ax.plot(plotSimulationTime_milliSecond, self.lightOFF_distribution.sum(axis=0), "--k")
-
-            widget.ax.hlines(
-                1,
-                0,
-                plotSimulationTime_milliSecond[-1] + plotSimulationTime_milliSecond[-1] * 0.2,
-                colors="k",
-                linestyles="dashdot",
+            legend_handler = self.plot_distributions(
+                widget,
+                sim_time_in_ms,
+                self.lightOFF_distribution,
+                ls="--" if includeRadiation else "-",
+                includeLegend=not includeRadiation,
             )
 
-            widget.ax.legend(title="- ON -- OFF")
-            widget.optimize_figure()
+            if includeRadiation:
+                legend_handler = self.plot_distributions(widget, sim_time_in_ms, self.lightON_distribution, ls="-")
+                widget.ax.hlines(
+                    1,
+                    0,
+                    sim_time_in_ms[-1] + sim_time_in_ms[-1] * 0.2,
+                    colors="k",
+                    linestyles="dashdot",
+                )
+                widget.ax.legend(title="- ON -- OFF")
 
+            if legend_handler:
+                widget.makeLegendToggler(legend_handler, edit_legend=True)
+            widget.optimize_figure()
             widget.fig.tight_layout()
 
-        if plots_to_include["signal"]:
+        if plots_to_include["signal"] and includeRadiation:
             self.plotAttachmentRate()
 
         if plots_to_include["population_stability"]:
@@ -510,48 +520,51 @@ class ROSAA:
 
         # Old values ON
         dataToSend["Coll. + Att."] = self.oldValues["off"].T[-1][: len(self.energyKeys)]
-        dataToSend["Coll. + Att. + Rad."] = self.oldValues["on"].T[-1][: len(self.energyKeys)]
 
         (self.legend_handler_for_extra_plots["Coll. + Att."],) = widget.ax.plot(
             self.energyKeys, dataToSend["Coll. + Att."], "C1-", label=f"Coll. + Att."
         )
-        (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = widget.ax.plot(
-            self.energyKeys,
-            dataToSend["Coll. + Att. + Rad."],
-            "C2-",
-            label=f"Coll. + Att. + Rad.",
-        )
 
-        ################################################################################################
-        ################################################################################################
+        if includeRadiation:
+            dataToSend["Coll. + Att. + Rad."] = self.oldValues["on"].T[-1][: len(self.energyKeys)]
 
-        # Coll << Rad without Att
+            (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = widget.ax.plot(
+                self.energyKeys,
+                dataToSend["Coll. + Att. + Rad."],
+                "C2-",
+                label=f"Coll. + Att. + Rad.",
+            )
 
-        self.includeAttachmentRate = False
-        self.power = self.power * 1e5
-        self.computeEinsteinBRates()
-        self.Simulate(nHe)
+            ################################################################################################
+            ################################################################################################
 
-        dataToSend["Coll. << Rad. ;(without Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
+            # Coll << Rad without Att
 
-        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],) = widget.ax.plot(
-            self.energyKeys,
-            dataToSend["Coll. << Rad. ;(without Att.)"],
-            "C3--",
-            label=f"Coll. $\ll$ Rad. ;(without Att.)",
-        )
+            self.includeAttachmentRate = False
+            self.power = self.power * 1e5
+            self.computeEinsteinBRates()
+            self.Simulate(nHe)
 
-        self.includeAttachmentRate = True
+            dataToSend["Coll. << Rad. ;(without Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
 
-        # Coll << Rad with Att
-        self.Simulate(nHe)
-        dataToSend["Coll. << Rad. ;(with Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
-        (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = widget.ax.plot(
-            self.energyKeys,
-            self.lightON_distribution.T[-1][: len(self.energyKeys)],
-            "C3-",
-            label=f"Coll. $\ll$ Rad. ;(with Att.)",
-        )
+            (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],) = widget.ax.plot(
+                self.energyKeys,
+                dataToSend["Coll. << Rad. ;(without Att.)"],
+                "C3--",
+                label=f"Coll. $\ll$ Rad. ;(without Att.)",
+            )
+
+            self.includeAttachmentRate = True
+
+            # Coll << Rad with Att
+            self.Simulate(nHe)
+            dataToSend["Coll. << Rad. ;(with Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
+            (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = widget.ax.plot(
+                self.energyKeys,
+                self.lightON_distribution.T[-1][: len(self.energyKeys)],
+                "C3-",
+                label=f"Coll. $\ll$ Rad. ;(with Att.)",
+            )
 
         ################################################################################################
         ################################################################################################
@@ -630,8 +643,9 @@ output_dir: pt = None
 datas_location: pt = None
 conditions = None
 savefilename = None
-
 includeAttachmentRate = False
+includeRadiation = False
+
 plot_colors = None
 
 
@@ -675,9 +689,16 @@ def get_statistics(N=5):
 
 def main(arguments):
 
-    global conditions, figure, savefilename, location, output_dir, datas_location, includeAttachmentRate, plot_colors
+    global conditions, figure, savefilename, location, output_dir, datas_location
+    global includeAttachmentRate, includeRadiation, plot_colors
 
     conditions = arguments
+
+    plot_style = conditions["$plot_style"]
+    if plot_style != "default":
+        import matplotlib.pyplot as plt
+
+        plt.style.use(plot_style)
 
     savefilename = conditions["savefilename"]
     location = pt(conditions["currentLocation"])
@@ -700,6 +721,7 @@ def main(arguments):
     # figure["size"] = [int(i) for i in figure["size"].split(",")]
 
     includeAttachmentRate = conditions["includeAttachmentRate"]
+    includeRadiation = conditions["includeRadiation"]
     variable = conditions["variable"]
 
     current_nHe = float(conditions["numberDensity"])

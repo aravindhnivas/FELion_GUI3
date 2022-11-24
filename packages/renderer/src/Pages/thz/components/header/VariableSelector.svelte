@@ -2,8 +2,11 @@
     import { plot_colors } from '../../stores/common'
     import Textfield from '@smui/textfield'
     import CustomCheckbox from '$src/components/CustomCheckbox.svelte'
+    // import CustomSelect from '$src/components/CustomSelect.svelte'
+    // import { plt_styles } from '$src/js/constants'
 
     export let variable: string
+    // export let plot_style: string = 'seaborn'
     export let variableRange: VariableOptions
     export let plots_to_include = { signal: true, main: true, population_stability: false }
 </script>
@@ -13,7 +16,7 @@
         <CustomCheckbox label="Relative population" bind:value={plots_to_include.main} />
         <CustomCheckbox label="Signal plot" bind:value={plots_to_include.signal} />
         <CustomCheckbox label="population stability" bind:value={plots_to_include.population_stability} />
-        <Textfield bind:value={$plot_colors} label="plots_colors (index)" />
+        <Textfield class="ml-5" bind:value={$plot_colors} label="plots_colors (index)" />
     </div>
 {:else}
     <div class="variable__div">

@@ -134,7 +134,7 @@
     }
 </script>
 
-<CollisionalDistribution bind:active={activate_collisional_simulation_window} />
+<CollisionalDistribution bind:active={activate_collisional_simulation_window} {moleculeName} />
 <CollisionalRateConstantPlot {collisionalFilename} bind:active={OpenRateConstantsPlot} />
 
 <CustomPanel

@@ -1,41 +1,52 @@
 from pathlib import Path as pt
 import json
 from felionlib.utils.felionQt import felionQtWindow
+from felionlib.utils.FELion_constants import pltColors
 
 widget: felionQtWindow = None
 
 
 def plotFromJSON(fileName: str, legend_handler: dict = None):
+
     with open(fileName, "r") as f:
         data = json.load(f)
+        counter = 0
 
         for key, value in data.items():
 
             x = value["x"]
             y = value["y"]
-            # label = key
 
             plot_args = ()
-            plot_kwargs = {"label": key}
+            plot_kwargs = {}
 
             if "plot_args" in value:
                 plot_args = value["plot_args"]
             if "plot_kwargs" in value:
                 plot_kwargs = value["plot_kwargs"]
 
-            print(f"{plot_args=}", flush=True)
-            print(f"{plot_kwargs=}", flush=True)
+            if "color" not in plot_kwargs:
+                plot_kwargs["color"] = pltColors[counter]
 
-            label = plot_kwargs["label"] if "label" in plot_kwargs else key
-            (legend_handler[label],) = widget.ax.plot(x, y, *plot_args, **plot_kwargs)
+            if "label" not in plot_kwargs:
+                plot_kwargs["label"] = f"{legend_prefix}{key}{legend_suffix}"
+
+            (legend_handler[plot_kwargs["label"]],) = widget.ax.plot(x, y, *plot_args, **plot_kwargs)
+            counter += 1
+
+
+legend_prefix = ""
+legend_suffix = ""
 
 
 def main(args):
 
-    global widget
+    global widget, legend_prefix, legend_suffix
 
     files = [pt(i) for i in args["files"]]
     figArgs = args["figArgs"]
+    legend_prefix = args["legend_prefix"]
+    legend_suffix = args["legend_suffix"]
 
     widget = felionQtWindow(**figArgs)
     legend_handler = {}

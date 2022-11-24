@@ -1,7 +1,7 @@
 <script lang="ts">
     import { collisionalRateConstants } from '../stores/collisional'
     import { numberOfLevels } from '../stores/energy'
-    import { currentLocation, collisionalTemp, numberDensity as ND, output_dir } from '../stores/common'
+    import { collisionalTemp, numberDensity, output_dir } from '../stores/common'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import Notify from '$components/Notify.svelte'
@@ -12,11 +12,12 @@
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
     import ButtonBadge from '$src/components/ButtonBadge.svelte'
-
-    import { save_data_to_file } from '../functions/utils'
+    import { plt_styles } from '$src/js/constants'
+    import { save_data_to_file, replaceMathFormats } from '../functions/utils'
     import WinBox from 'winbox'
 
     export let active: boolean = false
+    export let moleculeName: string = ''
 
     const title = 'Collisional cooling'
     const plotID = 'collisionalDistributionPlot'
@@ -25,26 +26,38 @@
     const initialTemp = persistentWritable('collisionalDistribution_initialTemp', 300)
     let graphWindow: WinBox
     let windowReady = false
-    let numberDensity = $ND
     let totalSteps = 1000
     let graphPlotted = false
 
-    interface Save_plot_datas {
-        [(key in 'collisional_simulation') | 'boltzman_comparision']: {
-            [key: string]: {
-                x: number[]
-                y: number[]
-            }
+    interface SaveData {
+        x: number[]
+        y: number[]
+        plot_kwargs?: { [name: string]: string | number }
+    }
+    interface SaveDataFull {
+        collisional_simulation: { [key: string]: SaveData }
+        boltzman_comparision: {
+            boltzmanData: SaveData
+            collisionalData: SaveData
         }
     }
-    const save_plot_datas: Save_plot_datas = {
+    const save_plot_datas: SaveDataFull = {
         collisional_simulation: {},
-        boltzman_comparision: {},
+        boltzman_comparision: {
+            boltzmanData: {
+                x: [],
+                y: [],
+            },
+            collisionalData: {
+                x: [],
+                y: [],
+            },
+        },
     }
 
     async function computeCollisionalProcess(e?: Event) {
         try {
-            if (!numberDensity) return window.createToast('Number density is not set', 'danger')
+            if (!$numberDensity) return window.createToast('Number density is not set', 'danger')
 
             graphPlotted = false
             const boltzman_distribution_initial_temp = boltzman_distribution($initialTemp)
@@ -73,7 +86,7 @@
             const args = {
                 boltzmanDistributionValues,
                 boltzmanDistributionColdValues,
-                numberDensity,
+                numberDensity: $numberDensity,
                 collisionalRateConstantValues,
                 duration,
                 energyKeys,
@@ -91,7 +104,7 @@
                 save_plot_datas.collisional_simulation[key] = { x, y }
             }
 
-            save_plot_datas.boltzman_comparision = {}
+            // save_plot_datas.boltzman_comparision = {}
             const { boltzmanData, collisionalData } = collisionalBoltzmanPlotData
             save_plot_datas.boltzman_comparision.boltzmanData = {
                 x: boltzmanData.x,
@@ -116,7 +129,6 @@
             }
 
             plot(` Distribution: ${$collisionalTemp}K`, 'Time (s)', 'Relative population', data, plotID)
-
             plot(
                 ` Distribution: ${$collisionalTemp}K`,
                 'Energy Levels',
@@ -124,7 +136,6 @@
                 collisionalBoltzmanPlotData,
                 `${plotID}_collisionalBoltzman`
             )
-
             plot(
                 `Difference: Collisional - Boltzmann`,
                 'Energy Levels',
@@ -137,16 +148,44 @@
             window.handleError(error)
         }
     }
-
     $: if (windowReady) {
         setTimeout(() => graphWindow?.focus(), 100)
     }
-
     $: outputFile = window.path.join($output_dir, 'collisional', `${savefile}.json`)
     let saveInfo = { msg: '', error: '' }
+
     const saveData = async () => {
-        console.log(save_plot_datas[savefile])
-        const data_to_save = JSON.stringify(save_plot_datas[savefile], null, 2)
+        const factorise = parseFloat(factor)
+
+        if (factorise === 1) {
+            const data_to_save = JSON.stringify(save_plot_datas[savefile], null, 2)
+            saveInfo = await save_data_to_file(outputFile, data_to_save)
+            return
+        }
+
+        let dataToSave = {}
+        if (collisionalMode) {
+            Object.keys(save_plot_datas[savefile]).forEach((key, i) => {
+                const { x, y } = save_plot_datas[savefile][key]
+                dataToSave[key] = { x, y }
+                if (factorAxis === 'x') {
+                    dataToSave[key].x = dataToSave[key].x.map((f) => f * factorise)
+                } else {
+                    dataToSave[key].y = dataToSave[key].y.map((f) => f * factorise)
+                }
+            })
+        } else {
+            for (const key of ['collisionalData', 'boltzmanData']) {
+                const { x, y, plot_kwargs } = save_plot_datas[savefile][key]
+                dataToSave[key] = { x, y, plot_kwargs }
+                if (factorAxis === 'x') {
+                    dataToSave[key].x = dataToSave[key].x.map((f) => f * factorise)
+                } else {
+                    dataToSave[key].y = dataToSave[key].y.map((f) => f * factorise)
+                }
+            }
+        }
+        const data_to_save = JSON.stringify(dataToSave, null, 2)
         saveInfo = await save_data_to_file(outputFile, data_to_save)
     }
 
@@ -158,25 +197,34 @@
 
         const figsDir = window.path.join($output_dir, 'figs')
         window.fs.ensureDirSync(figsDir)
+        const { figXlabel, figYlabel } = collisionalMode ? $figlabels.collision : $figlabels.boltzmann
         const args = {
+            legend_prefix: `${moleculeName}(`,
+            legend_suffix: ')',
             figArgs: {
-                figXlabel: $figXlabel,
+                figXlabel,
                 figYlabel,
                 location: figsDir,
-                x_type: 'string',
-                y_type: 'float',
+                savefilename: `${replaceMathFormats(moleculeName)}_${savefile}_${$collisionalTemp}K`,
+                style: $plot_style,
+                minorticks: false,
             },
             files: [outputFile],
         }
-
         computePy_func({ e, pyfile: 'utils.plotXY', args, general: true })
     }
 
     let savefile = 'collisional_simulation'
+    $: collisionalMode = savefile === 'collisional_simulation'
     const saveOpts = ['collisional_simulation', 'boltzman_comparision']
 
-    const figXlabel = persistentWritable('collisionalDistribution_figXlabel', 'Time (s)')
-    let figYlabel = 'Relative population'
+    const figlabels = persistentWritable('collisionalDistribution_figlabels', {
+        collision: { figXlabel: 'Time (s)', figYlabel: 'Relative population' },
+        boltzmann: { figXlabel: 'Energy levels (J)', figYlabel: 'Relative population' },
+    })
+    let factorAxis = 'x'
+    let factor = '1'
+    const plot_style = persistentWritable('collisionalDistribution_plot_style', 'seaborn')
 </script>
 
 <SeparateWindow {title} bind:active bind:windowReady bind:graphWindow maximize={false}>
@@ -193,16 +241,25 @@
             <CustomTextSwitch bind:value={$collisionalTemp} label="Coll. temp (K)" />
             <CustomTextSwitch bind:value={duration} label="duration (in ms)" />
             <Textfield bind:value={totalSteps} label="totalSteps" />
-            <Textfield bind:value={numberDensity} label="Number density (cm-3)" />
+            <Textfield bind:value={$numberDensity} label="Number density (cm-3)" />
 
             <button class="button is-link" on:click={computeCollisionalProcess}>Compute</button>
         </div>
 
         <div class="align no-wrap">
+            <CustomSelect options={['default', ...plt_styles]} bind:value={$plot_style} label="plot style" />
             <CustomSelect bind:value={savefile} options={saveOpts} label="plot-type" />
+            <CustomSelect bind:value={factorAxis} options={['x', 'y']} label="factorAxis" />
+            <Textfield bind:value={factor} label="factor" />
             <button class="button is-link" on:click={saveData}>Save data</button>
-            <Textfield bind:value={$figXlabel} label="figXlabel" />
-            <Textfield bind:value={figYlabel} label="figYlabel" />
+
+            {#if collisionalMode}
+                <Textfield bind:value={$figlabels.collision.figXlabel} label="figXlabel" />
+                <Textfield bind:value={$figlabels.collision.figYlabel} label="figYlabel" />
+            {:else}
+                <Textfield bind:value={$figlabels.boltzmann.figXlabel} label="figXlabel" />
+                <Textfield bind:value={$figlabels.boltzmann.figYlabel} label="figYlabel" />
+            {/if}
 
             <ButtonBadge label="Produce figure" on:click={openFigure} />
         </div>
@@ -210,8 +267,11 @@
         <Notify label={saveInfo.error || saveInfo.msg} type={saveInfo.error ? 'danger' : 'success'} />
     </svelte:fragment>
 
-    <svelte:fragment slot="main_content__slot">
-        <div class="graph__container">
+    <svelte:fragment slot="main_content__slot" let:changeGraphDivWidth>
+        <span role="presentation" class="pl-3 material-symbols-outlined" on:click={() => changeGraphDivWidth()}>
+            refresh
+        </span>
+        <div class="graph__container p-3">
             <div id={plotID} class="graph__div" />
             <div id="{plotID}_collisionalBoltzman" class="graph__div" />
             <div id="{plotID}_collisionalBoltzman_difference" class="graph__div" />
@@ -224,6 +284,5 @@
         display: flex;
         flex-direction: column;
         row-gap: 1em;
-        padding: 1em;
     }
 </style>

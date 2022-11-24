@@ -1,7 +1,7 @@
 export const save_data_to_file = async (filename: string, data: string) => {
     window.fs.ensureDirSync(window.path.dirname(filename))
     const output = await window.fs.writeFile(filename, data)
-    const saveInfo = {msg: '', error: ''}
+    const saveInfo = { msg: '', error: '' }
     if (window.fs.isError(output)) {
         saveInfo.error = output.message
         return Promise.resolve(saveInfo)
@@ -15,21 +15,20 @@ export function makeTableRow(coefficient: ValueLabel, rateMultiplier: string | n
     const { label, value } = coefficient
     const levelLabels = label.split(' --> ').map((f) => f.trim())
     const tableRow = `${levelLabels[1]} & $\\rightarrow$ & ${levelLabels[0]} & ${formatNumber(value)}`
-    if (rateMultiplier === null)
-        return `${tableRow} \\\\`
+    if (rateMultiplier === null) return `${tableRow} \\\\`
 
     const Rate = Number(value) * Number(rateMultiplier)
     const RateValue = formatNumber(Rate.toExponential(1))
     return `${tableRow} & ${RateValue} \\\\`
 }
 
-export function formatNumber(value: string | number, dec:number=1, fmt: string = '\\cdot') {
+export function formatNumber(value: string | number, dec: number = 1, fmt: string = '\\cdot') {
     // if (value === undefined) return ''
     const numbers = Number(value).toExponential(dec).split('e')
     return `$${numbers[0]} ${fmt} 10^{${numbers[1].replace('+', '')}}$`
 }
 
-export function makeTable(caption: string, label: string, column_align:string, header: string, body: string) {
+export function makeTable(caption: string, label: string, column_align: string, header: string, body: string) {
     let fullTable = ''
     fullTable += `\\begin{table}`
     fullTable += `\n\t\\centering`
@@ -45,4 +44,14 @@ export function makeTable(caption: string, label: string, column_align:string, h
     fullTable += `\n\\end{table}`
     console.log(fullTable)
     return fullTable
+}
+
+export function replaceMathFormats(str: string) {
+    let newStr = ''
+    // replace all $, ^, -, _ with ''
+    newStr = str.replaceAll(/\$/g, '')
+    newStr = newStr.replaceAll(/\^/g, '')
+    newStr = newStr.replaceAll(/-/g, '')
+    newStr = newStr.replaceAll(/_/g, '')
+    return newStr
 }

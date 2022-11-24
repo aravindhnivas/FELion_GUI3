@@ -14,10 +14,7 @@ mpl.use("QtAgg")
 
 from matplotlib.artist import Artist
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
-
-# from matplotlib.container import Container
 from matplotlib.figure import Figure
-
 from matplotlib.axes import Axes
 from matplotlib.backend_bases import key_press_handler
 from matplotlib.legend import Legend
@@ -64,6 +61,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
         yscale: Literal["linear", "log"] = "linear",
         xscale: Literal["linear", "log"] = "linear",
         attachControlLayout=True,
+        minorticks: bool = True,
         **kwargs: dict[str, Any],
     ) -> None:
 
@@ -92,6 +90,8 @@ class felionQtWindow(QtWidgets.QMainWindow):
         self.figDPI = round(figDPI)
         self.fontsize = int(fontsize)
         self.ticks_direction = ticks_direction
+        self.minorticks = minorticks
+        # print("minorticks", self.minorticks, flush=True)
 
         self.yscale = yscale
         self.xscale = xscale
@@ -145,10 +145,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
     def toggle_controller_layout(self):
         if not self.controlDock.isHidden():
             return
-
         self.controlDock.show()
-        # button_txt = "Hide controllers" if hidden_state else "Show more controllers"
-        # self.toggle_controller_button.setText(button_txt)
 
     def attachControlLayout(self):
 
@@ -711,7 +708,6 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
     def update_minorticks(self, on: bool, ax: Axes = None):
         ax = ax or self.ax
-
         if on:
             ax.minorticks_on()
         else:
@@ -1076,7 +1072,9 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
             # self.update_tick_params(ax=ax)
             ax.tick_params(which="both", direction=self.ticks_direction, labelsize=labelsize - 1)
-            ax.minorticks_on()
+            
+            if self.minorticks:
+                ax.minorticks_on()
 
             ax.set_title(ax.get_title(), fontsize=fontsize)
             ax.set_xlabel(ax.get_xlabel(), fontsize=fontsize)
@@ -1095,7 +1093,7 @@ class felionQtWindow(QtWidgets.QMainWindow):
 
             self.draw()
 
-        self.minorticks_controller_widget.setChecked(True)
+        self.minorticks_controller_widget.setChecked(self.minorticks)
         self.update_figure_label_widgets_values()
         if setBound:
             self.set_bound_controller_values()

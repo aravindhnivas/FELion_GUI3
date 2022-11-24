@@ -38,6 +38,7 @@
         PlanksConstant,
         boltzmanConstant,
         VaccumPermitivity,
+        plt_styles,
     } from '$src/js/constants'
     import computePy_func from '$src/Pages/general/computePy'
     import { persistentWritable } from '$src/js/persistentStore'
@@ -124,12 +125,14 @@
         const args = {
             trapTemp: $trapTemp,
             variable,
+            $plot_style,
             plots_to_include,
             $variableRange,
             $plot_colors,
             numberOfLevels: $numberOfLevels,
             includeCollision,
             includeAttachmentRate,
+            includeRadiation,
             gaussian,
             lorrentz,
             includeSpontaneousEmission,
@@ -315,13 +318,14 @@
             return Promise.reject(error)
         }
     }
-
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
+    const plot_style = persistentWritable('THz_simulation_plot_style', 'seaborn')
     let simulationMethod = 'Normal'
     const figure = { dpi: 100, size: '10, 6', show: true }
     let toggle_modal = false
     let progress = 0
     let showProgress = false
+    let includeRadiation = true
 </script>
 
 <LayoutDiv id="ROSAA__modal" {progress} bind:showProgress>
@@ -338,6 +342,7 @@
         <div class="align box px-3 py-2" class:hide={showreport} style="border: solid 1px #fff9;">
             <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
             <CustomCheckbox bind:value={includeAttachmentRate} label="includeAttachmentRate" />
+            <CustomCheckbox bind:value={includeRadiation} label="includeRadiation" />
             <CustomCheckbox bind:value={includeSpontaneousEmission} label="includeSpontaneousEmission" />
             <CustomCheckbox bind:value={$electronSpin} label="Electron Spin" />
             <CustomCheckbox bind:value={$zeemanSplit} label="Zeeman" />
@@ -347,14 +352,15 @@
             <div class="align subtitle">
                 Simulate signal(%) as a function of {variable}
             </div>
+
             <div class="align v-center" style="width: auto; margin-left: auto;">
+                <CustomSelect options={plt_styles} bind:value={$plot_style} label="plot style" />
                 <CustomSelect options={variablesList} bind:value={variable} label="variable" />
                 <button class="button is-link" on:click={resetConfig}>Reset Config</button>
                 <button class="button is-warning flex" on:click={() => (toggle_modal = !toggle_modal)}
                     ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
                 >
             </div>
-
             <VariableSelector {variable} {variableRange} bind:plots_to_include />
         </div>
     </svelte:fragment>
