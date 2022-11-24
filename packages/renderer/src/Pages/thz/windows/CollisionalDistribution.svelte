@@ -1,7 +1,7 @@
 <script lang="ts">
     import { collisionalRateConstants } from '../stores/collisional'
     import { numberOfLevels } from '../stores/energy'
-    import { collisionalTemp, numberDensity, output_dir } from '../stores/common'
+    import { collisionalTemp, numberDensity, output_dir, figs_dir } from '../stores/common'
     import Textfield from '@smui/textfield'
     import SeparateWindow from '$components/SeparateWindow.svelte'
     import Notify from '$components/Notify.svelte'
@@ -195,8 +195,8 @@
             return
         }
 
-        const figsDir = window.path.join($output_dir, 'figs')
-        window.fs.ensureDirSync(figsDir)
+        const save_figs_dir = window.path.join($figs_dir, 'collisional')
+        window.fs.ensureDirSync(save_figs_dir)
         const { figXlabel, figYlabel } = collisionalMode ? $figlabels.collision : $figlabels.boltzmann
         const args = {
             legend_prefix: `${moleculeName}(`,
@@ -204,7 +204,7 @@
             figArgs: {
                 figXlabel,
                 figYlabel,
-                location: figsDir,
+                location: save_figs_dir,
                 savefilename: `${replaceMathFormats(moleculeName)}_${savefile}_${$collisionalTemp}K`,
                 style: $plot_style,
                 minorticks: false,
