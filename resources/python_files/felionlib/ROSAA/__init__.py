@@ -425,13 +425,12 @@ class ROSAA:
         if includeLegend:
             return legend_handler
 
+    # def plot_simulation(self, widget: felionQtWindow):
+    #     pass
+
     def Plot(self, plots_to_include: dict[str, bool]):
 
         global qapp
-        self.oldValues = {
-            "on": np.copy(self.lightON_distribution),
-            "off": np.copy(self.lightOFF_distribution),
-        }
 
         self.figs_location: pt = output_dir / "figs"
         if not self.figs_location.exists():
@@ -487,6 +486,11 @@ class ROSAA:
     def stabilityPlots(self):
 
         global qapp
+        self.oldValues = {
+            "on": np.copy(self.lightON_distribution),
+            "off": np.copy(self.lightOFF_distribution),
+        }
+
         self.legend_handler_for_extra_plots = {}
 
         widget = felionQtWindow(
@@ -545,15 +549,17 @@ class ROSAA:
                 self.energyKeys, dataToSend["Coll. + Att."], "C1-", label=f"Coll. + Att."
             )
 
-        if includeRadiation and "coll_rad_att" in selected_stability_plots:
-            dataToSend["Coll. + Att. + Rad."] = self.oldValues["on"].T[-1][: len(self.energyKeys)]
+        if includeRadiation:
 
-            (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = widget.ax.plot(
-                self.energyKeys,
-                dataToSend["Coll. + Att. + Rad."],
-                "C2-",
-                label=f"Coll. + Att. + Rad.",
-            )
+            if "coll_rad_att" in selected_stability_plots:
+                dataToSend["Coll. + Att. + Rad."] = self.oldValues["on"].T[-1][: len(self.energyKeys)]
+
+                (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = widget.ax.plot(
+                    self.energyKeys,
+                    dataToSend["Coll. + Att. + Rad."],
+                    "C2-",
+                    label=f"Coll. + Att. + Rad.",
+                )
 
             ################################################################################################
             ################################################################################################
@@ -562,7 +568,11 @@ class ROSAA:
                 # Coll << Rad without Att
 
                 self.includeAttachmentRate = False
+
+                logger(f"\nPower: {self.power}")
                 self.power = self.power * 1e5
+                logger(f"Increased power: {self.power}\n")
+
                 self.computeEinsteinBRates()
                 self.Simulate(nHe)
 
