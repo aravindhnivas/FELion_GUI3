@@ -497,6 +497,7 @@ class ROSAA:
             savefilename=f"{savefilename}_{self.duration}s_boltzman_comparision",
         )
         widget.showMaximized()
+        widget.ax.set_xbound(lower=-0.1)
         dataToSend = {"boltzmann": self.boltzmanDistributionCold}
 
         # Boltzmann distribution
@@ -531,8 +532,6 @@ class ROSAA:
                 dataToSend["Coll. + Rad."],
                 "k--",
                 label="Coll. + Rad.",
-                ms=5,
-                zorder=10,
             )
 
         ################################################################################################
