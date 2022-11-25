@@ -425,12 +425,13 @@ class ROSAA:
         if includeLegend:
             return legend_handler
 
-    # def plot_simulation(self, widget: felionQtWindow):
-    #     pass
-
     def Plot(self, plots_to_include: dict[str, bool]):
 
         global qapp
+        self.oldValues = {
+            "on": np.copy(self.lightON_distribution),
+            "off": np.copy(self.lightOFF_distribution),
+        }
 
         self.figs_location: pt = output_dir / "figs"
         if not self.figs_location.exists():
@@ -486,10 +487,10 @@ class ROSAA:
     def stabilityPlots(self):
 
         global qapp
-        self.oldValues = {
-            "on": np.copy(self.lightON_distribution),
-            "off": np.copy(self.lightOFF_distribution),
-        }
+        # self.oldValues = {
+        #     "on": np.copy(self.lightON_distribution),
+        #     "off": np.copy(self.lightOFF_distribution),
+        # }
 
         self.legend_handler_for_extra_plots = {}
 
