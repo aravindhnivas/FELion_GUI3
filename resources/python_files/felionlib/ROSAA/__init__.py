@@ -87,8 +87,8 @@ class ROSAA:
         self.attachment_rate_coefficients = conditions["attachment_rate_coefficients"]
         self.k3_branch = float(k3_branch)
 
-        if not self.k3_branch:
-            raise ValueError("k3_branch is not defined")
+        # if not self.k3_branch:
+        #     raise ValueError("k3_branch is not defined")
 
         self.GetAttachmentRatesParameters()
 
@@ -132,7 +132,9 @@ class ROSAA:
         else:
             self.Simulate(nHe)
 
-        # setting colors for plotting
+        logger(f"\n\n{self.duration=} s")
+        logger(f"\non: {np.round(self.lightON_distribution.T[-1], 2)}")
+        logger(f"off: {np.round(self.lightOFF_distribution.T[-1], 2)}\n\n")
         self.colors = plot_colors or pltColors
 
     def computeEinsteinBRates(self):
@@ -479,7 +481,7 @@ class ROSAA:
         if plots_to_include["signal"] and includeRadiation:
             self.plotAttachmentRate()
 
-        if plots_to_include["population_stability"]:
+        if plots_to_include["boltzmann"] and selected_stability_plots:
             self.stabilityPlots()
 
     def stabilityPlots(self):
@@ -502,32 +504,49 @@ class ROSAA:
             self.energyKeys, self.boltzmanDistributionCold, "k-", label=f"Boltzmann distribution", zorder=2, alpha=0.5
         )
 
-        # Only collision
-        nHe = float(conditions["numberDensity"])
-        self.includeAttachmentRate = False
-        self.Simulate(nHe)
+        if "coll" in selected_stability_plots:
 
-        dataToSend["Coll."] = self.lightOFF_distribution.T[-1][: len(self.energyKeys)]
-        (self.legend_handler_for_extra_plots["Coll."],) = widget.ax.plot(
-            self.energyKeys,
-            dataToSend["Coll."],
-            "ko",
-            label="Coll.",
-            ms=5,
-            zorder=10,
-        )
+            # Only collision
+            nHe = float(conditions["numberDensity"])
+            self.includeAttachmentRate = False
+            self.Simulate(nHe)
+
+            dataToSend["Coll."] = self.lightOFF_distribution.T[-1][: len(self.energyKeys)]
+            (self.legend_handler_for_extra_plots["Coll."],) = widget.ax.plot(
+                self.energyKeys,
+                dataToSend["Coll."],
+                "ko",
+                label="Coll.",
+                ms=5,
+                zorder=10,
+            )
+
+        # ['coll', 'coll_rad', 'coll_att', 'coll_rad_att', 'coll_vs_rad', 'coll_vs_rad_att']
+        if "coll_rad" in selected_stability_plots:
+
+            # Coll. + Rad.
+            dataToSend["Coll. + Rad."] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
+            (self.legend_handler_for_extra_plots["Coll. + Rad."],) = widget.ax.plot(
+                self.energyKeys,
+                dataToSend["Coll. + Rad."],
+                "k--",
+                label="Coll. + Rad.",
+                ms=5,
+                zorder=10,
+            )
 
         ################################################################################################
         ################################################################################################
 
-        # Old values ON
-        dataToSend["Coll. + Att."] = self.oldValues["off"].T[-1][: len(self.energyKeys)]
+        if "coll_att" in selected_stability_plots:
+            # Coll. + Att. from previously computed data
+            dataToSend["Coll. + Att."] = self.oldValues["off"].T[-1][: len(self.energyKeys)]
 
-        (self.legend_handler_for_extra_plots["Coll. + Att."],) = widget.ax.plot(
-            self.energyKeys, dataToSend["Coll. + Att."], "C1-", label=f"Coll. + Att."
-        )
+            (self.legend_handler_for_extra_plots["Coll. + Att."],) = widget.ax.plot(
+                self.energyKeys, dataToSend["Coll. + Att."], "C1-", label=f"Coll. + Att."
+            )
 
-        if includeRadiation:
+        if includeRadiation and "coll_rad_att" in selected_stability_plots:
             dataToSend["Coll. + Att. + Rad."] = self.oldValues["on"].T[-1][: len(self.energyKeys)]
 
             (self.legend_handler_for_extra_plots["Coll. + Att. + Rad."],) = widget.ax.plot(
@@ -540,45 +559,38 @@ class ROSAA:
             ################################################################################################
             ################################################################################################
 
-            # Coll << Rad without Att
+            if "coll_vs_rad" in selected_stability_plots:
+                # Coll << Rad without Att
 
-            self.includeAttachmentRate = False
-            self.power = self.power * 1e5
-            self.computeEinsteinBRates()
-            self.Simulate(nHe)
+                self.includeAttachmentRate = False
+                self.power = self.power * 1e5
+                self.computeEinsteinBRates()
+                self.Simulate(nHe)
 
-            dataToSend["Coll. << Rad. ;(without Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
+                dataToSend["Coll. << Rad. ;(without Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
+                (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],) = widget.ax.plot(
+                    self.energyKeys,
+                    dataToSend["Coll. << Rad. ;(without Att.)"],
+                    "C3--",
+                    label=f"Coll. $\ll$ Rad. ;(without Att.)",
+                )
 
-            (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(without Att.)"],) = widget.ax.plot(
-                self.energyKeys,
-                dataToSend["Coll. << Rad. ;(without Att.)"],
-                "C3--",
-                label=f"Coll. $\ll$ Rad. ;(without Att.)",
-            )
+            if "coll_vs_rad_att" in selected_stability_plots:
+                self.includeAttachmentRate = True
 
-            self.includeAttachmentRate = True
-
-            # Coll << Rad with Att
-            self.Simulate(nHe)
-            dataToSend["Coll. << Rad. ;(with Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
-            (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = widget.ax.plot(
-                self.energyKeys,
-                self.lightON_distribution.T[-1][: len(self.energyKeys)],
-                "C3-",
-                label=f"Coll. $\ll$ Rad. ;(with Att.)",
-            )
+                # Coll << Rad with Att
+                self.Simulate(nHe)
+                dataToSend["Coll. << Rad. ;(with Att.)"] = self.lightON_distribution.T[-1][: len(self.energyKeys)]
+                (self.legend_handler_for_extra_plots["Coll. $\ll$ Rad. ;(with Att.)"],) = widget.ax.plot(
+                    self.energyKeys,
+                    self.lightON_distribution.T[-1][: len(self.energyKeys)],
+                    "C3-",
+                    label=f"Coll. $\ll$ Rad. ;(with Att.)",
+                )
 
         ################################################################################################
         ################################################################################################
 
-        # widget.ax.grid(True, which="both", axis="x")
-        # handles, labels = widget.ax.get_legend_handles_labels()
-        # order = [3, 2, 4, 1, 0]
-        # widget.ax.legend([handles[idx] for idx in order], [labels[idx] for idx in order])
-        ################################################################################################
-        ################################################################################################
-
-        # widget.ax.legend(title="At t$_{trap}=$" + f"{self.simulateTime[-1]*1000:.0f} ms")
         widget.makeLegendToggler(self.legend_handler_for_extra_plots, edit_legend=True)
         widget.optimize_figure()
         widget.fig.tight_layout()
@@ -689,10 +701,14 @@ def get_statistics(N=5):
     )
 
 
+# ['coll', 'coll_rad', 'coll_att', 'coll_rad_att', 'coll_vs_rad', 'coll_vs_rad_att']
+selected_stability_plots: list[str] = []
+
+
 def main(arguments):
 
     global conditions, figure, savefilename, location, output_dir, datas_location
-    global includeAttachmentRate, includeRadiation, plot_colors
+    global includeAttachmentRate, includeRadiation, plot_colors, selected_stability_plots
 
     conditions = arguments
 
@@ -732,6 +748,7 @@ def main(arguments):
     # plotGraph = figure["show"]
 
     plots_to_include = conditions["plots_to_include"]
+    selected_stability_plots = conditions["selected_stability_plots"]
 
     if variable == "time":
         current_data = ROSAA(nHe=current_nHe, power=current_Power, k3_branch=current_k3_branch, verbose=True)

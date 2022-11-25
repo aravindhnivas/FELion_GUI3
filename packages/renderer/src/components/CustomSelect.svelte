@@ -3,7 +3,7 @@
 
     export let options: string[] = []
     export let label = ''
-    export let value = ''
+    export let value: string[] | string = ''
     export let multiple = false
 
     export let update: ((toast?: boolean) => void) | null = null
@@ -110,7 +110,7 @@
         }
 
         select[multiple] {
-            height: 4em;
+            // height: 4em;
             overflow-x: auto;
             overflow-y: auto;
             option {

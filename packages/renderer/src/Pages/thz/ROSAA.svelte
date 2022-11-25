@@ -127,6 +127,7 @@
             variable,
             $plot_style,
             plots_to_include,
+            selected_stability_plots,
             includeSUM,
             $variableRange,
             $plot_colors,
@@ -184,7 +185,8 @@
     let includeAttachmentRate = true
     let includeSpontaneousEmission = true
     let variable = 'time'
-    let plots_to_include = { signal: true, main: true, population_stability: false }
+    let plots_to_include = { signal: false, main: true, boltzmann: false }
+    let selected_stability_plots = ['coll', 'coll_rad', 'coll_att', 'coll_rad_att']
     let includeSUM = true
     const variableRange: VariableOptions = persistentWritable('THz_simulation_variables_range', {
         power: '1e-7, 1e-2, 50',
@@ -362,7 +364,13 @@
                     ><span>Full-Screen</span><span class="material-symbols-outlined">open_in_full</span></button
                 >
             </div>
-            <VariableSelector {variable} {variableRange} bind:plots_to_include bind:includeSUM />
+            <VariableSelector
+                {variable}
+                {variableRange}
+                bind:plots_to_include
+                bind:includeSUM
+                bind:selected_stability_plots
+            />
         </div>
     </svelte:fragment>
 
