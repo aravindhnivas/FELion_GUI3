@@ -633,7 +633,7 @@ class ROSAA:
         )
 
         widget.showMaximized()
-        widget.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} [%]")
+        widget.ax.plot(self.simulateTime[1:] * 1e3, signal, label=f"Signal: {round(signal[-1])} %")
 
         if self.verbose:
             logger(f"Signal: {round(signal[-1])} [%]")
