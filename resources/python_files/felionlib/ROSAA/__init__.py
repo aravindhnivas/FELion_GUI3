@@ -132,9 +132,10 @@ class ROSAA:
         else:
             self.Simulate(nHe)
 
-        logger(f"\n\n{self.duration=} s")
-        logger(f"\non: {np.round(self.lightON_distribution.T[-1], 2)}")
-        logger(f"off: {np.round(self.lightOFF_distribution.T[-1], 2)}\n\n")
+        if verbose:
+            logger(f"\n\n{self.duration=} s")
+            logger(f"\non: {np.round(self.lightON_distribution.T[-1], 2)}")
+            logger(f"off: {np.round(self.lightOFF_distribution.T[-1], 2)}\n\n")
         self.colors = plot_colors or pltColors
 
     def computeEinsteinBRates(self):
@@ -433,16 +434,12 @@ class ROSAA:
             "off": np.copy(self.lightOFF_distribution),
         }
 
-        self.figs_location: pt = output_dir / "figs"
-        if not self.figs_location.exists():
-            self.figs_location.mkdir()
-
         if plots_to_include["main"]:
             widget = felionQtWindow(
                 figDPI=figure["dpi"],
                 figXlabel="Time [ms]",
                 figYlabel="Relative population",
-                location=self.figs_location,
+                location=figs_dir,
                 savefilename=f"{savefilename}_{self.duration}s_population_ratio",
             )
 
@@ -498,7 +495,7 @@ class ROSAA:
             figDPI=figure["dpi"],
             figXlabel="Energy Levels",
             figYlabel="Relative population",
-            location=self.figs_location,
+            location=figs_dir,
             savefilename=f"{savefilename}_{self.duration}s_boltzman_comparision",
         )
         widget.showMaximized()
@@ -628,7 +625,7 @@ class ROSAA:
             figDPI=figure["dpi"],
             figXlabel="Time [ms]",
             figYlabel="HeCD$^+$ Depletion [%]",
-            location=self.figs_location,
+            location=figs_dir,
             savefilename=f"{savefilename}_{self.duration}s_signal",
         )
 
@@ -644,7 +641,7 @@ class ROSAA:
             qapp = widget.qapp
 
     def WriteData(self, name: str, dataToSend: dict):
-        fulloutput_location = self.save_location or datas_location
+        fulloutput_location = self.save_location or data_dir
         fulloutput_location: pt = fulloutput_location / "full_output"
         if not fulloutput_location.exists():
             fulloutput_location.mkdir()
@@ -662,15 +659,18 @@ class ROSAA:
 
 figure = None
 figsize = None
+
 location = None
-output_dir: pt = None
-datas_location: pt = None
+# output_dir: pt = None
+figs_dir: pt = None
+data_dir: pt = None
+
 conditions = None
 savefilename = None
 includeAttachmentRate = False
 includeRadiation = False
-
 plot_colors = None
+selected_stability_plots: list[str] = []
 
 
 def get_statistics(N=5):
@@ -704,20 +704,16 @@ def get_statistics(N=5):
 
     logger(f"{N} simulations done. Took {time.perf_counter() - start_timer:.2f} seconds.")
 
-    statistics_filename = output_dir / f"{savefilename}_population_ratio.json"
+    statistics_filename = data_dir / f"{savefilename}_population_ratio.json"
     json.dump(VALUES, open(statistics_filename, "w+"), sort_keys=True, indent=4, separators=(",", ": "))
     logger(
         f"{statistics_filename} file saved. The population ratio (up/down) is {np.mean(VALUES):.2f} +/- {np.std(VALUES):.2f}."
     )
 
 
-# ['coll', 'coll_rad', 'coll_att', 'coll_rad_att', 'coll_vs_rad', 'coll_vs_rad_att']
-selected_stability_plots: list[str] = []
-
-
 def main(arguments):
 
-    global conditions, figure, savefilename, location, output_dir, datas_location
+    global conditions, figure, savefilename, location, data_dir, figs_dir
     global includeAttachmentRate, includeRadiation, plot_colors, selected_stability_plots
 
     conditions = arguments
@@ -736,14 +732,17 @@ def main(arguments):
     else:
         plot_colors = [pltColors[int(c.strip())] for c in conditions["$plot_colors"].split(",")]
 
-    output_dir = location / "output"
-    if not output_dir.exists():
-        output_dir.mkdir()
+    # output_dir = location / "output"
+    # output_dir = pt(conditions["output_dir"])
 
-    datas_location = output_dir / "datas"
+    # if not output_dir.exists():
+    #     output_dir.mkdir()
+    # data_dir = output_dir / "datas"
+    # if not data_dir.exists():
+    #     data_dir.mkdir()
 
-    if not datas_location.exists():
-        datas_location.mkdir()
+    data_dir = pt(conditions["data_dir"])
+    figs_dir = pt(conditions["figs_dir"])
 
     figure = conditions["figure"]
     # figure["size"] = [int(i) for i in figure["size"].split(",")]
@@ -826,7 +825,7 @@ def functionOfVariable(
     if changeVariable == "all":
         simulation_time_start = time.perf_counter()
 
-        save_folder = datas_location / "f-all"
+        save_folder = data_dir / "f-all"
         if not save_folder.exists():
             save_folder.mkdir()
 
@@ -893,7 +892,7 @@ def functionOfVariable(
             append_name = f"f-{changeVariable}_{dataList[0]:.2f}-{dataList[-1]:.2f}"
         elif changeVariable == "numberDensity" or changeVariable == "power":
             append_name = f"f-{changeVariable}_{dataList[0]:.0e}-{dataList[-1]:.0e}"
-        save_location = datas_location / append_name
+        save_location = data_dir / append_name
 
         if not save_location.exists():
             save_location.mkdir()
@@ -986,7 +985,7 @@ def functionOfVariable(
             figDPI=figure["dpi"],
             figXlabel=xlabel,
             figYlabel=ylabel,
-            location=output_dir / "figs",
+            location=figs_dir,
             xscale="linear" if changeVariable == "k3_branch" else "log",
         )
 
@@ -1017,7 +1016,7 @@ def functionOfVariable(
                 figDPI=figure["dpi"],
                 figXlabel=xlabel,
                 figYlabel="HeCD$^+$ Depletion [%]",
-                location=output_dir / "figs",
+                location=figs_dir,
                 xscale="linear" if changeVariable == "k3_branch" else "log",
                 savefilename=f"{outputFileName}.signal",
             )

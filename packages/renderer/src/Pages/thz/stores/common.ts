@@ -1,4 +1,3 @@
-import { numberOfLevels } from './energy'
 import { derived, writable } from 'svelte/store'
 
 export const electronSpin = writable<boolean>(false)
@@ -14,7 +13,9 @@ export const currentLocation = derived(configFile, ($configFile) => {
 
 export const output_dir = derived(currentLocation, ($currentLocation) => {
     if (!window.fs.isDirectory($currentLocation)) return ''
-    return window.path.join($currentLocation, 'output/datas')
+    const data_dir = window.path.join($currentLocation, 'output/datas')
+    window.fs.ensureDirSync(data_dir)
+    return data_dir
 })
 
 export const figs_dir = derived(currentLocation, ($currentLocation) => {

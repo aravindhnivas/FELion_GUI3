@@ -14,6 +14,7 @@
         collisionalTemp,
         configLoaded,
         plot_colors,
+        figs_dir,
     } from './stores/common'
     import { collisionalRateConstants } from './stores/collisional'
     import { tick } from 'svelte'
@@ -122,6 +123,8 @@
             }
         }
 
+        window.fs.ensureDirSync(data_dir)
+
         const args = {
             trapTemp: $trapTemp,
             variable,
@@ -141,6 +144,8 @@
             writefile: $writefile,
             savefilename,
             currentLocation: $currentLocation,
+            data_dir,
+            figs_dir: $figs_dir,
             deexcitation,
             collisional_rates,
             main_parameters,
@@ -321,6 +326,8 @@
             return Promise.reject(error)
         }
     }
+    let data_dir = window.path.join($currentLocation, 'output/datas')
+
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
     const plot_style = persistentWritable('THz_simulation_plot_style', 'seaborn')
     let simulationMethod = 'Normal'
@@ -342,6 +349,14 @@
         >
             <button class="button is-warning" on:click={loadConfig}>load</button>
         </BrowseTextfield>
+
+        <BrowseTextfield
+            class="two_col_browse box p-2 v-center"
+            dir={true}
+            bind:value={data_dir}
+            label="output data directory"
+            lock={true}
+        />
         <div class="align box px-3 py-2" class:hide={showreport} style="border: solid 1px #fff9;">
             <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
             <CustomCheckbox bind:value={includeAttachmentRate} label="includeAttachmentRate" />
