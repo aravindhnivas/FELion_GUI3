@@ -1,44 +1,17 @@
-<script>
+<script lang="ts">
     import DynamicTabs from '$src/components/DynamicTabs.svelte'
-
     export let component = null
     export let id = window.getID()
 
-    let tabs = []
-    onDestroy(() => {
-        console.warn('Main PageLayout destroyed')
-        tabs = []
-    })
+    let tabs: { name: string; id: string; active: boolean }[] = []
 </script>
 
 <main {id}>
-    <DynamicTabs
-        prefixId={id}
-        on:tabAdd={({ detail: { id } }) => {
-            tabs = [
-                ...tabs.map((f) => ({ ...f, display: 'none' })),
-                {
-                    id,
-                    display: 'grid',
-                },
-            ]
-        }}
-        on:tabRemove={({ detail: { id } }) => {
-            tabs = tabs.filter((tab) => tab.id !== id)
-        }}
-        on:activeTabChange={({ detail: { id } }) => {
-            tabs = tabs.map((tab) => {
-                if (tab.id === id) {
-                    return { ...tab, display: 'grid' }
-                } else {
-                    return { ...tab, display: 'none' }
-                }
-            })
-        }}
-    />
+    <DynamicTabs bind:list={tabs} prefixId={id} />
 
-    {#each tabs as { id: tabID, display }, index (tabID)}
+    {#each tabs as { id: tabID, active }, index (tabID)}
         {@const component_id = `page-${tabID}`}
+        {@const display = active ? 'grid' : 'none'}
         <svelte:component this={component} id={component_id} {display} saveLocationToDB={index === 0} />
     {/each}
 </main>

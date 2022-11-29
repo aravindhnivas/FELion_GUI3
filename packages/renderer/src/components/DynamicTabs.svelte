@@ -1,71 +1,71 @@
 <script lang="ts">
     export let prefixId: string = window.getID()
-    let list: { name: string; id: string }[] = []
+    export let list: { name: string; id: string; active: boolean }[] = []
 
-    let activeTab = ''
     let tabCount = 1
 
-    const dispatch = createEventDispatcher()
+    const makeTabActive = (id: string) => {
+        list = list.map((tab) => {
+            if (tab.id === id) {
+                return { ...tab, active: true }
+            } else {
+                return { ...tab, active: false }
+            }
+        })
+    }
 
     const addTab = () => {
         const name = `Tab ${tabCount}`
         const id = `${prefixId}-tab-${tabCount}`
-
-        list = [...list, { name, id }]
-        dispatch('tabAdd', { name, id })
-
-        activeTab = name
-        dispatch('activeTabChange', { name: activeTab, id })
+        const newTab = { name, id, active: true }
+        list = [...list.map((f) => ({ ...f, active: false })), newTab]
 
         tabCount++
     }
 
-    const removeTab = (name, id, index) => {
+    const removeTab = (id, index) => {
+        const is_it_active_tab = list[index].active
         list = list.filter((item) => item.id !== id)
 
-        dispatch('tabRemove', { name, id })
-        if (activeTab !== name) return
-
-        activeTab = list[index - 1].name
-        dispatch('activeTabChange', { name: activeTab, id: list[index - 1].id })
-
         if (list.length === 1) tabCount = 2
+        if (!is_it_active_tab) return
+        makeTabActive(list[index - 1]?.id || list[index]?.id)
     }
-    onMount(addTab)
-    onDestroy(() => {
+    onMount(() => {
         list = []
+        addTab()
     })
 </script>
 
-<div class="tabs is-toggle is-toggle-rounded m-1">
+<div class="tabs is-toggle m-1 grid">
     <ul>
-        {#each list as { name, id }, index (id)}
-            <li class:is-active={activeTab === name}>
+        {#each list as item, index (item.id)}
+            {@const border = !item.active && index > 0 && index !== list.length ? 'solid 1px darkgrey' : 'none'}
+
+            <li class="tabs-li" class:hvr-grow={!item.active} class:is-active={item.active} style:border-left={border}>
                 <!-- svelte-ignore a11y-missing-attribute -->
                 <a class="tab">
                     <span
+                        class="tab-name"
                         role="presentation"
                         on:click={() => {
-                            activeTab = name
-                            dispatch('activeTabChange', {
-                                name: activeTab,
-                                id: list.find((item) => item.name === activeTab).id,
-                            })
-                        }}>{name}</span
+                            makeTabActive(item.id)
+                        }}>{item.name}</span
                     >
                     {#if index > 0}
                         <button
                             class="delete is-small"
                             on:click={() => {
-                                removeTab(name, id, index)
+                                removeTab(item.id, index)
                             }}
                         />
                     {/if}
                 </a>
             </li>
         {/each}
-        <li>
-            <button class="button is-link ml-2" style="border: none;" on:click={addTab}>
+
+        <li class="tabs-li">
+            <button class="button is-link ml-2" style="border: none" on:click={addTab}>
                 <span class="material-symbols-outlined"> add </span>
             </button>
         </li>
@@ -75,17 +75,14 @@
 <style lang="scss">
     .tabs.is-toggle {
         background-color: var(--color-primary-light);
+        display: grid;
 
-        li {
-            &:not(:last-child, :first-child, :only-child, .is-active) {
-                border-left: solid 1px darkgrey;
-            }
+        .tabs-li {
             &.is-active .tab {
                 border-bottom: solid 1px;
-
                 background-color: whitesmoke;
                 opacity: 1;
-                span {
+                .tab-name {
                     color: black;
                 }
                 .delete {

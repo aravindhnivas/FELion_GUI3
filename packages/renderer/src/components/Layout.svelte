@@ -24,7 +24,9 @@
 
     const dispatch = createEventDispatcher()
 
+    const saveLocationToDB = getContext('saveLocationToDB')
     onMount(() => {
+        // if (!saveLocationToDB) return
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
         $graph_detached[id] = false
     })
