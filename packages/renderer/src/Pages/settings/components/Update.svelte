@@ -8,7 +8,6 @@
 
     const updateError = window.persistentDB('updateError', '')
     let updateIntervalCycle: NodeJS.Timer | null = null
-    // let updating = false
     let unsubscribers: Unsubscribe[] = []
 
     unsubscribers[0] = window.db.onDidChange('updateError', (err) => {
@@ -25,10 +24,10 @@
     })
 
     let updateReadyToInstall = false
-
+    const dispatch = createEventDispatcher()
     unsubscribers[3] = window.db.onDidChange('update-status', (status) => {
         updateStatus.text = <string>status
-
+        dispatch('updateStatusChange', { status: updateStatus.text })
         switch (updateStatus.text) {
             case 'checking-for-update':
                 break
@@ -38,7 +37,7 @@
 
             case 'download-error':
                 updateStatus.type = 'danger'
-                updateError.set('Download error')
+                $updateError = 'Download error'
                 break
 
             case 'update-downloaded':
@@ -54,12 +53,13 @@
     unsubscribers[4] = window.db.onDidChange('updateInterval', (interval) => {
         console.log('updateInterval changed', interval)
         $updateInterval = <number>interval
+
         if (updateIntervalCycle) {
             clearInterval(updateIntervalCycle)
         }
+
         updateIntervalCycle = setInterval(window.checkupdate, $updateInterval * 60 * 1000)
     })
-
     let lastUpdateCheck: string = 'Not checked yet'
     const updateStatus = { text: '', type: 'info' }
 

@@ -5,10 +5,22 @@
     import Infos from './settings/components/Infos.svelte'
     import About from './settings/components/About.svelte'
     import Update from './settings/components/Update.svelte'
+    import Badge from '@smui-extra/badge'
 
     const tabs = ['Configuration', 'Update', 'About', 'Infos']
     const id = 'Settings'
+    let updateBackgroundColor = ''
+
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
+    let navbarBadgeSettings: HTMLElement
+    onMount(() => {
+        navbarBadgeSettings = document.getElementById(`navbar-badge-${id}`)
+        // navbarBadgeSettings.style.backgroundColor = 'var(--color-danger)'
+    })
+    onDestroy(() => {
+        console.warn('Settings destroyed')
+        navbarBadgeSettings.style.backgroundColor = ''
+    })
 </script>
 
 <Changelog />
@@ -24,7 +36,14 @@
                         class:clicked={$currentTab === tab}
                         on:click={() => ($currentTab = tab)}
                     >
-                        {tab}
+                        <span class="mr-3">{tab}</span>
+                        {#if tab === 'Update'}
+                            <Badge
+                                aria-label="update-status-badge"
+                                id="update-status-badge-id"
+                                style="min-height: 10px; min-width: 10px; padding: 0; background: {updateBackgroundColor};"
+                            />
+                        {/if}
                     </div>
                 {/each}
             </div>
@@ -33,7 +52,13 @@
         <div class="mainContainer box">
             <div class="container right">
                 <Configuration />
-                <Update />
+                <Update
+                    on:updateStatusChange={(e) => {
+                        if (!e.detail.status) return
+                        updateBackgroundColor = 'var(--color-danger)'
+                        navbarBadgeSettings.style.backgroundColor = updateBackgroundColor
+                    }}
+                />
                 <About />
                 <Infos />
             </div>
@@ -64,7 +89,8 @@
         .title__div {
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            text-align: center;
+            // text-align: center;
+            text-align: end;
             cursor: pointer;
             display: grid;
             row-gap: 2em;

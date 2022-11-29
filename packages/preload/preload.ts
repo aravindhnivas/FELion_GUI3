@@ -23,5 +23,10 @@ import './utils/logger'
 
 console.info('preload: loaded')
 window.addEventListener('DOMContentLoaded', () => {
+    const appVersion: string = ipcRenderer.sendSync('appVersion', null)
+    const title = document.getElementById('app-title')
+    if (title) {
+        title.textContent = `FELion_GUI v${appVersion}`
+    }
     console.info('Preload: DOM fully loaded and parsed')
 })
