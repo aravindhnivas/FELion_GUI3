@@ -82,14 +82,26 @@
             }
             &.is-active .tab {
                 border-bottom: solid 1px;
+
+                background-color: whitesmoke;
+                opacity: 1;
+                span {
+                    color: black;
+                }
+                .delete {
+                    border: solid 1px var(--color-danger);
+                }
             }
 
             .tab {
-                border: none;
-                min-width: 150px;
-                display: grid;
-                grid-template-columns: 1fr auto;
                 gap: 0.5rem;
+                border: none;
+                opacity: 0.8;
+                display: grid;
+                min-width: 150px;
+                grid-template-columns: 1fr auto;
+                cursor: pointer;
+
                 .delete {
                     background-color: white;
                     &:hover {
