@@ -3,9 +3,13 @@
 ## v3.9.0-UNRELEASED
 
 - New features
-  - Toggle rows for toggling rows and full screen advantage
-  - Normline different mode distinction
-  
+  - Multi tab feature for Normline, Masspec, Timescan and THz mode
+  - Toggle rows and full screen advantage in main layout
+  - Normline different mode (FELIX or OPO) at topbar
+- System update
+  - Python 3.11.0
+  - Electron packages update
+
 ---
 
 ## v3.8.1
