@@ -9,18 +9,28 @@
 
     const tabs = ['Configuration', 'Update', 'About', 'Infos']
     const id = 'Settings'
-    let updateBackgroundColor = ''
+    // let updateBackgroundColor = ''
 
     let display = window.db.get('active_tab') === id ? 'block' : 'none'
     let navbarBadgeSettings: HTMLElement
+    let updateBadge: HTMLElement
+    let configBadge: HTMLElement
+
     onMount(() => {
+        updateBadge = document.getElementById(`settings-badge-Update`)
+        configBadge = document.getElementById(`settings-badge-Configuration`)
         navbarBadgeSettings = document.getElementById(`navbar-badge-${id}`)
-        // navbarBadgeSettings.style.backgroundColor = 'var(--color-danger)'
     })
+
     onDestroy(() => {
-        console.warn('Settings destroyed')
         navbarBadgeSettings.style.backgroundColor = ''
     })
+
+    const warningStatuses = [false, false]
+    const updateSettingStatus = async () => {
+        const status = warningStatuses.every((element) => element === false)
+        navbarBadgeSettings.style.backgroundColor = status ? '' : 'var(--color-danger)'
+    }
 </script>
 
 <Changelog />
@@ -37,13 +47,7 @@
                         on:click={() => ($currentTab = tab)}
                     >
                         <span class="mr-3">{tab}</span>
-                        {#if tab === 'Update'}
-                            <Badge
-                                aria-label="update-status-badge"
-                                id="update-status-badge-id"
-                                style="min-height: 10px; min-width: 10px; padding: 0; background: {updateBackgroundColor};"
-                            />
-                        {/if}
+                        <Badge id="settings-badge-{tab}" style="min-height: 10px; min-width: 10px; padding: 0;" />
                     </div>
                 {/each}
             </div>
@@ -51,12 +55,21 @@
 
         <div class="mainContainer box">
             <div class="container right">
-                <Configuration />
+                <Configuration
+                    on:serverStatusChanged={({ detail: { closed } }) => {
+                        console.log('server closed', closed)
+                        configBadge.style.backgroundColor = closed ? 'var(--color-danger)' : ''
+                        warningStatuses[0] = closed
+                        updateSettingStatus()
+                    }}
+                />
                 <Update
                     on:updateStatusChange={(e) => {
+                        warningStatuses[1] = false
                         if (!e.detail.status) return
-                        updateBackgroundColor = 'var(--color-danger)'
-                        navbarBadgeSettings.style.backgroundColor = updateBackgroundColor
+                        updateBadge.style.backgroundColor = 'var(--color-danger)'
+                        warningStatuses[1] = true
+                        updateSettingStatus()
                     }}
                 />
                 <About />

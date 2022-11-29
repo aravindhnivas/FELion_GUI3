@@ -32,6 +32,7 @@
             return await updateServerInfo()
         }
         serverCurrentStatus = { value: 'server closed', type: 'danger' }
+        dispatch('serverStatusChanged', { closed: true })
         serverInfo = [...serverInfo, serverCurrentStatus]
     })
 
@@ -59,11 +60,12 @@
         if (rootpage instanceof Error) {
             serverInfo = [...serverInfo, { value: rootpage.message, type: 'danger' }]
             serverCurrentStatus = { value: 'server closed', type: 'danger' }
+            dispatch('serverStatusChanged', { closed: true })
         } else {
             $pyServerReady = true
             serverInfo = [...serverInfo, { value: rootpage, type: 'success' }]
             serverCurrentStatus = { value: `server running: port(${$pyServerPORT})`, type: 'success' }
-            return
+            dispatch('serverStatusChanged', { closed: false })
         }
     }
 
@@ -85,6 +87,7 @@
         }
     })
     onDestroy(unsubscriber)
+    const dispatch = createEventDispatcher()
 </script>
 
 <div class="align animate__animated animate__fadeIn" class:hide={$currentTab !== 'Configuration'}>
