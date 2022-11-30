@@ -210,6 +210,7 @@
         try {
             $configLoaded = false
             if (window.fs.isFile($configFile)) {
+                // data_dir = window.path.join($currentLocation, 'output/datas')
                 await setConfig()
                 await tick()
                 return
@@ -317,16 +318,27 @@
             collisionalFilename = collisionalFilename
                 ? window.path.join($currentLocation, configsBaseName, collisionalFilename)
                 : ''
+
             await tick()
+
             window.createToast('CONFIG loaded')
             $configLoaded = true
+
+            console.log({ data_dir, data_dir_locked })
+
+            if (!window.fs.isDirectory(data_dir) || !data_dir_locked) {
+                console.log('setting output dir')
+                data_dir = window.path.join($currentLocation, 'output/datas')
+            }
+
             return Promise.resolve('config loaded')
         } catch (error) {
             window.handleError(error)
             return Promise.reject(error)
         }
     }
-    let data_dir = window.path.join($currentLocation, 'output/datas')
+    let data_dir: string = ''
+    let data_dir_locked = true
 
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
     const plot_style = persistentWritable('THz_simulation_plot_style', 'seaborn')
@@ -355,7 +367,7 @@
             dir={true}
             bind:value={data_dir}
             label="output data directory"
-            lock={true}
+            bind:lock={data_dir_locked}
         />
         <div class="align box px-3 py-2" class:hide={showreport} style="border: solid 1px #fff9;">
             <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
