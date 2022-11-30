@@ -328,7 +328,7 @@
 
             if (!window.fs.isDirectory(data_dir) || !data_dir_locked) {
                 console.log('setting output dir')
-                data_dir = window.path.join($currentLocation, 'output/datas')
+                data_dir = window.path.join($currentLocation, 'output/data')
             }
 
             return Promise.resolve('config loaded')
@@ -337,7 +337,7 @@
             return Promise.reject(error)
         }
     }
-    let data_dir: string = ''
+    let data_dir: string = $currentLocation ? window.path.join($currentLocation, 'output/data') : ''
     let data_dir_locked = true
 
     $: voigtFWHM = Number(0.5346 * lorrentz + Math.sqrt(0.2166 * lorrentz ** 2 + gaussian ** 2)).toFixed(3)
