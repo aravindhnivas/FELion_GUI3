@@ -359,7 +359,7 @@
         { name: 'attachment', selected: false },
         { name: 'radiation', selected: true },
     ]
-    $: console.log(simulation_choices)
+    // $: console.log(simulation_choices)
 </script>
 
 <LayoutDiv id="ROSAA__modal" {progress} bind:showProgress>
