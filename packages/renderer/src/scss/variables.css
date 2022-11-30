@@ -7,5 +7,12 @@
     --color-primary: #5a419b;
     --color-primary-light: #6249a5;
     --color-danger: #ff3860;
-    --color-white: #fff;
+    --color-danger-light: #ff4d7a;
+    --color-warning: #ffdd57;
+    --color-warning-light: #ffe072;
+    --color-success: #23d160;
+    --color-success-light: #3dd77bde;
+    --color-info: #209cee;
+    --color-info-light: #3aa8ff;
+    --color-white: #ffffff;
 }
