@@ -36,7 +36,7 @@
     ///////////////////////////////////////////////////////////////////////////
 
     const uniqueID = getContext<string>('uniqueID')
-    const changeGraphDivWidth = getContext<VoidFunction>('changeGraphDivWidth')
+    // const changeGraphDivWidth = getContext<VoidFunction>('changeGraphDivWidth')
     let active = false
     let deltaFELIX = 1
     let felixPlotWidgets = {
