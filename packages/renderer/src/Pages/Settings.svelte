@@ -28,8 +28,8 @@
 
     const warningStatuses = [false, false]
     const updateSettingStatus = async () => {
-        const status = warningStatuses.every((element) => element === false)
-        navbarBadgeSettings.style.backgroundColor = status ? '' : 'var(--color-danger)'
+        const no_active_status = warningStatuses.every((element) => element === false)
+        navbarBadgeSettings.style.backgroundColor = no_active_status ? '' : 'var(--color-danger)'
     }
 </script>
 
@@ -66,7 +66,7 @@
                 <Update
                     on:updateStatusChange={(e) => {
                         warningStatuses[1] = false
-                        if (!e.detail.status) return
+                        if (e.detail.status !== 'update-downloaded') return
                         updateBadge.style.backgroundColor = 'var(--color-danger)'
                         warningStatuses[1] = true
                         updateSettingStatus()
