@@ -9,6 +9,7 @@
 - System update
   - Python 3.11.0
   - Electron packages update
+- Bug fixes
 
 ---
 
