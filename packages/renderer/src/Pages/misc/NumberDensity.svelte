@@ -103,10 +103,10 @@
 
 
     const dispatch = createEventDispatcher();
-    const dispatch_current_numberdensity = (datas=null) => {
+    const dispatch_current_numberdensity = (data=null) => {
         const {nHe, nHe_transpiration} = numberDensity
         dispatch('getValue', {nHe: includeTranspiration ? nHe_transpiration : nHe })
-        if(datas) dispatch('fullargs', {datas})
+        if(data) dispatch('fullargs', {data})
     }
 
 </script>

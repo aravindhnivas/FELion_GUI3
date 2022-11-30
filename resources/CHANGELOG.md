@@ -143,7 +143,7 @@
   - While refreshing to get files, the selected files remains checked
   - PNotify integrated
   - WinBox.js modal integraeted
-  - db.json replaced localStorage for saving datas.
+  - db.json replaced localStorage for saving data.
 - Bug fixes
 
 ---

@@ -210,7 +210,6 @@
         try {
             $configLoaded = false
             if (window.fs.isFile($configFile)) {
-                // data_dir = window.path.join($currentLocation, 'output/datas')
                 await setConfig()
                 await tick()
                 return

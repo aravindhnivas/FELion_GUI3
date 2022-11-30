@@ -13,7 +13,7 @@ export const currentLocation = derived(configFile, ($configFile) => {
 
 export const output_dir = derived(currentLocation, ($currentLocation) => {
     if (!window.fs.isDirectory($currentLocation)) return ''
-    const data_dir = window.path.join($currentLocation, 'output/datas')
+    const data_dir = window.path.join($currentLocation, 'output/data')
     window.fs.ensureDirSync(data_dir)
     return data_dir
 })

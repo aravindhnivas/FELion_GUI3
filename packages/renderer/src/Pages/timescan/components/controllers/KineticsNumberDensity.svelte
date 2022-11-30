@@ -43,7 +43,7 @@
     let get_datas
 
     const save_datas = async () => {
-        if (!get_datas) return window.createToast('No datas computed', 'danger')
+        if (!get_datas) return window.createToast('No data computed', 'danger')
         if (get_datas === null) return window.createToast('Data is not yet full computed')
         if (Object.keys(get_datas).length === 0) return
 
@@ -88,8 +88,8 @@
         for (const key of keys) {
             const config = config_contents[key]
             set_minimal_config?.(config)
-            const datas = await computeNumberDensity(null, true)
-            contents[key] = datas
+            const data = await computeNumberDensity(null, true)
+            contents[key] = data
         }
 
         const result = window.fs.outputJsonSync(savefilename, contents)
@@ -119,7 +119,7 @@
                 nHe = e.detail.nHe
             }}
             on:fullargs={(e) => {
-                get_datas = e.detail.datas
+                get_datas = e.detail.data
             }}
         >
             <svelte:fragment slot="header">
