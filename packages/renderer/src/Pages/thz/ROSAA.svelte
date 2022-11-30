@@ -357,7 +357,7 @@
         { name: 'collision', selected: true },
         { name: 'spontaneousEmission', selected: true },
         { name: 'attachment', selected: false },
-        { name: 'radiation', selected: true },
+        { name: 'radiation', selected: false },
     ]
     onMount(() => ($configLoaded = false))
 </script>

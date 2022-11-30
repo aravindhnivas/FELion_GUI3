@@ -15,7 +15,7 @@
     import Layout from '$components/Layout.svelte'
     import CustomRadio from '$components/CustomRadio.svelte'
     import { deleteTraces } from 'plotly.js-basic-dist'
-
+    import CustomSegBtn from '$src/components/CustomSegBtn.svelte'
     ///////////////////////////////////////////////////////////////////////
 
     export let id = 'Normline'
@@ -95,9 +95,27 @@
 
     let plotfile = 'average'
 
-    let showFELIX = true
+    // let showMoreOptions = false
+
     let showOPO = true
-    let showMoreOptions = false
+    let showFELIX = true
+    let showRawData = true
+    let showPowerData = true
+
+    let show_graphs = [
+        { name: 'Raw data', selected: true },
+        { name: 'Power-Calib', selected: true },
+        { name: 'FELIX', selected: true },
+        { name: 'OPO', selected: true },
+        { name: 'Theory', selected: true },
+    ]
+    $: if (show_graphs) {
+        showFELIX = show_graphs.find((graph) => graph.name === 'FELIX').selected
+        showOPO = show_graphs.find((graph) => graph.name === 'OPO').selected
+        showTheory = show_graphs.find((graph) => graph.name === 'Theory').selected
+        showRawData = show_graphs.find((graph) => graph.name === 'Raw data').selected
+        showPowerData = show_graphs.find((graph) => graph.name === 'Power-Calib').selected
+    }
 
     $: plotfileOptions = $opoMode[uniqueID] ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
@@ -119,13 +137,10 @@
     let theory_toggle = true
 
     let showall = true
-    let showRawData = true
-    let showPowerData = true
     let normMethod: string = normMethods[1]
     let theoryRow = false
 </script>
 
-<!-- Modals -->
 <AddFilesToPlot
     {fileChecked}
     bind:addedfiles
@@ -168,24 +183,16 @@
         <TheoryRow bind:theoryLocation {normMethod} class={theory_toggle ? '' : 'hide'} {theoryRow} />
         <div class="align" class:hide={!felix_toggle}>
             <CustomRadio bind:value={normMethod} options={normMethods} />
-            <button
-                class="button is-link"
-                style="margin-left: auto;"
-                on:click={() => (showMoreOptions = !showMoreOptions)}
-            >
-                More options
-                <i class=" material-symbols-outlined">{showMoreOptions ? 'arrow_drop_up' : 'arrow_drop_down'}</i>
-            </button>
         </div>
 
-        <div class="align" class:hide={!showMoreOptions}>
-            <CustomSelect bind:value={plotfile} label="plotfile" options={plotfileOptions} />
-            <CustomSwitch bind:selected={showFELIX} label="showFELIX" />
-            <CustomSwitch bind:selected={showOPO} label="showOPO" />
-            <CustomSwitch bind:selected={showTheory} label="showTheory" />
-            <CustomSwitch bind:selected={showall} label="showall" />
-            <CustomSwitch bind:selected={showRawData} label="showRawData" />
-            <CustomSwitch bind:selected={showPowerData} label="showPowerData" />
+        <div class="align">
+            <div style="display: flex; gap: 0.5em;">
+                <CustomSwitch bind:selected={showall} label="plot-all-files" />
+                {#if !showall}
+                    <CustomSelect bind:value={plotfile} label="plotfile" options={plotfileOptions} />
+                {/if}
+            </div>
+            <CustomSegBtn class="ml-auto" bind:choices={show_graphs} />
         </div>
     </svelte:fragment>
 

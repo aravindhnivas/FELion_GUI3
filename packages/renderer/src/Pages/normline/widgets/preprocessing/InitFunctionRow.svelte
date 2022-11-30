@@ -36,7 +36,7 @@
     ///////////////////////////////////////////////////////////////////////////
 
     const uniqueID = getContext<string>('uniqueID')
-
+    const changeGraphDivWidth = getContext<VoidFunction>('changeGraphDivWidth')
     let active = false
     let deltaFELIX = 1
     let felixPlotWidgets = {
@@ -70,11 +70,15 @@
 
                 removeExtraFile()
 
-                if (document.getElementById(`${uniqueID}-avgplot`)?.data) {
+                const graphDiv_avgplot = <Plotly.PlotlyHTMLElement>document.getElementById(`${uniqueID}-avgplot`)
+
+                if (!graphDiv_avgplot) return window.createToast('No graphDiv found', 'danger')
+
+                if (graphDiv_avgplot.data) {
                     relayout(`${uniqueID}-avgplot`, {
                         annotations: [],
                         shapes: [],
-                        line: [],
+                        // line: [],
                     })
                 }
                 dataReady = false
@@ -100,6 +104,7 @@
 
                 fullData.data = dataFromPython
                 dataReady = true
+                // changeGraphDivWidth()
                 break
 
             case 'baseline':
@@ -151,10 +156,6 @@
     $: updateplot = !$opoMode[uniqueID] && dataReady && plotfile && normMethod && fullData.data
     $: if (updateplot && showall) {
         if (currentGraph.hasAttribute('data-plotted')) {
-            // const currentKey = mapNormMethodKeys[normMethod]
-            // const currentData = get_data(fullData.data[currentKey])
-            // console.warn('plotting', currentData, plotlayout[normMethod])
-
             plot('Baseline Corrected', 'Wavelength (cm-1)', 'Counts', fullData.data['base'], `${uniqueID}-bplot`)
             subplot(
                 'Spectrum and Power Analyser',
@@ -166,7 +167,6 @@
                 `Total Power (mJ)`,
                 fullData.data['pow']
             )
-            // react(`${uniqueID}-avgplot`, currentData, plotlayout[normMethod])
             const { yaxis, xaxis, title, key } = plotlayout[normMethod]
             plot(title, xaxis.title, yaxis.title, fullData.data[key], `${uniqueID}-avgplot`)
         } else {

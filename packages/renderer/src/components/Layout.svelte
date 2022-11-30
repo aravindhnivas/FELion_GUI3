@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount, createEventDispatcher, tick, onDestroy } from 'svelte'
+    import { onMount, createEventDispatcher, tick } from 'svelte'
     import { fly, fade } from 'svelte/transition'
     import { relayout } from 'plotly.js-basic-dist'
     // import WinBox from 'winbox/src/js/winbox.js'
@@ -24,7 +24,7 @@
 
     const dispatch = createEventDispatcher()
 
-    const saveLocationToDB = getContext('saveLocationToDB')
+    // const saveLocationToDB = getContext('saveLocationToDB')
     onMount(() => {
         // if (!saveLocationToDB) return
         currentLocation = <string>window.db.get(`${filetype}_location`) || ''
@@ -52,6 +52,9 @@
             }
         })
     }
+
+    setContext('lookForGraph', lookForGraph)
+    setContext('changeGraphDivWidth', changeGraphDivWidth)
 
     let location = (window.db.get(`${filetype}_location`) as string) || ''
 

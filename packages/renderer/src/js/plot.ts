@@ -27,9 +27,7 @@ export function plot(
     createPlotlyClickEvent = false
 ) {
     const graph_div = document.getElementById(graphDiv)
-    const parentElement = graph_div.parentElement
-    const width = parentElement.clientWidth - 16
-    // console.log(`Plotting ${graphDiv} with width ${width}`)
+    
     const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { title: xtitle },
@@ -37,17 +35,19 @@ export function plot(
         hovermode: 'closest',
         autosize: true,
         height: 450,
-        width: width,
     }
 
     const dataPlot: PlotData[] = []
-
     for (const x in data) {
         dataPlot.push(data[x])
     }
 
     try {
         react(graphDiv, dataPlot, dataLayout, { editable: true })
+
+        relayout(graphDiv, {
+            width: graph_div.clientWidth,
+        })
 
         if (!graph_div.hasAttribute('data-plotted')) {
             graph_div.setAttribute('data-plotted', 'true')
@@ -60,7 +60,6 @@ export function plot(
             }
         }
 
-        // console.log(graphDiv, ': plotted', get(plotlyEventsInfo)[graphDiv].eventCreated)
         if (!get(plotlyEventsInfo)[graphDiv].eventCreated && createPlotlyClickEvent) {
             console.log('Creating plotly event for ', graphDiv)
             plotlyClick(graphDiv)
@@ -84,11 +83,6 @@ export function subplot(
     y2: string,
     data2: DataFromPython
 ) {
-    const graph_div = document.getElementById(graphDiv)
-    const parentElement = graph_div.parentElement
-    const width = parentElement.clientWidth - 16
-    // console.log(`Plotting ${graphDiv} with width ${width}`)
-
     const dataLayout: Partial<Plotly.Layout> = {
         title: mainTitle,
         xaxis: { domain: [0, 0.4], title: xtitle },
@@ -104,7 +98,6 @@ export function subplot(
         },
         autosize: true,
         height: 450,
-        width: width,
     }
 
     const dataPlot1: PlotData[] = []
@@ -116,8 +109,10 @@ export function subplot(
     for (const x in data2) {
         dataPlot2.push(data2[x])
     }
-
+    const graph_div = document.getElementById(graphDiv)
+    
     react(graphDiv, dataPlot1.concat(dataPlot2), dataLayout, { editable: true })
+    relayout(graphDiv, {width: graph_div.clientWidth})
 }
 
 export function plotlyClick(graphDiv: string): boolean {
