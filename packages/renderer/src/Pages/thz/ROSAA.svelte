@@ -45,6 +45,7 @@
     import { persistentWritable } from '$src/js/persistentStore'
     import { setID, correctObjValue } from '$src/js/utils'
     import BrowseTextfield from '$src/components/BrowseTextfield.svelte'
+    import CustomSegBtn from '$src/components/CustomSegBtn.svelte'
     import VariableSelector from './components/header/VariableSelector.svelte'
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -64,6 +65,11 @@
         if (!window.fs.isDirectory($currentLocation)) return window.createToast("Location doesn't exist", 'danger')
         if (!$configLoaded) return window.createToast('Config file not loaded', 'danger')
         if (!$transitionFrequency) return window.createToast('Transition frequency is not defined', 'danger')
+
+        includeCollision = simulation_choices.find((e) => e.name === 'collision').selected
+        includeSpontaneousEmission = simulation_choices.find((e) => e.name === 'spontaneousEmission').selected
+        includeAttachmentRate = simulation_choices.find((e) => e.name === 'attachment').selected
+        includeRadiation = simulation_choices.find((e) => e.name === 'radiation').selected
 
         if (includeCollision) {
             if ($collisionalRateConstants.length < 1)
@@ -138,9 +144,9 @@
             includeCollision,
             includeAttachmentRate,
             includeRadiation,
+            includeSpontaneousEmission,
             gaussian,
             lorrentz,
-            includeSpontaneousEmission,
             writefile: $writefile,
             savefilename,
             currentLocation: $currentLocation,
@@ -347,6 +353,13 @@
     let progress = 0
     let showProgress = false
     let includeRadiation = true
+    let simulation_choices = [
+        { name: 'collision', selected: true },
+        { name: 'spontaneousEmission', selected: true },
+        { name: 'attachment', selected: false },
+        { name: 'radiation', selected: true },
+    ]
+    $: console.log(simulation_choices)
 </script>
 
 <LayoutDiv id="ROSAA__modal" {progress} bind:showProgress>
@@ -369,10 +382,7 @@
             bind:lock={data_dir_locked}
         />
         <div class="align box px-3 py-2" class:hide={showreport} style="border: solid 1px #fff9;">
-            <CustomCheckbox bind:value={includeCollision} label="includeCollision" />
-            <CustomCheckbox bind:value={includeAttachmentRate} label="includeAttachmentRate" />
-            <CustomCheckbox bind:value={includeRadiation} label="includeRadiation" />
-            <CustomCheckbox bind:value={includeSpontaneousEmission} label="includeSpontaneousEmission" />
+            <CustomSegBtn bind:choices={simulation_choices} />
             <CustomCheckbox bind:value={$electronSpin} label="Electron Spin" />
             <CustomCheckbox bind:value={$zeemanSplit} label="Zeeman" />
         </div>
@@ -483,8 +493,9 @@
 
     <svelte:fragment slot="left_footer_content__slot">
         <CustomCheckbox bind:value={$writefile} label="writefile" />
-        <Textfield bind:value={savefilename} label="savefilename" />
         <CustomCheckbox bind:value={figure.show} label="show figure" />
+        <!-- <CustomSegBtn bind:choices={output_choices} bind:selected={output_choices_selected} /> -->
+        <Textfield bind:value={savefilename} label="savefilename" />
         <Textfield style="width: 5em;" bind:value={figure.dpi} label="DPI" type="number" input$step={10} />
     </svelte:fragment>
     <svelte:fragment slot="footer_content__slot">
