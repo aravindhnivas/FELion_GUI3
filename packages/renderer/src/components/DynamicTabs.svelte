@@ -1,9 +1,10 @@
 <script lang="ts">
     import autoAnimate from '@formkit/auto-animate'
+
     export let prefixId: string = window.getID()
     export let list: { name: string; id: string; active: boolean }[] = []
 
-    let tabCount = 1
+    let tabCount = 0
 
     const makeTabActive = (id: string) => {
         list = list.map((tab) => {
@@ -16,25 +17,39 @@
     }
 
     let ul: HTMLUListElement
-    const addTab = () => {
-        // if (tabCount > 5) return window.createToast('Slow down... Lets work on 5 tabs for now.', 'danger')
-        const name = `Tab ${tabCount}`
-        const id = `${prefixId}-tab-${tabCount}`
-        const newTab = { name, id, active: true }
-        list = [...list.map((f) => ({ ...f, active: false })), newTab]
-        tabCount++
+
+    const addTab = async (num = 1, background = false) => {
+        for (let i = 0; i < num; i++) {
+            const name = `Tab ${tabCount + 1}`
+            const id = `${prefixId}-tab-${tabCount}`
+            list = [...list, { name, id, active: false }]
+
+            if (!background) makeTabActive(id)
+            await tick()
+            ul.scrollLeft = ul.scrollWidth - ul.clientWidth
+            tabCount++
+        }
     }
 
     const removeTab = (id, index) => {
         const is_it_active_tab = list[index].active
         list = list.filter((item) => item.id !== id)
 
-        if (list.length === 1) tabCount = 2
+        if (list.length === 1) tabCount = 1
         if (!is_it_active_tab) return
         makeTabActive(list[index - 1]?.id || list[index]?.id)
     }
+
+    const closeAllTabs = () => {
+        if (list.length === 1) return window.createToast('No extra tabs to delete', 'danger')
+        makeTabActive(list[0].id)
+        list = [list[0]]
+        tabCount = 1
+    }
+
     onMount(() => {
         list = []
+        tabCount = 0
         addTab()
     })
 </script>
@@ -65,33 +80,25 @@
             </li>
         {/each}
         <li class="tabs-li">
-            <button class="button is-link ml-2" style="border: none" on:click={addTab}>
+            <button class="button is-link ml-2" style="border: none" on:click={() => addTab()}>
                 <span class="material-symbols-outlined"> add </span>
             </button>
         </li>
     </ul>
-
-    <button
-        class="ml-auto button has-background-danger ml-2"
-        style="border: none"
-        on:click={() => {
-            if (list.length === 1) return window.createToast('No extra tabs to delete', 'danger')
-            list = [list[0]]
-            makeTabActive(list[0].id)
-        }}
-    >
-        <span class="material-symbols-outlined"> close </span>
-    </button>
+    <button class="tag is-small ml-auto button is-danger" style="border: none" on:click={closeAllTabs}> X </button>
 </div>
 
 <style lang="scss">
     .tabs.is-toggle {
         background-color: var(--color-primary-light);
+
         display: grid;
         grid-template-columns: 1fr auto;
         width: calc(100vw - 5px);
         align-items: center;
-        gap: 5em;
+        gap: 2em;
+        min-width: 0;
+        min-height: 0;
         .tabs-ul {
             overflow-x: auto;
             overflow-y: hidden;
