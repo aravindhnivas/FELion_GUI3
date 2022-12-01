@@ -34,7 +34,6 @@
     const removeTab = (id, index) => {
         const is_it_active_tab = list[index].active
         list = list.filter((item) => item.id !== id)
-
         if (list.length === 1) tabCount = 1
         if (!is_it_active_tab) return
         makeTabActive(list[index - 1]?.id || list[index]?.id)
@@ -85,7 +84,9 @@
             </button>
         </li>
     </ul>
-    <button class="tag is-small ml-auto button is-danger" style="border: none" on:click={closeAllTabs}> X </button>
+    {#if list.length > 1}
+        <button class="tag is-small ml-auto button is-danger" style="border: none" on:click={closeAllTabs}> X </button>
+    {/if}
 </div>
 
 <style lang="scss">
@@ -99,6 +100,8 @@
         gap: 2em;
         min-width: 0;
         min-height: 0;
+        overflow-y: hidden;
+        overflow-x: hidden;
         .tabs-ul {
             overflow-x: auto;
             overflow-y: hidden;
