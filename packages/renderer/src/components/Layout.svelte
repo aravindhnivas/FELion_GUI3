@@ -160,18 +160,17 @@
                     <slot name="plotContainer_functions" />
                     <slot name="plotContainer_reports" />
                 {/if}
-                <div
-                    class="report-editor-div"
-                    class:hide={!reports_div_toggle}
-                    id="{uniqueID}-plotContainer-report-editor-div"
-                >
-                    <Editor
-                        {location}
-                        {filetype}
-                        id="{uniqueID}-report-editor"
-                        mount="#{uniqueID}-plotContainer-report-editor-div"
-                    />
-                </div>
+
+                {#if reports_div_toggle}
+                    <div class="report-editor-div" id="{uniqueID}-plotContainer-report-editor-div">
+                        <Editor
+                            {location}
+                            {filetype}
+                            id="{uniqueID}-report-editor"
+                            mount="#{uniqueID}-plotContainer-report-editor-div"
+                        />
+                    </div>
+                {/if}
             </div>
         </div>
 
