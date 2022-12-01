@@ -109,8 +109,15 @@ li.mdc-deprecated-list-item.mdc-ripple-upgraded {
   color: black;
 
 }
-// Selected text
-.mdc-select:not(.mdc-select--disabled) .mdc-select__selected-text {
 
+// Selected text
+
+.mdc-select:not(.mdc-select--disabled) .mdc-select__selected-text {
   color: white;
+}
+
+.smui-badge {
+  min-height: 10px;
+  min-width: 10px;
+  padding: 0;
 }

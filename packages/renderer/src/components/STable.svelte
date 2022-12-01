@@ -7,7 +7,7 @@
     export let idKey: string = 'id'
     export let rowKeys: string[]
     export let rows = []
-    export let headKeys: string[]
+    export let headKeys: string[] = null
     export let closeableRows = false
     export let includeIndex = true
 
