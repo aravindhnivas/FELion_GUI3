@@ -57,7 +57,7 @@
     <ul class="tabs-ul" use:autoAnimate bind:this={ul}>
         {#each list as item, index (item.id)}
             {@const border = !item.active && index > 0 && index !== list.length ? 'solid 1px darkgrey' : 'none'}
-            <li class="tabs-li" class:hvr-grow={!item.active} class:is-active={item.active} style:border-left={border}>
+            <li class="tabs-li" class:is-active={item.active} style:border-left={border}>
                 <!-- svelte-ignore a11y-missing-attribute -->
                 <a class="tab">
                     <span
@@ -92,7 +92,6 @@
 <style lang="scss">
     .tabs.is-toggle {
         background-color: var(--color-primary-light);
-
         display: grid;
         grid-template-columns: 1fr auto;
         width: calc(100vw - 5px);
@@ -109,11 +108,14 @@
 
         .tabs-li {
             &.is-active .tab {
-                border-bottom: solid 1px;
-                background-color: whitesmoke;
                 opacity: 1;
+                border-bottom: solid 1px;
+
+                // background-color: whitesmoke;
+                background-color: var(--color-primary-light);
                 .tab-name {
-                    color: black;
+                    // color: black;
+                    color: white;
                 }
                 .delete {
                     border: solid 1px var(--color-danger);

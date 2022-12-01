@@ -18,26 +18,3 @@
         <Label>{segment.name}</Label>
     </Segment>
 </SegmentedButton>
-
-<style lang="scss" global>
-    button.mdc-segmented-button__segment.mdc-ripple-upgraded {
-        background-color: var(--color-primary);
-        opacity: 0.7;
-        &:hover {
-            background-color: whitesmoke;
-            .mdc-segmented-button__label {
-                color: black;
-            }
-        }
-        .mdc-segmented-button__label {
-            color: white;
-        }
-        &.mdc-segmented-button__segment--selected {
-            background-color: whitesmoke;
-            opacity: 1;
-            .mdc-segmented-button__label {
-                color: black;
-            }
-        }
-    }
-</style>

@@ -121,3 +121,22 @@ li.mdc-deprecated-list-item.mdc-ripple-upgraded {
   min-width: 10px;
   padding: 0;
 }
+
+button.mdc-segmented-button__segment.mdc-ripple-upgraded {
+  background-color: var(--color-primary-light);
+  opacity: 0.7;
+  &:hover {
+      background-color: var(--color-primary);
+      border: solid 1px white;
+  }
+  .mdc-segmented-button__label {
+      color: white;
+  }
+  &.mdc-segmented-button__segment--selected {
+      border: solid 1px white;
+      opacity: 1;
+      .mdc-segmented-button__label {
+          color: white;
+      }
+  }
+}
