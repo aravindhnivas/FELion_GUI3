@@ -107,7 +107,8 @@ def main(args):
 
             new_x = new_x[new_x >= xs.min()]
             if len(new_x) > 0:
-                (start_ind,) = np.where(x == new_x[0])[0]
+                start_ind, _ = np.where(x == new_x[0])[0]
+                print(start_ind, flush=True)
                 x = new_x
             else:
                 start_ind = 0
