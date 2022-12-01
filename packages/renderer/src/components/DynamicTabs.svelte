@@ -1,4 +1,5 @@
 <script lang="ts">
+    import autoAnimate from '@formkit/auto-animate'
     export let prefixId: string = window.getID()
     export let list: { name: string; id: string; active: boolean }[] = []
 
@@ -14,12 +15,13 @@
         })
     }
 
+    let ul: HTMLUListElement
     const addTab = () => {
+        // if (tabCount > 5) return window.createToast('Slow down... Lets work on 5 tabs for now.', 'danger')
         const name = `Tab ${tabCount}`
         const id = `${prefixId}-tab-${tabCount}`
         const newTab = { name, id, active: true }
         list = [...list.map((f) => ({ ...f, active: false })), newTab]
-
         tabCount++
     }
 
@@ -38,10 +40,9 @@
 </script>
 
 <div class="tabs is-toggle m-1 grid">
-    <ul>
+    <ul class="tabs-ul" use:autoAnimate bind:this={ul}>
         {#each list as item, index (item.id)}
             {@const border = !item.active && index > 0 && index !== list.length ? 'solid 1px darkgrey' : 'none'}
-
             <li class="tabs-li" class:hvr-grow={!item.active} class:is-active={item.active} style:border-left={border}>
                 <!-- svelte-ignore a11y-missing-attribute -->
                 <a class="tab">
@@ -63,19 +64,38 @@
                 </a>
             </li>
         {/each}
-
         <li class="tabs-li">
             <button class="button is-link ml-2" style="border: none" on:click={addTab}>
                 <span class="material-symbols-outlined"> add </span>
             </button>
         </li>
     </ul>
+
+    <button
+        class="ml-auto button has-background-danger ml-2"
+        style="border: none"
+        on:click={() => {
+            if (list.length === 1) return window.createToast('No extra tabs to delete', 'danger')
+            list = [list[0]]
+            makeTabActive(list[0].id)
+        }}
+    >
+        <span class="material-symbols-outlined"> close </span>
+    </button>
 </div>
 
 <style lang="scss">
     .tabs.is-toggle {
         background-color: var(--color-primary-light);
         display: grid;
+        grid-template-columns: 1fr auto;
+        width: calc(100vw - 5px);
+        align-items: center;
+        gap: 5em;
+        .tabs-ul {
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
 
         .tabs-li {
             &.is-active .tab {
