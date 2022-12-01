@@ -245,7 +245,9 @@
         FELIX Plot
     </button>
 
-    <CustomTextSwitch style="width:7em" variant="outlined" bind:value={deltaFELIX} label="Delta" step="0.5" />
+    {#if deltaFELIX}
+        <CustomTextSwitch style="width:7em" variant="outlined" bind:value={deltaFELIX} label="Delta" step="0.5" />
+    {/if}
     <button class="button is-link" on:click={() => (active = true)}> Open in Matplotlib</button>
     <button class="button is-link" on:click={() => (theoryRow = !theoryRow)}>Add Theory</button>
     <button
