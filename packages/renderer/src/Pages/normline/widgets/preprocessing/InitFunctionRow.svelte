@@ -25,7 +25,7 @@
 
     export let plotfile = 'average'
     export let felixfiles = []
-    export let removeExtraFile
+    export let removeExtraFile: VoidFunction
     export let showall = true
     export let theoryRow = false
     export let normMethod: string
@@ -67,7 +67,8 @@
         switch (filetype) {
             case 'felix':
                 if (felixfiles.length < 1) return window.createToast('No files selected', 'danger')
-
+                if (deltaFELIX == 0)
+                    return window.createToast('Delta FELIX cannot be 0. Set it to atleast 0.5', 'danger')
                 removeExtraFile()
 
                 const graphDiv_avgplot = <Plotly.PlotlyHTMLElement>document.getElementById(`${uniqueID}-avgplot`)
@@ -245,9 +246,7 @@
         FELIX Plot
     </button>
 
-    {#if deltaFELIX}
-        <CustomTextSwitch style="width:7em" variant="outlined" bind:value={deltaFELIX} label="Delta" step="0.5" />
-    {/if}
+    <CustomTextSwitch style="width:7em" bind:value={deltaFELIX} label="Delta" step="0.5" />
     <button class="button is-link" on:click={() => (active = true)}> Open in Matplotlib</button>
     <button class="button is-link" on:click={() => (theoryRow = !theoryRow)}>Add Theory</button>
     <button

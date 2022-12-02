@@ -213,13 +213,13 @@
             <div class="border__div">
                 {#each Object.keys(TakaishiSensuiConstants) as key (key)}
                     
-                <div class="border__div">
+                <div class='align h-center'>
 
-                    <Textfield
+                    <Textfield style='width: 7em;'
                         bind:value={TakaishiSensuiConstants[key].value[0]}
                         label={`${key} [${TakaishiSensuiConstants[key].unit}]`}
                         />
-                    <Textfield
+                    <Textfield style='width: 7em;'
                         bind:value={TakaishiSensuiConstants[key].value[1]}
                         label="std. dev."
                         />

@@ -70,17 +70,20 @@
     let addedFileScale = 1
     let extrafileAdded = 0
 
-    $: console.log(`Extrafile added: ${extrafileAdded}`)
     $: currentGraphID = $opoMode[uniqueID] ? `${uniqueID}-opoRelPlot` : `${uniqueID}-avgplot`
+
+    $: console.log(`Extrafile added: ${extrafileAdded}`)
+
     function removeExtraFile() {
+        // console.log(extrafileAdded)
+        if (extrafileAdded === 0) return
         for (let i = 0; i < extrafileAdded + 1; i++) {
             try {
                 deleteTraces(currentGraphID, [-1])
-
                 extrafileAdded--
                 addedfiles = addedfiles.slice(0, addedfiles.length - 1)
             } catch (err) {
-                console.log('The plot is empty')
+                console.warn(err, 'Could not delete trace')
             }
         }
     }
@@ -119,10 +122,12 @@
 
     $: plotfileOptions = $opoMode[uniqueID] ? [...OPOfilesChecked, 'average'] : [...fileChecked, 'average']
 
+    let mounted = false
     onMount(() => {
         opoMode.init(uniqueID)
         Ngauss_sigma.init(uniqueID)
         felixopoLocation.init(uniqueID)
+        mounted = true
         console.warn('Normline mounted')
     })
     onDestroy(() => {
@@ -159,6 +164,7 @@
             <span class="tag" style="border: solid 1px; background-color: #ffa94d33;">OPO Mode</span>
         {/if}
     </svelte:fragment>
+
     <svelte:fragment slot="buttonContainer">
         <InitFunctionRow
             {theoryLocation}
@@ -167,7 +173,7 @@
             {removeExtraFile}
             {felixfiles}
             {plotfile}
-            class={felix_toggle ? '' : 'hide'}
+            class={felix_toggle && mounted ? '' : 'hide'}
             {showall}
         />
         <OPORow

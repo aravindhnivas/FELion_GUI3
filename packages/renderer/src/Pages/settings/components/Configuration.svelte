@@ -16,7 +16,7 @@
     import { checkTCP, fetchServerROOT } from '../serverConnections'
     import CustomSwitch from '$src/components/CustomSwitch.svelte'
     import { onDestroy, onMount } from 'svelte'
-
+    import Badge from '@smui-extra/badge'
     interface ServerInfo {
         value: string
         type: 'info' | 'danger' | 'warning' | 'success'
@@ -109,9 +109,6 @@
                 Developer mode: {$developerMode}
             </button>
             <button class="button is-link" on:click={getPyVersion}>getPyVersion</button>
-            <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
-                Show server controls
-            </button>
 
             {#if $developerMode}
                 <div class="align">
@@ -129,6 +126,12 @@
         </div>
         <BrowseTextfield class="three_col_browse" bind:value={$felionpy} label="felionpy" lock={true} />
 
+        <button class="button is-link" on:click={() => (showServerControls = !showServerControls)}>
+            Show server controls
+            {#if !$pyServerReady}
+                <Badge class="has-background-danger" />
+            {/if}
+        </button>
         <div id="serverControllers" class="align server-control" class:hide={!showServerControls}>
             <div class="align">
                 <BrowseTextfield
@@ -137,8 +140,9 @@
                     label="serverPORT"
                     browseBtn={false}
                     lock={true}
+                    style="display: flex;"
                 />
-                <CustomSwitch bind:selected={$serverDebug} label="serverDebug" />
+                <CustomSwitch bind:selected={$serverDebug} label="debug mode" />
                 <button
                     class="button is-link"
                     class:is-loading={serverCurrentStatus.value.includes('starting')}
@@ -146,6 +150,9 @@
                     disabled={$pyServerReady && serverCurrentStatus.value.includes('running')}
                 >
                     STARTserver
+                    {#if !$pyServerReady}
+                        <Badge class="has-background-danger" />
+                    {/if}
                 </button>
 
                 {#if $pyServerReady && serverCurrentStatus.value.includes('running')}

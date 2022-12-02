@@ -47,7 +47,7 @@
                         on:click={() => ($currentTab = tab)}
                     >
                         <span class="mr-3">{tab}</span>
-                        <Badge id="settings-badge-{tab}" style="min-height: 10px; min-width: 10px; padding: 0;" />
+                        <Badge id="settings-badge-{tab}" />
                     </div>
                 {/each}
             </div>

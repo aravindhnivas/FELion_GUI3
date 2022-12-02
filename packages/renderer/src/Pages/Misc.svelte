@@ -6,30 +6,27 @@
     import TabBar from '@smui/tab-bar'
     import { onMount } from 'svelte'
     import { activePage } from '$src/sveltewritables'
-    let active = window.db.get('MISC_active_tab') || 'Unit Conversion'
-    $: if (active) {
-        window.db.set('MISC_active_tab', active)
-    }
 
+    const active = window.persistentDB('MISC_active_tab', 'Unit Conversion')
     const navItems = ['Unit Conversion', 'Configs']
     let display = 'none'
+
     onMount(() => {
         display = $activePage === 'Misc' ? 'block' : 'none'
     })
-
     let nHe
 </script>
 
 <section class="animate__animated animate__fadeIn section" id="Misc" style:display>
     <div class="misc_main__div">
         <div class="box animate__animated animate__fadeInDown misc_nav">
-            <TabBar tabs={navItems} let:tab bind:active>
+            <TabBar tabs={navItems} let:tab bind:active={$active}>
                 <Tab {tab}><Label>{tab}</Label></Tab>
             </TabBar>
         </div>
 
         <div class="misc_container">
-            <div class="unit_conversion__container" style:display={active == 'Unit Conversion' ? 'grid' : 'none'}>
+            <div class="unit_conversion__container" style:display={$active == 'Unit Conversion' ? 'grid' : 'none'}>
                 <EnergyConversion />
 
                 <div class="box number_density__container">
@@ -52,7 +49,7 @@
                     </NumberDensity>
                 </div>
             </div>
-            {#if active == 'Configs'}
+            {#if $active == 'Configs'}
                 <Configs />
             {/if}
         </div>
